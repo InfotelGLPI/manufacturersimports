@@ -1,0 +1,1 @@
+ALTER TABLE `glpi_plugin_manufacturersimports_configs` ADD `supplier_key` VARCHAR(32) default NULL;

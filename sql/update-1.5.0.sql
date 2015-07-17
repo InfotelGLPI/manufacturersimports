@@ -1,0 +1,2 @@
+UPDATE `glpi_plugin_manufacturersimports_configs` SET `Supplier_url` = 'http://www.dell.com/support/troubleshooting/us/en/04/Index?c=us&l=en&s=bsd&cs=04&t=system&ServiceTag='  WHERE `name` ='Dell';
+UPDATE `glpi_plugin_manufacturersimports_configs` SET `name` = 'Fujitsu'  WHERE `name` ='Fujitsu-Siemens';

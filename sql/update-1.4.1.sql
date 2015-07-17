@@ -1,0 +1,1 @@
+UPDATE `glpi_plugin_manufacturersimports_configs` SET `Supplier_url` = 'http://h20000.www2.hp.com/bizsupport/TechSupport/WarrantyResults.jsp?'  WHERE `name` ='HP';
