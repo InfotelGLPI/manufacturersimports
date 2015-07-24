@@ -71,7 +71,7 @@ function plugin_version_manufacturersimports() {
                  'version'        => '1.8.0',
                  'license'        => 'GPLv2+',
                  'author'         => "<a href='http://infotel.com/services/expertise-technique/glpi/'>Infotel</a>",
-                 'homepage'       => 'https://forge.indepnet.net/projects/manufacturersimports/',
+                 'homepage'       => 'https://github.com/InfotelGLPI/manufacturersimports/',
                  'minGlpiVersion' => '0.90',
    );
 }
