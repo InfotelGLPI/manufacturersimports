@@ -1,0 +1,178 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ManufacturersImports Development Team
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Doru  DEACONU <dumitrudeaconu@yahoo.com>, 2015
+# Doru  DEACONU <dumitrudeaconu@yahoo.com>, 2012
+msgid ""
+msgstr ""
+"Project-Id-Version: GLPI Project - manufacturersimports plugin\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-04-27 14:44+0200\n"
+"PO-Revision-Date: 2015-05-16 17:06+0000\n"
+"Last-Translator: Doru  DEACONU <dumitrudeaconu@yahoo.com>\n"
+"Language-Team: Romanian (Romania) (http://www.transifex.com/projects/p/GLPI_manufacturersimports/language/ro_RO/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ro_RO\n"
+"Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));\n"
+
+#: hook.php:193 setup.php:68 ajax/massiveaction.php:38 inc/menu.class.php:35
+#: inc/model.class.php:39 inc/preimport.class.php:42 inc/profile.class.php:68
+msgid "Suppliers import"
+msgid_plural "Suppliers imports"
+msgstr[0] "Import producători"
+msgstr[1] "Importuri producători"
+msgstr[2] "Importuri producători"
+
+#: hook.php:197 inc/lenovo.class.php:44
+msgid "Model number"
+msgstr "Număr model"
+
+#: hook.php:223
+msgid "Add new material brand number"
+msgstr "Adaugă un număr de model de device"
+
+#: setup.php:84
+msgid "This plugin requires GLPI >= 0.85"
+msgstr "Acest plugin necesită GLPI >= 0.85"
+
+#: setup.php:87 setup.php:90 setup.php:93
+msgid "Incompatible PHP Installation. Requires module"
+msgstr "Instalare PHP incompatibilă. Necesită modulul"
+
+#: front/config.php:42
+msgid "Please activate the plugin"
+msgstr "Activaţi vă rog modulul"
+
+#: inc/config.class.php:190 inc/config.class.php:311
+msgid "Manufacturer web address"
+msgstr "Adresa web producător"
+
+#: inc/config.class.php:197 inc/config.class.php:318
+msgid "Default supplier attached"
+msgstr "Furnizor ataşat predefinit"
+
+#: inc/config.class.php:203 inc/preimport.class.php:573
+msgid "New warranty attached"
+msgstr "Garanţie nouă ataşată"
+
+#: inc/config.class.php:210 inc/config.class.php:341
+msgid "Auto add of document"
+msgstr "Adăugare automată de documente"
+
+#: inc/config.class.php:222 inc/config.class.php:363
+msgid "Add a comment line"
+msgstr "Adaugă o linie de comentariu"
+
+#: inc/config.class.php:328
+msgid "New warranty affected by default (Replace if 0)"
+msgstr "Nouă garantie afectată  predefinit  (înlocuiţi dacă 0)"
+
+#: inc/config.class.php:348
+msgid "Section for document records"
+msgstr "Rubrică pentru înregistrarea documentelor"
+
+#: inc/config.class.php:356
+msgid "Manufacturer API key"
+msgstr "API key Producator"
+
+#: inc/config.class.php:463 inc/preimport.class.php:228
+msgid "Manufacturer information"
+msgstr "Informaţii producător"
+
+#: inc/model.class.php:111
+msgid "Model Number"
+msgstr "Număr model"
+
+#: inc/postimport.class.php:59
+msgid "Curl PHP package not installed"
+msgstr "Modulul Curl pentru PHP nu este instalat"
+
+#: inc/postimport.class.php:152
+msgid "Post import"
+msgstr "Post import"
+
+#: inc/postimport.class.php:160
+msgid "Result"
+msgstr "Rezultat"
+
+#: inc/postimport.class.php:161
+msgid "Details"
+msgstr "Detalii"
+
+#: inc/postimport.class.php:178
+#, php-format
+msgid "Total number of devices imported %s"
+msgstr "Număr total al device - urilor importate %s"
+
+#: inc/postimport.class.php:448 inc/postimport.class.php:457
+msgid "Imported from web site"
+msgstr "Import din site web"
+
+#: inc/postimport.class.php:449 inc/postimport.class.php:458
+msgid "With the manufacturersimports plugin"
+msgstr "Cu pluginul manufacturesimports"
+
+#: inc/postimport.class.php:468
+msgid "Import OK"
+msgstr "Import OK"
+
+#: inc/postimport.class.php:560
+msgid "Import failed"
+msgstr "Import KO"
+
+#: inc/postimport.class.php:576
+msgid "Connection failed/data download from manufacturer web site"
+msgstr "Eşec la conexiunea / download - ul datelor de pe situl producătorului"
+
+#: inc/preimport.class.php:200
+msgid "The choosen supplier is not recursive"
+msgstr "Furnizorul ales nu este recursiv"
+
+#: inc/preimport.class.php:234
+msgid "Not yet imported"
+msgstr "Încă neinportate "
+
+#: inc/preimport.class.php:237
+msgid "Problem during the importation"
+msgstr "Probleme la importare"
+
+#: inc/preimport.class.php:245
+msgid "Already imported"
+msgstr "Deja importate"
+
+#: inc/preimport.class.php:280
+msgid "Choose inventory type and manufacturer"
+msgstr "Alege tipul inventarului şi producătorul"
+
+#: inc/preimport.class.php:319
+msgid "Devices not imported"
+msgstr "Device - uri neimportate"
+
+#: inc/preimport.class.php:321
+msgid "Devices already imported"
+msgstr "Device - uri deja importate"
+
+#: inc/preimport.class.php:328 inc/preimport.class.php:331
+msgid "No manufacturer available. Please configure at least one manufacturer"
+msgstr "Niciun producător disponibil. Configuraţi cel puţin un producător"
+
+#: inc/preimport.class.php:570
+msgid "Supplier attached"
+msgstr "Furnizpr ataşat"
+
+#: inc/preimport.class.php:619
+#, php-format
+msgid "Total number of devices to import %s"
+msgstr "NUmărul toatal de device uri de importat %s"
+
+#: inc/preimport.class.php:666
+msgid "No device finded"
+msgstr "Niciun device găsit"
+
+#: inc/preimport.class.php:804
+msgid "Reset the import"
+msgstr "Resetează importul"
