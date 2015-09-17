@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI - ManufacturersImports plugin 1.6.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-27 14:44+0200\n"
+"POT-Creation-Date: 2015-09-17 10:59+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,7 +34,7 @@ msgid "Add new material brand number"
 msgstr ""
 
 #: setup.php:84
-msgid "This plugin requires GLPI >= 0.85"
+msgid "This plugin requires GLPI >= 0.90"
 msgstr ""
 
 #: setup.php:87 setup.php:90 setup.php:93
