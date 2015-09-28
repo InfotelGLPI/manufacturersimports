@@ -3,7 +3,7 @@
    <name>Manufacturers Web Imports</name>
    <key>manufacturersimports</key>
    <state>stable</state>
-   <logo></logo>
+   <logo>https://raw.githubusercontent.com/InfotelGLPI/manufacturersimports/master/manufacturersimports.png</logo>
    <description>
       <short>
          <fr><![CDATA[Imports des informations financières des matériels directement depuis le site web des fabricants.<br />Works with Dell, HP, Toshiba, Fujitsu-Siemens et Lenovo]]></fr>
