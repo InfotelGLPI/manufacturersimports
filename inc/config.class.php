@@ -163,7 +163,7 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
       //$options[self::HP]      = self::HP;
       $options[self::FUJITSU] = self::FUJITSU;
       $options[self::TOSHIBA] = self::TOSHIBA;
-      //$options[self::LENOVO]  = self::LENOVO;
+      $options[self::LENOVO]  = self::LENOVO;
       return $options;
    }
 
