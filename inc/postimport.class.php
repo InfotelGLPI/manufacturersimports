@@ -346,12 +346,16 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
             }
             $maDateFin = self::importDateFin($suppliername,$contents);
 
-         } else {
+         } 
+         //else {
             
-            self::isInError($type,$ID);
-         }
+         //   self::isInError($type,$ID);
+         //}
 
-         if ($maDateFin != "0000-00-00") {
+         if (isset($maDate) 
+               && $maDate!="0000-00-00" 
+                  && isset($maDateFin) 
+                     && $maDateFin != "0000-00-00") {
             list ($adebut, $mdebut, $jdebut) = explode ('-', $maDate);
             list ($afin, $mfin, $jfin) = explode ('-', $maDateFin);
             $warranty = 0;
@@ -362,7 +366,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
             $warranty += $mfin;
          }
             
-         if ($maDate!="0000-00-00") {
+         if (isset($maDate) && $maDate!="0000-00-00") {
             //warranty for life
             if ($warranty > 120) {
                $warranty=-1;
