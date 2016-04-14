@@ -403,6 +403,16 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
                $log                     = new PluginManufacturersimportsLog();
                $log->add($values);
 
+               // cleanup Log
+               $log_clean               = new PluginManufacturersimportsLog();
+               $log_clean->deleteByCriteria(array(
+                       'items_id' => $ID,
+                       'itemtype' => $type,
+                       'import_status' => 2,
+                       'LIMIT' => 1
+                   )
+               );
+
                $_SESSION["glpi_plugin_manufacturersimports_total"]+=1;
 
          } else { // Failed check contents
