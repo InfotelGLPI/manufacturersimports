@@ -3,13 +3,13 @@
  * @version $Id: HEADER 15930 2011-10-30 15:47:55Z tsmr $
  -------------------------------------------------------------------------
  Manufacturersimports plugin for GLPI
- Copyright (C) 2003-2011 by the Manufacturersimports Development Team.
+ Copyright (C) 2003-2016 by the Manufacturersimports Development Team.
 
- https://forge.indepnet.net/projects/manufacturersimports
+ https://github.com/InfotelGLPI
  -------------------------------------------------------------------------
 
  LICENSE
-		
+      
  This file is part of Manufacturersimports.
 
  Manufacturersimports is free software; you can redistribute it and/or modify
@@ -25,7 +25,7 @@
  You should have received a copy of the GNU General Public License
  along with Manufacturersimports. If not, see <http://www.gnu.org/licenses/>.
  --------------------------------------------------------------------------
-*/
+ */
 
 include ('../../../inc/includes.php');
 

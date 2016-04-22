@@ -68,7 +68,7 @@ function plugin_version_manufacturersimports() {
    return array ('name'           => _n('Suppliers import', 'Suppliers imports', 2, 
                                         'manufacturersimports'),
                  'oldname'        => 'suppliertag',
-                 'version'        => '1.8.0',
+                 'version'        => '1.8.1',
                  'license'        => 'GPLv2+',
                  'author'         => "<a href='http://infotel.com/services/expertise-technique/glpi/'>Infotel</a>",
                  'homepage'       => 'https://github.com/InfotelGLPI/manufacturersimports/',
@@ -83,15 +83,19 @@ function plugin_manufacturersimports_check_prerequisites() {
       || version_compare(GLPI_VERSION,'0.91','ge')) {
       echo __('This plugin requires GLPI >= 0.90', 
               'manufacturersimports');
+      return false;
    } elseif (!extension_loaded("soap")) {
       echo __('Incompatible PHP Installation. Requires module', 
               'manufacturersimports'). " soap";
+      return false;
    } elseif (!extension_loaded("curl")) {
       echo __('Incompatible PHP Installation. Requires module', 
               'manufacturersimports'). " curl";
+      return false;
    } elseif (!extension_loaded("json")) {
       echo __('Incompatible PHP Installation. Requires module', 
               'manufacturersimports'). " json";
+      return false;
    }
    return true;
 }

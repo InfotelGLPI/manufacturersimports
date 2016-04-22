@@ -332,13 +332,14 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
          $contents = self::cURLData($options);
          $allcontents = $contents;
          // On extrait la date de garantie de la variable contents.
-         $field=self::selectSupplierfield ($suppliername);
+         $field = self::selectSupplierfield($suppliername);
+         
          if ($suppliername !=PluginManufacturersimportsConfig::DELL) {
          
             $contents = stristr($contents, $field);
          }
          if (!$contents === FALSE) {
-            $maDate    = self::importDate($suppliername,$contents);
+            $maDate = self::importDate($suppliername,$contents);
             
             if ($suppliername ==PluginManufacturersimportsConfig::FUJITSU) {
          

@@ -3,13 +3,13 @@
  * @version $Id: HEADER 15930 2011-10-30 15:47:55Z tsmr $
  -------------------------------------------------------------------------
  Manufacturersimports plugin for GLPI
- Copyright (C) 2003-2011 by the Manufacturersimports Development Team.
+ Copyright (C) 2003-2016 by the Manufacturersimports Development Team.
 
- https://forge.indepnet.net/projects/manufacturersimports
+ https://github.com/InfotelGLPI
  -------------------------------------------------------------------------
 
  LICENSE
-		
+      
  This file is part of Manufacturersimports.
 
  Manufacturersimports is free software; you can redistribute it and/or modify
@@ -28,32 +28,32 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-	die("Sorry. You can't access directly to this file");
+   die("Sorry. You can't access directly to this file");
 }
 
 class PluginManufacturersimportsLog extends CommonDBTM {
 
-	function getFromDBbyDevice($items_id,$itemtype) {
-		global $DB;
-		
-		$query = "SELECT * FROM `".$this->getTable()."` " .
-			"WHERE `items_id` = '" . $items_id . "'
-			AND `itemtype` = '" . $itemtype . "' ";
-		if ($result = $DB->query($query)) {
-			if ($DB->numrows($result) != 1) {
-				return false;
-			}
-			$this->fields = $DB->fetch_assoc($result);
-			if (is_array($this->fields) && count($this->fields)) {
-				return true;
-			} else {
-				return false;
-			}
-		}
-		return false;
-	}
-	
-	function checkIfAlreadyImported($itemtype,$items_id) {
+   function getFromDBbyDevice($items_id,$itemtype) {
+      global $DB;
+      
+      $query = "SELECT * FROM `".$this->getTable()."` " .
+         "WHERE `items_id` = '" . $items_id . "'
+         AND `itemtype` = '" . $itemtype . "' ";
+      if ($result = $DB->query($query)) {
+         if ($DB->numrows($result) != 1) {
+            return false;
+         }
+         $this->fields = $DB->fetch_assoc($result);
+         if (is_array($this->fields) && count($this->fields)) {
+            return true;
+         } else {
+            return false;
+         }
+      }
+      return false;
+   }
+   
+   function checkIfAlreadyImported($itemtype,$items_id) {
 
       if ($this->getFromDBbyDevice($items_id,$itemtype))
          return $this->fields["id"];

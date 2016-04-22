@@ -3,9 +3,9 @@
  * @version $Id: HEADER 15930 2011-10-30 15:47:55Z tsmr $
  -------------------------------------------------------------------------
  Manufacturersimports plugin for GLPI
- Copyright (C) 2003-2011 by the Manufacturersimports Development Team.
+ Copyright (C) 2003-2016 by the Manufacturersimports Development Team.
 
- https://forge.indepnet.net/projects/manufacturersimports
+ https://github.com/InfotelGLPI
  -------------------------------------------------------------------------
 
  LICENSE
