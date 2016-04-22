@@ -306,14 +306,15 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
                            'value' => $this->fields["manufacturers_id"]));
       echo "</td>";
       echo "</tr>";
-
-      echo "<tr>";
-      echo "<td class='tab_bg_2 center' colspan='2'>".__('Manufacturer web address', 'manufacturersimports')."</td>";
-      echo "<td class='tab_bg_2 left' colspan='2'>";
-      echo "<input type='text' name='supplier_url' size='100' value='".$this->fields["supplier_url"]."'>";
-      echo "</td>";
-      echo "</tr>";
-
+      
+      if ($this->fields["name"] != self::DELL) {
+         echo "<tr>";
+         echo "<td class='tab_bg_2 center' colspan='2'>".__('Manufacturer web address', 'manufacturersimports')."</td>";
+         echo "<td class='tab_bg_2 left' colspan='2'>";
+         echo "<input type='text' name='supplier_url' size='100' value='".$this->fields["supplier_url"]."'>";
+         echo "</td>";
+         echo "</tr>";
+      }
       echo "<tr>";
       echo "<td class='tab_bg_2 center' colspan='2'>".__('Default supplier attached', 'manufacturersimports')."</td>";
       echo "<td class='tab_bg_2 left' colspan='2'>";
