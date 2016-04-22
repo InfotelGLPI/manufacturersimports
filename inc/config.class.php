@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-		
+      
  This file is part of Manufacturersimports.
 
  Manufacturersimports is free software; you can redistribute it and/or modify
@@ -430,6 +430,24 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
       }
       return $name;
    }
+   
+   static function checkManufacturerID($itemtype, $items_id) {
+
+      $item = new $itemtype();
+      $id = false;
+
+      if ($item->getFromDB($items_id)) {
+         $configs = getAllDatasFromTable("glpi_plugin_manufacturersimports_configs");
+         if (!empty($configs)) {
+            foreach ($configs as $config) {
+               if ($item->fields["manufacturers_id"] == $config['manufacturers_id']) {
+                  $id = $config["id"];
+               }
+            }
+         }
+      }
+      return $id;
+   }
 
    /**
    * Prints the url to manufacturer informations on items
@@ -447,7 +465,13 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
          $suppliername = PluginManufacturersimportsConfig::checkManufacturerName($itemtype, $items_id);
          $model        = new PluginManufacturersimportsModel();
          $otherserial  = $model->checkIfModelNeeds($itemtype, $items_id);
-         $url          = PluginManufacturersimportsPreImport::selectSupplier($suppliername, $item->fields['serial'], $otherserial);
+         
+         $configID = PluginManufacturersimportsConfig::checkManufacturerID($itemtype, $items_id);
+         $config = new PluginManufacturersimportsConfig();
+         $config->getFromDB($configID);
+         $supplierkey  = (isset($config->fields["supplier_key"]))?$config->fields["supplier_key"]:false;
+         
+         $url          = PluginManufacturersimportsPreImport::selectSupplier($suppliername, $item->fields['serial'], $otherserial,$supplierkey);
 
          echo "<div align=\"center\"><table class=\"tab_cadre_fixe\"  cellspacing=\"2\" cellpadding=\"2\">";
          echo "<tr>";

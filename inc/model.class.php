@@ -28,7 +28,7 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-	die("Sorry. You can't access directly to this file");
+   die("Sorry. You can't access directly to this file");
 }
 
 class PluginManufacturersimportsModel extends CommonDBTM {
@@ -114,7 +114,7 @@ class PluginManufacturersimportsModel extends CommonDBTM {
       if ($number == 1) {
          while($line = $DB->fetch_array($result)) {
             $ID = $line["id"];
-            echo "<tr class='tab_bg_2'>";
+            echo "<tr class='tab_bg_1'>";
             echo "<td class='left'>";
             echo "<input type='text' name='model_name' size='30' value='".$line["model_name"]."'>";
             echo "</td>";
@@ -132,13 +132,13 @@ class PluginManufacturersimportsModel extends CommonDBTM {
          }
 
       } else if ($canedit) {
-         echo "<tr>";
-         echo "<th colspan='2'>";
+         echo "<tr class='tab_bg_1'>";
+         echo "<td colspan='2'>";
          echo "<input type='text' name='model_name' size='30'>";
          echo Html::hidden('items_id', array('value' => $items_id));
          echo Html::hidden('itemtype', array('value' => $itemtype));
          echo Html::submit(_sx('button','Save'), array('name' => 'update_model'));
-         echo "</th></tr>";
+         echo "</td></tr>";
       }
 
       echo "</table></div>";
