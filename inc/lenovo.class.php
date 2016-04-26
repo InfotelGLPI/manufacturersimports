@@ -58,7 +58,7 @@ class PluginManufacturersimportsLenovo extends PluginManufacturersimportsManufac
 
    function getSearchField() {
 
-      $field = "Start Date:";
+      $field = "WarrantyStatusInfoWrap";
 
       return $field;
    }
@@ -76,10 +76,11 @@ class PluginManufacturersimportsLenovo extends PluginManufacturersimportsManufac
       $buy_date = NULL;
 
       //cut html 
-      $contents = substr($contents, 0, strpos($contents, "base_content2"));
+      $contents = substr($contents, 0, strpos($contents, "remindMeWrap"));
 
       //find dates in html content
       preg_match_all("/([0-9]{1,2}\/[0-9]{1,2}\/[0-9]{1,4})/s", $contents, $dates);
+      
       if (isset($dates[0])) {
           // get first of found dates
          $buy_date_raw = array_shift($dates[0]);
@@ -106,15 +107,11 @@ class PluginManufacturersimportsLenovo extends PluginManufacturersimportsManufac
       $expiration_date = NULL;
 
       //cut html 
-      if (strpos($contents, "upgrade_content")) {
-         $contents = substr($contents, 0, strrpos($contents, "upgrade_content"));
-      } else {
-         $contents = substr($contents, 0, strpos($contents, "base_content2"));
-      }
+      $contents = substr($contents, 0, strpos($contents, "remindMeWrap"));
 
       //find dates in html content
       preg_match_all("/([0-9]{1,2}\/[0-9]{1,2}\/[0-9]{1,4})/s", $contents, $dates);
-      if (isset($dates[0])) {
+      if (isset($dates[1])) {
          // get last of found dates
          $expiration_date_raw = array_pop($dates[0]);
 
