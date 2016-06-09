@@ -36,6 +36,8 @@ if (!defined('GLPI_ROOT')) {
    die("Can not acces directly to this file");
 }
 
+Session::checkLoginUser();
+
 $config = new PluginManufacturersimportsConfig();
 if ($_POST['supplier'] != -1) {
    echo "&nbsp;<a href='".$config->getFormURL()."?preconfig=".$_POST['supplier']."'>"._sx('button','Update')."</a>";
