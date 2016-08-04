@@ -1,0 +1,176 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ManufacturersImports Development Team
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Rafael Fontenelle <rffontenelle@gmail.com>, 2012
+msgid ""
+msgstr ""
+"Project-Id-Version: GLPI Project - manufacturersimports plugin\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-09-17 10:59+0200\n"
+"PO-Revision-Date: 2015-09-17 09:00+0000\n"
+"Last-Translator: Xavier CAILLAUD <tsmr@thetsmr.fr>\n"
+"Language-Team: Portuguese (Brazil) (http://www.transifex.com/tsmr/GLPI_manufacturersimports/language/pt_BR/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: pt_BR\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: hook.php:193 setup.php:68 ajax/massiveaction.php:38 inc/menu.class.php:35
+#: inc/model.class.php:39 inc/preimport.class.php:42 inc/profile.class.php:68
+msgid "Suppliers import"
+msgid_plural "Suppliers imports"
+msgstr[0] "Importação de fornecedor"
+msgstr[1] "Importação de fornecedores"
+
+#: hook.php:197 inc/lenovo.class.php:44
+msgid "Model number"
+msgstr "Número do modelo"
+
+#: hook.php:223
+msgid "Add new material brand number"
+msgstr "Adicionar novo número de marca de material"
+
+#: setup.php:84
+msgid "This plugin requires GLPI >= 0.90"
+msgstr ""
+
+#: setup.php:87 setup.php:90 setup.php:93
+msgid "Incompatible PHP Installation. Requires module"
+msgstr "Instalação PHP incompatível. Requer módulo"
+
+#: front/config.php:42
+msgid "Please activate the plugin"
+msgstr "Por favor, ative o plugin"
+
+#: inc/config.class.php:190 inc/config.class.php:311
+msgid "Manufacturer web address"
+msgstr "Endereço web do fabricante"
+
+#: inc/config.class.php:197 inc/config.class.php:318
+msgid "Default supplier attached"
+msgstr "Fornecedor padrão anexado"
+
+#: inc/config.class.php:203 inc/preimport.class.php:573
+msgid "New warranty attached"
+msgstr "Nova garantia anexada"
+
+#: inc/config.class.php:210 inc/config.class.php:341
+msgid "Auto add of document"
+msgstr "Adição automática de documento"
+
+#: inc/config.class.php:222 inc/config.class.php:363
+msgid "Add a comment line"
+msgstr "Adicionar uma linha de comentário"
+
+#: inc/config.class.php:328
+msgid "New warranty affected by default (Replace if 0)"
+msgstr "Nova garantia afetada por padrão (substituir se 0)"
+
+#: inc/config.class.php:348
+msgid "Section for document records"
+msgstr "Seção para armazenamento de documentos"
+
+#: inc/config.class.php:356
+msgid "Manufacturer API key"
+msgstr ""
+
+#: inc/config.class.php:463 inc/preimport.class.php:228
+msgid "Manufacturer information"
+msgstr "Informações do fabricante"
+
+#: inc/model.class.php:111
+msgid "Model Number"
+msgstr "Número do modelo"
+
+#: inc/postimport.class.php:59
+msgid "Curl PHP package not installed"
+msgstr "Pacote Curl PHP não está instalado"
+
+#: inc/postimport.class.php:152
+msgid "Post import"
+msgstr "Pós-importação"
+
+#: inc/postimport.class.php:160
+msgid "Result"
+msgstr "Resultado"
+
+#: inc/postimport.class.php:161
+msgid "Details"
+msgstr "Detalhes"
+
+#: inc/postimport.class.php:178
+#, php-format
+msgid "Total number of devices imported %s"
+msgstr "Número total de dispositivos importados %s"
+
+#: inc/postimport.class.php:448 inc/postimport.class.php:457
+msgid "Imported from web site"
+msgstr "Importado de site"
+
+#: inc/postimport.class.php:449 inc/postimport.class.php:458
+msgid "With the manufacturersimports plugin"
+msgstr "Com o plugin manufacturersimports"
+
+#: inc/postimport.class.php:468
+msgid "Import OK"
+msgstr "Importação OK"
+
+#: inc/postimport.class.php:560
+msgid "Import failed"
+msgstr "Importação falhou"
+
+#: inc/postimport.class.php:576
+msgid "Connection failed/data download from manufacturer web site"
+msgstr "Falha de conexão/download de dados do site do fabricante"
+
+#: inc/preimport.class.php:200
+msgid "The choosen supplier is not recursive"
+msgstr "O fornecedor escolhido não é recursivo"
+
+#: inc/preimport.class.php:234
+msgid "Not yet imported"
+msgstr "Não importado ainda"
+
+#: inc/preimport.class.php:237
+msgid "Problem during the importation"
+msgstr "Problema enquanto na importação"
+
+#: inc/preimport.class.php:245
+msgid "Already imported"
+msgstr "Já importado"
+
+#: inc/preimport.class.php:280
+msgid "Choose inventory type and manufacturer"
+msgstr "Escolha tipo e fabricante do inventário"
+
+#: inc/preimport.class.php:319
+msgid "Devices not imported"
+msgstr "Dispositivos não importados"
+
+#: inc/preimport.class.php:321
+msgid "Devices already imported"
+msgstr "Dispositivos já importados"
+
+#: inc/preimport.class.php:328 inc/preimport.class.php:331
+msgid "No manufacturer available. Please configure at least one manufacturer"
+msgstr "Nenhum fabricante disponível. Por favor, configure pelo menos um fabricante"
+
+#: inc/preimport.class.php:570
+msgid "Supplier attached"
+msgstr "Fornecedor anexado"
+
+#: inc/preimport.class.php:619
+#, php-format
+msgid "Total number of devices to import %s"
+msgstr "Número total de dispositivos para importar %s"
+
+#: inc/preimport.class.php:666
+msgid "No device finded"
+msgstr "Nenhum dispositivo encontrado"
+
+#: inc/preimport.class.php:804
+msgid "Reset the import"
+msgstr "Reiniciar a importação"

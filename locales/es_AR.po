@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Luis A. Uriarte <luisuriarte@gmail.com>, 2013,2015
+# Luis Angel Uriarte <luisuriarte@gmail.com>, 2013,2015
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - manufacturersimports plugin\n"
