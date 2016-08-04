@@ -78,6 +78,11 @@ class PluginManufacturersimportsManufacturer extends CommonDBTM {
    function getExpirationDate($contents) {
 
    }
+
+   function getWarrantyInfo($contents) {
+
+   }
+
 }
 
 ?>

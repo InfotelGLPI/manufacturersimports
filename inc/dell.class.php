@@ -91,6 +91,19 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
       
       return false;
    }
+   
+   function getWarrantyInfo($contents) {
+      $info = json_decode($contents, TRUE);
+      if( isset( $info['AssetWarrantyResponse'][0]['AssetEntitlementData'] ) ) {
+         if(isset($info['AssetWarrantyResponse'][0]['AssetEntitlementData'][0])) {
+            return $info['AssetWarrantyResponse'][0]['AssetEntitlementData'][0]["ServiceLevelDescription"];
+         } else {
+            return $info['AssetWarrantyResponse'][0]['AssetEntitlementData']["ServiceLevelDescription"];
+         }
+      }
+
+      return false;
+   }   
 }
 
 ?>

@@ -215,6 +215,14 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
       return $importDate;
    }
 
+   static function importWarrantyInfo($suppliername, $contents) {
+       $supplierclass = "PluginManufacturersimports".$suppliername;
+       $supplier = new $supplierclass();
+       $importWarrantyInfo = $supplier->getWarrantyInfo($contents);
+       
+       return $importWarrantyInfo;
+   }
+   
    //static function importWarranty($suppliername, $maDate, $contents, $warranty) {
    //   if ($warranty==0) {
    //      if ($suppliername == PluginManufacturersimportsConfig::DELL) {
@@ -346,6 +354,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
                $contents = $allcontents;
             }
             $maDateFin = self::importDateFin($suppliername,$contents);
+            $warrantyinfo = self::importWarrantyInfo($suppliername,$contents);
 
          } 
          //else {
@@ -381,7 +390,8 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
                "warranty" => $warranty,
                "suppliername" => $suppliername,
                "addcomments" => $addcomments,
-               "maDate" => $maDate);
+               "maDate" => $maDate,
+               "warranty_info" => $warrantyinfo);
             self::saveInfocoms ($options);
             
                // on cree un doc dans GLPI qu'on va lier au materiel
@@ -430,6 +440,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
       $warranty_date     = "";
       $buy_date          = "";
       $warranty_duration = "";
+      $warranty_info     = "";
       $suppliers_id      = "";
       $ic_comments       = "";
 
@@ -440,6 +451,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
       }
       $input_infocom["warranty_date"]     = $options["maDate"];
       $input_infocom["warranty_duration"] = $options["warranty"];
+      $input_infocom["warranty_info"]     = $options["warranty_info"];
       $input_infocom["buy_date"]          = $options["maDate"];
       $input_infocom["items_id"]          = $options["ID"];
       $input_infocom["itemtype"]          = $options["itemtype"];
@@ -451,6 +463,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
          //Original values
          $warranty_date      = Html::convdate($ic->fields["warranty_date"]);
          $warranty_duration  = $ic->fields["warranty_duration"];
+         $warranty_info      = $ic->fields["warranty_info"];
          $buy_date           = $ic->fields["buy_date"];
          $suppliers_id       = Dropdown::getDropdownName("glpi_suppliers",$ic->fields["suppliers_id"]);
          $ic_comment         = $ic->fields["comment"];
