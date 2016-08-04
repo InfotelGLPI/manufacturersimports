@@ -57,8 +57,10 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
 
    function getSupplierInfo($compSerial = null, $otherserial = null, $key=null) {
       $info["name"]         = PluginManufacturersimportsConfig::DELL;
-      $info["supplier_url"] = "https://api.dell.com/support/v2/assetinfo/warranty/tags.json?";
-      $info["url"]          = $info["supplier_url"]. 'svctags=' . $compSerial . '&apikey=' . $key;
+      // v4
+      $info['supplier_url'] = "https://api.dell.com/support/assetinfo/v4/getassetwarranty/" ;
+      // v4
+      $info["url"] = $info["supplier_url"] . "$compSerial?apikey=" . $key;
       return $info;
    }
    
@@ -68,12 +70,9 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
    
    function getBuyDate($contents) {
       $info = json_decode($contents, TRUE);
-      if(isset($info["GetAssetWarrantyResponse"]["GetAssetWarrantyResult"]["Response"]["DellAsset"]["Warranties"]["Warranty"])) {
-         if(isset($info["GetAssetWarrantyResponse"]["GetAssetWarrantyResult"]["Response"]["DellAsset"]["Warranties"]["Warranty"][0])) {
-            return $info["GetAssetWarrantyResponse"]["GetAssetWarrantyResult"]["Response"]["DellAsset"]["Warranties"]["Warranty"][0]["StartDate"];
-         } else {
-            return $info["GetAssetWarrantyResponse"]["GetAssetWarrantyResult"]["Response"]["DellAsset"]["Warranties"]["Warranty"]["StartDate"];
-         }
+      // v4
+      if( isset( $info['AssetWarrantyResponse'][0]['AssetHeaderData']['ShipDate'] ) ) {
+          return $info['AssetWarrantyResponse'][0]['AssetHeaderData']['ShipDate'] ;
       }
       
       return false;
@@ -81,13 +80,14 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
 
    function getExpirationDate($contents) {
       $info = json_decode($contents, TRUE);
-      if(isset($info["GetAssetWarrantyResponse"]["GetAssetWarrantyResult"]["Response"]["DellAsset"]["Warranties"]["Warranty"])) {
-         if(isset($info["GetAssetWarrantyResponse"]["GetAssetWarrantyResult"]["Response"]["DellAsset"]["Warranties"]["Warranty"][0])) {
-            return $info["GetAssetWarrantyResponse"]["GetAssetWarrantyResult"]["Response"]["DellAsset"]["Warranties"]["Warranty"][0]["EndDate"];
-         } else {
-            return $info["GetAssetWarrantyResponse"]["GetAssetWarrantyResult"]["Response"]["DellAsset"]["Warranties"]["Warranty"]["EndDate"];
-         }
-      }
+      // v4
+      if( isset( $info['AssetWarrantyResponse'][0]['AssetEntitlementData'] ) ) {
+          if(isset($info['AssetWarrantyResponse'][0]['AssetEntitlementData'][0])) {
+             return $info['AssetWarrantyResponse'][0]['AssetEntitlementData'][0]["EndDate"];
+          } else {
+             return $info['AssetWarrantyResponse'][0]['AssetEntitlementData']["EndDate"];
+          }
+       }
       
       return false;
    }
