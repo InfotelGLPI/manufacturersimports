@@ -363,9 +363,12 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
          //}
 
          if (isset($maDate) 
-               && $maDate!="0000-00-00" 
-                  && isset($maDateFin) 
-                     && $maDateFin != "0000-00-00") {
+               && $maDate != "0000-00-00" 
+                  && $maDate != false
+                     && isset($maDateFin) 
+                        && $maDateFin != "0000-00-00"
+                           && $maDateFin != false) {
+
             list ($adebut, $mdebut, $jdebut) = explode ('-', $maDate);
             list ($afin, $mfin, $jfin) = explode ('-', $maDateFin);
             $warranty = 0;
@@ -376,7 +379,9 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
             $warranty += $mfin;
          }
             
-         if (isset($maDate) && $maDate!="0000-00-00") {
+         if (isset($maDate) 
+               && $maDate != "0000-00-00"
+                  && $maDate != false) {
             //warranty for life
             if ($warranty > 120) {
                $warranty=-1;
