@@ -16,6 +16,8 @@
    </description>
    <homepage>https://github.com/InfotelGLPI/manufacturersimports</homepage>
    <download>https://github.com/InfotelGLPI/manufacturersimports/releases</download>
+   <issues>https://github.com/InfotelGLPI/manufacturersimports/issues</issues>
+   <readme>https://raw.githubusercontent.com/InfotelGLPI/manufacturersimports/master/README.md</readme>
    <authors>
       <author>Xavier Caillaud</author>
       <author>Infotel</author>
