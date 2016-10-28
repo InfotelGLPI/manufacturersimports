@@ -14,7 +14,7 @@ Ce plugin vous permet d'injecter des informations financières depuis les sites 
 
 Pour Dell, il faut maintenant configurer une clé API (s'enregistrer) : 
 
-http://en.community.dell.com/dell-groups/supportapisgroup/
+https://techdirect.dell.com
 
 This plugin allows you to inject financials informations from manufacturers web site files in GLPI.
 > * You select your type of equipment in advance and if you provided serial number and model number (different from manufacturers) you can import the warranty, the date of purchase and save the page HMTL manufacturers.
