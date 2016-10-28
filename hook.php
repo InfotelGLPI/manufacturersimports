@@ -77,8 +77,13 @@ function plugin_manufacturersimports_install() {
    }
 
    $query = "UPDATE `glpi_plugin_manufacturersimports_configs` 
-             SET `Supplier_url` = 'http://www.dell.com/support/troubleshooting/us/en/04/Index?c=us&l=en&s=bsd&cs=04&t=system&ServiceTag=' 
+             SET `Supplier_url` = 'https://api.dell.com/support/assetinfo/v4/getassetwarranty/' 
              WHERE `name` ='".PluginManufacturersimportsConfig::DELL."'";
+   $DB->query($query);
+   
+   $query = "UPDATE `glpi_plugin_manufacturersimports_configs` 
+             SET `Supplier_url` = 'http://shop.lenovo.com/SEUILibrary/controller/e/web/LenovoPortal/en_US/config.workflow:VerifyWarranty?country-code=897&' 
+             WHERE `name` ='".PluginManufacturersimportsConfig::LENOVO."'";
    $DB->query($query);
 
    if ($update) {

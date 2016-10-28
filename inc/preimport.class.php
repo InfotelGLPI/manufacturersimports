@@ -76,15 +76,16 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
    * @return $url of the supplier
    *
    */
-   static function selectSupplier ($suppliername,$compSerial,$otherserial=null,$supplierkey=null) {
+   static function selectSupplier ($suppliername,$supplierUrl,$compSerial,$otherserial=null,$supplierkey=null) {
 
       $url = "";
       if (!empty($suppliername)) {
          $supplierclass = "PluginManufacturersimports".$suppliername;
          $supplier      = new $supplierclass();
-         $infos         = $supplier->getSupplierInfo($compSerial,$otherserial,$supplierkey);
+         $infos         = $supplier->getSupplierInfo($compSerial,$otherserial,$supplierkey, $supplierUrl);
          $url           = $infos['url'];
       }
+      //toolbox::logdebug($url);
       return $url;
    }
 
@@ -157,7 +158,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
                                                             $row_num);
          }
 
-         $url=self::selectSupplier($suppliername,$line["serial"],$otherSerial,$supplierkey);
+         $url=self::selectSupplier($suppliername,$supplierUrl,$line["serial"],$otherSerial,$supplierkey);
          //serial
          echo Search::showItem($output_type,$line["serial"],$item_num,$row_num);
          //otherserial

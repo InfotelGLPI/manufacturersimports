@@ -281,6 +281,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
          $supplierId = $config->fields["suppliers_id"];
       }
       $suppliername = $config->fields["name"];
+      $supplierUrl  = $config->fields["supplier_url"];
       $supplierkey  = $config->fields["supplier_key"];
       $adddoc       = $config->fields["document_adding"];
       $rubrique     = $config->fields["documentcategories_id"];
@@ -320,7 +321,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
          if ($_SESSION["glpiis_ids_visible"]||empty($line["name"])) $dID.= " (".$line["id"].")";
          echo "<a href='".$link."?id=".$ID."'>".$line["name"].$dID."</a><br>".$otherSerial."</td>";
 
-         $url=PluginManufacturersimportsPreImport::selectSupplier($suppliername,$compSerial,$otherSerial,$supplierkey);
+         $url=PluginManufacturersimportsPreImport::selectSupplier($suppliername,$supplierUrl,$compSerial,$otherSerial,$supplierkey);
          $post=PluginManufacturersimportsPreImport::getSupplierPost($suppliername,$compSerial,$otherSerial);
                  
          //On complete l url du support du fournisseur avec le serial
@@ -349,10 +350,10 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
          if (!$contents === FALSE) {
             $maDate = self::importDate($suppliername,$contents);
             
-            if ($suppliername ==PluginManufacturersimportsConfig::FUJITSU) {
+            //if ($suppliername ==PluginManufacturersimportsConfig::FUJITSU) {
          
                $contents = $allcontents;
-            }
+            //}
             $maDateFin = self::importDateFin($suppliername,$contents);
             $warrantyinfo = self::importWarrantyInfo($suppliername,$contents);
 
@@ -389,14 +390,14 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
 
             $date=date("Y-m-d");
             $options = array ("itemtype" => $type,
-               "ID" => $ID,
-               "date" => $date,
-               "supplierId" => $supplierId,
-               "warranty" => $warranty,
-               "suppliername" => $suppliername,
-               "addcomments" => $addcomments,
-               "maDate" => $maDate,
-               "warranty_info" => $warrantyinfo);
+                              "ID" => $ID,
+                              "date" => $date,
+                              "supplierId" => $supplierId,
+                              "warranty" => $warranty,
+                              "suppliername" => $suppliername,
+                              "addcomments" => $addcomments,
+                              "maDate" => $maDate,
+                              "warranty_info" => $warrantyinfo);
             self::saveInfocoms ($options);
             
                // on cree un doc dans GLPI qu'on va lier au materiel

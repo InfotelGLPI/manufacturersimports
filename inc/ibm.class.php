@@ -33,11 +33,11 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginManufacturersimportsIBM extends CommonDBTM {
    
-   function getSupplierInfo($compSerial=null,$otherSerial=null) {
+   function getSupplierInfo($compSerial=null,$otherSerial=null, $key=null, $supplierUrl=null) {
    
       $info["name"]="IBM";
       $info["supplier_url"] = "http://www-304.ibm.com/jct01004c/systems/support/supportsite.wss/warranty?";
-      $info["url"] = $info["supplier_url"]."type=".$otherSerial."&serial=".$compSerial."&brandind=5000008&Submit=Submit&action=warranty";
+      $info["url"] = $supplierUrl."type=".$otherSerial."&serial=".$compSerial."&brandind=5000008&Submit=Submit&action=warranty";
       return $info;
    }
    

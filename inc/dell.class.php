@@ -55,12 +55,13 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
       return Search::showEndLine($output_type);
    }
 
-   function getSupplierInfo($compSerial = null, $otherserial = null, $key=null) {
+   function getSupplierInfo($compSerial = null, $otherserial = null, $key=null, $supplierUrl=null) {
       $info["name"]         = PluginManufacturersimportsConfig::DELL;
       // v4
-      $info['supplier_url'] = "https://api.dell.com/support/assetinfo/v4/getassetwarranty/" ;
+      //$info['supplier_url'] = "https://api.dell.com/support/assetinfo/v4/getassetwarranty/" ;
+      //$info['supplier_url'] = "https://sandbox.api.dell.com/support/assetinfo/v4/getassetwarranty/" ;
       // v4
-      $info["url"] = $info["supplier_url"] . "$compSerial?apikey=" . $key;
+      $info["url"] = $supplierUrl . "$compSerial?apikey=" . $key;
       return $info;
    }
    
@@ -71,8 +72,8 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
    function getBuyDate($contents) {
       $info = json_decode($contents, TRUE);
       // v4
-      if( isset( $info['AssetWarrantyResponse'][0]['AssetHeaderData']['ShipDate'] ) ) {
-          return $info['AssetWarrantyResponse'][0]['AssetHeaderData']['ShipDate'] ;
+      if( isset( $info['AssetWarrantyResponse'][0]['AssetEntitlementData'][0]['StartDate'] ) ) {
+          return $info['AssetWarrantyResponse'][0]['AssetEntitlementData'][0]['StartDate'] ;
       }
       
       return false;

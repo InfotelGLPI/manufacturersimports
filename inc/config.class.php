@@ -98,7 +98,7 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
             $this->fields["name"]         = $infos["name"];
             $this->fields["supplier_url"] = $infos["supplier_url"];
             if ($type == self::DELL) {
-               $this->fields["supplier_key"] = "1adecee8a60444738f280aad1cd87d0e";
+               $this->fields["supplier_key"] = "123456789";
             }
             break;
          default:
@@ -307,14 +307,14 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
       echo "</td>";
       echo "</tr>";
       
-      if ($this->fields["name"] != self::DELL) {
+      //if ($this->fields["name"] != self::DELL) {
          echo "<tr>";
          echo "<td class='tab_bg_2 center' colspan='2'>".__('Manufacturer web address', 'manufacturersimports')."</td>";
          echo "<td class='tab_bg_2 left' colspan='2'>";
          echo "<input type='text' name='supplier_url' size='100' value='".$this->fields["supplier_url"]."'>";
          echo "</td>";
          echo "</tr>";
-      }
+      //}
       echo "<tr>";
       echo "<td class='tab_bg_2 center' colspan='2'>".__('Default supplier attached', 'manufacturersimports')."</td>";
       echo "<td class='tab_bg_2 left' colspan='2'>";
@@ -471,8 +471,9 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
          $config = new PluginManufacturersimportsConfig();
          $config->getFromDB($configID);
          $supplierkey  = (isset($config->fields["supplier_key"]))?$config->fields["supplier_key"]:false;
+         $supplierurl  = (isset($config->fields["supplier_url"]))?$config->fields["supplier_url"]:false;
          
-         $url          = PluginManufacturersimportsPreImport::selectSupplier($suppliername, $item->fields['serial'], $otherserial,$supplierkey);
+         $url          = PluginManufacturersimportsPreImport::selectSupplier($suppliername, $supplierurl, $item->fields['serial'], $otherserial,$supplierkey);
 
          echo "<div align=\"center\"><table class=\"tab_cadre_fixe\"  cellspacing=\"2\" cellpadding=\"2\">";
          echo "<tr>";

@@ -41,10 +41,10 @@ class PluginManufacturersimportsToshiba extends PluginManufacturersimportsManufa
       return ">Days<";
    }
 
-   function getSupplierInfo($compSerial=null,$otherSerial=null) {
+   function getSupplierInfo($compSerial=null,$otherSerial=null, $key=null, $supplierUrl=null) {
       $info["name"]         = PluginManufacturersimportsConfig::TOSHIBA;
       $info["supplier_url"] = "http://aps2.toshiba-tro.de/unit-details-php/unitdetails.aspx?";
-      $info["url"]          = $info["supplier_url"].
+      $info["url"]          = $supplierUrl.
                               "SerialNumber=".$compSerial.
                               "&openbox=warranty1";
       return $info;

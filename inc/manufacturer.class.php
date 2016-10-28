@@ -67,7 +67,7 @@ class PluginManufacturersimportsManufacturer extends CommonDBTM {
       echo "</td>";
    }
 
-   function getSupplierInfo($compSerial = null, $otherSerial = null) {
+   function getSupplierInfo($compSerial = null, $otherSerial = null, $key=null, $supplierUrl=null) {
 
    }
 

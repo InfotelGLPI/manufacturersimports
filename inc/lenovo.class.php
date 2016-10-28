@@ -63,11 +63,11 @@ class PluginManufacturersimportsLenovo extends PluginManufacturersimportsManufac
       return $field;
    }
 
-   function getSupplierInfo($compSerial=null, $otherserial=null) {
+   function getSupplierInfo($compSerial=null, $otherserial=null, $key=null, $supplierUrl=null) {
 
       $info["name"]         = PluginManufacturersimportsConfig::LENOVO;
       $info["supplier_url"] = "http://shop.lenovo.com/SEUILibrary/controller/e/web/LenovoPortal/en_US/config.workflow:VerifyWarranty?country-code=897&";
-      $info["url"] = $info["supplier_url"]."serial-number=".$compSerial."&machine-type=".$otherserial."&btnSubmit";
+      $info["url"] = $supplierUrl."serial-number=".$compSerial."&machine-type=".$otherserial."&btnSubmit";
       return $info;
    }
    

@@ -41,10 +41,10 @@ class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacture
       return "Start date";
    }
    
-   function getSupplierInfo($compSerial=null,$otherSerial=null) {
+   function getSupplierInfo($compSerial=null,$otherSerial=null, $key=null, $supplierUrl=null) {
       $info["name"]         = PluginManufacturersimportsConfig::HP;
       $info["supplier_url"] = "http://h20000.www2.hp.com/bizsupport/TechSupport/WarrantyResults.jsp?";
-      $info["url"]         = $info["supplier_url"]."nickname=&sn=".$compSerial."&pn=".$otherSerial."&country=FR&lang=en&cc=us&find=Display+Warranty+Information+%BB&";
+      $info["url"]         = $supplierUrl."nickname=&sn=".$compSerial."&pn=".$otherSerial."&country=FR&lang=en&cc=us&find=Display+Warranty+Information+%BB&";
       return $info;
    }
 

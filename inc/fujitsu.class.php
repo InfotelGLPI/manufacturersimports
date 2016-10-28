@@ -49,51 +49,48 @@ class PluginManufacturersimportsFujitsu extends PluginManufacturersimportsManufa
       return "Service Start Date";
    }
 
-   function getSupplierInfo($compSerial=null,$otherSerial=null) {
+   function getSupplierInfo($compSerial=null,$otherSerial=null, $key=null, $supplierUrl=null) {
       $info["name"]         = PluginManufacturersimportsConfig::FUJITSU;
-      $info["supplier_url"] = "http://sali.uk.ts.fujitsu.com/ServiceEntitlement/service.asp?command=search&";
-      $info["url"]          = $info["supplier_url"]."snr=".$compSerial;
+      $info["supplier_url"] = "https://support.ts.fujitsu.com/Warranty/WarrantyStatus.asp?lng=EN&IDNR=";
+      $info["url"]          = $supplierUrl.$compSerial."&HardwareGUID=&Version=3.5";
       return $info;
    }
    
    function getBuyDate($contents) {
-      //TODO : translate variables in english
-      $maDate = substr($contents,60,10);
+      $maDate = substr($contents,225,10);
       $maDate = trim($maDate);
       $maDate = str_replace('/','-',$maDate);
-
       $maDate = PluginManufacturersimportsPostImport::checkDate($maDate, true);
 
       if ($maDate != "0000-00-00") {
          list($jour, $mois, $annee) = explode('-', $maDate);
          $maDate = date("Y-m-d", mktime(0, 0, 0, $mois, $jour, $annee));
       }
+      
+      //toolbox::logdebug($maDate);
       return $maDate;
    }
 
 
    
    function getExpirationDate($contents) {
-      //TODO : translate variables in english
-      //$field_fin = "year On-Site Service";
-      preg_match('#>([0-9]+) year[s]?#', $contents, $matches);
 
-      if (isset($matches[1])) {
-         $duree = $matches[1];
-      } else {
-         return '';
+      $field     = "Service end date";
+      $searchfin = stristr($contents, $field);
+      $maDate = substr($searchfin,217,10);
+
+      $maDate = trim($maDate);
+      $maDate = str_replace('/','-',$maDate);
+
+      $maDate = PluginManufacturersimportsPostImport::checkDate($maDate, true);
+      
+      if ($maDate != "0000-00-00") {
+         list($jour, $mois, $annee) = explode('-', $maDate);
+         $maDate = date("Y-m-d", mktime(0, 0, 0, $mois, $jour, $annee));
       }
-
-      preg_match('#>([0-9]{2})/([0-9]{2})/([0-9]{4})#', $contents, $matches);
-
-      if (count($matches) == 4) {
-         list($date, $jour, $mois, $annee) = $matches; 
-      } else {
-         return '';
-      }
-
-      $maDateFin = ($annee+$duree)."-".$mois."-".$jour;
-      return $maDateFin;
+      //toolbox::logdebug($maDate);
+      //die();
+      return $maDate;
    }
 }
 
