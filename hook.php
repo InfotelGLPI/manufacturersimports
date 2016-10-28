@@ -85,6 +85,11 @@ function plugin_manufacturersimports_install() {
              SET `Supplier_url` = 'http://shop.lenovo.com/SEUILibrary/controller/e/web/LenovoPortal/en_US/config.workflow:VerifyWarranty?country-code=897&' 
              WHERE `name` ='".PluginManufacturersimportsConfig::LENOVO."'";
    $DB->query($query);
+   
+   $query = "UPDATE `glpi_plugin_manufacturersimports_configs` 
+             SET `Supplier_url` = 'https://support.ts.fujitsu.com/Warranty/WarrantyStatus.asp?lng=EN&IDNR=' 
+             WHERE `name` ='".PluginManufacturersimportsConfig::FUJITSU."'";
+   $DB->query($query);
 
    if ($update) {
       foreach ($DB->request('glpi_plugin_manufacturersimports_profiles') as $data) {
