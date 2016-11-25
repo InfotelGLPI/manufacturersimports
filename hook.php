@@ -90,6 +90,11 @@ function plugin_manufacturersimports_install() {
              SET `Supplier_url` = 'https://support.ts.fujitsu.com/Warranty/WarrantyStatus.asp?lng=EN&IDNR=' 
              WHERE `name` ='".PluginManufacturersimportsConfig::FUJITSU."'";
    $DB->query($query);
+   
+   $query = "UPDATE `glpi_plugin_manufacturersimports_configs` 
+             SET `Supplier_url` = 'https://www.wortmann.de/en-gb/profile/snsearch.aspx?SN=' 
+             WHERE `name` ='".PluginManufacturersimportsConfig::WORTMANN_AG."'";
+   $DB->query($query);
 
    if ($update) {
       foreach ($DB->request('glpi_plugin_manufacturersimports_profiles') as $data) {
