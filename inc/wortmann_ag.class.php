@@ -31,7 +31,7 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access directly to this file");
 }
 
-class PluginManufacturersimportsWortmann_AG extends PluginManufacturersimportsManufacturer {
+class PluginManufacturersimportsWORTMANN_AG extends PluginManufacturersimportsManufacturer {
 
    function showDocTitle($output_type, $header_num) {
       return false;
@@ -42,7 +42,7 @@ class PluginManufacturersimportsWortmann_AG extends PluginManufacturersimportsMa
    }
 
    function getSupplierInfo($compSerial=null,$otherSerial=null, $key=null, $supplierUrl=null) {
-      $info["name"]         = PluginManufacturersimportsConfig::FUJITSU;
+      $info["name"]         = PluginManufacturersimportsConfig::WORTMANN_AG;
       $info["supplier_url"] = "https://www.wortmann.de/en-gb/profile/snsearch.aspx?SN=";
       $info["url"]          = $supplierUrl.$compSerial;
       return $info;
