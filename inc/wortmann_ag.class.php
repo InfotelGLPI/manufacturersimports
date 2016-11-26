@@ -38,20 +38,20 @@ class PluginManufacturersimportsWORTMANN_AG extends PluginManufacturersimportsMa
    }
 
    function getSearchField() {
-      return false;
+      return "search";
    }
 
    function getSupplierInfo($compSerial=null,$otherSerial=null, $key=null, $supplierUrl=null) {
       $info["name"]         = PluginManufacturersimportsConfig::WORTMANN_AG;
-      $info["supplier_url"] = "https://www.wortmann.de/en-gb/profile/snsearch.aspx?SN=";
+      $info["supplier_url"] = "https://www.wortmann.de/fr-fr/profile/snsearch.aspx?SN=";
       $info["url"]          = $supplierUrl.$compSerial;
       return $info;
    }
    
    function getBuyDate($contents) {
-      $field     = "Warranty starting date";
+      $field     = "but de la garantie";
       $searchstart = stristr($contents, $field);
-      $maDate = substr($searchstart,1,10);
+      $maDate = substr($searchstart,27,10);
 
       $maDate = trim($maDate);
       $maDate = str_replace('/','-',$maDate);
@@ -67,9 +67,9 @@ class PluginManufacturersimportsWORTMANN_AG extends PluginManufacturersimportsMa
    }
    
    function getExpirationDate($contents) {
-      $field     = "Warranty ending date";
+      $field     = "Fin de garantie";
       $searchstart = stristr($contents, $field);
-      $maDate = substr($searchstart,1,10);
+      $maDate = substr($searchstart,24,10);
 
       $maDate = trim($maDate);
       $maDate = str_replace('/','-',$maDate);
