@@ -92,7 +92,7 @@ function plugin_manufacturersimports_install() {
    $DB->query($query);
    
    $query = "UPDATE `glpi_plugin_manufacturersimports_configs` 
-             SET `Supplier_url` = 'https://www.wortmann.de/en-gb/profile/snsearch.aspx?SN=' 
+             SET `Supplier_url` = 'https://www.wortmann.de/fr-fr/profile/snsearch.aspx?SN=' 
              WHERE `name` ='".PluginManufacturersimportsConfig::WORTMANN_AG."'";
    $DB->query($query);
 
