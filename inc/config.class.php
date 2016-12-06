@@ -160,7 +160,7 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
    static function getSuppliers() {
       $options[-1]            = Dropdown::EMPTY_VALUE;
       $options[self::DELL]    = self::DELL;
-      //$options[self::HP]      = self::HP;
+      $options[self::HP]      = self::HP;
       $options[self::FUJITSU] = self::FUJITSU;
       $options[self::TOSHIBA] = self::TOSHIBA;
       $options[self::LENOVO]  = self::LENOVO;
@@ -472,7 +472,7 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
          $config->getFromDB($configID);
          $supplierkey  = (isset($config->fields["supplier_key"]))?$config->fields["supplier_key"]:false;
          $supplierurl  = (isset($config->fields["supplier_url"]))?$config->fields["supplier_url"]:false;
-         
+ 
          $url          = PluginManufacturersimportsPreImport::selectSupplier($suppliername, $supplierurl, $item->fields['serial'], $otherserial,$supplierkey);
 
          echo "<div align=\"center\"><table class=\"tab_cadre_fixe\"  cellspacing=\"2\" cellpadding=\"2\">";

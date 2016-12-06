@@ -34,75 +34,45 @@ if (!defined('GLPI_ROOT')) {
 class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacturer {
 
    function showDocTitle($output_type,$header_num) {
-      return Search::showHeaderItem($output_type,__('File'),$header_num);
+      return false;
    }
    
    function getSearchField() {
-      return "Start date";
+      return false;
    }
-   
-   function getSupplierInfo($compSerial=null,$otherSerial=null, $key=null, $supplierUrl=null) {
+
+   function getSupplierInfo($compSerial=null,$otherSerial=null, $key=null, $supplierUrl=null) { 
       $info["name"]         = PluginManufacturersimportsConfig::HP;
-      $info["supplier_url"] = "http://h20000.www2.hp.com/bizsupport/TechSupport/WarrantyResults.jsp?";
-      $info["url"]         = $supplierUrl."nickname=&sn=".$compSerial."&pn=".$otherSerial."&country=FR&lang=en&cc=us&find=Display+Warranty+Information+%BB&";
+      $info["supplier_url"] = "https://hpscm-pro.glb.itcs.hp.com/mobileweb/hpsupport.asmx/GetEntitlementDetails?";
+      $info["url"]         = $info["supplier_url"]."productNo=".$otherSerial."&serialNo=".$compSerial."&countryCode=null";
       return $info;
    }
 
    function getBuyDate($contents) {
-      //TODO translate variables in english
-      $matchesarray = array();
-      preg_match_all("/(\d\d [A-Z][a-z][a-z] \d{4})/", $contents, $matchesarray);
-
-      $datetimestamp = date('U');
-      for ($i = 0; $i < ((count($matchesarray[0]) /2)); $i++) {
-         $maDate = $matchesarray[0][($i * 2)];
-         $maDate = str_replace(' ','-',$maDate);
-         $maDate = str_replace('Jan','01',$maDate);
-         $maDate = str_replace('Feb','02',$maDate);
-         $maDate = str_replace('Mar','03',$maDate);
-         $maDate = str_replace('Apr','04',$maDate);
-         $maDate = str_replace('May','05',$maDate);
-         $maDate = str_replace('Jun','06',$maDate);
-         $maDate = str_replace('Jul','07',$maDate);
-         $maDate = str_replace('Aug','08',$maDate);
-         $maDate = str_replace('Sep','09',$maDate);
-         $maDate = str_replace('Oct','10',$maDate);
-         $maDate = str_replace('Nov','11',$maDate);
-         $maDate = str_replace('Dec','12',$maDate);
-         list($jour, $mois, $annee) = explode('-', $maDate);
-         $maDate = date("U",mktime(0, 0, 0, $mois, $jour, $annee));
-         if ($maDate < $datetimestamp) {
-            $datetimestamp = $maDate;
-         }
+      $info = json_decode(simplexml_load_string($contents), TRUE);
+      if( isset( $info[0]['startDate'] ) ) {
+          return $info[0]['startDate'] ;
       }
-      $maDate = date("Y-m-d", $datetimestamp);
-      return $maDate;
+
+      return false;
    }
 
    function getExpirationDate($contents) {
-      //TODO translate variables in english
-      $field_fin    = "End Date";
-      $matchesarray = array();
-      $searchfin    = stristr($contents, $field_fin);
-      preg_match_all("/(\d\d [A-Z][a-z][a-z] \d{4})/", $searchfin, $matchesarray);
-      $maDateFin = $matchesarray[0][1];
-      $maDateFin = str_replace(' ','-',$maDateFin);
-      $maDateFin = str_replace('Jan','01',$maDateFin);
-      $maDateFin = str_replace('Feb','02',$maDateFin);
-      $maDateFin = str_replace('Mar','03',$maDateFin);
-      $maDateFin = str_replace('Apr','04',$maDateFin);
-      $maDateFin = str_replace('May','05',$maDateFin);
-      $maDateFin = str_replace('Jun','06',$maDateFin);
-      $maDateFin = str_replace('Jul','07',$maDateFin);
-      $maDateFin = str_replace('Aug','08',$maDateFin);
-      $maDateFin = str_replace('Sep','09',$maDateFin);
-      $maDateFin = str_replace('Oct','10',$maDateFin);
-      $maDateFin = str_replace('Nov','11',$maDateFin);
-      $maDateFin = str_replace('Dec','12',$maDateFin);
+      $info = json_decode(simplexml_load_string($contents), TRUE);
+      if( isset( $info[0]['endDate'] ) ) {
+          return $info[0]['endDate'] ;
+      }
 
-      list($jour, $mois, $annee) = explode('-', $maDateFin);
-      $maDateFin = $annee."-".$mois."-".$jour;
-      return $maDateFin;
+      return false;
+   }
+
+   function getWarrantyInfo($contents) {
+      $info = json_decode(simplexml_load_string($contents), TRUE);
+      if( isset( $info[0]['serviceLevel'] ) ) {
+          return $info[0]['serviceLevel'] ;
+      }
+
+      return false;
    }
 }
 
