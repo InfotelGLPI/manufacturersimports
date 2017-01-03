@@ -5,7 +5,7 @@
  Manufacturersimports plugin for GLPI
  Copyright (C) 2003-2016 by the Manufacturersimports Development Team.
 
- https://github.com/InfotelGLPI
+ https://github.com/InfotelGLPI/manufacturersimports
  -------------------------------------------------------------------------
 
  LICENSE
