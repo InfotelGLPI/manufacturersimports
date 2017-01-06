@@ -45,6 +45,7 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
    const HP          = "HP";
    const FUJITSU     = "Fujitsu";
    const TOSHIBA     = "Toshiba";
+   const WORTMANN_AG = "Wortmann_AG";
    
    static function getTypeName($nb=0) {
       return _n('Manufacturer', 'Manufacturers', $nb);
@@ -92,6 +93,7 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
          case self::FUJITSU:
          case self::LENOVO:
          case self::TOSHIBA:
+         case self::WORTMANN_AG:
             $supplierclass                = "PluginManufacturersimports".$type;
             $supplier                     = new $supplierclass();
             $infos                        = $supplier->getSupplierInfo();
@@ -164,6 +166,7 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
       $options[self::FUJITSU] = self::FUJITSU;
       $options[self::TOSHIBA] = self::TOSHIBA;
       $options[self::LENOVO]  = self::LENOVO;
+      $options[self::WORTMANN_AG]  = self::WORTMANN_AG;
       return $options;
    }
 

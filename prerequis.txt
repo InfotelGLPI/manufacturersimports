@@ -27,19 +27,23 @@
  */
 
 Dell
-Le matÈriel doit avoir le champ numÈro de serie rempli avec le TAG Dell
-Le matÈriel doit avoir le bon fabricant (Dell - voir config)
+Le mat√©riel doit avoir le champ num√©ro de serie rempli avec le TAG Dell
+Le mat√©riel doit avoir le bon fabricant (Dell - voir config)
 
 HP
-Le matÈriel doit avoir le champ numÈro de serie rempli avec le TAG HP
-Le matÈriel doit avoir le champ NumÈro de modËle du matÈriel rempli avec le TAG HP (onglet plugins - Import fabricant)
-Le matÈriel doit avoir le bon fabricant (HP - voir config)
+Le mat√©riel doit avoir le champ num√©ro de serie rempli avec le TAG HP
+Le mat√©riel doit avoir le champ Num√©ro de mod√®le du mat√©riel rempli avec le TAG HP (onglet plugins - Import fabricant)
+Le mat√©riel doit avoir le bon fabricant (HP - voir config)
 
 fujitsu-siemens
-Le matÈriel doit avoir le champ numÈro de serie rempli avec le TAG fujitsu-siemens
-Le matÈriel doit avoir le bon fabricant (fujitsu-siemens - voir config)
+Le mat√©riel doit avoir le champ num√©ro de serie rempli avec le TAG fujitsu-siemens
+Le mat√©riel doit avoir le bon fabricant (fujitsu-siemens - voir config)
 
 Toshiba
-Le matÈriel doit avoir le champ numÈro de serie rempli avec le TAG Toshiba
-Le matÈriel doit avoir le champ NumÈro de modËle du matÈriel rempli avec le TAG Toshiba (onglet plugins - Import fabricant)
-Le matÈriel doit avoir le bon fabricant (Toshiba - voir config)
+Le mat√©riel doit avoir le champ num√©ro de serie rempli avec le TAG Toshiba
+Le mat√©riel doit avoir le champ Num√©ro de mod√®le du mat√©riel rempli avec le TAG Toshiba (onglet plugins - Import fabricant)
+Le mat√©riel doit avoir le bon fabricant (Toshiba - voir config)
+
+Wortmann AG
+Le mat√©riel doit avoir le champ num√©ro de serie rempli avec le TAG Wortmann_AG
+Le mat√©riel doit avoir le bon fabricant (Wortmann_AG - voir config)
