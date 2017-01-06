@@ -185,7 +185,7 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
       $tab[2]['table']           = 'glpi_manufacturers';
       $tab[2]['field']           = 'name';
       $tab[2]['name']            = __('Manufacturer');
-      $tab[2]['field']           = 'dropdown';
+      $tab[2]['datatype']        = 'dropdown';
       $tab[2]['massiveaction']   = false;
 
       $tab[3]['table']           = $this->getTable();
