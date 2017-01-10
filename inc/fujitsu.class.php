@@ -31,12 +31,21 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access directly to this file");
 }
 
+/**
+ * Class PluginManufacturersimportsFujitsu
+ */
 class PluginManufacturersimportsFujitsu extends PluginManufacturersimportsManufacturer {
 
+   /**
+    * @see PluginManufacturersimportsManufacturer::showDocTitle()
+    */
    function showDocTitle($output_type, $header_num) {
       return Search::showHeaderItem($output_type, __('File'), $header_num);
    }
 
+   /**
+    * @see PluginManufacturersimportsManufacturer::showWarrantyItem()
+    */
    function showWarrantyItem($ID, $supplierWarranty) {
       echo "<td>";
       Dropdown::showInteger("to_warranty_duration".
@@ -49,6 +58,9 @@ class PluginManufacturersimportsFujitsu extends PluginManufacturersimportsManufa
       return "Service Start Date";
    }
 
+   /**
+    * @see PluginManufacturersimportsManufacturer::getSupplierInfo()
+    */
    function getSupplierInfo($compSerial=null,$otherSerial=null, $key=null, $supplierUrl=null) {
       $info["name"]         = PluginManufacturersimportsConfig::FUJITSU;
       $info["supplier_url"] = "https://support.ts.fujitsu.com/Warranty/WarrantyStatus.asp?lng=EN&IDNR=";
@@ -56,6 +68,9 @@ class PluginManufacturersimportsFujitsu extends PluginManufacturersimportsManufa
       return $info;
    }
    
+   /**
+    * @see PluginManufacturersimportsManufacturer::getBuyDate()
+    */
    function getBuyDate($contents) {
       $maDate = substr($contents,225,10);
       $maDate = trim($maDate);
@@ -67,12 +82,21 @@ class PluginManufacturersimportsFujitsu extends PluginManufacturersimportsManufa
          $maDate = date("Y-m-d", mktime(0, 0, 0, $mois, $jour, $annee));
       }
       
-      //toolbox::logdebug($maDate);
       return $maDate;
+   }
+   
+   /**
+    * @see PluginManufacturersimportsManufacturer::getStartDate()
+    */
+   function getStartDate($contents) {
+
+      return self::getBuyDate($contents);
    }
 
 
-   
+   /**
+    * @see PluginManufacturersimportsManufacturer::getExpirationDate()
+    */
    function getExpirationDate($contents) {
 
       $field     = "Service end date";
@@ -88,10 +112,6 @@ class PluginManufacturersimportsFujitsu extends PluginManufacturersimportsManufa
          list($jour, $mois, $annee) = explode('-', $maDate);
          $maDate = date("Y-m-d", mktime(0, 0, 0, $mois, $jour, $annee));
       }
-      //toolbox::logdebug($maDate);
-      //die();
       return $maDate;
    }
 }
-
-?>

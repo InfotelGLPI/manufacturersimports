@@ -33,23 +33,53 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginManufacturersimportsManufacturer extends CommonDBTM {
 
+   /**
+    * @param $ID
+    * @param $sel
+    * @param bool $otherSerial
+    * @return string
+    */
    function showCheckbox($ID, $sel, $otherSerial = false) {
       return "<input type='checkbox' name='item[".$ID."]' value='1' $sel>";
    }
 
+   /**
+    * @param $output_type
+    * @param $header_num
+    * @return bool
+    */
    function showItemTitle($output_type, $header_num) {
       return false;
    }
 
+   /**
+    * @param $output_type
+    * @param bool $otherSerial
+    * @param $item_num
+    * @param $row_num
+    * @return bool
+    */
    function showItem($output_type, $otherSerial = false, $item_num, $row_num) {
       return false;
    }
 
+   /**
+    * @param $output_type
+    * @param $header_num
+    * @return bool
+    */
    function showDocTitle($output_type, $header_num) {
       return false;
 
    }
 
+   /**
+    * @param $output_type
+    * @param $item_num
+    * @param $row_num
+    * @param null $doc
+    * @return string
+    */
    function showDocItem($output_type, $item_num, $row_num, $documents_id = null) {
       $doc = new document();
       if ($doc->getFromDB($documents_id)) {
@@ -61,24 +91,63 @@ class PluginManufacturersimportsManufacturer extends CommonDBTM {
 
    }
 
+   /**
+    * 
+    * @param type $ID
+    * @param type $supplierWarranty
+    */
    function showWarrantyItem($ID, $supplierWarranty) {
       echo "<td>".__('Automatic');
       echo "<input type='hidden' name='to_warranty_duration".$ID."' value='0'>";
       echo "</td>";
    }
 
+   /**
+    * Get supplier information with url
+    * 
+    * @param null $compSerial
+    * @param null $otherserial
+    * @param null $key
+    * @param null $supplierUrl
+    * @return mixed
+    */
    function getSupplierInfo($compSerial = null, $otherSerial = null, $key=null, $supplierUrl=null) {
 
    }
 
+   /**
+    * Get buy date of object
+    *
+    * @param $contents
+    */
    function getBuyDate($contents) {
 
    }
 
+   /**
+    * Get start date of warranty
+    *
+    * @param $contents
+    * @return bool
+    */
+   function getStartDate($contents) {
+
+   }
+
+   /**
+    * Get expiration date of warranty
+    *
+    * @param $contents
+    */
    function getExpirationDate($contents) {
 
    }
 
+   /**
+    * Get warranty info
+    *
+    * @param $contents
+    */
    function getWarrantyInfo($contents) {
 
    }

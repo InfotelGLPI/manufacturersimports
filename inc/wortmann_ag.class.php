@@ -31,8 +31,14 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access directly to this file");
 }
 
-class PluginManufacturersimportsWORTMANN_AG extends PluginManufacturersimportsManufacturer {
+/**
+ * Class PluginManufacturersimportsWortmann_ag
+ */
+class PluginManufacturersimportsWortmann_ag extends PluginManufacturersimportsManufacturer {
 
+   /**
+    * @see PluginManufacturersimportsManufacturer::showDocTitle()
+    */
    function showDocTitle($output_type, $header_num) {
       return false;
    }
@@ -41,6 +47,9 @@ class PluginManufacturersimportsWORTMANN_AG extends PluginManufacturersimportsMa
       return "search";
    }
 
+   /**
+    * @see PluginManufacturersimportsManufacturer::getSupplierInfo()
+    */
    function getSupplierInfo($compSerial=null,$otherSerial=null, $key=null, $supplierUrl=null) {
       $info["name"]         = PluginManufacturersimportsConfig::WORTMANN_AG;
       $info["supplier_url"] = "https://www.wortmann.de/fr-fr/profile/snsearch.aspx?SN=";
@@ -48,6 +57,9 @@ class PluginManufacturersimportsWORTMANN_AG extends PluginManufacturersimportsMa
       return $info;
    }
    
+   /**
+    * @see PluginManufacturersimportsManufacturer::getBuyDate()
+    */
    function getBuyDate($contents) {
       $field     = "but de la garantie";
       $searchstart = stristr($contents, $field);
@@ -66,6 +78,17 @@ class PluginManufacturersimportsWORTMANN_AG extends PluginManufacturersimportsMa
       return $maDate;
    }
    
+   /**
+    * @see PluginManufacturersimportsManufacturer::getStartDate()
+    */
+   function getStartDate($contents) {
+
+      return self::getBuyDate($contents);
+   }
+   
+   /**
+    * @see PluginManufacturersimportsManufacturer::getExpirationDate()
+    */
    function getExpirationDate($contents) {
       $field     = "Fin de garantie";
       $searchstart = stristr($contents, $field);
@@ -83,5 +106,3 @@ class PluginManufacturersimportsWORTMANN_AG extends PluginManufacturersimportsMa
       return $maDate;
    }
 }
-
-?>

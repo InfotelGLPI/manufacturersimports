@@ -31,26 +31,41 @@ if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access directly to this file");
 }
 
+/**
+ * Class PluginManufacturersimportsLenovo
+ */
 class PluginManufacturersimportsLenovo extends PluginManufacturersimportsManufacturer {
 
+   /**
+    * @see PluginManufacturersimportsManufacturer::showCheckbox()
+    */
    function showCheckbox($ID,$sel,$otherSerial=false) {
 
       return "<input type='checkbox' name='item[".$ID."]' value='1' $sel>";
 
    }
 
+   /**
+    * @see PluginManufacturersimportsManufacturer::showItemTitle()
+    */
    function showItemTitle($output_type,$header_num) {
 
       return Search::showHeaderItem($output_type,__('Model number', 'manufacturersimports'),$header_num);
 
    }
 
+   /**
+    * @see PluginManufacturersimportsManufacturer::showDocTitle()
+    */
    function showDocTitle($output_type,$header_num) {
 
       return Search::showHeaderItem($output_type,__('File'),$header_num);
 
    }
-
+   
+   /**
+    * @see PluginManufacturersimportsManufacturer::showItem()
+    */
    function showItem($output_type,$otherSerial,$item_num,$row_num) {
 
       return Search::showItem($output_type,$otherSerial,$item_num,$row_num);
@@ -62,7 +77,10 @@ class PluginManufacturersimportsLenovo extends PluginManufacturersimportsManufac
 
       return $field;
    }
-
+   
+   /**
+    * @see PluginManufacturersimportsManufacturer::getSupplierInfo()
+    */
    function getSupplierInfo($compSerial=null, $otherserial=null, $key=null, $supplierUrl=null) {
 
       $info["name"]         = PluginManufacturersimportsConfig::LENOVO;
@@ -71,7 +89,9 @@ class PluginManufacturersimportsLenovo extends PluginManufacturersimportsManufac
       return $info;
    }
    
-   
+   /**
+    * @see PluginManufacturersimportsManufacturer::getBuyDate()
+    */
    function getBuyDate($contents) {
       $buy_date = NULL;
 
@@ -102,7 +122,18 @@ class PluginManufacturersimportsLenovo extends PluginManufacturersimportsManufac
 
       return PluginManufacturersimportsPostImport::checkDate($buy_date);
    }
+   
+   /**
+    * @see PluginManufacturersimportsManufacturer::getStartDate()
+    */
+   function getStartDate($contents) {
 
+      return self::getBuyDate($contents);
+   }
+
+   /**
+    * @see PluginManufacturersimportsManufacturer::getExpirationDate()
+    */
    function getExpirationDate($contents) {
       $expiration_date = NULL;
 
@@ -133,5 +164,3 @@ class PluginManufacturersimportsLenovo extends PluginManufacturersimportsManufac
       return PluginManufacturersimportsPostImport::checkDate($expiration_date);
    }
 }
-
-?>

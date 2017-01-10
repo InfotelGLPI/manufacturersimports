@@ -31,8 +31,14 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access directly to this file");
 }
 
+/**
+ * Class PluginManufacturersimportsToshiba
+ */
 class PluginManufacturersimportsToshiba extends PluginManufacturersimportsManufacturer {
 
+   /**
+    * @see PluginManufacturersimportsManufacturer::showDocTitle()
+    */
    function showDocTitle($output_type,$header_num) {
       return Search::showHeaderItem($output_type,__('File'),$header_num);
    }
@@ -41,6 +47,9 @@ class PluginManufacturersimportsToshiba extends PluginManufacturersimportsManufa
       return ">Days<";
    }
 
+   /**
+    * @see PluginManufacturersimportsManufacturer::getSupplierInfo()
+    */
    function getSupplierInfo($compSerial=null,$otherSerial=null, $key=null, $supplierUrl=null) {
       $info["name"]         = PluginManufacturersimportsConfig::TOSHIBA;
       $info["supplier_url"] = "http://aps2.toshiba-tro.de/unit-details-php/unitdetails.aspx?";
@@ -50,6 +59,9 @@ class PluginManufacturersimportsToshiba extends PluginManufacturersimportsManufa
       return $info;
    }
 
+   /**
+    * @see PluginManufacturersimportsManufacturer::getBuyDate()
+    */
    function getBuyDate($contents) {
       $days           = substr($contents,118,3);
       $days           = trim($days);
@@ -64,7 +76,18 @@ class PluginManufacturersimportsToshiba extends PluginManufacturersimportsManufa
       }
       return $maDate;
    }
+   
+   /**
+    * @see PluginManufacturersimportsManufacturer::getStartDate()
+    */
+   function getStartDate($contents) {
 
+      return self::getBuyDate($contents);
+   }
+
+   /**
+    * @see PluginManufacturersimportsManufacturer::getExpirationDate()
+    */
    function getExpirationDate($contents) {
       //TODO translate variables in english
       $field     = "Expiration Date";
@@ -75,5 +98,3 @@ class PluginManufacturersimportsToshiba extends PluginManufacturersimportsManufa
       return $maDateFin;
    }
 }
-
-?>

@@ -33,28 +33,49 @@ if (!defined('GLPI_ROOT')) {
 
 ini_set("max_execution_time", "0");
 
+/**
+ * Class PluginManufacturersimportsDell
+ */
 class PluginManufacturersimportsDell extends PluginManufacturersimportsManufacturer {
 
+   /**
+    * @see PluginManufacturersimportsManufacturer::showCheckbox()
+    */
    function showCheckbox($ID, $sel, $otherSerial = false) {
       return "<input type='checkbox' name='item[".$ID."]' value='1' $sel>";
    }
 
+   /**
+    * @see PluginManufacturersimportsManufacturer::showItem()
+    */
    function showItem($output_type, $otherSerial = false, $item_num, $row_num) {
       return false;
    }
 
+   /**
+    * @see PluginManufacturersimportsManufacturer::showItemTitle()
+    */
    function showItemTitle($output_type, $header_num) {
       return false;
    }
 
+   /**
+    * @see PluginManufacturersimportsManufacturer::showDocTitle()
+    */
    function showDocTitle($output_type, $header_num) {
       return false;
    }
 
+   /**
+    * @see PluginManufacturersimportsManufacturer::showDocItem()
+    */
    function showDocItem($output_type, $item_num, $row_num, $doc = null) {
       return Search::showEndLine($output_type);
    }
 
+   /**
+    * @see PluginManufacturersimportsManufacturer::getSupplierInfo()
+    */
    function getSupplierInfo($compSerial = null, $otherserial = null, $key=null, $supplierUrl=null) {
       $info["name"]         = PluginManufacturersimportsConfig::DELL;
       // v4
@@ -64,41 +85,76 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
       $info["url"] = $supplierUrl . "$compSerial?apikey=" . $key;
       return $info;
    }
-   
+
+   /**
+    * @return bool
+    */
    function getSearchField() {
       return false;
    }
-   
+
+   /**
+    * @see PluginManufacturersimportsManufacturer::getBuyDate()
+    */
    function getBuyDate($contents) {
       $info = json_decode($contents, TRUE);
       // v4
-      if( isset( $info['AssetWarrantyResponse'][0]['AssetEntitlementData'][0]['StartDate'] ) ) {
-          return $info['AssetWarrantyResponse'][0]['AssetEntitlementData'][0]['StartDate'] ;
+      if( isset( $info['AssetWarrantyResponse'][0]['AssetHeaderData'][0]['ShipDate'] ) ) {
+         return $info['AssetWarrantyResponse'][0]['AssetHeaderData'][0]['ShipDate'];
+      } else {
+       $nb =  count($info['AssetWarrantyResponse'][0]['AssetEntitlementData'])-1;
+         if (isset($info['AssetWarrantyResponse'][0]['AssetEntitlementData'][$nb]['StartDate'])) {
+            return $info['AssetWarrantyResponse'][0]['AssetEntitlementData'][$nb]['StartDate'];
+
+         } else if (isset($info['AssetWarrantyResponse'][0]['AssetEntitlementData'][0]['StartDate'])) {
+            return $info['AssetWarrantyResponse'][0]['AssetEntitlementData'][0]['StartDate'];
+         }
       }
-      
+
       return false;
    }
 
+   /**
+    * @see PluginManufacturersimportsManufacturer::getStartDate()
+    */
+   function getStartDate($contents) {
+      $info = json_decode($contents, TRUE);
+      // v4
+      if (isset($info['AssetWarrantyResponse'][0]['AssetEntitlementData'])) {
+         if (isset($info['AssetWarrantyResponse'][0]['AssetEntitlementData'][0]['StartDate'])) {
+            return $info['AssetWarrantyResponse'][0]['AssetEntitlementData'][0]['StartDate'];
+         }
+      }
+
+      return false;
+   }
+
+   /**
+    * @see PluginManufacturersimportsManufacturer::getExpirationDate()
+    */
    function getExpirationDate($contents) {
       $info = json_decode($contents, TRUE);
       // v4
       if( isset( $info['AssetWarrantyResponse'][0]['AssetEntitlementData'] ) ) {
           if(isset($info['AssetWarrantyResponse'][0]['AssetEntitlementData'][0])) {
              return $info['AssetWarrantyResponse'][0]['AssetEntitlementData'][0]["EndDate"];
-          } else {
+          } else if (isset($info['AssetWarrantyResponse'][0]['AssetEntitlementData']["EndDate"])) {
              return $info['AssetWarrantyResponse'][0]['AssetEntitlementData']["EndDate"];
           }
        }
       
       return false;
    }
-   
+
+   /**
+    * @see PluginManufacturersimportsManufacturer::getWarrantyInfo()
+    */
    function getWarrantyInfo($contents) {
       $info = json_decode($contents, TRUE);
       if( isset( $info['AssetWarrantyResponse'][0]['AssetEntitlementData'] ) ) {
          if(isset($info['AssetWarrantyResponse'][0]['AssetEntitlementData'][0])) {
             return $info['AssetWarrantyResponse'][0]['AssetEntitlementData'][0]["ServiceLevelDescription"];
-         } else {
+         } else if (isset($info['AssetWarrantyResponse'][0]['AssetEntitlementData']["ServiceLevelDescription"])) {
             return $info['AssetWarrantyResponse'][0]['AssetEntitlementData']["ServiceLevelDescription"];
          }
       }

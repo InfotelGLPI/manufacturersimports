@@ -89,6 +89,32 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
       return $url;
    }
 
+   static function getMoreInfosSupplier($suppliername, $supplierUrl, $compSerial, $otherserial = null, $supplierkey = null) {
+
+      $url = "";
+      if (!empty($suppliername)) {
+         $supplierclass = "PluginManufacturersimports" . $suppliername;
+         $supplier      = new $supplierclass();
+         if (method_exists($supplier, "getSupplierMoreInfo")) {
+            $url = $supplier->getSupplierMoreInfo($compSerial, $otherserial, $supplierkey, $supplierUrl);
+         }
+      }
+      return $url;
+   }
+
+   static function getJSSupplier($suppliername, $supplierUrl, $compSerial, $otherserial = null, $supplierkey = null) {
+
+      $js = "";
+      if (!empty($suppliername)) {
+         $supplierclass = "PluginManufacturersimports" . $suppliername;
+         $supplier      = new $supplierclass();
+         if (method_exists($supplier, "getJSSupplier")) {
+            $js = $supplier->getJSSupplier($compSerial, $otherserial, $supplierkey, $supplierUrl);
+         }
+      }
+      return $js;
+   }
+
    static function getSupplierPost ($suppliername,$compSerial,$otherserial=null) {
 
       $post = "";
@@ -377,7 +403,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
    */
    static function seePreImport ($params) {
       global $DB,$CFG_GLPI;
-      
+
       // Default values of parameters
       $p['link']              = array();
       $p['field']             = array();
@@ -428,68 +454,10 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
             $p['start'] = 0;
          }
 
-         $modeltable = getTableForItemType($p['itemtype']."Model");
-         $modelfield = getForeignKeyFieldForTable(getTableForItemType($p['itemtype']."Model"));
-         $item       = new $p['itemtype']();
-         $itemtable  = getTableForItemType($p['itemtype']);
-         
-         $query = "SELECT `".$itemtable."`.`id`,
-                        `".$itemtable."`.`name`, 
-                        `".$itemtable."`.`serial`,
-                        `".$itemtable."`.`entities_id`,
-                         `glpi_plugin_manufacturersimports_logs`.`import_status`,
-                          `glpi_plugin_manufacturersimports_logs`.`items_id`,
-                           `glpi_plugin_manufacturersimports_logs`.`itemtype`, 
-                           `glpi_plugin_manufacturersimports_logs`.`documents_id`,
-                            `glpi_plugin_manufacturersimports_logs`.`date_import`, 
-                            '".$p['itemtype']."' AS type,
-                            `$modeltable`.`name` AS model_name
-                  FROM `".$itemtable."` ";
-
-         //model device left join
-         $query.= "LEFT JOIN `$modeltable` ON (`$modeltable`.`id` = `".$itemtable."`.`".$modelfield."`) ";
-         $query.=" LEFT JOIN `glpi_entities` ON (`glpi_entities`.`id` = `".$itemtable."`.`entities_id`)";
-         $query.=" LEFT JOIN `glpi_plugin_manufacturersimports_configs` 
-         ON (`glpi_plugin_manufacturersimports_configs`.`manufacturers_id` = `".$itemtable."`.`manufacturers_id`)";
-         $query.=" LEFT JOIN `glpi_plugin_manufacturersimports_logs` 
-         ON (`glpi_plugin_manufacturersimports_logs`.`items_id` = `".$itemtable."`.`id` 
-         AND `glpi_plugin_manufacturersimports_logs`.`itemtype` = '".$p['itemtype']."')";
-         $query.=" LEFT JOIN `glpi_plugin_manufacturersimports_models` 
-         ON (`glpi_plugin_manufacturersimports_models`.`items_id` = `".$itemtable."`.`id` 
-         AND `glpi_plugin_manufacturersimports_models`.`itemtype` = '".$p['itemtype']."')";
-         
-         //serial must be not empty
-         $query.= " WHERE `".$itemtable."`.`is_deleted` = '0'
-          AND `".$itemtable."`.`is_template` = '0'
-          AND `glpi_plugin_manufacturersimports_configs`.`id` = '".$p['manufacturers_id']."'
-          AND `".$itemtable."`.`serial` != '' ";
-         //already imported
-         if ($p['imported']==self::IMPORTED) {
-            $query.= " AND `import_status` != ".self::IMPORTED."";
-         //not imported
-         } else if ($p['imported']==self::NOT_IMPORTED) {
-            $query.= " AND (`date_import` IS NULL OR `import_status` = ".self::IMPORTED." ";
-            $query.= ") ";
-         }
-         $entities="";
-         if ($config->isRecursive()) {
-            $entities = getSonsOf('glpi_entities',$config->getEntityID());
-         } else {
-            $entities = $config->getEntityID();
-         }
-         $query.= "".getEntitiesRestrictRequest(" AND",$itemtable,'','',$item->maybeRecursive());
-         
-         //// 4 - ORDER
-         $ORDER=" ORDER BY `entities_id`,`".$itemtable."`.`name` ";
-         
          $toview=array("name"=>1);
 
-         foreach($toview as $key => $val) {
-            if ($p['sort']==$val) {
-               $ORDER= self::addOrderBy($p['itemtype'],$p['sort'],$p['order'],$key);
-            }
-         }
-         $query  .= $ORDER;
+         $query = self::queryImport($p, $config, $toview);
+
          $result  = $DB->query($query);
          $numrows =  $DB->numrows($result);
 
@@ -603,7 +571,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
                $model      = $line["model_name"];
                if (!$line["itemtype"])
                   $line["itemtype"] = $p['itemtype'];
-               
+
                self::showImport($row_num,$item_num,$line,$output_type,
                                 $p['manufacturers_id'],
                                 $line["import_status"],
@@ -666,6 +634,83 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
                __('No device finded', 'manufacturersimports')."</b></div>";
          }
       }
+   }
+
+   /**
+    * Request
+    *
+    * @param $p
+    * @param $config
+    * @param $toview
+    *
+    * @return string
+    */
+   static function queryImport($p, $config, $toview){
+
+      $modeltable = getTableForItemType($p['itemtype']."Model");
+      $modelfield = getForeignKeyFieldForTable(getTableForItemType($p['itemtype']."Model"));
+      $item       = new $p['itemtype']();
+      $itemtable  = getTableForItemType($p['itemtype']);
+
+      $query = "SELECT `".$itemtable."`.`id`,
+                        `".$itemtable."`.`name`, 
+                        `".$itemtable."`.`serial`,
+                        `".$itemtable."`.`entities_id`,
+                         `glpi_plugin_manufacturersimports_logs`.`import_status`,
+                          `glpi_plugin_manufacturersimports_logs`.`items_id`,
+                           `glpi_plugin_manufacturersimports_logs`.`itemtype`, 
+                           `glpi_plugin_manufacturersimports_logs`.`documents_id`,
+                            `glpi_plugin_manufacturersimports_logs`.`date_import`, 
+                            '".$p['itemtype']."' AS type,
+                            `$modeltable`.`name` AS model_name
+                  FROM `".$itemtable."` ";
+
+      //model device left join
+      $query.= "LEFT JOIN `$modeltable` ON (`$modeltable`.`id` = `".$itemtable."`.`".$modelfield."`) ";
+      $query.=" LEFT JOIN `glpi_entities` ON (`glpi_entities`.`id` = `".$itemtable."`.`entities_id`)";
+      $query.=" LEFT JOIN `glpi_plugin_manufacturersimports_configs` 
+         ON (`glpi_plugin_manufacturersimports_configs`.`manufacturers_id` = `".$itemtable."`.`manufacturers_id`)";
+      $query.=" LEFT JOIN `glpi_plugin_manufacturersimports_logs` 
+         ON (`glpi_plugin_manufacturersimports_logs`.`items_id` = `".$itemtable."`.`id` 
+         AND `glpi_plugin_manufacturersimports_logs`.`itemtype` = '".$p['itemtype']."')";
+      $query.=" LEFT JOIN `glpi_plugin_manufacturersimports_models` 
+         ON (`glpi_plugin_manufacturersimports_models`.`items_id` = `".$itemtable."`.`id` 
+         AND `glpi_plugin_manufacturersimports_models`.`itemtype` = '".$p['itemtype']."')";
+
+      //serial must be not empty
+      $query.= " WHERE `".$itemtable."`.`is_deleted` = '0'
+          AND `".$itemtable."`.`is_template` = '0'
+          AND `glpi_plugin_manufacturersimports_configs`.`id` = '".$p['manufacturers_id']."'
+          AND `".$itemtable."`.`serial` != '' ";
+      //already imported
+      if ($p['imported']==self::IMPORTED) {
+         $query.= " AND `import_status` != ".self::IMPORTED."";
+         //not imported
+      } else if ($p['imported']==self::NOT_IMPORTED) {
+         $query.= " AND (`date_import` IS NULL OR `import_status` = ".self::IMPORTED." ";
+         $query.= ") ";
+      }
+      $entities="";
+      if ($config->isRecursive()) {
+         $entities = getSonsOf('glpi_entities',$config->getEntityID());
+      } else {
+         $entities = $config->getEntityID();
+      }
+      $query.= "".getEntitiesRestrictRequest(" AND",$itemtable,'','',$item->maybeRecursive());
+
+      //// 4 - ORDER
+      $ORDER=" ORDER BY `entities_id`,`".$itemtable."`.`name` ";
+
+
+      foreach($toview as $key => $val) {
+         if ($p['sort']==$val) {
+            $ORDER= self::addOrderBy($p['itemtype'],$p['sort'],$p['order'],$key);
+         }
+      }
+      $query  .= $ORDER;
+
+      return $query;
+
    }
    
    /**

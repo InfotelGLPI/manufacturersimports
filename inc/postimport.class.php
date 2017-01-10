@@ -215,6 +215,15 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
       return $importDate;
    }
 
+   static function importStartDate($suppliername, $contents) {
+
+      $supplierclass = "PluginManufacturersimports".$suppliername;
+      $supplier      = new $supplierclass();
+      $importStartDate    = $supplier->getStartDate($contents);
+
+      return $importStartDate;
+   }
+
    static function importWarrantyInfo($suppliername, $contents) {
        $supplierclass = "PluginManufacturersimports".$suppliername;
        $supplier = new $supplierclass();
@@ -348,7 +357,8 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
             $contents = stristr($contents, $field);
          }
          if (!$contents === FALSE) {
-            $maDate = self::importDate($suppliername,$contents);
+            $maBuyDate = self::importDate($suppliername, $contents);
+            $maDate    = self::importStartDate($suppliername, $contents);
             
             //if ($suppliername ==PluginManufacturersimportsConfig::FUJITSU) {
          
@@ -397,6 +407,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
                               "suppliername" => $suppliername,
                               "addcomments" => $addcomments,
                               "maDate" => $maDate,
+                              "buyDate"       => $maBuyDate,
                               "warranty_info" => $warrantyinfo);
             self::saveInfocoms ($options);
             
@@ -440,7 +451,13 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
       }
    }
 
-   static function saveInfocoms ($options) {
+   /**
+    * Adding infocoms date of purchase and warranty
+    *
+    * @param $options
+    * @param bool $display
+    */
+   static function saveInfocoms ($options, $display = false) {
 
       //Original values
       $warranty_date     = "";
@@ -458,7 +475,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
       $input_infocom["warranty_date"]     = $options["maDate"];
       $input_infocom["warranty_duration"] = $options["warranty"];
       $input_infocom["warranty_info"]     = $options["warranty_info"];
-      $input_infocom["buy_date"]          = $options["maDate"];
+      $input_infocom["buy_date"]          = $options["buyDate"];
       $input_infocom["items_id"]          = $options["ID"];
       $input_infocom["itemtype"]          = $options["itemtype"];
       
@@ -518,6 +535,10 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
       echo "</td>";
    }
 
+   /**
+    * @param $options
+    * @return int
+    */
    static function addDocument($options){
 
       //configure adding doc
@@ -585,6 +606,11 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
    }
 
 
+   /**
+    * @param $type
+    * @param $ID
+    * @param null $contents
+    */
    static function isInError ($type, $ID, $contents = null) {
 
       $msgerr = "";
