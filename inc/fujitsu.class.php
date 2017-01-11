@@ -43,17 +43,6 @@ class PluginManufacturersimportsFujitsu extends PluginManufacturersimportsManufa
       return Search::showHeaderItem($output_type, __('File'), $header_num);
    }
 
-   /**
-    * @see PluginManufacturersimportsManufacturer::showWarrantyItem()
-    */
-   function showWarrantyItem($ID, $supplierWarranty) {
-      echo "<td>";
-      Dropdown::showInteger("to_warranty_duration".
-                                  $ID, $supplierWarranty, 
-                                  0, 120, 1, array(-1 => __('Lifelong')));
-      echo "</td>";
-   }
-
    function getSearchField() {
       return "Service Start Date";
    }
@@ -72,16 +61,22 @@ class PluginManufacturersimportsFujitsu extends PluginManufacturersimportsManufa
     * @see PluginManufacturersimportsManufacturer::getBuyDate()
     */
    function getBuyDate($contents) {
-      $maDate = substr($contents,225,10);
+      
+      $matchesarray = array();
+      preg_match_all("/(\d{2}\/\d{2}\/\d{4})/", $contents, $matchesarray);
+      
+      $datetimestamp = date('U');
+      $maDate = $matchesarray[0][0];
+      
       $maDate = trim($maDate);
       $maDate = str_replace('/','-',$maDate);
-      $maDate = PluginManufacturersimportsPostImport::checkDate($maDate, true);
 
+      $maDate = PluginManufacturersimportsPostImport::checkDate($maDate, true);
+      
       if ($maDate != "0000-00-00") {
          list($jour, $mois, $annee) = explode('-', $maDate);
          $maDate = date("Y-m-d", mktime(0, 0, 0, $mois, $jour, $annee));
       }
-      
       return $maDate;
    }
    
@@ -99,10 +94,12 @@ class PluginManufacturersimportsFujitsu extends PluginManufacturersimportsManufa
     */
    function getExpirationDate($contents) {
 
-      $field     = "Service end date";
-      $searchfin = stristr($contents, $field);
-      $maDate = substr($searchfin,217,10);
+      $matchesarray = array();
+      preg_match_all("/(\d{2}\/\d{2}\/\d{4})/", $contents, $matchesarray);
 
+      $datetimestamp = date('U');
+      $maDate = $matchesarray[0][1];
+      
       $maDate = trim($maDate);
       $maDate = str_replace('/','-',$maDate);
 
