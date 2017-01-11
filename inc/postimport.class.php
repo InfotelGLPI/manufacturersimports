@@ -352,7 +352,8 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
          // On extrait la date de garantie de la variable contents.
          $field = self::selectSupplierfield($suppliername);
          
-         if ($suppliername !=PluginManufacturersimportsConfig::DELL) {
+         if (($suppliername !=PluginManufacturersimportsConfig::DELL)
+            && ($suppliername !=PluginManufacturersimportsConfig::HP)) {
          
             $contents = stristr($contents, $field);
          }
@@ -369,7 +370,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
 
          } 
          //else {
-            
+           
          //   self::isInError($type,$ID);
          //}
 
