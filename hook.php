@@ -32,7 +32,7 @@ function plugin_manufacturersimports_install() {
 
    include_once (GLPI_ROOT."/plugins/manufacturersimports/inc/profile.class.php");
    include_once (GLPI_ROOT."/plugins/manufacturersimports/inc/config.class.php");
-   $migration = new Migration("1.7.0");
+   $migration = new Migration("1.9.1");
    $update    = false;
    
    //Root of SQL files for DB installation or upgrade
@@ -95,6 +95,18 @@ function plugin_manufacturersimports_install() {
              SET `Supplier_url` = 'https://www.wortmann.de/fr-fr/profile/snsearch.aspx?SN=' 
              WHERE `name` ='".PluginManufacturersimportsConfig::WORTMANN_AG."'";
    $DB->query($query);
+   
+   $query = "UPDATE `glpi_plugin_manufacturersimports_configs` 
+             SET `Supplier_url` = 'http://h20564.www2.hp.com/hpsc/wc/public/find' 
+             WHERE `name` ='".PluginManufacturersimportsConfig::HP."'";
+   $DB->query($query);
+
+
+   /* Version 1.9.1 */
+   $cron = new CronTask();
+   if (!$cron->getFromDBbyName('PluginManufacturersimportsDell', 'DataRecoveryDELL')) {
+      CronTask::Register('PluginManufacturersimportsDell', 'DataRecoveryDELL', WEEK_TIMESTAMP, array('state' => CronTask::STATE_DISABLE));
+   }
 
    if ($update) {
       foreach ($DB->request('glpi_plugin_manufacturersimports_profiles') as $data) {
@@ -131,7 +143,7 @@ function plugin_manufacturersimports_uninstall() {
    include_once (GLPI_ROOT."/plugins/manufacturersimports/inc/profile.class.php");
    include_once (GLPI_ROOT."/plugins/manufacturersimports/inc/menu.class.php");
 
-   $migration = new Migration("1.7.0");
+   $migration = new Migration("1.9.1");
    $tables    = array("glpi_plugin_manufacturersimports_configs",
                       "glpi_plugin_manufacturersimports_models",
                       "glpi_plugin_manufacturersimports_logs");
@@ -146,6 +158,11 @@ function plugin_manufacturersimports_uninstall() {
                    "glpi_plugin_suppliertag_imported");
    foreach($tables as $table) {
       $migration->dropTable($table);
+   }
+   
+   $cron = new CronTask;
+   if ($cron->getFromDBbyName('PluginManufacturersimportsDell', 'DataRecoveryDELL')) {
+      CronTask::Unregister('DataRecoveryDELL');
    }
    
    $profileRight = new ProfileRight();

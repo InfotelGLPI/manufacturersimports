@@ -188,7 +188,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
          //serial
          echo Search::showItem($output_type,$line["serial"],$item_num,$row_num);
          //otherserial
-         echo $supplier->showItem($output_type,$otherSerial,$item_num,$row_num);
+         echo Search::showItem($output_type,$otherSerial,$item_num,$row_num);
 
          //display infocoms
          $output_ic="";
@@ -474,6 +474,11 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
             $total      = 0;
             
             if ($output_type==Search::HTML_OUTPUT) {
+               if ($suppliername == PluginManufacturersimportsConfig::HP){
+                  echo "<div class='center'>";
+                  echo "<span class='red'>".__('Warning')." : ".__('It is recommended that you specify the model number for HP imports', 'manufacturersimports') . "</span>";
+                  echo "</div>";
+               }
                self::printPager($p['start'], $numrows, 
                                 $target, $parameters, $p['itemtype']);
             }
@@ -530,7 +535,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
                echo Search::showHeaderItem($output_type, __('Entity'), $header_num);
             }
             echo Search::showHeaderItem($output_type, __('Serial number'), $header_num);
-            echo $supplier->showItemTitle($output_type,$header_num);
+            echo Search::showHeaderItem($output_type, __('Model Number', 'manufacturersimports'), $header_num);
             echo Search::showHeaderItem($output_type, 
                                         __('Financial and administrative information'),
                                         $header_num);
@@ -656,13 +661,14 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
                         `".$itemtable."`.`name`, 
                         `".$itemtable."`.`serial`,
                         `".$itemtable."`.`entities_id`,
-                         `glpi_plugin_manufacturersimports_logs`.`import_status`,
-                          `glpi_plugin_manufacturersimports_logs`.`items_id`,
-                           `glpi_plugin_manufacturersimports_logs`.`itemtype`, 
-                           `glpi_plugin_manufacturersimports_logs`.`documents_id`,
-                            `glpi_plugin_manufacturersimports_logs`.`date_import`, 
-                            '".$p['itemtype']."' AS type,
-                            `$modeltable`.`name` AS model_name
+                        `glpi_plugin_manufacturersimports_logs`.`import_status`,
+                        `glpi_plugin_manufacturersimports_logs`.`items_id`,
+                        `glpi_plugin_manufacturersimports_logs`.`itemtype`, 
+                        `glpi_plugin_manufacturersimports_logs`.`documents_id`,
+                        `glpi_plugin_manufacturersimports_logs`.`date_import`,
+                        `glpi_plugin_manufacturersimports_models`.`model_name` AS product_number,
+                        '".$p['itemtype']."' AS type,
+                        `$modeltable`.`name` AS model_name
                   FROM `".$itemtable."` ";
 
       //model device left join

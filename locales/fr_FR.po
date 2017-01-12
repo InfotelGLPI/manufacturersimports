@@ -1,36 +1,38 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR ManufacturersImports Development Team
+# Copyright (C) YEAR $copyright
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
+# Amandine Manceau <amandine.manceau@infotel.com>, 2017
 # Xavier CAILLAUD <tsmr@thetsmr.fr>, 2012
 # Xavier CAILLAUD <tsmr@thetsmr.fr>, 2012,2015
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - manufacturersimports plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-17 10:59+0200\n"
-"PO-Revision-Date: 2015-09-17 09:00+0000\n"
-"Last-Translator: Xavier CAILLAUD <tsmr@thetsmr.fr>\n"
+"POT-Creation-Date: 2017-01-12 11:18+0100\n"
+"PO-Revision-Date: 2017-01-12 11:35+0100\n"
+"Last-Translator: Amandine Manceau <amandine.manceau@infotel.com>\n"
 "Language-Team: French (France) (http://www.transifex.com/tsmr/GLPI_manufacturersimports/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 1.8.5\n"
 
-#: hook.php:193 setup.php:68 ajax/massiveaction.php:38 inc/menu.class.php:35
-#: inc/model.class.php:39 inc/preimport.class.php:42 inc/profile.class.php:68
+#: hook.php:215 setup.php:68 ajax/massiveaction.php:40 inc/menu.class.php:35
+#: inc/model.class.php:39 inc/preimport.class.php:41 inc/profile.class.php:68
 msgid "Suppliers import"
 msgid_plural "Suppliers imports"
 msgstr[0] "Import fabricants"
 msgstr[1] "Imports fabricants"
 
-#: hook.php:197 inc/lenovo.class.php:44
+#: hook.php:219 inc/lenovo.class.php:53
 msgid "Model number"
 msgstr "Numéro de modèle"
 
-#: hook.php:223
+#: hook.php:245
 msgid "Add new material brand number"
 msgstr "Ajouter un numéro de modèle de matériel"
 
@@ -38,7 +40,7 @@ msgstr "Ajouter un numéro de modèle de matériel"
 msgid "This plugin requires GLPI >= 0.90"
 msgstr "Ce plugin nécessite GLPI >= 0.90"
 
-#: setup.php:87 setup.php:90 setup.php:93
+#: setup.php:88 setup.php:92 setup.php:96
 msgid "Incompatible PHP Installation. Requires module"
 msgstr "Installation de PHP incompatible. Nécessite le module"
 
@@ -46,43 +48,55 @@ msgstr "Installation de PHP incompatible. Nécessite le module"
 msgid "Please activate the plugin"
 msgstr "Merci d'activer le plugin"
 
-#: inc/config.class.php:190 inc/config.class.php:311
+#: inc/config.class.php:193 inc/config.class.php:315
 msgid "Manufacturer web address"
 msgstr "Url du fabricant"
 
-#: inc/config.class.php:197 inc/config.class.php:318
+#: inc/config.class.php:200 inc/config.class.php:322
 msgid "Default supplier attached"
 msgstr "Fournisseur affecté par défaut"
 
-#: inc/config.class.php:203 inc/preimport.class.php:573
+#: inc/config.class.php:206 inc/preimport.class.php:546
 msgid "New warranty attached"
 msgstr "Nouvelle garantie affectée"
 
-#: inc/config.class.php:210 inc/config.class.php:341
+#: inc/config.class.php:213 inc/config.class.php:345
 msgid "Auto add of document"
 msgstr "Ajout automatique de document"
 
-#: inc/config.class.php:222 inc/config.class.php:363
+#: inc/config.class.php:225 inc/config.class.php:367
 msgid "Add a comment line"
 msgstr "Ajout d'une ligne dans les commentaires"
 
-#: inc/config.class.php:328
+#: inc/config.class.php:332
 msgid "New warranty affected by default (Replace if 0)"
 msgstr "Nouvelle garantie affectée par défaut (remplacée si différent de 0)"
 
-#: inc/config.class.php:348
+#: inc/config.class.php:352
 msgid "Section for document records"
 msgstr "Rubrique pour l'enregistrement des documents"
 
-#: inc/config.class.php:356
+#: inc/config.class.php:360
 msgid "Manufacturer API key"
 msgstr "Clé API du fabricant"
 
-#: inc/config.class.php:463 inc/preimport.class.php:228
+#: inc/config.class.php:492 inc/preimport.class.php:254
 msgid "Manufacturer information"
 msgstr "Informations fabricant"
 
-#: inc/model.class.php:111
+#: inc/dell.class.php:176
+msgid "Data recovery DELL for computer"
+msgstr "Récupération de données DELL pour les ordinateurs"
+
+#: inc/import.class.php:111 inc/postimport.class.php:573
+msgid "Import OK"
+msgstr "Import OK"
+
+#: inc/import.class.php:114 inc/postimport.class.php:675
+msgid "Import failed"
+msgstr "Import KO"
+
+#: inc/model.class.php:111 inc/preimport.class.php:538
 msgid "Model Number"
 msgstr "Numéro de modèle"
 
@@ -107,71 +121,67 @@ msgstr "Détails"
 msgid "Total number of devices imported %s"
 msgstr "Nombre total de matériel importés %s"
 
-#: inc/postimport.class.php:448 inc/postimport.class.php:457
+#: inc/postimport.class.php:552 inc/postimport.class.php:561
 msgid "Imported from web site"
 msgstr "Importé depuis le site de"
 
-#: inc/postimport.class.php:449 inc/postimport.class.php:458
+#: inc/postimport.class.php:553 inc/postimport.class.php:562
 msgid "With the manufacturersimports plugin"
 msgstr "Avec le plugin manufacturersimports"
 
-#: inc/postimport.class.php:468
-msgid "Import OK"
-msgstr "Import OK"
-
-#: inc/postimport.class.php:560
-msgid "Import failed"
-msgstr "Import KO"
-
-#: inc/postimport.class.php:576
+#: inc/postimport.class.php:691
 msgid "Connection failed/data download from manufacturer web site"
 msgstr "Echec de connexion/récupération de données au site du fabricant"
 
-#: inc/preimport.class.php:200
+#: inc/preimport.class.php:226
 msgid "The choosen supplier is not recursive"
 msgstr "Le fournisseur choisi n'est pas récursif"
 
-#: inc/preimport.class.php:234
+#: inc/preimport.class.php:260
 msgid "Not yet imported"
 msgstr "Pas encore importé"
 
-#: inc/preimport.class.php:237
+#: inc/preimport.class.php:263
 msgid "Problem during the importation"
 msgstr "Problème lors de l'importation"
 
-#: inc/preimport.class.php:245
+#: inc/preimport.class.php:271
 msgid "Already imported"
 msgstr "Déjà importé"
 
-#: inc/preimport.class.php:280
+#: inc/preimport.class.php:306
 msgid "Choose inventory type and manufacturer"
 msgstr "Choix du type de matériel et du fabricant"
 
-#: inc/preimport.class.php:319
+#: inc/preimport.class.php:345
 msgid "Devices not imported"
 msgstr "Matériels non importés"
 
-#: inc/preimport.class.php:321
+#: inc/preimport.class.php:347
 msgid "Devices already imported"
 msgstr "Matériels déjà importés"
 
-#: inc/preimport.class.php:328 inc/preimport.class.php:331
+#: inc/preimport.class.php:354 inc/preimport.class.php:357
 msgid "No manufacturer available. Please configure at least one manufacturer"
 msgstr "Aucun fabricant utilisable. Merci de configurer au moins un fabricant"
 
-#: inc/preimport.class.php:570
+#: inc/preimport.class.php:479
+msgid "It is recommended that you specify the model number for HP imports"
+msgstr "Il est recommandé de spécifier le numéro de modèle pour les importations HP"
+
+#: inc/preimport.class.php:543
 msgid "Supplier attached"
 msgstr "Fournisseur affecté"
 
-#: inc/preimport.class.php:619
+#: inc/preimport.class.php:592
 #, php-format
 msgid "Total number of devices to import %s"
 msgstr "Nombre total de matériel à importer %s"
 
-#: inc/preimport.class.php:666
+#: inc/preimport.class.php:639
 msgid "No device finded"
 msgstr "Aucun matériel trouvé"
 
-#: inc/preimport.class.php:804
+#: inc/preimport.class.php:855
 msgid "Reset the import"
 msgstr "Réinitialiser l'import"

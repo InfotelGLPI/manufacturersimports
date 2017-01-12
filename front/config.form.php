@@ -63,7 +63,7 @@ if (isset($_POST["add"])) {
 
 } else if (isset($_POST["delete_model"])) {
    Session::checkRight("plugin_manufacturersimports", UPDATE);
-   $model->delete($_POST["id"]);
+   $model->delete($_POST);
    Html::back();
 
 } else {

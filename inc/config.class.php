@@ -162,7 +162,7 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
    static function getSuppliers() {
       $options[-1]            = Dropdown::EMPTY_VALUE;
       $options[self::DELL]    = self::DELL;
-      //$options[self::HP]      = self::HP;
+      $options[self::HP]      = self::HP;
       $options[self::FUJITSU] = self::FUJITSU;
       $options[self::TOSHIBA] = self::TOSHIBA;
       $options[self::LENOVO]  = self::LENOVO;

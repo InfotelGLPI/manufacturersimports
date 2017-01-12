@@ -278,7 +278,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
    *
    */
    static function seePostImport ($type,$ID,$fromsupplier,$fromwarranty,$configID) {
-      global $DB,$CFG_GLPI;
+      global $DB;
 
       $config = new PluginManufacturersimportsConfig();
       $config->getFromDB($configID);
@@ -292,14 +292,6 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
       $suppliername = $config->fields["name"];
       $supplierUrl  = $config->fields["supplier_url"];
       $supplierkey  = $config->fields["supplier_key"];
-      $adddoc       = $config->fields["document_adding"];
-      $rubrique     = $config->fields["documentcategories_id"];
-      $addcomments  = $config->fields["comment_adding"];
-      if ($fromwarranty) {
-         $warranty = $fromwarranty;
-      } else {
-         $warranty = $config->fields["warranty_duration"];
-      }
 
       $itemtable = getTableForItemType($type);
 
@@ -338,117 +330,179 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
          echo "<td>";
          echo "<a href='".$url."' target='_blank'>"._n('Manufacturer' , 'Manufacturers' , 1)."</a>";
          echo "</td>";
-         
-         $contents = "";
-         $msgerr   ="";
-         $options  = array ("url"          => $url,
-                            "download"     => false,
-                            "file"         => false,
-                            "post"         => $post,
-                            "suppliername" => $suppliername);
 
-         $contents = self::cURLData($options);
-         $allcontents = $contents;
-         // On extrait la date de garantie de la variable contents.
-         $field = self::selectSupplierfield($suppliername);
-         
-         if ($suppliername !=PluginManufacturersimportsConfig::DELL) {
-         
-            $contents = stristr($contents, $field);
-         }
-         if (!$contents === FALSE) {
-            $maBuyDate = self::importDate($suppliername, $contents);
-            $maDate    = self::importStartDate($suppliername, $contents);
-            
-            //if ($suppliername ==PluginManufacturersimportsConfig::FUJITSU) {
-         
-               $contents = $allcontents;
-            //}
-            $maDateFin = self::importDateFin($suppliername,$contents);
-            $warrantyinfo = self::importWarrantyInfo($suppliername,$contents);
+         $options = array("url"          => $url,
+                          "post"         => $post,
+                          "type"         => $type,
+                          "ID"           => $ID,
+                          "config"       => $config,
+                          "line"         => $line,
+                          "fromsupplier" => $fromsupplier,
+                          "fromwarranty" => $fromwarranty,
+                          "display"      => true);
 
-         } 
-         //else {
-            
-         //   self::isInError($type,$ID);
-         //}
-
-         if (isset($maDate) 
-               && $maDate != "0000-00-00" 
-                  && $maDate != false
-                     && isset($maDateFin) 
-                        && $maDateFin != "0000-00-00"
-                           && $maDateFin != false) {
-
-            list ($adebut, $mdebut, $jdebut) = explode ('-', $maDate);
-            list ($afin, $mfin, $jfin) = explode ('-', $maDateFin);
-            $warranty = 0;
-            $warranty = 12 - $mdebut;
-            for ($year = $adebut + 1; $year < $afin;$year++) {
-               $warranty += 12;
-            }
-            $warranty += $mfin;
-         }
-            
-         if (isset($maDate) 
-               && $maDate != "0000-00-00"
-                  && $maDate != false) {
-            //warranty for life
-            if ($warranty > 120) {
-               $warranty=-1;
-            }
-
-            $date=date("Y-m-d");
-            $options = array ("itemtype" => $type,
-                              "ID" => $ID,
-                              "date" => $date,
-                              "supplierId" => $supplierId,
-                              "warranty" => $warranty,
-                              "suppliername" => $suppliername,
-                              "addcomments" => $addcomments,
-                              "maDate" => $maDate,
-                              "buyDate"       => $maBuyDate,
-                              "warranty_info" => $warrantyinfo);
-            self::saveInfocoms ($options);
-            
-               // on cree un doc dans GLPI qu'on va lier au materiel
-               if ($adddoc != 0 
-                  && $suppliername != PluginManufacturersimportsConfig::DELL) {
-                  $options = array ("itemtype"     => $type,
-                                    "ID"           => $ID,
-                                    "url"          => $url,
-                                    "entities_id"  => $line["entities_id"],
-                                    "rubrique"     => $rubrique,
-                                    "suppliername" => $suppliername);
-                  $values["documents_id"] = self::addDocument($options);
-               }
-
-               //insert base locale
-               $values["import_status"] = 1;
-               $values["items_id"]      = $ID;
-               $values["itemtype"]      = $type;
-               $values["date_import"]   = $date;
-               $log                     = new PluginManufacturersimportsLog();
-               $log->add($values);
-
-               // cleanup Log
-               $log_clean               = new PluginManufacturersimportsLog();
-               $log_clean->deleteByCriteria(array(
-                       'items_id' => $ID,
-                       'itemtype' => $type,
-                       'import_status' => 2,
-                       'LIMIT' => 1
-                   )
-               );
-
-               $_SESSION["glpi_plugin_manufacturersimports_total"]+=1;
-
-         } else { // Failed check contents
-            self::isInError($type,$ID);
-         }
+         self::saveImport($options);
 
          echo "</tr>\n";
       }
+   }
+
+   /**
+    * @param array $params
+    * @return bool
+    */
+   static function saveImport($params = array())
+   {
+
+      $default_values                 = array();
+      $default_values['url']          = "";
+      $default_values['post']         = "";
+      $default_values['display']      = false;
+      $default_values['type']         = "";
+      $default_values['ID']           = 0;
+      $default_values['fromsupplier'] = 0;
+      $default_values['fromwarranty'] = 0;
+      $default_values['line']         = array();
+      $default_values['config']       = new PluginManufacturersimportsConfig();
+
+      foreach ($default_values as $key => $val) {
+         if (isset($params[$key])) {
+            $$key = $params[$key];
+         } else {
+            $$key = $val;
+         }
+      }
+      
+      if ($fromsupplier) {
+         $supplierId = $fromsupplier;
+      } else {
+         $supplierId = $config->fields["suppliers_id"];
+      }
+      $suppliername = $config->fields["name"];
+      $supplierUrl  = $config->fields["supplier_url"];
+      $supplierkey  = $config->fields["supplier_key"];
+      $adddoc       = $config->fields["document_adding"];
+      $rubrique     = $config->fields["documentcategories_id"];
+      $addcomments  = $config->fields["comment_adding"];
+      
+      if ($fromwarranty) {
+         $warranty = $fromwarranty;
+      } else {
+         $warranty = $config->fields["warranty_duration"];
+      }
+
+      $contents = "";
+      $msgerr   = "";
+
+      $options  = array("url"          => $url,
+                        "download"     => false,
+                        "file"         => false,
+                        "post"         => $post,
+                        "suppliername" => $suppliername);
+
+      $contents    = self::cURLData($options);
+      $allcontents = $contents;
+      // On extrait la date de garantie de la variable contents.
+      $field = self::selectSupplierfield($suppliername);
+
+      if ($suppliername != PluginManufacturersimportsConfig::DELL) {
+
+         $contents = stristr($contents, $field);
+      }
+
+      if (!$contents === FALSE) {
+         $maBuyDate = self::importDate($suppliername, $contents);
+         $maDate    = self::importStartDate($suppliername, $contents);
+
+         $maDateFin    = self::importDateFin($suppliername, $contents);
+         $warrantyinfo = self::importWarrantyInfo($suppliername, $contents);
+
+      }
+
+      if (isset($maDate)
+          && $maDate != "0000-00-00"
+          && $maDate != false
+          && isset($maDateFin)
+          && $maDateFin != "0000-00-00"
+          && $maDateFin != false
+      ) {
+
+         list ($adebut, $mdebut, $jdebut) = explode('-', $maDate);
+         list ($afin, $mfin, $jfin) = explode('-', $maDateFin);
+         $warranty = 0;
+         $warranty = 12 - $mdebut;
+         for ($year = $adebut + 1; $year < $afin; $year++) {
+            $warranty += 12;
+         }
+         $warranty += $mfin;
+      }
+
+      if (isset($maDate)
+          && $maDate != "0000-00-00"
+          && $maDate != false
+      ) {
+         //warranty for life
+         if ($warranty > 120) {
+            $warranty = -1;
+         }
+
+         $date    = date("Y-m-d");
+         $options = array("itemtype"      => $type,
+                          "ID"            => $ID,
+                          "date"          => $date,
+                          "supplierId"    => $supplierId,
+                          "warranty"      => $warranty,
+                          "suppliername"  => $suppliername,
+                          "addcomments"   => $addcomments,
+                          "maDate"        => $maDate,
+                          "buyDate"       => $maBuyDate,
+                          "warranty_info" => $warrantyinfo);
+         self::saveInfocoms($options, $display);
+
+         // on cree un doc dans GLPI qu'on va lier au materiel
+         if ($adddoc != 0
+             && $suppliername != PluginManufacturersimportsConfig::DELL
+         ) {
+            $options                = array("itemtype"     => $type,
+                                            "ID"           => $ID,
+                                            "url"          => $url,
+                                            "entities_id"  => $line["entities_id"],
+                                            "rubrique"     => $rubrique,
+                                            "suppliername" => $suppliername);
+            $values["documents_id"] = self::addDocument($options);
+         }
+
+         //insert base locale
+         $values["import_status"] = 1;
+         $values["items_id"]      = $ID;
+         $values["itemtype"]      = $type;
+         $values["date_import"]   = $date;
+         $log                     = new PluginManufacturersimportsLog();
+         $log->add($values);
+
+         // cleanup Log
+         $log_clean = new PluginManufacturersimportsLog();
+         $log_clean->deleteByCriteria(array(
+                                         'items_id'      => $ID,
+                                         'itemtype'      => $type,
+                                         'import_status' => 2,
+                                         'LIMIT'         => 1
+                                      )
+         );
+
+         $_SESSION["glpi_plugin_manufacturersimports_total"] += 1;
+         return true;
+
+      } else { // Failed check contents
+         if ($display) {
+            self::isInError($type, $ID);
+         } else {
+            self::isInError($type, $ID, null, $display);
+            return false;
+         }
+      }
+      return false;
+
    }
 
    /**
@@ -514,25 +568,27 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
 
       }
 
-      //post message
-      echo "<td><span class='plugin_manufacturersimports_import_OK'>";
-      echo __('Import OK', 'manufacturersimports')." (".Html::convdate($options["date"]).")";
-      echo "</span></td>";
-      echo "<td>";
-      echo _n('Supplier' , 'Suppliers' , 1).": ";
-      echo $suppliers_id."->".Dropdown::getDropdownName("glpi_suppliers",$options["supplierId"])."<br>";
-      echo __('Date of purchase').": ";
-      echo Html::convdate($buy_date)."->".Html::convdate($options["maDate"])."<br>";
-      echo __('Start date of warranty').": ";
-      echo $warranty_date."->".Html::convdate($options["maDate"])."<br>";
-      if ($warranty_duration==-1) {
-         $warranty_duration=__('Lifelong');
-         $warranty=__('Lifelong');
-      } else {
-         $warranty=$options["warranty"];
+      if($display) {
+         //post message
+         echo "<td><span class='plugin_manufacturersimports_import_OK'>";
+         echo __('Import OK', 'manufacturersimports')." (".Html::convdate($options["date"]).")";
+         echo "</span></td>";
+         echo "<td>";
+         echo _n('Supplier' , 'Suppliers' , 1).": ";
+         echo $suppliers_id."->".Dropdown::getDropdownName("glpi_suppliers",$options["supplierId"])."<br>";
+         echo __('Date of purchase').": ";
+         echo Html::convdate($buy_date)."->".Html::convdate($options["buyDate"])."<br>";
+         echo __('Start date of warranty').": ";
+         echo $warranty_date."->".Html::convdate($options["maDate"])."<br>";
+         if ($warranty_duration==-1) {
+            $warranty_duration=__('Lifelong');
+            $warranty=__('Lifelong');
+         } else {
+            $warranty=$options["warranty"];
+         }
+         echo __('Warranty duration').": ".$warranty_duration."->".$warranty."<br>";
+         echo "</td>";
       }
-      echo __('Warranty duration').": ".$warranty_duration."->".$warranty."<br>";
-      echo "</td>";
    }
 
    /**
@@ -611,14 +667,16 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
     * @param $ID
     * @param null $contents
     */
-   static function isInError ($type, $ID, $contents = null) {
+   static function isInError ($type, $ID, $contents = null, $display = true) {
 
       $msgerr = "";
       $date   = date("Y-m-d");
-      echo "<td>";
-      echo "<span class='plugin_manufacturersimports_import_KO'>";
-      echo __('Import failed', 'manufacturersimports')." (";
-      echo Html::convdate($date).")</span></td>";
+      if ($display) {
+         echo "<td>";
+         echo "<span class='plugin_manufacturersimports_import_KO'>";
+         echo __('Import failed', 'manufacturersimports')." (";
+         echo Html::convdate($date).")</span></td>";
+      }
 
       $temp = new PluginManufacturersimportsLog();
       $temp->deleteByCriteria(array('itemtype' => $type,
@@ -632,10 +690,12 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
       $log                     = new PluginManufacturersimportsLog();
       $log->add($values);
 
-      if (!empty($contents)) {
-         $msgerr=__('Connection failed/data download from manufacturer web site', 'manufacturersimports');
+      if ($display) {
+         if (!empty($contents)) {
+            $msgerr=__('Connection failed/data download from manufacturer web site', 'manufacturersimports');
+         }
+         echo "<td>$msgerr</td>";
       }
-      echo "<td>$msgerr</td>";
    }
 }
 

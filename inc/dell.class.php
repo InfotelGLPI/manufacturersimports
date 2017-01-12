@@ -160,7 +160,42 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
       }
 
       return false;
-   }   
+   }
+
+   /**
+    * @param $name
+    *
+    * @return array
+    */
+   static function cronInfo($name)
+   {
+
+      switch ($name) {
+         case "DataRecoveryDELL" :
+            return array('description' => PluginManufacturersimportsModel::getTypeName(1) . " - " . __('Data recovery DELL for computer', 'manufacturersimports'));
+      }
+      return array();
+   }
+
+
+   /**
+    * Run for data recovery DELL
+    *
+    * @param $task : object of crontask
+    *
+    * @return integer : 0 (nothing to do)
+    *                   >0 (endded)
+    **/
+  static function cronDataRecoveryDELL($task) {
+      global $DB;
+
+      $cron_status = 0;
+
+      $cron_status = PluginManufacturersimportsImport::importCron($task, PluginManufacturersimportsConfig::DELL);
+
+      return $cron_status;
+   }
+
 }
 
 ?>
