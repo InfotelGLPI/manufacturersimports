@@ -31,9 +31,18 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access directly to this file");
 }
 
+/**
+ * Class PluginManufacturersimportsLog
+ */
 class PluginManufacturersimportsLog extends CommonDBTM {
 
-   function getFromDBbyDevice($items_id,$itemtype) {
+   /**
+    * @param $items_id
+    * @param $itemtype
+    *
+    * @return bool
+    */
+   function getFromDBbyDevice($items_id, $itemtype) {
       global $DB;
       
       $query = "SELECT * FROM `".$this->getTable()."` " .
@@ -52,16 +61,26 @@ class PluginManufacturersimportsLog extends CommonDBTM {
       }
       return false;
    }
-   
-   function checkIfAlreadyImported($itemtype,$items_id) {
+
+   /**
+    * @param $itemtype
+    * @param $items_id
+    *
+    * @return bool
+    */
+   function checkIfAlreadyImported($itemtype, $items_id) {
 
       if ($this->getFromDBbyDevice($items_id,$itemtype))
          return $this->fields["id"];
       else
          return false;
    }
-  
-   function reinitializeImport($itemtype,$items_id) {
+
+   /**
+    * @param $itemtype
+    * @param $items_id
+    */
+   function reinitializeImport($itemtype, $items_id) {
       global $DB;
 
       if ($this->getFromDBbyDevice($items_id,$itemtype)) {
@@ -72,7 +91,7 @@ class PluginManufacturersimportsLog extends CommonDBTM {
             $query ="DELETE
               FROM `glpi_documents_items`
               WHERE `documents_id` = '".$this->fields["documents_id"]."';";
-            $result=$DB->query($query);
+            $DB->query($query);
 
             if (is_file(GLPI_DOC_DIR."/".$doc->fields["filename"]) 
                   && !is_dir(GLPI_DOC_DIR."/".$doc->fields["filename"]))
@@ -85,5 +104,3 @@ class PluginManufacturersimportsLog extends CommonDBTM {
          $this->delete(array('id'=>$this->fields["id"]));
    }
 }
-
-?>

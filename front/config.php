@@ -43,4 +43,3 @@ if ($plugin->isActivated("manufacturersimports")) {
 }
 
 Html::footer();
-?>

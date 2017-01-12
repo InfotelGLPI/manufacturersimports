@@ -138,7 +138,6 @@ function plugin_manufacturersimports_install() {
 }
 
 function plugin_manufacturersimports_uninstall() {
-   global $DB;
 
    include_once (GLPI_ROOT."/plugins/manufacturersimports/inc/profile.class.php");
    include_once (GLPI_ROOT."/plugins/manufacturersimports/inc/menu.class.php");
@@ -256,5 +255,3 @@ function plugin_manufacturersimports_MassiveActions($type) {
    }
    return array();
 }
-
-?>

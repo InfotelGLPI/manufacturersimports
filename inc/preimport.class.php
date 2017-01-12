@@ -30,6 +30,9 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access directly to this file");
 }
 
+/**
+ * Class PluginManufacturersimportsPreImport
+ */
 class PluginManufacturersimportsPreImport extends CommonDBTM {
 
    static $rightname = "plugin_manufacturersimports";
@@ -37,12 +40,24 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
    const IMPORTED        = 2;
    const NOT_IMPORTED    = 1;
 
+   /**
+    * Return the localized name of the current Type
+    * Should be overloaded in each new class
+    *
+    * @return string
+    **/
    static function getTypeName($nb=0) {
       return _n('Suppliers import', 'Suppliers imports', $nb, 'manufacturersimports');
    }
 
-   static function showAllItems($myname,$value_type=0,$value=0,$entity_restrict=-1,$types='') {
-      global $CFG_GLPI;
+   /**
+    * @param $myname
+    * @param int $value_type
+    * @param int $value
+    * @param int $entity_restrict
+    * @param string $types
+    */
+   static function showAllItems($myname, $value_type=0, $value=0, $entity_restrict=-1, $types='') {
 
       if (!is_array($types)) {
          $types = PluginManufacturersimportsConfig::getTypes();
@@ -89,6 +104,15 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
       return $url;
    }
 
+   /**
+    * @param $suppliername
+    * @param $supplierUrl
+    * @param $compSerial
+    * @param null $otherserial
+    * @param null $supplierkey
+    *
+    * @return string
+    */
    static function getMoreInfosSupplier($suppliername, $supplierUrl, $compSerial, $otherserial = null, $supplierkey = null) {
 
       $url = "";
@@ -102,6 +126,15 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
       return $url;
    }
 
+   /**
+    * @param $suppliername
+    * @param $supplierUrl
+    * @param $compSerial
+    * @param null $otherserial
+    * @param null $supplierkey
+    *
+    * @return string
+    */
    static function getJSSupplier($suppliername, $supplierUrl, $compSerial, $otherserial = null, $supplierkey = null) {
 
       $js = "";
@@ -115,7 +148,14 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
       return $js;
    }
 
-   static function getSupplierPost ($suppliername,$compSerial,$otherserial=null) {
+   /**
+    * @param $suppliername
+    * @param $compSerial
+    * @param null $otherserial
+    *
+    * @return string
+    */
+   static function getSupplierPost ($suppliername, $compSerial, $otherserial=null) {
 
       $post = "";
       if (!empty($suppliername)) {
@@ -129,10 +169,18 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
       return $post;
    }
 
-   static function showImport($row_num, $item_num, $line, $output_type, 
+   /**
+    * @param $row_num
+    * @param $item_num
+    * @param $line
+    * @param $output_type
+    * @param $configID
+    * @param $status
+    * @param $imported
+    */
+   static function showImport($row_num, $item_num, $line, $output_type,
                               $configID, $status, $imported) {
-      global $DB,$CFG_GLPI;
-      
+
       $infocom = new Infocom();
       $canedit = Session::haveRight(static::$rightname, UPDATE) && $infocom->canUpdate();
       $config = new PluginManufacturersimportsConfig();
@@ -767,7 +815,15 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
 
    }
 
-   static function printPager($start,$numrows,$target,$parameters,$item_type_output=0,$item_type_output_param=0) {
+   /**
+    * @param $start
+    * @param $numrows
+    * @param $target
+    * @param $parameters
+    * @param int $item_type_output
+    * @param int $item_type_output_param
+    */
+   static function printPager($start, $numrows, $target, $parameters, $item_type_output=0, $item_type_output_param=0) {
       global $CFG_GLPI;
 
       $list_limit=$_SESSION['glpilist_limit'];
@@ -843,7 +899,14 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
 
    }
 
-   static function dropdownMassiveAction($ID,$type,$manufacturer,$start,$imported) {
+   /**
+    * @param $ID
+    * @param $type
+    * @param $manufacturer
+    * @param $start
+    * @param $imported
+    */
+   static function dropdownMassiveAction($ID, $type, $manufacturer, $start, $imported) {
       global $CFG_GLPI;
 
       echo "<select name=\"massiveaction\" id='massiveaction'>";
@@ -870,7 +933,13 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
       echo "<span id='show_massiveaction'>&nbsp;</span>\n";
 
    }
-   
+
+   /**
+    * @param $name
+    * @param $array
+    *
+    * @return string
+    */
    static function getArrayUrlLink($name, $array) {
       $out = "";
       if (is_array($array) && count($array)>0) {
@@ -882,5 +951,3 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
    }
 
 }
-
-?>

@@ -31,6 +31,9 @@ if (!defined('GLPI_ROOT')) {
         die("Sorry. You can't access directly to this file");
 }
 
+/**
+ * Class PluginManufacturersimportsProfile
+ */
 class PluginManufacturersimportsProfile extends profile {
 
    static $rightname = "profile";
@@ -217,5 +220,3 @@ class PluginManufacturersimportsProfile extends profile {
    }
 
 }
-
-?>

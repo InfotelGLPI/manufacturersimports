@@ -31,9 +31,18 @@ if (!defined('GLPI_ROOT')) {
         die("Sorry. You can't access directly to this file");
 }
 
+/**
+ * Class PluginManufacturersimportsPostImport
+ */
 class PluginManufacturersimportsPostImport extends CommonDBTM {
 
-   static function checkDate($field,$reverse = false) {
+   /**
+    * @param $field
+    * @param bool $reverse
+    *
+    * @return string
+    */
+   static function checkDate($field, $reverse = false) {
 
       // Date is already "reformat" according to getDateFormat()
 
@@ -52,6 +61,11 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
    }
 
 
+   /**
+    * @param $options
+    *
+    * @return mixed|string
+    */
    static function cURLData($options){
       global $CFG_GLPI;
       
@@ -140,9 +154,12 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
          return $data;
       }
    }
-   
+
+   /**
+    * @param $values
+    */
    static function massiveimport($values) {
-      global $DB,$CFG_GLPI;
+      global $CFG_GLPI;
 
       $config = new PluginManufacturersimportsConfig();
       $log=new PluginManufacturersimportsLog();
@@ -206,6 +223,12 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
       return $field;
    }
 
+   /**
+    * @param $suppliername
+    * @param $contents
+    *
+    * @return mixed
+    */
    static function importDate($suppliername, $contents) {
    
       $supplierclass = "PluginManufacturersimports".$suppliername;
@@ -215,6 +238,12 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
       return $importDate;
    }
 
+   /**
+    * @param $suppliername
+    * @param $contents
+    *
+    * @return mixed
+    */
    static function importStartDate($suppliername, $contents) {
 
       $supplierclass = "PluginManufacturersimports".$suppliername;
@@ -224,6 +253,12 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
       return $importStartDate;
    }
 
+   /**
+    * @param $suppliername
+    * @param $contents
+    *
+    * @return mixed
+    */
    static function importWarrantyInfo($suppliername, $contents) {
        $supplierclass = "PluginManufacturersimports".$suppliername;
        $supplier = new $supplierclass();
@@ -256,8 +291,14 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
    //   }
    //   return $warranty;
    //}
-   
-   static function importDateFin($suppliername,$contents) {
+
+   /**
+    * @param $suppliername
+    * @param $contents
+    *
+    * @return mixed
+    */
+   static function importDateFin($suppliername, $contents) {
        
       $supplierclass = "PluginManufacturersimports".$suppliername;
       $supplier = new $supplierclass();
@@ -698,5 +739,3 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
       }
    }
 }
-
-?>

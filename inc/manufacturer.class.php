@@ -31,6 +31,9 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access directly to this file");
 }
 
+/**
+ * Class PluginManufacturersimportsManufacturer
+ */
 class PluginManufacturersimportsManufacturer extends CommonDBTM {
 
    /**
@@ -153,5 +156,3 @@ class PluginManufacturersimportsManufacturer extends CommonDBTM {
    }
 
 }
-
-?>

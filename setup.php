@@ -104,5 +104,3 @@ function plugin_manufacturersimports_check_prerequisites() {
 function plugin_manufacturersimports_check_config() {
    return true;
 }
-
-?>

@@ -31,16 +31,31 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access directly to this file");
 }
 
+/**
+ * Class PluginManufacturersimportsModel
+ */
 class PluginManufacturersimportsModel extends CommonDBTM {
 
    static $rightname = "plugin_manufacturersimports";
 
+   /**
+    * Return the localized name of the current Type
+    * Should be overloaded in each new class
+    *
+    * @return string
+    **/
    static function getTypeName($nb = 0) {
       return _n('Suppliers import', 'Suppliers imports', 
                 $nb, 'manufacturersimports');
    }
-   
 
+
+   /**
+    * @param $items_id
+    * @param $itemtype
+    *
+    * @return bool
+    */
    function getFromDBbyDevice($items_id, $itemtype) {
       global $DB;
 
@@ -61,6 +76,12 @@ class PluginManufacturersimportsModel extends CommonDBTM {
       return false;
    }
 
+   /**
+    * @param $itemtype
+    * @param $items_id
+    *
+    * @return bool
+    */
    function checkIfModelNeeds($itemtype, $items_id) {
       if ($this->getFromDBbyDevice($items_id, $itemtype)) {
          return $this->fields["model_name"];
@@ -69,7 +90,12 @@ class PluginManufacturersimportsModel extends CommonDBTM {
       }
    }
 
-  function addModel($values) {
+   /**
+    * @param $values
+    *
+    * @return bool
+    */
+   function addModel($values) {
       $tmp['model_name'] = $values['model_name'];
       $tmp['itemtype']   = $values['itemtype'];
       $tmp['items_id']   = $values['items_id'];
@@ -92,7 +118,7 @@ class PluginManufacturersimportsModel extends CommonDBTM {
    *
    */
    static function showForm($itemtype,$items_id) {
-      global $DB,$CFG_GLPI;
+      global $DB;
       
       $canedit = Session::haveRight(static::$rightname, UPDATE);
 
@@ -144,7 +170,16 @@ class PluginManufacturersimportsModel extends CommonDBTM {
       echo "</table></div>";
       Html::closeForm();
    }
-   
+
+   /**
+    * Class-specific method used to show the fields to specify the massive action
+    *
+    * @since version 0.85
+    *
+    * @param $ma the current massive action object
+    *
+    * @return false if parameters displayed ?
+    **/
    static function showMassiveActionsSubForm(MassiveAction $ma) {
 
       switch ($ma->getAction()) {
@@ -185,5 +220,3 @@ class PluginManufacturersimportsModel extends CommonDBTM {
       }
    }
 }
-
-?>

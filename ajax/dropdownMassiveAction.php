@@ -56,5 +56,3 @@ if (isset($_POST["action"])||isset($_POST["id"])) {
 
    }
 }
-
-?>

@@ -63,19 +63,19 @@ class PluginManufacturersimportsWortmann_ag extends PluginManufacturersimportsMa
    function getBuyDate($contents) {
       $field     = "but de la garantie";
       $searchstart = stristr($contents, $field);
-      $maDate = substr($searchstart,27,10);
+      $myDate = substr($searchstart,27,10);
 
-      $maDate = trim($maDate);
-      $maDate = str_replace('/','-',$maDate);
+      $myDate = trim($myDate);
+      $myDate = str_replace('/','-',$myDate);
 
-      $maDate = PluginManufacturersimportsPostImport::checkDate($maDate, true);
+      $myDate = PluginManufacturersimportsPostImport::checkDate($myDate, true);
 
-      if ($maDate != "0000-00-00") {
-         list($jour, $mois, $annee) = explode('-', $maDate);
-         $maDate = date("Y-m-d", mktime(0, 0, 0, $mois, $jour, $annee));
+      if ($myDate != "0000-00-00") {
+         list($day, $month, $year) = explode('-', $myDate);
+         $myDate = date("Y-m-d", mktime(0, 0, 0, $month, $day, $year));
       }
       
-      return $maDate;
+      return $myDate;
    }
    
    /**
@@ -92,17 +92,17 @@ class PluginManufacturersimportsWortmann_ag extends PluginManufacturersimportsMa
    function getExpirationDate($contents) {
       $field     = "Fin de garantie";
       $searchstart = stristr($contents, $field);
-      $maDate = substr($searchstart,24,10);
+      $myDate = substr($searchstart,24,10);
 
-      $maDate = trim($maDate);
-      $maDate = str_replace('/','-',$maDate);
+      $myDate = trim($myDate);
+      $myDate = str_replace('/','-',$myDate);
 
-      $maDate = PluginManufacturersimportsPostImport::checkDate($maDate, true);
+      $myDate = PluginManufacturersimportsPostImport::checkDate($myDate, true);
       
-      if ($maDate != "0000-00-00") {
-         list($jour, $mois, $annee) = explode('-', $maDate);
-         $maDate = date("Y-m-d", mktime(0, 0, 0, $mois, $jour, $annee));
+      if ($myDate != "0000-00-00") {
+         list($day, $month, $year) = explode('-', $myDate);
+         $myDate = date("Y-m-d", mktime(0, 0, 0, $month, $day, $year));
       }
-      return $maDate;
+      return $myDate;
    }
 }

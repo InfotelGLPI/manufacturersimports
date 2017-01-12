@@ -68,5 +68,3 @@ if (isset($_POST["action"])&&isset($_POST["id"])&&isset($_POST["item"])&&count($
 }
 
 Html::footer();
-
-?>

@@ -65,16 +65,15 @@ class PluginManufacturersimportsToshiba extends PluginManufacturersimportsManufa
    function getBuyDate($contents) {
       $days           = substr($contents,118,3);
       $days           = trim($days);
-      $maDate         = "0000-00-00";
+      $myDate         = "0000-00-00";
       $ExpirationDate = self::getExpirationDate($contents);
-      //TODO translate variables in english
       if ($ExpirationDate != "0000-00-00") {
-         list($annee, $mois, $jour) = explode('-', $ExpirationDate);
+         list($year, $month, $day) = explode('-', $ExpirationDate);
          //Drop days of warranty
-         $maDate = date("Y-m-d",
-                        mktime(0, 0, 0, $mois, $jour-$days,  $annee));
+         $myDate = date("Y-m-d",
+                        mktime(0, 0, 0, $month, $day-$days,  $year));
       }
-      return $maDate;
+      return $myDate;
    }
    
    /**
@@ -89,12 +88,11 @@ class PluginManufacturersimportsToshiba extends PluginManufacturersimportsManufa
     * @see PluginManufacturersimportsManufacturer::getExpirationDate()
     */
    function getExpirationDate($contents) {
-      //TODO translate variables in english
       $field     = "Expiration Date";
       $searchfin = stristr($contents, $field);
-      $maDateFin = substr($searchfin,138,10);
-      $maDateFin = trim($maDateFin);
-      $maDateFin = PluginManufacturersimportsPostImport::checkDate($maDateFin);
-      return $maDateFin;
+      $myEndDate = substr($searchfin,138,10);
+      $myEndDate = trim($myEndDate);
+      $myEndDate = PluginManufacturersimportsPostImport::checkDate($myEndDate);
+      return $myEndDate;
    }
 }

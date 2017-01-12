@@ -42,4 +42,3 @@ $config = new PluginManufacturersimportsConfig();
 if ($_POST['supplier'] != -1) {
    echo "&nbsp;<a href='".$config->getFormURL()."?preconfig=".$_POST['supplier']."'>"._sx('button','Update')."</a>";
 }
-?>

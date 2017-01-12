@@ -31,6 +31,9 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access directly to this file");
 }
 
+/**
+ * Class PluginManufacturersimportsConfig
+ */
 class PluginManufacturersimportsConfig extends CommonDBTM {
 
    static $rightname = "plugin_manufacturersimports";
@@ -46,7 +49,7 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
    const FUJITSU     = "Fujitsu";
    const TOSHIBA     = "Toshiba";
    const WORTMANN_AG = "Wortmann_AG";
-   
+
    static function getTypeName($nb=0) {
       return _n('Manufacturer', 'Manufacturers', $nb);
    }
@@ -120,7 +123,7 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
                                              '',
                                              getSonsOf("glpi_entities",
                                                        $this->fields["entities_id"]));
-         $result=$DB->query($query);
+         $DB->query($query);
       }
    }
 
@@ -135,7 +138,7 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
                                            '',
                                            getSonsOf("glpi_entities",
                                                      $this->fields["entities_id"]));
-         $result=$DB->query($query);
+         $DB->query($query);
       }
    }
 
@@ -244,7 +247,6 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
    }
 
    function showForm ($ID, $options=array()) {
-      global $CFG_GLPI;
 
       if (!$this->canView()) {
          return false;
@@ -462,7 +464,6 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
    *
    */
    static function showInformationsForm($itemtype,$items_id) {
-      global $DB,$CFG_GLPI;
 
       $item = new $itemtype();
       if ($item->getFromDB($items_id)) {
@@ -557,5 +558,3 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
       return $res;
    }
 }
-
-?>

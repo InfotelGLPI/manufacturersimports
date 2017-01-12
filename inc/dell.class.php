@@ -187,7 +187,6 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
     *                   >0 (endded)
     **/
   static function cronDataRecoveryDELL($task) {
-      global $DB;
 
       $cron_status = 0;
 
@@ -197,5 +196,3 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
    }
 
 }
-
-?>

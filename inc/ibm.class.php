@@ -31,8 +31,14 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access directly to this file");
 }
 
+/**
+ * Class PluginManufacturersimportsIBM
+ */
 class PluginManufacturersimportsIBM extends CommonDBTM {
-   
+
+   /**
+    * @see PluginManufacturersimportsManufacturer::getSupplierInfo()
+    */
    function getSupplierInfo($compSerial=null,$otherSerial=null, $key=null, $supplierUrl=null) {
    
       $info["name"]="IBM";
@@ -42,5 +48,3 @@ class PluginManufacturersimportsIBM extends CommonDBTM {
    }
    
 }
-
-?>

@@ -45,4 +45,3 @@ if ($preimport->canView() || Session::haveRight("config", UPDATE)) {
    Html::displayRightError();
 }
 Html::footer();
-?>

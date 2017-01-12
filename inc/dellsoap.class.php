@@ -33,6 +33,9 @@ if (!defined('GLPI_ROOT')) {
 
 ini_set("max_execution_time", "0");
 
+/**
+ * Class PluginManufacturersimportsDellSoap
+ */
 class PluginManufacturersimportsDellSoap extends SoapClient {
    //const ADDR = 'http://xserv.dell.com/services/assetservice.asmx?WSDL';
    const ADDR = 'http://143.166.84.118/services/assetservice.asmx?WSDL';
@@ -146,5 +149,3 @@ class PluginManufacturersimportsDellSoap extends SoapClient {
       return $maDate;
    }
 }
-
-?>

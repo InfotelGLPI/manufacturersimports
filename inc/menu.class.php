@@ -27,10 +27,20 @@
  --------------------------------------------------------------------------
  */
 
+/**
+ * Class PluginManufacturersimportsMenu
+ */
 class PluginManufacturersimportsMenu extends CommonGLPI {
 
    static $rightname = 'plugin_manufacturersimports';
 
+   /**
+    * Get menu name
+    *
+    * @since version 0.85
+    *
+    * @return character menu shortcut key
+    **/
    static function getMenuName() {
       return _n('Suppliers import', 
                 'Suppliers imports', 
@@ -38,6 +48,13 @@ class PluginManufacturersimportsMenu extends CommonGLPI {
                 'manufacturersimports');
    }
 
+   /**
+    * get menu content
+    *
+    * @since version 0.85
+    *
+    * @return array for menu
+    **/
    static function getMenuContent() {
       $plugin_page              = "/plugins/manufacturersimports/front/import.php";
       $menu                     = array();

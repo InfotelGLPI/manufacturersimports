@@ -31,8 +31,14 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access directly to this file");
 }
 
+/**
+ * Class PluginManufacturersimportsHP
+ */
 class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacturer {
 
+   /**
+    * @see PluginManufacturersimportsManufacturer::showDocTitle()
+    */
    function showDocTitle($output_type,$header_num) {
       return Search::showHeaderItem($output_type,__('File'),$header_num);
    }
@@ -40,7 +46,10 @@ class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacture
    function getSearchField() {
       return "Start date";
    }
-   
+
+   /**
+    * @see PluginManufacturersimportsManufacturer::getSupplierInfo()
+    */
    function getSupplierInfo($compSerial=null,$otherSerial=null, $key=null, $supplierUrl=null) {
       $info["name"]         = PluginManufacturersimportsConfig::HP;
          
@@ -52,39 +61,41 @@ class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacture
       return $info;
    }
 
+   /**
+    * @see PluginManufacturersimportsManufacturer::getBuyDate()
+    */
    function getBuyDate($contents) {
-      //TODO translate variables in english
       $matchesarray = array();
       preg_match_all("/([A-Z][a-z][a-z] \d\d?, \d{4})/", $contents, $matchesarray);
       
       $datetimestamp = date('U');
 
       if(isset($matchesarray[0][0])){
-         $maDate = $matchesarray[0][0];
-         $maDate = str_replace(' ','-',$maDate);
-         $maDate = str_replace(',','',$maDate);
-         $maDate = str_replace('Jan','01',$maDate);
-         $maDate = str_replace('Feb','02',$maDate);
-         $maDate = str_replace('Mar','03',$maDate);
-         $maDate = str_replace('Apr','04',$maDate);
-         $maDate = str_replace('May','05',$maDate);
-         $maDate = str_replace('Jun','06',$maDate);
-         $maDate = str_replace('Jul','07',$maDate);
-         $maDate = str_replace('Aug','08',$maDate);
-         $maDate = str_replace('Sep','09',$maDate);
-         $maDate = str_replace('Oct','10',$maDate);
-         $maDate = str_replace('Nov','11',$maDate);
-         $maDate = str_replace('Dec','12',$maDate);
+         $myDate = $matchesarray[0][0];
+         $myDate = str_replace(' ','-',$myDate);
+         $myDate = str_replace(',','',$myDate);
+         $myDate = str_replace('Jan','01',$myDate);
+         $myDate = str_replace('Feb','02',$myDate);
+         $myDate = str_replace('Mar','03',$myDate);
+         $myDate = str_replace('Apr','04',$myDate);
+         $myDate = str_replace('May','05',$myDate);
+         $myDate = str_replace('Jun','06',$myDate);
+         $myDate = str_replace('Jul','07',$myDate);
+         $myDate = str_replace('Aug','08',$myDate);
+         $myDate = str_replace('Sep','09',$myDate);
+         $myDate = str_replace('Oct','10',$myDate);
+         $myDate = str_replace('Nov','11',$myDate);
+         $myDate = str_replace('Dec','12',$myDate);
 
-         list($mois, $jour, $annee) = explode('-', $maDate);
-         $maDate = date("U",mktime(0, 0, 0, $mois, $jour, $annee));
-         if ($maDate < $datetimestamp) {
-            $datetimestamp = $maDate;
+         list($month, $day, $year) = explode('-', $myDate);
+         $myDate = date("U",mktime(0, 0, 0, $month, $day, $year));
+         if ($myDate < $datetimestamp) {
+            $datetimestamp = $myDate;
          }
          
-         $maDate = date("Y-m-d", $datetimestamp);
+         $myDate = date("Y-m-d", $datetimestamp);
 
-         return $maDate;
+         return $myDate;
       } else {
          return false;
       }
@@ -102,30 +113,30 @@ class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacture
 
       $index = count($matchesarray[0])-2;
       if(isset($matchesarray[0][$index])){
-         $maDate = $matchesarray[0][$index];
-         $maDate = str_replace(' ','-',$maDate);
-         $maDate = str_replace(',','',$maDate);
-         $maDate = str_replace('Jan','01',$maDate);
-         $maDate = str_replace('Feb','02',$maDate);
-         $maDate = str_replace('Mar','03',$maDate);
-         $maDate = str_replace('Apr','04',$maDate);
-         $maDate = str_replace('May','05',$maDate);
-         $maDate = str_replace('Jun','06',$maDate);
-         $maDate = str_replace('Jul','07',$maDate);
-         $maDate = str_replace('Aug','08',$maDate);
-         $maDate = str_replace('Sep','09',$maDate);
-         $maDate = str_replace('Oct','10',$maDate);
-         $maDate = str_replace('Nov','11',$maDate);
-         $maDate = str_replace('Dec','12',$maDate);
+         $myDate = $matchesarray[0][$index];
+         $myDate = str_replace(' ','-',$myDate);
+         $myDate = str_replace(',','',$myDate);
+         $myDate = str_replace('Jan','01',$myDate);
+         $myDate = str_replace('Feb','02',$myDate);
+         $myDate = str_replace('Mar','03',$myDate);
+         $myDate = str_replace('Apr','04',$myDate);
+         $myDate = str_replace('May','05',$myDate);
+         $myDate = str_replace('Jun','06',$myDate);
+         $myDate = str_replace('Jul','07',$myDate);
+         $myDate = str_replace('Aug','08',$myDate);
+         $myDate = str_replace('Sep','09',$myDate);
+         $myDate = str_replace('Oct','10',$myDate);
+         $myDate = str_replace('Nov','11',$myDate);
+         $myDate = str_replace('Dec','12',$myDate);
 
-         list($mois, $jour, $annee) = explode('-', $maDate);
-         $maDate = date("U",mktime(0, 0, 0, $mois, $jour, $annee));
-         if ($maDate < $datetimestamp) {
-            $datetimestamp = $maDate;
+         list($month, $day, $year) = explode('-', $myDate);
+         $myDate = date("U",mktime(0, 0, 0, $month, $day, $year));
+         if ($myDate < $datetimestamp) {
+            $datetimestamp = $myDate;
          }
-         $maDate = date("Y-m-d", $datetimestamp);
+         $myDate = date("Y-m-d", $datetimestamp);
 
-         return $maDate;
+         return $myDate;
       } else {
          return false;
       }
@@ -142,27 +153,27 @@ class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacture
       if(isset($matchesarray[0])){
          $date = date("Y-m-d", strtotime(0));
          
-         foreach ($matchesarray[0] as $maDate) {
-            $maDateFin = str_replace(' ','-',$maDate);
-            $maDateFin = str_replace(',','',$maDateFin);
-            $maDateFin = str_replace('Jan','01',$maDateFin);
-            $maDateFin = str_replace('Feb','02',$maDateFin);
-            $maDateFin = str_replace('Mar','03',$maDateFin);
-            $maDateFin = str_replace('Apr','04',$maDateFin);
-            $maDateFin = str_replace('May','05',$maDateFin);
-            $maDateFin = str_replace('Jun','06',$maDateFin);
-            $maDateFin = str_replace('Jul','07',$maDateFin);
-            $maDateFin = str_replace('Aug','08',$maDateFin);
-            $maDateFin = str_replace('Sep','09',$maDateFin);
-            $maDateFin = str_replace('Oct','10',$maDateFin);
-            $maDateFin = str_replace('Nov','11',$maDateFin);
-            $maDateFin = str_replace('Dec','12',$maDateFin);
+         foreach ($matchesarray[0] as $myDate) {
+            $myEndDate = str_replace(' ','-',$myDate);
+            $myEndDate = str_replace(',','',$myEndDate);
+            $myEndDate = str_replace('Jan','01',$myEndDate);
+            $myEndDate = str_replace('Feb','02',$myEndDate);
+            $myEndDate = str_replace('Mar','03',$myEndDate);
+            $myEndDate = str_replace('Apr','04',$myEndDate);
+            $myEndDate = str_replace('May','05',$myEndDate);
+            $myEndDate = str_replace('Jun','06',$myEndDate);
+            $myEndDate = str_replace('Jul','07',$myEndDate);
+            $myEndDate = str_replace('Aug','08',$myEndDate);
+            $myEndDate = str_replace('Sep','09',$myEndDate);
+            $myEndDate = str_replace('Oct','10',$myEndDate);
+            $myEndDate = str_replace('Nov','11',$myEndDate);
+            $myEndDate = str_replace('Dec','12',$myEndDate);
             
-            list($mois, $jour, $annee) = explode('-', $maDateFin);
-            $maDateFin = $annee."-".$mois."-".$jour;
+            list($month, $day, $year) = explode('-', $myEndDate);
+            $myEndDate = $year."-".$month."-".$day;
             
-            if(strtotime($maDateFin) > strtotime($date)){
-               $date = $maDateFin;
+            if(strtotime($myEndDate) > strtotime($date)){
+               $date = $myEndDate;
             }
          }
          
@@ -172,5 +183,3 @@ class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacture
       }
    }
 }
-
-?>
