@@ -165,6 +165,9 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
       $log=new PluginManufacturersimportsLog();
 
       $_SESSION["glpi_plugin_manufacturersimports_total"]=0;
+      
+      Html::createProgressBar(__('Launching of imports', 'manufacturersimports'));
+      
       echo "<table class='tab_cadre' width='70%' cellpadding='2'>";
       echo "<tr><th colspan='6'>".__('Post import', 'manufacturersimports')."</th></tr>";
       echo "<tr><th>".__('Name')."</th>";
@@ -177,6 +180,8 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
       echo "<th>".__('Result', 'manufacturersimports')."</th>";
       echo "<th>".__('Details', 'manufacturersimports')."</th>";
       echo "</tr>";
+      
+      $pos = 0;
       foreach ($values["item"] as $key => $val) {
          if ($val==1) {
             $NotAlreadyImported=$log->checkIfAlreadyImported($values["itemtype"],$key);
@@ -188,7 +193,14 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
                                    $values["manufacturers_id"]);
             }
          }
+         $pos += 1;
+         Html::changeProgressBarPosition($pos, 
+            count($values["item"]), 
+            __('Import in progress', 'manufacturersimports'). " (".$values['itemtype']::getTypeName(2). " : ".$suppliername.")");
       }
+      Html::changeProgressBarPosition($pos, 
+            count($values["item"]), 
+            __('Done'));
       
       echo "<tr class='tab_bg_1'><td colspan='6'>";
       $total = $_SESSION["glpi_plugin_manufacturersimports_total"];
