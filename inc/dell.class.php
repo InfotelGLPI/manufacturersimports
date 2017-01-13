@@ -101,7 +101,8 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
       // v4
       if( isset( $info['AssetWarrantyResponse'][0]['AssetHeaderData'][0]['ShipDate'] ) ) {
          return $info['AssetWarrantyResponse'][0]['AssetHeaderData'][0]['ShipDate'];
-      } else {
+         
+      } elseif(isset($info['AssetWarrantyResponse'][0]['AssetEntitlementData'])) {
        $nb =  count($info['AssetWarrantyResponse'][0]['AssetEntitlementData'])-1;
          if (isset($info['AssetWarrantyResponse'][0]['AssetEntitlementData'][$nb]['StartDate'])) {
             return $info['AssetWarrantyResponse'][0]['AssetEntitlementData'][$nb]['StartDate'];
