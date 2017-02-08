@@ -97,7 +97,7 @@ function plugin_manufacturersimports_install() {
    $DB->query($query);
    
    $query = "UPDATE `glpi_plugin_manufacturersimports_configs` 
-             SET `Supplier_url` = 'http://h20564.www2.hp.com/hpsc/wc/public/find' 
+             SET `Supplier_url` = 'http://h20565.www2.hp.com/hpsc/wc/public/find' 
              WHERE `name` ='".PluginManufacturersimportsConfig::HP."'";
    $DB->query($query);
 
