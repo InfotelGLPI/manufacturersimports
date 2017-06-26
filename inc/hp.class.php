@@ -51,8 +51,9 @@ class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacture
     * @see PluginManufacturersimportsManufacturer::getSupplierInfo()
     */
    function getSupplierInfo($compSerial=null,$otherSerial=null, $key=null, $supplierUrl=null) {
-      $info["name"]         = PluginManufacturersimportsConfig::HP;
-      $info["supplier_url"] = "http://h20565.www2.hp.com/hpsc/wc/public/find";   
+      $info["name"]          = PluginManufacturersimportsConfig::HP;
+      $info["supplier_url "] = "http://h20565.www2.hpe.com/hpsc/wc/public/find";
+
       if(empty($otherSerial)){
          $info["url"] = $supplierUrl."?rows[0].item.countryCode=FR&rows[0].item.serialNumber=$compSerial&submitButton=Envoyer";
       } else {
@@ -69,7 +70,7 @@ class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacture
       preg_match_all("/([A-Z][a-z][a-z] \d\d?, \d{4})/", $contents, $matchesarray);
       
       $datetimestamp = date('U');
-
+Toolbox::logDebug($matchesarray);
       if(isset($matchesarray[0][0])){
          $myDate = $matchesarray[0][0];
          $myDate = str_replace(' ','-',$myDate);

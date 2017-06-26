@@ -522,11 +522,11 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
             $total      = 0;
             
             if ($output_type==Search::HTML_OUTPUT) {
-               if ($suppliername == PluginManufacturersimportsConfig::HP){
-                  echo "<div class='center'>";
-                  echo "<span class='red'>".__('Warning')." : ".__('It is recommended that you specify the model number for HP imports', 'manufacturersimports') . "</span>";
-                  echo "</div>";
-               }
+//               if ($suppliername == PluginManufacturersimportsConfig::HP){
+//                  echo "<div class='center'>";
+//                  echo "<span class='red'>".__('Warning')." : ".__('It is recommended that you specify the model number for HP imports', 'manufacturersimports') . "</span>";
+//                  echo "</div>";
+//               }
                self::printPager($p['start'], $numrows, 
                                 $target, $parameters, $p['itemtype']);
             }
@@ -919,13 +919,13 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
 
       echo "</select>";
 
-      $params=array('action'=>'__VALUE__',
-        'manufacturers_id'=>$manufacturer,
-        'itemtype'=>$type,
-        'start'=>$start,
-        'imported'=>$imported,
-        'id'=>$ID,
-        );
+      $params = array('action'           => '__VALUE__',
+                      'manufacturers_id' => $manufacturer,
+                      'itemtype'         => $type,
+                      'start'            => $start,
+                      'imported'         => $imported,
+                      'id'               => $ID,
+      );
 
       Ajax::updateItemOnSelectEvent("massiveaction","show_massiveaction",
       $CFG_GLPI["root_doc"]."/plugins/manufacturersimports/ajax/dropdownMassiveAction.php",$params);
