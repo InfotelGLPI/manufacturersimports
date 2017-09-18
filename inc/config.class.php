@@ -334,9 +334,9 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
             __('New warranty affected by default (Replace if 0)', 
             'manufacturersimports')."</td>";
          echo "<td class='tab_bg_2 left' colspan='2'>";
-         Dropdown::showInteger("warranty_duration", 
-                               $this->fields["warranty_duration"], 
-                               0, 120);
+         Dropdown::showNumber("warranty_duration", ['value' => $this->fields["warranty_duration"],
+                                                     'min' => 0,
+                                                     'max' => 120]);
          echo "</td>";
          echo "</tr>";
       } else {
