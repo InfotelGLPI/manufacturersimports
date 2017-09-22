@@ -425,7 +425,8 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
       $name = false;
 
       if ($item->getFromDB($items_id)) {
-         $configs = getAllDatasFromTable("glpi_plugin_manufacturersimports_configs");
+         $dbu = new DbUtils();
+         $configs = $dbu->getAllDataFromTable("glpi_plugin_manufacturersimports_configs");
          if (!empty($configs)) {
             foreach ($configs as $config) {
                if ($item->fields["manufacturers_id"] == $config['manufacturers_id']) {
@@ -443,7 +444,8 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
       $id = false;
 
       if ($item->getFromDB($items_id)) {
-         $configs = getAllDatasFromTable("glpi_plugin_manufacturersimports_configs");
+         $dbu = new DbUtils();
+         $configs = $dbu->getAllDataFromTable("glpi_plugin_manufacturersimports_configs");
          if (!empty($configs)) {
             foreach ($configs as $config) {
                if ($item->fields["manufacturers_id"] == $config['manufacturers_id']) {
