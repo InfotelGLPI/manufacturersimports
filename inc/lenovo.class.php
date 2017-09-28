@@ -73,9 +73,7 @@ class PluginManufacturersimportsLenovo extends PluginManufacturersimportsManufac
 
    function getSearchField() {
 
-      $field = "WarrantyStatusInfoWrap";
-
-      return $field;
+      return false;
    }
    
    /**
@@ -84,8 +82,8 @@ class PluginManufacturersimportsLenovo extends PluginManufacturersimportsManufac
    function getSupplierInfo($compSerial=null, $otherserial=null, $key=null, $supplierUrl=null) {
 
       $info["name"]         = PluginManufacturersimportsConfig::LENOVO;
-      $info["supplier_url"] = "http://shop.lenovo.com/SEUILibrary/controller/e/web/LenovoPortal/en_US/config.workflow:VerifyWarranty?country-code=897&";
-      $info["url"] = $supplierUrl."serial-number=".$compSerial."&machine-type=".$otherserial."&btnSubmit";
+      $info["supplier_url"] = "http://www3.lenovo.com/us/en/warranty/";
+      $info["url"]          = $supplierUrl . $compSerial . "?machineType=" . $otherserial . "&btnSubmit";
       return $info;
    }
    
@@ -94,33 +92,15 @@ class PluginManufacturersimportsLenovo extends PluginManufacturersimportsManufac
     */
    function getBuyDate($contents) {
       $buy_date = NULL;
+      $contents = json_decode($contents, true);
 
-      //cut html 
-      $contents = substr($contents, 0, strpos($contents, "remindMeWrap"));
+      if (isset($contents['startDate'])) {
+         $myDate = trim($contents['startDate']);
+         list($month, $day, $year) = explode('/', $myDate);
+         $myDate = date("Y-m-d", mktime(0, 0, 0, $month, $day, $year));
 
-      //find dates in html content
-      preg_match_all("/([0-9]{1,2}\/[0-9]{1,2}\/[0-9]{1,4})/s", $contents, $dates);
-      
-      if (isset($dates[0])) {
-          // get first of found dates
-         $buy_date_raw = array_shift($dates[0]);
-
-         //extract date parts
-         preg_match("/([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{1,4})/", $buy_date_raw, $buy_date_parts);
-         if (count($buy_date_parts) === 4) {
-
-            // forge final date
-            $year  = $buy_date_parts[3];
-            $month = $buy_date_parts[1];
-            $day   = $buy_date_parts[2];
-            $buy_date = "2".str_pad($year, 3, "0", STR_PAD_LEFT)."-".
-                        str_pad($month, 2, "0", STR_PAD_LEFT)."-".
-                        str_pad($day, 2, "0", STR_PAD_LEFT).
-                        " 00:00:00";
-         }
+         return PluginManufacturersimportsPostImport::checkDate($myDate);;
       }
-
-      return PluginManufacturersimportsPostImport::checkDate($buy_date);
    }
    
    /**
@@ -135,32 +115,26 @@ class PluginManufacturersimportsLenovo extends PluginManufacturersimportsManufac
     * @see PluginManufacturersimportsManufacturer::getExpirationDate()
     */
    function getExpirationDate($contents) {
-      $expiration_date = NULL;
+      $contents = json_decode($contents, true);
 
-      //cut html 
-      $contents = substr($contents, 0, strpos($contents, "remindMeWrap"));
+      if (isset($contents['expirationDate'])) {
+         $myDate = trim($contents['expirationDate']);
+         list($month, $day, $year) = explode('/', $myDate);
+         $myDate = date("Y-m-d", mktime(0, 0, 0, $month, $day, $year));
 
-      //find dates in html content
-      preg_match_all("/([0-9]{1,2}\/[0-9]{1,2}\/[0-9]{1,4})/s", $contents, $dates);
-      if (isset($dates[1])) {
-         // get last of found dates
-         $expiration_date_raw = array_pop($dates[0]);
+         return PluginManufacturersimportsPostImport::checkDate($myDate);
+      }
+   }
 
-         //extract date parts
-         preg_match("/([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{1,4})/", $expiration_date_raw, $expiration_date_parts);
-         if (count($expiration_date_parts) === 4) {
-
-            // forge final date
-            $year  = $expiration_date_parts[3];
-            $month = $expiration_date_parts[1];
-            $day   = $expiration_date_parts[2];
-            $expiration_date = "2".str_pad($year, 3, "0", STR_PAD_LEFT)."-".
-                               str_pad($month, 2, "0", STR_PAD_LEFT)."-".
-                               str_pad($day, 2, "0", STR_PAD_LEFT).
-                               " 00:00:00";
-         }
-      } 
-
-      return PluginManufacturersimportsPostImport::checkDate($expiration_date);
+   /**
+    * @see PluginManufacturersimportsManufacturer::getWarrantyInfo()
+    */
+   function getWarrantyInfo($contents) {
+      $temp_date = json_decode($contents, true);
+      if(isset($temp_date['description'])){
+         $warranty_info = $temp_date['description'];
+         return $warranty_info;
+      }
+      return false;
    }
 }
