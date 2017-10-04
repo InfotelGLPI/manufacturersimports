@@ -166,7 +166,7 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
       $options[-1]            = Dropdown::EMPTY_VALUE;
       $options[self::DELL]    = self::DELL;
       $options[self::HP]      = self::HP;
-      $options[self::FUJITSU] = self::FUJITSU;
+//      $options[self::FUJITSU] = self::FUJITSU;
       $options[self::TOSHIBA] = self::TOSHIBA;
       $options[self::LENOVO]  = self::LENOVO;
       $options[self::WORTMANN_AG]  = self::WORTMANN_AG;

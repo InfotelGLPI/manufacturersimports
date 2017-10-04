@@ -74,32 +74,35 @@ function plugin_manufacturersimports_install() {
       
    } else if (!FieldExists("glpi_plugin_manufacturersimports_configs", "supplier_key")) {
       $DB->runFile($sql_root."/update-1.7.0.sql");
+      $update = true;
    }
 
-   $query = "UPDATE `glpi_plugin_manufacturersimports_configs` 
+   if($update) {
+      $query = "UPDATE `glpi_plugin_manufacturersimports_configs` 
              SET `Supplier_url` = 'https://api.dell.com/support/assetinfo/v4/getassetwarranty/' 
-             WHERE `name` ='".PluginManufacturersimportsConfig::DELL."'";
-   $DB->query($query);
-   
-   $query = "UPDATE `glpi_plugin_manufacturersimports_configs` 
-             SET `Supplier_url` = 'http://shop.lenovo.com/SEUILibrary/controller/e/web/LenovoPortal/en_US/config.workflow:VerifyWarranty?country-code=897&' 
-             WHERE `name` ='".PluginManufacturersimportsConfig::LENOVO."'";
-   $DB->query($query);
-   
-   $query = "UPDATE `glpi_plugin_manufacturersimports_configs` 
+             WHERE `name` ='" . PluginManufacturersimportsConfig::DELL . "'";
+      $DB->query($query);
+
+      $query = "UPDATE `glpi_plugin_manufacturersimports_configs` 
+             SET `Supplier_url` = 'http://www3.lenovo.com/us/en/warranty/' 
+             WHERE `name` ='" . PluginManufacturersimportsConfig::LENOVO . "'";
+      $DB->query($query);
+
+      $query = "UPDATE `glpi_plugin_manufacturersimports_configs` 
              SET `Supplier_url` = 'https://support.ts.fujitsu.com/Warranty/WarrantyStatus.asp?lng=EN&IDNR=' 
-             WHERE `name` ='".PluginManufacturersimportsConfig::FUJITSU."'";
-   $DB->query($query);
-   
-   $query = "UPDATE `glpi_plugin_manufacturersimports_configs` 
+             WHERE `name` ='" . PluginManufacturersimportsConfig::FUJITSU . "'";
+      $DB->query($query);
+
+      $query = "UPDATE `glpi_plugin_manufacturersimports_configs` 
              SET `Supplier_url` = 'https://www.wortmann.de/fr-fr/profile/snsearch.aspx?SN=' 
-             WHERE `name` ='".PluginManufacturersimportsConfig::WORTMANN_AG."'";
-   $DB->query($query);
-   
-   $query = "UPDATE `glpi_plugin_manufacturersimports_configs` 
+             WHERE `name` ='" . PluginManufacturersimportsConfig::WORTMANN_AG . "'";
+      $DB->query($query);
+
+      $query = "UPDATE `glpi_plugin_manufacturersimports_configs` 
              SET `Supplier_url` = 'http://h20565.www2.hpe.com/hpsc/wc/public/find' 
-             WHERE `name` ='".PluginManufacturersimportsConfig::HP."'";
-   $DB->query($query);
+             WHERE `name` ='" . PluginManufacturersimportsConfig::HP . "'";
+      $DB->query($query);
+   }
 
 
    /* Version 1.9.1 */
