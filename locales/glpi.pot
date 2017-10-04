@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $soft $version\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-01-13 14:34+0100\n"
+"POT-Creation-Date: 2017-10-04 09:56+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,18 +18,18 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: hook.php:224 setup.php:68 ajax/massiveaction.php:40 inc/menu.class.php:45
+#: hook.php:227 setup.php:68 ajax/massiveaction.php:40 inc/menu.class.php:45
 #: inc/model.class.php:48 inc/preimport.class.php:50 inc/profile.class.php:71
 msgid "Suppliers import"
 msgid_plural "Suppliers imports"
 msgstr[0] ""
 msgstr[1] ""
 
-#: hook.php:228 inc/lenovo.class.php:53
+#: hook.php:231 inc/lenovobak.class.php:53 inc/lenovo.class.php:53
 msgid "Model number"
 msgstr ""
 
-#: hook.php:254
+#: hook.php:257
 msgid "Add new material brand number"
 msgstr ""
 
@@ -168,10 +168,6 @@ msgstr ""
 
 #: inc/preimport.class.php:402 inc/preimport.class.php:405
 msgid "No manufacturer available. Please configure at least one manufacturer"
-msgstr ""
-
-#: inc/preimport.class.php:527
-msgid "It is recommended that you specify the model number for HP imports"
 msgstr ""
 
 #: inc/preimport.class.php:591
