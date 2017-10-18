@@ -374,6 +374,12 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
 
       $this->showFormButtons($options);
 
+      echo "<div align='center'>";
+      echo "<a href='".self::getFormURL(true)."'>";
+      echo __('Back');
+      echo "</a>";
+      echo "</div>";
+
       return true;
    }
 

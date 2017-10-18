@@ -72,12 +72,5 @@ if (isset($_POST["add"])) {
    
    $config->checkGlobal(READ);
    $config->display($_GET);
-
-   echo "<div align='center'>";
-   echo "<a href='".PluginManufacturersimportsConfig::getFormURL(true)."'>";
-   echo __('Back');
-   echo "</a>";
-   echo "</div>";
-
    Html::footer();
 }

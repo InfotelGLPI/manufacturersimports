@@ -122,7 +122,7 @@ function plugin_manufacturersimports_install() {
          array(2150 => 'PluginManufacturersimportsModel',
                2151 => 'PluginManufacturersimportsConfig'),
          array("glpi_savedsearches", "glpi_savedsearches_users", "glpi_displaypreferences",
-               "glpi_documents_items", "glpi_infocoms", "glpi_logs", "glpi_tickets"),
+               "glpi_documents_items", "glpi_infocoms", "glpi_logs", "glpi_items_tickets"),
          array("glpi_plugin_manufacturersimports_models", "glpi_plugin_manufacturersimports_logs"));
    }
 

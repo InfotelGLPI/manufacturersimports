@@ -28,7 +28,7 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-        die("Sorry. You can't access directly to this file");
+   die("Sorry. You can't access directly to this file");
 }
 
 /**
@@ -37,7 +37,7 @@ if (!defined('GLPI_ROOT')) {
 class PluginManufacturersimportsPostImport extends CommonDBTM {
 
    /**
-    * @param $field
+    * @param      $field
     * @param bool $reverse
     *
     * @return string
@@ -47,10 +47,10 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
       // Date is already "reformat" according to getDateFormat()
 
       if ($reverse) {
-         $pattern  = "/^([0-9]{1,2})-([0-9]{1,2})-([0-9]{4})";
+         $pattern = "/^([0-9]{1,2})-([0-9]{1,2})-([0-9]{4})";
          $pattern .= "([0-5][0-9]:[0-5]?[0-9]:[_][01][0-9]|2[0-3])?/";
       } else {
-         $pattern  = "/^([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})";
+         $pattern = "/^([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})";
          $pattern .= "([_][01][0-9]|2[0-3]:[0-5][0-9]:[0-5]?[0-9])?/";
       }
       preg_match($pattern, $field, $regs);
@@ -66,25 +66,25 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
     *
     * @return mixed|string
     */
-   static function cURLData($options){
+   static function cURLData($options) {
       global $CFG_GLPI;
-      
-      if(!function_exists('curl_init')) {
-         return __('Curl PHP package not installed', 'manufacturersimports')."\n";
+
+      if (!function_exists('curl_init')) {
+         return __('Curl PHP package not installed', 'manufacturersimports') . "\n";
       }
       $data        = '';
       $timeout     = 10;
-      $proxy_host  = $CFG_GLPI["proxy_name"].":".$CFG_GLPI["proxy_port"]; // host:port
-      $proxy_ident = $CFG_GLPI["proxy_user"].":".
-                           Toolbox::decrypt($CFG_GLPI["proxy_passwd"], GLPIKEY); // username:password 
-       
+      $proxy_host  = $CFG_GLPI["proxy_name"] . ":" . $CFG_GLPI["proxy_port"]; // host:port
+      $proxy_ident = $CFG_GLPI["proxy_user"] . ":" .
+                     Toolbox::decrypt($CFG_GLPI["proxy_passwd"], GLPIKEY); // username:password
+
       $url = $options["url"];
-      
+
       $ch = curl_init();
 
       curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
       curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
-      curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout); 
+      curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
 
       if (preg_match('`^https://`i', $options["url"])) {
          curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -103,14 +103,14 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
       if (!empty($options["post"])) {
          //curl_setopt($ch, CURLOPT_POST,true);
          $post = '';
-         foreach($options['post'] as $key=>$value) {
-            $post .= $key.'='.$value.'&'; 
+         foreach ($options['post'] as $key => $value) {
+            $post .= $key . '=' . $value . '&';
          }
          rtrim($post, '&');
-         curl_setopt($ch, CURLOPT_HTTPHEADER, Array("Content-Type:application/x-www-form-urlencoded")); 
+         curl_setopt($ch, CURLOPT_HTTPHEADER, Array("Content-Type:application/x-www-form-urlencoded"));
          curl_setopt($ch, CURLOPT_POST, true);
          curl_setopt($ch, CURLOPT_POSTREDIR, 2);
-         curl_setopt($ch, CURLOPT_POSTFIELDS,$post);
+         curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
       }
 
       if (!$options["download"]) {
@@ -140,9 +140,9 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
       }
 
       if (!$options["download"] && !$data) {
-        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch); // make sure we closeany current curl sessions
-        //die($http_code.' Unable to connect to server. Please come back later.');
+         $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+         curl_close($ch); // make sure we closeany current curl sessions
+         //die($http_code.' Unable to connect to server. Please come back later.');
       } else {
          curl_close($ch);
       }
@@ -162,29 +162,29 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
       global $CFG_GLPI;
 
       $config = new PluginManufacturersimportsConfig();
-      $log=new PluginManufacturersimportsLog();
+      $log    = new PluginManufacturersimportsLog();
 
-      $_SESSION["glpi_plugin_manufacturersimports_total"]=0;
-      
+      $_SESSION["glpi_plugin_manufacturersimports_total"] = 0;
+
       Html::createProgressBar(__('Launching of imports', 'manufacturersimports'));
-      
+
       echo "<table class='tab_cadre' width='70%' cellpadding='2'>";
-      echo "<tr><th colspan='6'>".__('Post import', 'manufacturersimports')."</th></tr>";
-      echo "<tr><th>".__('Name')."</th>";
-      echo "<th>".__('Serial number')."</th>";
+      echo "<tr><th colspan='6'>" . __('Post import', 'manufacturersimports') . "</th></tr>";
+      echo "<tr><th>" . __('Name') . "</th>";
+      echo "<th>" . __('Serial number') . "</th>";
 
       $config->getFromDB($values["manufacturers_id"]);
-      $suppliername=$config->fields["name"];
+      $suppliername = $config->fields["name"];
 
-      echo "<th>"._n('Link' , 'Links' , 1)."</th>";
-      echo "<th>".__('Result', 'manufacturersimports')."</th>";
-      echo "<th>".__('Details', 'manufacturersimports')."</th>";
+      echo "<th>" . _n('Link', 'Links', 1) . "</th>";
+      echo "<th>" . __('Result', 'manufacturersimports') . "</th>";
+      echo "<th>" . __('Details', 'manufacturersimports') . "</th>";
       echo "</tr>";
-      
+
       $pos = 0;
       foreach ($values["item"] as $key => $val) {
-         if ($val==1) {
-            $NotAlreadyImported=$log->checkIfAlreadyImported($values["itemtype"],$key);
+         if ($val == 1) {
+            $NotAlreadyImported = $log->checkIfAlreadyImported($values["itemtype"], $key);
             if (!$NotAlreadyImported) {
                self::seePostImport($values["itemtype"],
                                    $key,
@@ -194,40 +194,41 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
             }
          }
          $pos += 1;
-         Html::changeProgressBarPosition($pos, 
-            count($values["item"]), 
-            __('Import in progress', 'manufacturersimports'). " (".$values['itemtype']::getTypeName(2). " : ".$suppliername.")");
+         Html::changeProgressBarPosition($pos,
+                                         count($values["item"]),
+                                         __('Import in progress', 'manufacturersimports') . " (" . $values['itemtype']::getTypeName(2) . " : " . $suppliername . ")");
       }
-      Html::changeProgressBarPosition($pos, 
-            count($values["item"]), 
-            __('Done'));
-      
+      Html::changeProgressBarPosition($pos,
+                                      count($values["item"]),
+                                      __('Done'));
+
       echo "<tr class='tab_bg_1'><td colspan='6'>";
       $total = $_SESSION["glpi_plugin_manufacturersimports_total"];
       echo sprintf(__('Total number of devices imported %s', 'manufacturersimports'), $total);
       echo "</td></tr>";
       echo "</table>";
       echo "<br><div align='center'>";
-      echo "<a href='".$CFG_GLPI["root_doc"]."/plugins/manufacturersimports/front/import.php?back=back&amp;itemtype=".
-      $values["itemtype"]."&amp;manufacturers_id=".$values["manufacturers_id"]."&amp;start=".$values["start"].
-            "&amp;imported=".$values["imported"]."'>";
+      echo "<a href='" . $CFG_GLPI["root_doc"] . "/plugins/manufacturersimports/front/import.php?back=back&amp;itemtype=" .
+           $values["itemtype"] . "&amp;manufacturers_id=" . $values["manufacturers_id"] . "&amp;start=" . $values["start"] .
+           "&amp;imported=" . $values["imported"] . "'>";
       echo __('Back');
       echo "</a>";
       echo "</div>";
    }
-   
+
    /**
-   * Fonction to select the search field on the website of the supplier
-   *
-   * @param $suppliername the suppliername
-   * @return $field for date and warranty searching
-   *
-   */
-   static function selectSupplierField ($suppliername) {
+    * Fonction to select the search field on the website of the supplier
+    *
+    * @param $suppliername the suppliername
+    *
+    * @return $field for date and warranty searching
+    *
+    */
+   static function selectSupplierField($suppliername) {
 
       $field = '';
       if (!empty($suppliername)) {
-         $supplierclass = "PluginManufacturersimports".$suppliername;
+         $supplierclass = "PluginManufacturersimports" . $suppliername;
          $supplier      = new $supplierclass();
          $field         = $supplier->getSearchField();
       }
@@ -242,11 +243,11 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
     * @return mixed
     */
    static function importDate($suppliername, $contents) {
-   
-      $supplierclass = "PluginManufacturersimports".$suppliername;
+
+      $supplierclass = "PluginManufacturersimports" . $suppliername;
       $supplier      = new $supplierclass();
       $importDate    = $supplier->getBuyDate($contents);
-      
+
       return $importDate;
    }
 
@@ -258,9 +259,9 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
     */
    static function importStartDate($suppliername, $contents) {
 
-      $supplierclass = "PluginManufacturersimports".$suppliername;
-      $supplier      = new $supplierclass();
-      $importStartDate    = $supplier->getStartDate($contents);
+      $supplierclass   = "PluginManufacturersimports" . $suppliername;
+      $supplier        = new $supplierclass();
+      $importStartDate = $supplier->getStartDate($contents);
 
       return $importStartDate;
    }
@@ -272,13 +273,13 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
     * @return mixed
     */
    static function importWarrantyInfo($suppliername, $contents) {
-       $supplierclass = "PluginManufacturersimports".$suppliername;
-       $supplier = new $supplierclass();
-       $importWarrantyInfo = $supplier->getWarrantyInfo($contents);
-       
-       return $importWarrantyInfo;
+      $supplierclass      = "PluginManufacturersimports" . $suppliername;
+      $supplier           = new $supplierclass();
+      $importWarrantyInfo = $supplier->getWarrantyInfo($contents);
+
+      return $importWarrantyInfo;
    }
-   
+
    //static function importWarranty($suppliername, $maDate, $contents, $warranty) {
    //   if ($warranty==0) {
    //      if ($suppliername == PluginManufacturersimportsConfig::DELL) {
@@ -311,26 +312,27 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
     * @return mixed
     */
    static function importDateFin($suppliername, $contents) {
-       
-      $supplierclass = "PluginManufacturersimports".$suppliername;
-      $supplier = new $supplierclass();
-      $maDateFin = $supplier->getExpirationDate($contents);
-       
+
+      $supplierclass = "PluginManufacturersimports" . $suppliername;
+      $supplier      = new $supplierclass();
+      $maDateFin     = $supplier->getExpirationDate($contents);
+
       return $maDateFin;
    }
-   
+
    /**
-   * Prints display post import
-   *
-   * @param $type the type of device
-   * @param $ID the ID of device
-   * @param $fromsupplier selection on pre import
-   * @param $fromwarranty selection on pre import
-   * @param $configID ID of supplier plugin config
-   * @return results of data import
-   *
-   */
-   static function seePostImport ($type,$ID,$fromsupplier,$fromwarranty,$configID) {
+    * Prints display post import
+    *
+    * @param $type the type of device
+    * @param $ID the ID of device
+    * @param $fromsupplier selection on pre import
+    * @param $fromwarranty selection on pre import
+    * @param $configID ID of supplier plugin config
+    *
+    * @return results of data import
+    *
+    */
+   static function seePostImport($type, $ID, $fromsupplier, $fromwarranty, $configID) {
       global $DB;
 
       $config = new PluginManufacturersimportsConfig();
@@ -348,40 +350,40 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
 
       $itemtable = getTableForItemType($type);
 
-      $query = "SELECT `".$itemtable."`.`id`,
-                        `".$itemtable."`.`name`,
-                        `".$itemtable."`.`entities_id`,
-                        `".$itemtable."`.`serial`
-          FROM `".$itemtable."`, `glpi_manufacturers`
-          WHERE `".$itemtable."`.`manufacturers_id` = `glpi_manufacturers`.`id`
-          AND `".$itemtable."`.`is_deleted` = '0'
-          AND `".$itemtable."`.`is_template` = '0'
-          AND `glpi_manufacturers`.`id` = '".$manufacturerId."'
-          AND `".$itemtable."`.`serial` != ''
-          AND `".$itemtable."`.`id` = '".$ID."' ";
-      $query.= " ORDER BY `".$itemtable."`.`name`";
+      $query  = "SELECT `" . $itemtable . "`.`id`,
+                        `" . $itemtable . "`.`name`,
+                        `" . $itemtable . "`.`entities_id`,
+                        `" . $itemtable . "`.`serial`
+          FROM `" . $itemtable . "`, `glpi_manufacturers`
+          WHERE `" . $itemtable . "`.`manufacturers_id` = `glpi_manufacturers`.`id`
+          AND `" . $itemtable . "`.`is_deleted` = '0'
+          AND `" . $itemtable . "`.`is_template` = '0'
+          AND `glpi_manufacturers`.`id` = '" . $manufacturerId . "'
+          AND `" . $itemtable . "`.`serial` != ''
+          AND `" . $itemtable . "`.`id` = '" . $ID . "' ";
+      $query  .= " ORDER BY `" . $itemtable . "`.`name`";
       $result = $DB->query($query);
 
-      while($line=$DB->fetch_array($result)) {
+      while ($line = $DB->fetch_array($result)) {
 
          $compSerial = $line['serial'];
-         $ID = $line['id'];
+         $ID         = $line['id'];
          echo "<tr class='tab_bg_1' ><td>";
-         $link=Toolbox::getItemTypeFormURL($type);
-         $dID="";
-         $model= new PluginManufacturersimportsModel();
-         $otherSerial=$model->checkIfModelNeeds($type,$ID);
+         $link        = Toolbox::getItemTypeFormURL($type);
+         $dID         = "";
+         $model       = new PluginManufacturersimportsModel();
+         $otherSerial = $model->checkIfModelNeeds($type, $ID);
 
-         if ($_SESSION["glpiis_ids_visible"]||empty($line["name"])) $dID.= " (".$line["id"].")";
-         echo "<a href='".$link."?id=".$ID."'>".$line["name"].$dID."</a><br>".$otherSerial."</td>";
+         if ($_SESSION["glpiis_ids_visible"] || empty($line["name"])) $dID .= " (" . $line["id"] . ")";
+         echo "<a href='" . $link . "?id=" . $ID . "'>" . $line["name"] . $dID . "</a><br>" . $otherSerial . "</td>";
 
-         $url=PluginManufacturersimportsPreImport::selectSupplier($suppliername,$supplierUrl,$compSerial,$otherSerial,$supplierkey);
-         $post=PluginManufacturersimportsPreImport::getSupplierPost($suppliername,$compSerial,$otherSerial);
-                 
+         $url  = PluginManufacturersimportsPreImport::selectSupplier($suppliername, $supplierUrl, $compSerial, $otherSerial, $supplierkey);
+         $post = PluginManufacturersimportsPreImport::getSupplierPost($suppliername, $compSerial, $otherSerial);
+
          //On complete l url du support du fournisseur avec le serial
-         echo "<td>".$compSerial."</td>";
+         echo "<td>" . $compSerial . "</td>";
          echo "<td>";
-         echo "<a href='".$url."' target='_blank'>"._n('Manufacturer' , 'Manufacturers' , 1)."</a>";
+         echo "<a href='" . $url . "' target='_blank'>" . _n('Manufacturer', 'Manufacturers', 1) . "</a>";
          echo "</td>";
 
          $options = array("url"          => $url,
@@ -402,10 +404,10 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
 
    /**
     * @param array $params
+    *
     * @return bool
     */
-   static function saveImport($params = array())
-   {
+   static function saveImport($params = array()) {
 
       $default_values                 = array();
       $default_values['url']          = "";
@@ -425,7 +427,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
             $$key = $val;
          }
       }
-      
+
       if ($fromsupplier) {
          $supplierId = $fromsupplier;
       } else {
@@ -437,7 +439,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
       $adddoc       = $config->fields["document_adding"];
       $rubrique     = $config->fields["documentcategories_id"];
       $addcomments  = $config->fields["comment_adding"];
-      
+
       if ($fromwarranty) {
          $warranty = $fromwarranty;
       } else {
@@ -447,11 +449,11 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
       $contents = "";
       $msgerr   = "";
 
-      $options  = array("url"          => $url,
-                        "download"     => false,
-                        "file"         => false,
-                        "post"         => $post,
-                        "suppliername" => $suppliername);
+      $options = array("url"          => $url,
+                       "download"     => false,
+                       "file"         => false,
+                       "post"         => $post,
+                       "suppliername" => $suppliername);
 
       $contents    = self::cURLData($options);
       $allcontents = $contents;
@@ -561,10 +563,10 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
    /**
     * Adding infocoms date of purchase and warranty
     *
-    * @param $options
+    * @param      $options
     * @param bool $display
     */
-   static function saveInfocoms ($options, $display = false) {
+   static function saveInfocoms($options, $display = false) {
 
       //Original values
       $warranty_date     = "";
@@ -585,26 +587,26 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
       $input_infocom["buy_date"]          = $options["buyDate"];
       $input_infocom["items_id"]          = $options["ID"];
       $input_infocom["itemtype"]          = $options["itemtype"];
-      
+
       //add new infocoms
-      $ic= new infocom();
-      if ($ic->getfromDBforDevice($options["itemtype"],$options["ID"])) {
-      
+      $ic = new infocom();
+      if ($ic->getfromDBforDevice($options["itemtype"], $options["ID"])) {
+
          //Original values
-         $warranty_date      = Html::convdate($ic->fields["warranty_date"]);
-         $warranty_duration  = $ic->fields["warranty_duration"];
-         $warranty_info      = $ic->fields["warranty_info"];
-         $buy_date           = $ic->fields["buy_date"];
-         $suppliers_id       = Dropdown::getDropdownName("glpi_suppliers",$ic->fields["suppliers_id"]);
-         $ic_comment         = $ic->fields["comment"];
+         $warranty_date     = Html::convdate($ic->fields["warranty_date"]);
+         $warranty_duration = $ic->fields["warranty_duration"];
+         $warranty_info     = $ic->fields["warranty_info"];
+         $buy_date          = $ic->fields["buy_date"];
+         $suppliers_id      = Dropdown::getDropdownName("glpi_suppliers", $ic->fields["suppliers_id"]);
+         $ic_comment        = $ic->fields["comment"];
 
          //New values
          $input_infocom["id"] = $ic->fields["id"];
 
          if ($options["addcomments"]) {
-            $input_infocom["comment"]=$ic_comment."\n".
-               __('Imported from web site', 'manufacturersimports')." ".$options["suppliername"]." ".
-               __('With the manufacturersimports plugin', 'manufacturersimports')." (".Html::convdate($options["date"]).")";
+            $input_infocom["comment"] = $ic_comment . "\n" .
+                                        __('Imported from web site', 'manufacturersimports') . " " . $options["suppliername"] . " " .
+                                        __('With the manufacturersimports plugin', 'manufacturersimports') . " (" . Html::convdate($options["date"]) . ")";
          }
          $infocom = new Infocom();
          $infocom->update($input_infocom);
@@ -612,43 +614,44 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
       } else {
 
          if ($options["addcomments"]) {
-            $input_infocom["comment"]=__('Imported from web site', 'manufacturersimports').
-               " ".$options["suppliername"]." ".__('With the manufacturersimports plugin', 'manufacturersimports').
-               " (".Html::convdate($options["date"]).")";
+            $input_infocom["comment"] = __('Imported from web site', 'manufacturersimports') .
+                                        " " . $options["suppliername"] . " " . __('With the manufacturersimports plugin', 'manufacturersimports') .
+                                        " (" . Html::convdate($options["date"]) . ")";
          }
          $infocom = new Infocom();
          $infocom->add($input_infocom);
 
       }
 
-      if($display) {
+      if ($display) {
          //post message
          echo "<td><span class='plugin_manufacturersimports_import_OK'>";
-         echo __('Import OK', 'manufacturersimports')." (".Html::convdate($options["date"]).")";
+         echo __('Import OK', 'manufacturersimports') . " (" . Html::convdate($options["date"]) . ")";
          echo "</span></td>";
          echo "<td>";
-         echo _n('Supplier' , 'Suppliers' , 1).": ";
-         echo $suppliers_id."->".Dropdown::getDropdownName("glpi_suppliers",$options["supplierId"])."<br>";
-         echo __('Date of purchase').": ";
-         echo Html::convdate($buy_date)."->".Html::convdate($options["buyDate"])."<br>";
-         echo __('Start date of warranty').": ";
-         echo $warranty_date."->".Html::convdate($options["maDate"])."<br>";
-         if ($warranty_duration==-1) {
-            $warranty_duration=__('Lifelong');
-            $warranty=__('Lifelong');
+         echo _n('Supplier', 'Suppliers', 1) . ": ";
+         echo $suppliers_id . "->" . Dropdown::getDropdownName("glpi_suppliers", $options["supplierId"]) . "<br>";
+         echo __('Date of purchase') . ": ";
+         echo Html::convdate($buy_date) . "->" . Html::convdate($options["buyDate"]) . "<br>";
+         echo __('Start date of warranty') . ": ";
+         echo $warranty_date . "->" . Html::convdate($options["maDate"]) . "<br>";
+         if ($warranty_duration == -1) {
+            $warranty_duration = __('Lifelong');
+            $warranty          = __('Lifelong');
          } else {
-            $warranty=$options["warranty"];
+            $warranty = $options["warranty"];
          }
-         echo __('Warranty duration').": ".$warranty_duration."->".$warranty."<br>";
+         echo __('Warranty duration') . ": " . $warranty_duration . "->" . $warranty . "<br>";
          echo "</td>";
       }
    }
 
    /**
     * @param $options
+    *
     * @return int
     */
-   static function addDocument($options){
+   static function addDocument($options) {
 
       //configure adding doc
 
@@ -675,15 +678,15 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
             break;
       }
 
-      $filename = 
-         "infocoms_".$options["suppliername"]
-            ."_".$name."_".$options["ID"].".html";
+      $filename =
+         "infocoms_" . $options["suppliername"]
+         . "_" . $name . "_" . $options["ID"] . ".html";
 
       //on enregistre
-      $path     = GLPI_DOC_DIR."/_uploads/";
-      $filepath = $path.$filename;
-      $datas    = array ("url"          => $options["url"],
-                         "download"     => true,
+      $path     = GLPI_DOC_DIR . "/_uploads/";
+      $filepath = $path . $filename;
+      $datas    = array("url"          => $options["url"],
+                        "download"     => true,
                         "file"         => $filepath,
                         "suppliername" => $options["suppliername"]);
       self::cURLData($datas);
@@ -692,16 +695,16 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
 
       $input                          = array();
       $input["entities_id"]           = $options["entities_id"];
-      $input["name"]                  = 
-         addslashes("infocoms_".$options["suppliername"]."_".$name."_".$options["ID"]);
+      $input["name"]                  =
+         addslashes("infocoms_" . $options["suppliername"] . "_" . $name . "_" . $options["ID"]);
       $input["upload_file"]           = $filename;
       $input["documentcategories_id"] = $options["rubrique"];
       $input["mime"]                  = "text/html";
       $input["date_mod"]              = date("Y-m-d H:i:s");
       $input["users_id"]              = Session::getLoginUserID();
 
-      $newdoc=$doc->add($input);
-      $docitem=new Document_Item();
+      $newdoc  = $doc->add($input);
+      $docitem = new Document_Item();
       $docitem->add(array('documents_id' => $newdoc,
                           'itemtype'     => $options["itemtype"],
                           'items_id'     => $options["ID"],
@@ -709,26 +712,26 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
 
       $temp = new PluginManufacturersimportsLog();
       $temp->deleteByCriteria(array('itemtype' => $options["itemtype"],
-         'items_id' => $options["ID"]));
+                                    'items_id' => $options["ID"]));
 
       return $newdoc;
    }
 
 
    /**
-    * @param $type
-    * @param $ID
+    * @param      $type
+    * @param      $ID
     * @param null $contents
     */
-   static function isInError ($type, $ID, $contents = null, $display = true) {
+   static function isInError($type, $ID, $contents = null, $display = true) {
 
       $msgerr = "";
       $date   = date("Y-m-d");
       if ($display) {
          echo "<td>";
          echo "<span class='plugin_manufacturersimports_import_KO'>";
-         echo __('Import failed', 'manufacturersimports')." (";
-         echo Html::convdate($date).")</span></td>";
+         echo __('Import failed', 'manufacturersimports') . " (";
+         echo Html::convdate($date) . ")</span></td>";
       }
 
       $temp = new PluginManufacturersimportsLog();
@@ -745,7 +748,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
 
       if ($display) {
          if (!empty($contents)) {
-            $msgerr=__('Connection failed/data download from manufacturer web site', 'manufacturersimports');
+            $msgerr = __('Connection failed/data download from manufacturer web site', 'manufacturersimports');
          }
          echo "<td>$msgerr</td>";
       }
