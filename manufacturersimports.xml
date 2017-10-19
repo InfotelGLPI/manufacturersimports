@@ -24,6 +24,10 @@
       <author>Bazile Lebeau</author>
    </authors>
    <versions>
+       <version>
+           <num>2.0.0</num>
+           <compatibility>9.2</compatibility>
+       </version>
       <version>
           <num>1.9.0</num>
           <compatibility>9.1</compatibility>
@@ -89,6 +93,7 @@
       <lang>pl_PL</lang>
       <lang>pt_BR</lang>
       <lang>ro_RO</lang>
+      <lang>ru_RU</lang>
       <lang>tr_TR</lang>
    </langs>
    <license><![CDATA[GPL v2+]]></license>

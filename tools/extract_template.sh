@@ -1,7 +1,7 @@
 #!/bin/bash
 
 soft='GLPI - ManufacturersImports plugin'
-version='1.9.1'
+version='2.0.0'
 copyright='INDEPNET Development Team'
 
 xgettext *.php */*.php --copyright-holder='$copyright' --package-name='$soft' --package-version='$version' -o locales/glpi.pot -L PHP --add-comments=TRANS --from-code=UTF-8 --force-po  \
