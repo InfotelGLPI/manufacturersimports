@@ -1,0 +1,1 @@
+ALTER TABLE `glpi_plugin_manufacturersimports_configs` CHANGE `supplier_key` `supplier_key` VARCHAR(255);

@@ -361,7 +361,7 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
          echo "<tr>";
          echo "<td class='tab_bg_2 center' colspan='2'>".__('Manufacturer API key', 'manufacturersimports')."</td>";
          echo "<td class='tab_bg_2 left' colspan='2'>";
-         echo "<input type='text' name='supplier_key' size='32' value='".$this->fields["supplier_key"]."'>";
+         echo "<input type='text' name='supplier_key' size='50' value='".$this->fields["supplier_key"]."'>";
          echo "</td>";
          echo "</tr>";
       }
