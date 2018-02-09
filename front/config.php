@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of Manufacturersimports.
 
  Manufacturersimports is free software; you can redistribute it and/or modify
@@ -33,7 +33,7 @@ Session::checkRight("config", UPDATE);
 
 $plugin = new Plugin();
 if ($plugin->isActivated("manufacturersimports")) {
-   Html::header(__('Setup'), '',"tools", "pluginmanufacturersimportsmenu", "config");
+   Html::header(__('Setup'), '', "tools", "pluginmanufacturersimportsmenu", "config");
    Search::show("PluginManufacturersimportsConfig");
 } else {
    Html::header(__('Setup'), '', "config", "plugins");

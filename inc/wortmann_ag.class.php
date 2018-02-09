@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of Manufacturersimports.
 
  Manufacturersimports is free software; you can redistribute it and/or modify
@@ -50,23 +50,23 @@ class PluginManufacturersimportsWortmann_ag extends PluginManufacturersimportsMa
    /**
     * @see PluginManufacturersimportsManufacturer::getSupplierInfo()
     */
-   function getSupplierInfo($compSerial=null,$otherSerial=null, $key=null, $supplierUrl=null) {
+   function getSupplierInfo($compSerial = null, $otherSerial = null, $key = null, $supplierUrl = null) {
       $info["name"]         = PluginManufacturersimportsConfig::WORTMANN_AG;
       $info["supplier_url"] = "https://www.wortmann.de/fr-fr/profile/snsearch.aspx?SN=";
       $info["url"]          = $supplierUrl.$compSerial;
       return $info;
    }
-   
+
    /**
     * @see PluginManufacturersimportsManufacturer::getBuyDate()
     */
    function getBuyDate($contents) {
       $field     = "but de la garantie";
       $searchstart = stristr($contents, $field);
-      $myDate = substr($searchstart,27,10);
+      $myDate = substr($searchstart, 27, 10);
 
       $myDate = trim($myDate);
-      $myDate = str_replace('/','-',$myDate);
+      $myDate = str_replace('/', '-', $myDate);
 
       $myDate = PluginManufacturersimportsPostImport::checkDate($myDate, true);
 
@@ -74,10 +74,10 @@ class PluginManufacturersimportsWortmann_ag extends PluginManufacturersimportsMa
          list($day, $month, $year) = explode('-', $myDate);
          $myDate = date("Y-m-d", mktime(0, 0, 0, $month, $day, $year));
       }
-      
+
       return $myDate;
    }
-   
+
    /**
     * @see PluginManufacturersimportsManufacturer::getStartDate()
     */
@@ -85,20 +85,20 @@ class PluginManufacturersimportsWortmann_ag extends PluginManufacturersimportsMa
 
       return self::getBuyDate($contents);
    }
-   
+
    /**
     * @see PluginManufacturersimportsManufacturer::getExpirationDate()
     */
    function getExpirationDate($contents) {
       $field     = "Fin de garantie";
       $searchstart = stristr($contents, $field);
-      $myDate = substr($searchstart,24,10);
+      $myDate = substr($searchstart, 24, 10);
 
       $myDate = trim($myDate);
-      $myDate = str_replace('/','-',$myDate);
+      $myDate = str_replace('/', '-', $myDate);
 
       $myDate = PluginManufacturersimportsPostImport::checkDate($myDate, true);
-      
+
       if ($myDate != "0000-00-00") {
          list($day, $month, $year) = explode('-', $myDate);
          $myDate = date("Y-m-d", mktime(0, 0, 0, $month, $day, $year));

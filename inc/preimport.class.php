@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of Manufacturersimports.
 
  Manufacturersimports is free software; you can redistribute it and/or modify
@@ -64,7 +64,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
       }
 
       $rand    = mt_rand();
-      $options = array();
+      $options = [];
 
       foreach ($types as $type) {
          $item           = new $type();
@@ -265,21 +265,21 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
                $item = new Supplier();
                $item->getFromDB($supplierId);
                if ($item->fields["is_recursive"]
-                   || $item->fields["entities_id"] == $line['entities_id'])
-                  Dropdown::show('Supplier', array('name'     => "to_suppliers_id" . $line["id"],
+                   || $item->fields["entities_id"] == $line['entities_id']) {
+                  Dropdown::show('Supplier', ['name'     => "to_suppliers_id" . $line["id"],
                                                    'value'    => $supplierId,
                                                    'comments' => 0,
-                                                   'entity'   => $line['entities_id']));
-               else {
+                                                   'entity'   => $line['entities_id']]);
+               } else {
                   echo "<span class='plugin_manufacturersimports_import_KO'>";
                   echo __('The choosen supplier is not recursive', 'manufacturersimports') . "</span>";
                   echo "<input type='hidden' name='to_suppliers_id" . $line["id"] . "' value='-1'>";
                }
             } else {
-               Dropdown::show('Supplier', array('name'     => "to_suppliers_id" . $line["id"],
+               Dropdown::show('Supplier', ['name'     => "to_suppliers_id" . $line["id"],
                                                 'value'    => $supplierId,
                                                 'comments' => 0,
-                                                'entity'   => $line['entities_id']));
+                                                'entity'   => $line['entities_id']]);
             }
             echo "</td>";
 
@@ -379,8 +379,9 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
 
          foreach ($iterator as $data) {
             echo "<option value='" . $data["id"] . "' " . ($p['manufacturers_id'] == "" . $data["id"] . "" ? " selected " : "") . ">";
-            if (Session::isMultiEntitiesMode())
+            if (Session::isMultiEntitiesMode()) {
                echo Dropdown::getDropdownName("glpi_entities", $data["entities_id"]) . " > ";
+            }
             echo $data["name"];
             if (empty($data["name"]) || $_SESSION["glpiis_ids_visible"]) {
                echo " (";
@@ -457,10 +458,10 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
       global $DB, $CFG_GLPI;
 
       // Default values of parameters
-      $p['link']             = array();
-      $p['field']            = array();
-      $p['contains']         = array();
-      $p['searchtype']       = array();
+      $p['link']             = [];
+      $p['field']            = [];
+      $p['contains']         = [];
+      $p['searchtype']       = [];
       $p['sort']             = '1';
       $p['order']            = 'ASC';
       $p['start']            = 0;
@@ -506,7 +507,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
             $p['start'] = 0;
          }
 
-         $toview = array("name" => 1);
+         $toview = ["name" => 1];
 
          $query = self::queryImport($p, $config, $toview);
 
@@ -626,8 +627,9 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
                $compSerial = $line['serial'];
                $compId     = $line['id'];
                $model      = $line["model_name"];
-               if (!$line["itemtype"])
+               if (!$line["itemtype"]) {
                   $line["itemtype"] = $p['itemtype'];
+               }
 
                self::showImport($row_num, $item_num, $line, $output_type,
                                 $p['manufacturers_id'],
@@ -664,7 +666,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
                   self::dropdownMassiveAction($compId, $p['itemtype'],
                                               $p['manufacturers_id'],
                                               $p['start'], $p['imported']);
-                  self::closeArrowMassives(array());
+                  self::closeArrowMassives([]);
                } else {
                   echo "<table class='tab_cadre' width='80%'><tr class='tab_bg_1'>" .
                        "<td><span class='b'>";
@@ -826,7 +828,6 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
       //// 4 - ORDER
       $ORDER = " ORDER BY `entities_id`,`" . $itemtable . "`.`name` ";
 
-
       foreach ($toview as $key => $val) {
          if ($p['sort'] == $val) {
             $ORDER = self::addOrderBy($p['itemtype'], $p['sort'], $p['order'], $key);
@@ -861,7 +862,6 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
       $table = $searchopt[$ID]["table"];
       $field = $searchopt[$ID]["field"];
 
-
       $addtable = '';
 
       if ($table != getTableForItemType($itemtype)
@@ -876,7 +876,6 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
             $addtable .= "_" . $complexjoin;
          }
       }
-
 
       if (isset($CFG_GLPI["union_search_type"][$itemtype])) {
          return " ORDER BY ITEM_$key $order ";
@@ -990,13 +989,13 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
 
       echo "</select>";
 
-      $params = array('action'           => '__VALUE__',
+      $params = ['action'           => '__VALUE__',
                       'manufacturers_id' => $manufacturer,
                       'itemtype'         => $type,
                       'start'            => $start,
                       'imported'         => $imported,
                       'id'               => $ID,
-      );
+      ];
 
       Ajax::updateItemOnSelectEvent("massiveaction", "show_massiveaction",
                                     $CFG_GLPI["root_doc"] . "/plugins/manufacturersimports/ajax/dropdownMassiveAction.php", $params);

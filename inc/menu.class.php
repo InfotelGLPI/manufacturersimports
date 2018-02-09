@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of Manufacturersimports.
 
  Manufacturersimports is free software; you can redistribute it and/or modify
@@ -42,9 +42,9 @@ class PluginManufacturersimportsMenu extends CommonGLPI {
     * @return character menu shortcut key
     **/
    static function getMenuName() {
-      return _n('Suppliers import', 
-                'Suppliers imports', 
-                2, 
+      return _n('Suppliers import',
+                'Suppliers imports',
+                2,
                 'manufacturersimports');
    }
 
@@ -57,7 +57,7 @@ class PluginManufacturersimportsMenu extends CommonGLPI {
     **/
    static function getMenuContent() {
       $plugin_page              = "/plugins/manufacturersimports/front/import.php";
-      $menu                     = array();
+      $menu                     = [];
       //Menu entry in tools
       $menu['title']            = self::getMenuName();
       $menu['page']             = $plugin_page;
@@ -69,7 +69,7 @@ class PluginManufacturersimportsMenu extends CommonGLPI {
          $menu['links']['config']                      = PluginManufacturersimportsConfig::getSearchURL(false);
          //Link to config page in admin plugins list
          $menu['config_page']                          = PluginManufacturersimportsConfig::getSearchURL(false);
-         
+
          //Add a fourth level in breadcrumb for configuration page
          $menu['options']['config']['title']           = __('Setup');
          $menu['options']['config']['page']            = PluginManufacturersimportsConfig::getSearchURL(false);
@@ -82,10 +82,10 @@ class PluginManufacturersimportsMenu extends CommonGLPI {
 
    static function removeRightsFromSession() {
       if (isset($_SESSION['glpimenu']['tools']['types']['PluginManufacturersimportsMenu'])) {
-         unset($_SESSION['glpimenu']['tools']['types']['PluginManufacturersimportsMenu']); 
+         unset($_SESSION['glpimenu']['tools']['types']['PluginManufacturersimportsMenu']);
       }
       if (isset($_SESSION['glpimenu']['tools']['content']['pluginmanufacturersimportsmenu'])) {
-         unset($_SESSION['glpimenu']['tools']['content']['pluginmanufacturersimportsmenu']); 
+         unset($_SESSION['glpimenu']['tools']['content']['pluginmanufacturersimportsmenu']);
       }
    }
 }

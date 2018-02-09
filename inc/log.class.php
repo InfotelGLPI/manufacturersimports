@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of Manufacturersimports.
 
  Manufacturersimports is free software; you can redistribute it and/or modify
@@ -44,7 +44,7 @@ class PluginManufacturersimportsLog extends CommonDBTM {
     */
    function getFromDBbyDevice($items_id, $itemtype) {
       global $DB;
-      
+
       $query = "SELECT * FROM `".$this->getTable()."` " .
          "WHERE `items_id` = '" . $items_id . "'
          AND `itemtype` = '" . $itemtype . "' ";
@@ -70,10 +70,11 @@ class PluginManufacturersimportsLog extends CommonDBTM {
     */
    function checkIfAlreadyImported($itemtype, $items_id) {
 
-      if ($this->getFromDBbyDevice($items_id,$itemtype))
+      if ($this->getFromDBbyDevice($items_id, $itemtype)) {
          return $this->fields["id"];
-      else
+      } else {
          return false;
+      }
    }
 
    /**
@@ -83,7 +84,7 @@ class PluginManufacturersimportsLog extends CommonDBTM {
    function reinitializeImport($itemtype, $items_id) {
       global $DB;
 
-      if ($this->getFromDBbyDevice($items_id,$itemtype)) {
+      if ($this->getFromDBbyDevice($items_id, $itemtype)) {
 
          $doc= new Document();
          if ($doc->GetfromDB($this->fields["documents_id"])) {
@@ -93,14 +94,16 @@ class PluginManufacturersimportsLog extends CommonDBTM {
               WHERE `documents_id` = '".$this->fields["documents_id"]."';";
             $DB->query($query);
 
-            if (is_file(GLPI_DOC_DIR."/".$doc->fields["filename"]) 
-                  && !is_dir(GLPI_DOC_DIR."/".$doc->fields["filename"]))
+            if (is_file(GLPI_DOC_DIR."/".$doc->fields["filename"])
+                  && !is_dir(GLPI_DOC_DIR."/".$doc->fields["filename"])) {
                unlink(GLPI_DOC_DIR."/".$doc->fields["filename"]);
+            }
 
-            $doc->delete(array('id'=>$this->fields["documents_id"]),true);
+            $doc->delete(['id'=>$this->fields["documents_id"]], true);
          }
       }
-      if (isset($this->fields["id"]))
-         $this->delete(array('id'=>$this->fields["id"]));
+      if (isset($this->fields["id"])) {
+         $this->delete(['id'=>$this->fields["id"]]);
+      }
    }
 }

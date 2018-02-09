@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of Manufacturersimports.
 
  Manufacturersimports is free software; you can redistribute it and/or modify
@@ -38,12 +38,12 @@ $log=new PluginManufacturersimportsLog();
 $config = new PluginManufacturersimportsConfig();
 
 Html::header(_n('Suppliers import', 'Suppliers imports', 2, 'manufacturersimports'),
-               $_SERVER['PHP_SELF'],"tools", "pluginmanufacturersimportsmenu");
+               $_SERVER['PHP_SELF'], "tools", "pluginmanufacturersimportsmenu");
 
 $config->checkGlobal(UPDATE);
 
 if (isset($_POST["action"])&&isset($_POST["id"])&&isset($_POST["item"])&&count($_POST["item"])) {
-   switch($_POST["action"]) {
+   switch ($_POST["action"]) {
       case "import":
          PluginManufacturersimportsPostImport::massiveimport($_POST);
          break;
@@ -51,11 +51,11 @@ if (isset($_POST["action"])&&isset($_POST["id"])&&isset($_POST["item"])&&count($
       case "reinit_once":
          foreach ($_POST["item"] as $key => $val) {
             if ($val==1) {
-               $log->reinitializeImport($_POST["itemtype"],$key);
+               $log->reinitializeImport($_POST["itemtype"], $key);
             }
-      }
-      Session::addMessageAfterRedirect(__('Operation successful'));
-      Html::redirect($_SERVER['HTTP_REFERER']."?itemtype=".$_POST["itemtype"].
+         }
+         Session::addMessageAfterRedirect(__('Operation successful'));
+         Html::redirect($_SERVER['HTTP_REFERER']."?itemtype=".$_POST["itemtype"].
                      "&manufacturers_id=".$_POST["manufacturers_id"].
                      "&start=".$_POST["start"].
                      "&imported=".$_POST["imported"]);

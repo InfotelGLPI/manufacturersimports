@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of Manufacturersimports.
 
  Manufacturersimports is free software; you can redistribute it and/or modify
@@ -50,36 +50,36 @@ class PluginManufacturersimportsFujitsu extends PluginManufacturersimportsManufa
    /**
     * @see PluginManufacturersimportsManufacturer::getSupplierInfo()
     */
-   function getSupplierInfo($compSerial=null,$otherSerial=null, $key=null, $supplierUrl=null) {
+   function getSupplierInfo($compSerial = null, $otherSerial = null, $key = null, $supplierUrl = null) {
       $info["name"]         = PluginManufacturersimportsConfig::FUJITSU;
       $info["supplier_url"] = "https://support.ts.fujitsu.com/Warranty/WarrantyStatus.asp?lng=EN&IDNR=";
       $info["url"]          = $supplierUrl.$compSerial."&HardwareGUID=&Version=3.5";
       return $info;
    }
-   
+
    /**
     * @see PluginManufacturersimportsManufacturer::getBuyDate()
     */
    function getBuyDate($contents) {
-      
-      $matchesarray = array();
+
+      $matchesarray = [];
       preg_match_all("/(\d{2}\/\d{2}\/\d{4})/", $contents, $matchesarray);
-      
+
       $datetimestamp = date('U');
       $myDate = $matchesarray[0][0];
-      
+
       $myDate = trim($myDate);
-      $myDate = str_replace('/','-',$myDate);
+      $myDate = str_replace('/', '-', $myDate);
 
       $myDate = PluginManufacturersimportsPostImport::checkDate($myDate, true);
-      
+
       if ($myDate != "0000-00-00") {
          list($day, $month, $year) = explode('-', $myDate);
          $myDate = date("Y-m-d", mktime(0, 0, 0, $month, $day, $year));
       }
       return $myDate;
    }
-   
+
    /**
     * @see PluginManufacturersimportsManufacturer::getStartDate()
     */
@@ -94,17 +94,17 @@ class PluginManufacturersimportsFujitsu extends PluginManufacturersimportsManufa
     */
    function getExpirationDate($contents) {
 
-      $matchesarray = array();
+      $matchesarray = [];
       preg_match_all("/(\d{2}\/\d{2}\/\d{4})/", $contents, $matchesarray);
 
       $datetimestamp = date('U');
       $myDate = $matchesarray[0][1];
-      
+
       $myDate = trim($myDate);
-      $myDate = str_replace('/','-',$myDate);
+      $myDate = str_replace('/', '-', $myDate);
 
       $myDate = PluginManufacturersimportsPostImport::checkDate($myDate, true);
-      
+
       if ($myDate != "0000-00-00") {
          list($day, $month, $year) = explode('-', $myDate);
          $myDate = date("Y-m-d", mktime(0, 0, 0, $month, $day, $year));

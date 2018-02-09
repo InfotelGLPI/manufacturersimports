@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of Manufacturersimports.
 
  Manufacturersimports is free software; you can redistribute it and/or modify
@@ -26,7 +26,7 @@
  along with Manufacturersimports. If not, see <http://www.gnu.org/licenses/>.
  --------------------------------------------------------------------------
  */
- 
+
 if (strpos($_SERVER['PHP_SELF'], "dropdownSuppliers.php")) {
    include ('../../../inc/includes.php');
    header("Content-Type: text/html; charset=UTF-8");
@@ -40,5 +40,5 @@ Session::checkLoginUser();
 
 $config = new PluginManufacturersimportsConfig();
 if ($_POST['supplier'] != -1) {
-   echo "&nbsp;<a href='".$config->getFormURL()."?preconfig=".$_POST['supplier']."'>"._sx('button','Update')."</a>";
+   echo "&nbsp;<a href='".$config->getFormURL()."?preconfig=".$_POST['supplier']."'>"._sx('button', 'Update')."</a>";
 }

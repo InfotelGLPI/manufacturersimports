@@ -39,7 +39,7 @@ class PluginManufacturersimportsLenovo extends PluginManufacturersimportsManufac
    /**
     * @see PluginManufacturersimportsManufacturer::showCheckbox()
     */
-   function showCheckbox($ID,$sel,$otherSerial=false) {
+   function showCheckbox($ID, $sel, $otherSerial = false) {
 
       return "<input type='checkbox' name='item[".$ID."]' value='1' $sel>";
 
@@ -48,50 +48,50 @@ class PluginManufacturersimportsLenovo extends PluginManufacturersimportsManufac
    /**
     * @see PluginManufacturersimportsManufacturer::showItemTitle()
     */
-   function showItemTitle($output_type,$header_num) {
+   function showItemTitle($output_type, $header_num) {
 
-      return Search::showHeaderItem($output_type,__('Model number', 'manufacturersimports'),$header_num);
+      return Search::showHeaderItem($output_type, __('Model number', 'manufacturersimports'), $header_num);
 
    }
 
    /**
     * @see PluginManufacturersimportsManufacturer::showDocTitle()
     */
-   function showDocTitle($output_type,$header_num) {
+   function showDocTitle($output_type, $header_num) {
 
-      return Search::showHeaderItem($output_type,__('File'),$header_num);
+      return Search::showHeaderItem($output_type, __('File'), $header_num);
 
    }
-   
+
    /**
     * @see PluginManufacturersimportsManufacturer::showItem()
     */
-   function showItem($output_type,$otherSerial,$item_num,$row_num) {
+   function showItem($output_type, $otherSerial, $item_num, $row_num) {
 
-      return Search::showItem($output_type,$otherSerial,$item_num,$row_num);
+      return Search::showItem($output_type, $otherSerial, $item_num, $row_num);
    }
 
    function getSearchField() {
 
       return false;
    }
-   
+
    /**
     * @see PluginManufacturersimportsManufacturer::getSupplierInfo()
     */
-   function getSupplierInfo($compSerial=null, $otherserial=null, $key=null, $supplierUrl=null) {
+   function getSupplierInfo($compSerial = null, $otherserial = null, $key = null, $supplierUrl = null) {
 
       $info["name"]         = PluginManufacturersimportsConfig::LENOVO;
       $info["supplier_url"] = "http://www3.lenovo.com/us/en/warranty/";
       $info["url"]          = $supplierUrl . $compSerial . "?machineType=" . $otherserial . "&btnSubmit";
       return $info;
    }
-   
+
    /**
     * @see PluginManufacturersimportsManufacturer::getBuyDate()
     */
    function getBuyDate($contents) {
-      $buy_date = NULL;
+      $buy_date = null;
       $contents = json_decode($contents, true);
 
       if (isset($contents['startDate'])) {
@@ -102,7 +102,7 @@ class PluginManufacturersimportsLenovo extends PluginManufacturersimportsManufac
          return PluginManufacturersimportsPostImport::checkDate($myDate);;
       }
    }
-   
+
    /**
     * @see PluginManufacturersimportsManufacturer::getStartDate()
     */
@@ -131,7 +131,7 @@ class PluginManufacturersimportsLenovo extends PluginManufacturersimportsManufac
     */
    function getWarrantyInfo($contents) {
       $temp_date = json_decode($contents, true);
-      if(isset($temp_date['description'])){
+      if (isset($temp_date['description'])) {
          $warranty_info = $temp_date['description'];
          return $warranty_info;
       }

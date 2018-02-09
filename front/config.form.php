@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of Manufacturersimports.
 
  Manufacturersimports is free software; you can redistribute it and/or modify
@@ -69,7 +69,7 @@ if (isset($_POST["add"])) {
 } else {
 
    Html::header(__('Setup'), '', "tools", "pluginmanufacturersimportsmenu", "config");
-   
+
    $config->checkGlobal(READ);
    $config->display($_GET);
    Html::footer();

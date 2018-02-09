@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of Manufacturersimports.
 
  Manufacturersimports is free software; you can redistribute it and/or modify
@@ -45,7 +45,7 @@ class PluginManufacturersimportsModel extends CommonDBTM {
     * @return string
     **/
    static function getTypeName($nb = 0) {
-      return _n('Suppliers import', 'Suppliers imports', 
+      return _n('Suppliers import', 'Suppliers imports',
                 $nb, 'manufacturersimports');
    }
 
@@ -99,7 +99,7 @@ class PluginManufacturersimportsModel extends CommonDBTM {
       $tmp['model_name'] = $values['model_name'];
       $tmp['itemtype']   = $values['itemtype'];
       $tmp['items_id']   = $values['items_id'];
-      if ($this->getFromDBbyDevice($values['items_id'], 
+      if ($this->getFromDBbyDevice($values['items_id'],
                                    $values['itemtype'])) {
          $tmp['id'] = $this->getID();
          $this->update($tmp);
@@ -117,9 +117,9 @@ class PluginManufacturersimportsModel extends CommonDBTM {
    * @return nothing (print out a table)
    *
    */
-   static function showForm($itemtype,$items_id) {
+   static function showForm($itemtype, $items_id) {
       global $DB;
-      
+
       $canedit = Session::haveRight(static::$rightname, UPDATE);
 
       $query = "SELECT *
@@ -138,7 +138,7 @@ class PluginManufacturersimportsModel extends CommonDBTM {
       echo "</tr>";
 
       if ($number == 1) {
-         while($line = $DB->fetch_array($result)) {
+         while ($line = $DB->fetch_array($result)) {
             $ID = $line["id"];
             echo "<tr class='tab_bg_1'>";
             echo "<td class='left'>";
@@ -147,8 +147,8 @@ class PluginManufacturersimportsModel extends CommonDBTM {
             if ($canedit) {
                echo "<td class='center' class='tab_bg_2'>";
                Html::showSimpleForm($config_url, 'delete_model',
-                                    _x('button','Delete permanently'),
-                                    array('id' => $ID));
+                                    _x('button', 'Delete permanently'),
+                                    ['id' => $ID]);
                echo "</td>";
             } else {
                echo "<td>";
@@ -161,9 +161,9 @@ class PluginManufacturersimportsModel extends CommonDBTM {
          echo "<tr class='tab_bg_1'>";
          echo "<td colspan='2'>";
          echo "<input type='text' name='model_name' size='30'>";
-         echo Html::hidden('items_id', array('value' => $items_id));
-         echo Html::hidden('itemtype', array('value' => $itemtype));
-         echo Html::submit(_sx('button','Save'), array('name' => 'update_model'));
+         echo Html::hidden('items_id', ['value' => $items_id]);
+         echo Html::hidden('itemtype', ['value' => $itemtype]);
+         echo Html::submit(_sx('button', 'Save'), ['name' => 'update_model']);
          echo "</td></tr>";
       }
 
@@ -185,7 +185,7 @@ class PluginManufacturersimportsModel extends CommonDBTM {
       switch ($ma->getAction()) {
          case "add_model" :
             echo "<input type=\"text\" name=\"model_name\">&nbsp;";
-            echo Html::submit(_sx('button', 'Post'), array('name' => 'massiveaction'));
+            echo Html::submit(_sx('button', 'Post'), ['name' => 'massiveaction']);
             return true;
             break;
       }
@@ -201,14 +201,14 @@ class PluginManufacturersimportsModel extends CommonDBTM {
                                                        array $ids) {
 
       switch ($ma->getAction()) {
-          case "add_model":
+         case "add_model":
             $model=new PluginManufacturersimportsModel();
             $input = $ma->getInput();
             foreach ($ma->items as $itemtype => $myitem) {
                foreach ($myitem as $key => $value) {
-                  $input = array('model_name' => $ma->POST['model_name'],
+                  $input = ['model_name' => $ma->POST['model_name'],
                                  'items_id'   => $key,
-                                 'itemtype'   => $itemtype);
+                                 'itemtype'   => $itemtype];
                   if ($model->addModel($input)) {
                      $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_OK);
                   } else {

@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of Manufacturersimports.
 
  Manufacturersimports is free software; you can redistribute it and/or modify
@@ -39,10 +39,10 @@ class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacture
    /**
     * @see PluginManufacturersimportsManufacturer::showDocTitle()
     */
-   function showDocTitle($output_type,$header_num) {
-      return Search::showHeaderItem($output_type,__('File'),$header_num);
+   function showDocTitle($output_type, $header_num) {
+      return Search::showHeaderItem($output_type, __('File'), $header_num);
    }
-   
+
    function getSearchField() {
       return "Start date";
    }
@@ -50,11 +50,11 @@ class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacture
    /**
     * @see PluginManufacturersimportsManufacturer::getSupplierInfo()
     */
-   function getSupplierInfo($compSerial=null,$otherSerial=null, $key=null, $supplierUrl=null) {
+   function getSupplierInfo($compSerial = null, $otherSerial = null, $key = null, $supplierUrl = null) {
       $info["name"]          = PluginManufacturersimportsConfig::HP;
       $info["supplier_url "] = "http://h20565.www2.hpe.com/hpsc/wc/public/find";
 
-      if(empty($otherSerial)){
+      if (empty($otherSerial)) {
          $info["url"] = $supplierUrl."?rows[0].item.countryCode=FR&rows[0].item.serialNumber=$compSerial&submitButton=Envoyer";
       } else {
          $info["url"] = $supplierUrl."?rows[0].item.countryCode=FR&rows[0].item.serialNumber=$compSerial&submitButton=Envoyer&rows[0].item.productNumber=$otherSerial";
@@ -66,34 +66,34 @@ class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacture
     * @see PluginManufacturersimportsManufacturer::getBuyDate()
     */
    function getBuyDate($contents) {
-      $matchesarray = array();
+      $matchesarray = [];
       preg_match_all("/([A-Z][a-z][a-z] \d\d?, \d{4})/", $contents, $matchesarray);
-      
+
       $datetimestamp = date('U');
-Toolbox::logDebug($matchesarray);
-      if(isset($matchesarray[0][0])){
+      Toolbox::logDebug($matchesarray);
+      if (isset($matchesarray[0][0])) {
          $myDate = $matchesarray[0][0];
-         $myDate = str_replace(' ','-',$myDate);
-         $myDate = str_replace(',','',$myDate);
-         $myDate = str_replace('Jan','01',$myDate);
-         $myDate = str_replace('Feb','02',$myDate);
-         $myDate = str_replace('Mar','03',$myDate);
-         $myDate = str_replace('Apr','04',$myDate);
-         $myDate = str_replace('May','05',$myDate);
-         $myDate = str_replace('Jun','06',$myDate);
-         $myDate = str_replace('Jul','07',$myDate);
-         $myDate = str_replace('Aug','08',$myDate);
-         $myDate = str_replace('Sep','09',$myDate);
-         $myDate = str_replace('Oct','10',$myDate);
-         $myDate = str_replace('Nov','11',$myDate);
-         $myDate = str_replace('Dec','12',$myDate);
+         $myDate = str_replace(' ', '-', $myDate);
+         $myDate = str_replace(',', '', $myDate);
+         $myDate = str_replace('Jan', '01', $myDate);
+         $myDate = str_replace('Feb', '02', $myDate);
+         $myDate = str_replace('Mar', '03', $myDate);
+         $myDate = str_replace('Apr', '04', $myDate);
+         $myDate = str_replace('May', '05', $myDate);
+         $myDate = str_replace('Jun', '06', $myDate);
+         $myDate = str_replace('Jul', '07', $myDate);
+         $myDate = str_replace('Aug', '08', $myDate);
+         $myDate = str_replace('Sep', '09', $myDate);
+         $myDate = str_replace('Oct', '10', $myDate);
+         $myDate = str_replace('Nov', '11', $myDate);
+         $myDate = str_replace('Dec', '12', $myDate);
 
          list($month, $day, $year) = explode('-', $myDate);
-         $myDate = date("U",mktime(0, 0, 0, $month, $day, $year));
+         $myDate = date("U", mktime(0, 0, 0, $month, $day, $year));
          if ($myDate < $datetimestamp) {
             $datetimestamp = $myDate;
          }
-         
+
          $myDate = date("Y-m-d", $datetimestamp);
 
          return $myDate;
@@ -101,37 +101,37 @@ Toolbox::logDebug($matchesarray);
          return false;
       }
    }
-   
+
    /**
     * @see PluginManufacturersimportsManufacturer::getStartDate()
     */
    function getStartDate($contents) {
-      
-      $matchesarray = array();
+
+      $matchesarray = [];
       preg_match_all("/([A-Z][a-z][a-z] \d\d?, \d{4})/", $contents, $matchesarray);
-      
+
       $datetimestamp = date('U');
 
       $index = count($matchesarray[0])-2;
-      if(isset($matchesarray[0][$index])){
+      if (isset($matchesarray[0][$index])) {
          $myDate = $matchesarray[0][$index];
-         $myDate = str_replace(' ','-',$myDate);
-         $myDate = str_replace(',','',$myDate);
-         $myDate = str_replace('Jan','01',$myDate);
-         $myDate = str_replace('Feb','02',$myDate);
-         $myDate = str_replace('Mar','03',$myDate);
-         $myDate = str_replace('Apr','04',$myDate);
-         $myDate = str_replace('May','05',$myDate);
-         $myDate = str_replace('Jun','06',$myDate);
-         $myDate = str_replace('Jul','07',$myDate);
-         $myDate = str_replace('Aug','08',$myDate);
-         $myDate = str_replace('Sep','09',$myDate);
-         $myDate = str_replace('Oct','10',$myDate);
-         $myDate = str_replace('Nov','11',$myDate);
-         $myDate = str_replace('Dec','12',$myDate);
+         $myDate = str_replace(' ', '-', $myDate);
+         $myDate = str_replace(',', '', $myDate);
+         $myDate = str_replace('Jan', '01', $myDate);
+         $myDate = str_replace('Feb', '02', $myDate);
+         $myDate = str_replace('Mar', '03', $myDate);
+         $myDate = str_replace('Apr', '04', $myDate);
+         $myDate = str_replace('May', '05', $myDate);
+         $myDate = str_replace('Jun', '06', $myDate);
+         $myDate = str_replace('Jul', '07', $myDate);
+         $myDate = str_replace('Aug', '08', $myDate);
+         $myDate = str_replace('Sep', '09', $myDate);
+         $myDate = str_replace('Oct', '10', $myDate);
+         $myDate = str_replace('Nov', '11', $myDate);
+         $myDate = str_replace('Dec', '12', $myDate);
 
          list($month, $day, $year) = explode('-', $myDate);
-         $myDate = date("U",mktime(0, 0, 0, $month, $day, $year));
+         $myDate = date("U", mktime(0, 0, 0, $month, $day, $year));
          if ($myDate < $datetimestamp) {
             $datetimestamp = $myDate;
          }
@@ -148,36 +148,36 @@ Toolbox::logDebug($matchesarray);
     * @see PluginManufacturersimportsManufacturer::getExpirationDate()
     */
    function getExpirationDate($contents) {
-      
+
       preg_match_all("/([A-Z][a-z][a-z] \d\d?, \d{4})/", $contents, $matchesarray);
-      
-      if(isset($matchesarray[0])){
+
+      if (isset($matchesarray[0])) {
          $date = date("Y-m-d", strtotime(0));
-         
+
          foreach ($matchesarray[0] as $myDate) {
-            $myEndDate = str_replace(' ','-',$myDate);
-            $myEndDate = str_replace(',','',$myEndDate);
-            $myEndDate = str_replace('Jan','01',$myEndDate);
-            $myEndDate = str_replace('Feb','02',$myEndDate);
-            $myEndDate = str_replace('Mar','03',$myEndDate);
-            $myEndDate = str_replace('Apr','04',$myEndDate);
-            $myEndDate = str_replace('May','05',$myEndDate);
-            $myEndDate = str_replace('Jun','06',$myEndDate);
-            $myEndDate = str_replace('Jul','07',$myEndDate);
-            $myEndDate = str_replace('Aug','08',$myEndDate);
-            $myEndDate = str_replace('Sep','09',$myEndDate);
-            $myEndDate = str_replace('Oct','10',$myEndDate);
-            $myEndDate = str_replace('Nov','11',$myEndDate);
-            $myEndDate = str_replace('Dec','12',$myEndDate);
-            
+            $myEndDate = str_replace(' ', '-', $myDate);
+            $myEndDate = str_replace(',', '', $myEndDate);
+            $myEndDate = str_replace('Jan', '01', $myEndDate);
+            $myEndDate = str_replace('Feb', '02', $myEndDate);
+            $myEndDate = str_replace('Mar', '03', $myEndDate);
+            $myEndDate = str_replace('Apr', '04', $myEndDate);
+            $myEndDate = str_replace('May', '05', $myEndDate);
+            $myEndDate = str_replace('Jun', '06', $myEndDate);
+            $myEndDate = str_replace('Jul', '07', $myEndDate);
+            $myEndDate = str_replace('Aug', '08', $myEndDate);
+            $myEndDate = str_replace('Sep', '09', $myEndDate);
+            $myEndDate = str_replace('Oct', '10', $myEndDate);
+            $myEndDate = str_replace('Nov', '11', $myEndDate);
+            $myEndDate = str_replace('Dec', '12', $myEndDate);
+
             list($month, $day, $year) = explode('-', $myEndDate);
             $myEndDate = $year."-".$month."-".$day;
-            
-            if(strtotime($myEndDate) > strtotime($date)){
+
+            if (strtotime($myEndDate) > strtotime($date)) {
                $date = $myEndDate;
             }
          }
-         
+
          return $date;
       } else {
          return false;

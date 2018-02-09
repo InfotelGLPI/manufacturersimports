@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-                
+
  This file is part of Manufacturersimports.
 
  Manufacturersimports is free software; you can redistribute it and/or modify
@@ -58,9 +58,9 @@ class PluginManufacturersimportsImport extends CommonDBTM {
       $supplierkey  = $config->fields["supplier_key"];
       $supplierId   = $config->fields["suppliers_id"];
 
-      $toview = array("name" => 1);
+      $toview = ["name" => 1];
 
-      $params                     = array();
+      $params                     = [];
       $params['manufacturers_id'] = $config->getID();
       $params['imported']         = 1;
       $params['sort']             = 1;
@@ -96,13 +96,13 @@ class PluginManufacturersimportsImport extends CommonDBTM {
             $url  = PluginManufacturersimportsPreImport::selectSupplier($suppliername, $supplierUrl, $compSerial, $otherSerial, $supplierkey);
             $post = PluginManufacturersimportsPreImport::getSupplierPost($suppliername, $compSerial, $otherSerial);
 
-            $options = array("url"     => $url,
+            $options = ["url"     => $url,
                              "post"    => $post,
                              "type"    => $type,
                              "ID"      => $ID,
                              "config"  => $config,
                              "line"    => $data,
-                             "display" => false);
+                             "display" => false];
 
             if (PluginManufacturersimportsPostImport::saveImport($options)) {
                $task->addVolume(1);

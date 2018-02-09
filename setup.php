@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-		
+
  This file is part of Manufacturersimports.
 
  Manufacturersimports is free software; you can redistribute it and/or modify
@@ -34,38 +34,38 @@ function plugin_init_manufacturersimports() {
    $PLUGIN_HOOKS['csrf_compliant']['manufacturersimports'] = true;
 
    $plugin = new Plugin();
-   if ($plugin->isInstalled('manufacturersimports') 
+   if ($plugin->isInstalled('manufacturersimports')
       && Session::getLoginUserID()) {
       Plugin::registerClass('PluginManufacturersimportsProfile',
-                            array('addtabon' => 'Profile'));
+                            ['addtabon' => 'Profile']);
 
       //Display menu entry only if user has right to see it !
       if (Session::haveRight('plugin_manufacturersimports', READ)) {
-         $PLUGIN_HOOKS["menu_toadd"]['manufacturersimports'] 
-            = array('tools'  => 'PluginManufacturersimportsMenu');
+         $PLUGIN_HOOKS["menu_toadd"]['manufacturersimports']
+            = ['tools'  => 'PluginManufacturersimportsMenu'];
       }
 
       if (Session::haveRight('config', UPDATE)) {
-         $PLUGIN_HOOKS['config_page']['manufacturersimports'] 
+         $PLUGIN_HOOKS['config_page']['manufacturersimports']
             = 'front/config.php';
          $PLUGIN_HOOKS['use_massive_action']['manufacturersimports'] = 1;
       }
 
       // End init, when all types are registered
-      $PLUGIN_HOOKS['post_init']['manufacturersimports'] 
+      $PLUGIN_HOOKS['post_init']['manufacturersimports']
          = 'plugin_manufacturersimports_postinit';
    }
-   
+
    // Add specific files to add to the header : javascript or css
-      $PLUGIN_HOOKS['add_css']['manufacturersimports'] = array(
+      $PLUGIN_HOOKS['add_css']['manufacturersimports'] = [
          "manufacturersimports.css",
-      );
+      ];
 
 }
 
 // Get the name and the version of the plugin - Needed
 function plugin_version_manufacturersimports() {
-   return array ('name'           => _n('Suppliers import', 'Suppliers imports', 2, 
+   return  ['name'           => _n('Suppliers import', 'Suppliers imports', 2,
                                         'manufacturersimports'),
                  'oldname'        => 'suppliertag',
                  'version'        => '2.0.0',
@@ -73,7 +73,7 @@ function plugin_version_manufacturersimports() {
                  'author'         => "<a href='http://infotel.com/services/expertise-technique/glpi/'>Infotel</a>",
                  'homepage'       => 'https://github.com/InfotelGLPI/manufacturersimports/',
                  'minGlpiVersion' => '9.2',
-   );
+   ];
 }
 
 // Optional : check prerequisites before install : may print errors or add to message after redirect
@@ -83,18 +83,18 @@ function plugin_manufacturersimports_check_prerequisites() {
       echo __('This plugin requires GLPI >= 9.2');
       return false;
 
-   } elseif (!extension_loaded("soap")) {
-      echo __('Incompatible PHP Installation. Requires module', 
+   } else if (!extension_loaded("soap")) {
+      echo __('Incompatible PHP Installation. Requires module',
               'manufacturersimports'). " soap";
       return false;
 
-   } elseif (!extension_loaded("curl")) {
-      echo __('Incompatible PHP Installation. Requires module', 
+   } else if (!extension_loaded("curl")) {
+      echo __('Incompatible PHP Installation. Requires module',
               'manufacturersimports'). " curl";
       return false;
 
-   } elseif (!extension_loaded("json")) {
-      echo __('Incompatible PHP Installation. Requires module', 
+   } else if (!extension_loaded("json")) {
+      echo __('Incompatible PHP Installation. Requires module',
               'manufacturersimports'). " json";
       return false;
    }

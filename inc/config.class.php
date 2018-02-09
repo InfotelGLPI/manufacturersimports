@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of Manufacturersimports.
 
  Manufacturersimports is free software; you can redistribute it and/or modify
@@ -37,11 +37,11 @@ if (!defined('GLPI_ROOT')) {
 class PluginManufacturersimportsConfig extends CommonDBTM {
 
    static $rightname = "plugin_manufacturersimports";
-   static $types     = array('Computer', 'Monitor', 
-                             'NetworkEquipment', 
-                             'Peripheral', 'Printer');
+   static $types     = ['Computer', 'Monitor',
+                             'NetworkEquipment',
+                             'Peripheral', 'Printer'];
    public $dohistory = true;
-   
+
    //Manufacturers constants
    const DELL        = "Dell";
    const LENOVO      = "Lenovo";
@@ -50,23 +50,23 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
    const TOSHIBA     = "Toshiba";
    const WORTMANN_AG = "Wortmann_AG";
 
-   static function getTypeName($nb=0) {
+   static function getTypeName($nb = 0) {
       return _n('Manufacturer', 'Manufacturers', $nb);
    }
 
-   public function defineTabs($options = array()) {
-      $ong = array();
+   public function defineTabs($options = []) {
+      $ong = [];
       $this->addDefaultFormTab($ong);
       $this->addStandardTab('Log', $ong, $options);
       return $ong;
    }
 
-   function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
+   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
       if (in_array($item->getType(), self::getTypes(true))
           && Session::haveRight(static::$rightname, READ)
             && !isset($withtemplate) || empty($withtemplate)) {
 
-         $suppliername = self::checkManufacturerName($item->getType(), 
+         $suppliername = self::checkManufacturerName($item->getType(),
                                                      $item->getID());
          if ($suppliername) {
             return PluginManufacturersimportsPreImport::getTypeName(2);
@@ -75,10 +75,10 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
       return '';
    }
 
-   static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
+   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
       if (in_array($item->getType(), self::getTypes(true))) {
-         self::showInformationsForm(get_class($item),$item->getID());
-         PluginManufacturersimportsModel::showForm(get_class($item),$item->getID());
+         self::showInformationsForm(get_class($item), $item->getID());
+         PluginManufacturersimportsModel::showForm(get_class($item), $item->getID());
       }
       return true;
    }
@@ -90,10 +90,10 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
    **/
    function preconfig($type) {
 
-      switch($type) {
+      switch ($type) {
          case self::DELL:
          case self::HP:
-//         case self::FUJITSU:
+            //         case self::FUJITSU:
          case self::LENOVO:
          case self::TOSHIBA:
          case self::WORTMANN_AG:
@@ -127,7 +127,7 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
       }
    }
 
-   function post_updateItem($history=1) {
+   function post_updateItem($history = 1) {
       global $DB;
 
       if ($this->fields["is_recursive"]) {
@@ -142,9 +142,9 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
       }
    }
 
-   static function dropdownSupplier($name, $options=array()) {
+   static function dropdownSupplier($name, $options = []) {
       $params['value']       = 0;
-      $params['toadd']       = array();
+      $params['toadd']       = [];
       $params['on_change']   = '';
 
       if (is_array($options) && count($options)) {
@@ -153,7 +153,7 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
          }
       }
 
-      $items = array();
+      $items = [];
       if (count($params['toadd']) >0) {
          $items = $params['toadd'];
       }
@@ -175,7 +175,7 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
 
    function getSearchOptions() {
 
-      $tab = array();
+      $tab = [];
 
       $tab['common']             = self::getTypeName(2);
 
@@ -193,7 +193,7 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
 
       $tab[3]['table']           = $this->getTable();
       $tab[3]['field']           = 'supplier_url';
-      $tab[3]['name']            = __('Manufacturer web address', 
+      $tab[3]['name']            = __('Manufacturer web address',
                                       'manufacturersimports');
       $tab[3]['datatype']        = 'weblink';
       $tab[3]['massiveaction']   = false;
@@ -206,14 +206,14 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
 
       $tab[5]['table']           = $this->getTable();
       $tab[5]['field']           = 'warranty_duration';
-      $tab[5]['name']            = __('New warranty attached', 
+      $tab[5]['name']            = __('New warranty attached',
                                       'manufacturersimports');
       $tab[5]['datatype']        = 'integer';
       $tab[5]['massiveaction']   = false;
 
       $tab[6]['table']           = $this->getTable();
       $tab[6]['field']           = 'document_adding';
-      $tab[6]['name']            = __('Auto add of document', 
+      $tab[6]['name']            = __('Auto add of document',
                                       'manufacturersimports');
       $tab[6]['datatype']        = 'bool';
       $tab[6]['massiveaction']   = false;
@@ -225,7 +225,7 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
 
       $tab[8]['table']           = $this->getTable();
       $tab[8]['field']           = 'comment_adding';
-      $tab[8]['name']            = __('Add a comment line', 
+      $tab[8]['name']            = __('Add a comment line',
                                       'manufacturersimports');
       $tab[8]['datatype']        = 'bool';
 
@@ -246,14 +246,14 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
       return $tab;
    }
 
-   function showForm ($ID, $options=array()) {
+   function showForm ($ID, $options = []) {
 
       if (!$this->canView()) {
          return false;
       }
 
       if ($ID > 0) {
-         $this->check($ID ,READ);
+         $this->check($ID, READ);
       } else {
          $this->check(-1, UPDATE);
          $this->getEmpty();
@@ -264,20 +264,20 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
          }
       }
 
-      $input   = array("name"         => $this->fields["name"],
-                       "supplier_url" => $this->fields["supplier_url"]);
+      $input   = ["name"         => $this->fields["name"],
+                       "supplier_url" => $this->fields["supplier_url"]];
       $canedit = $this->can($ID, UPDATE, $input);
-      $canrecu = $this->can($ID,'recursive',$input);
+      $canrecu = $this->can($ID, 'recursive', $input);
 
       echo "<table class='tab_cadre_fixe'>";
       echo "<tr>";
       echo "<td class='tab_bg_2 center' colspan='2'>".__('Preconfiguration')."&nbsp;";
-      
-      $opt    = array('value' => $_GET['preconfig']);
+
+      $opt    = ['value' => $_GET['preconfig']];
       $rand   = self::dropdownSupplier('supplier', $opt);
-      $params = array('supplier' => '__VALUE__');
-      
-      Ajax::updateItemOnSelectEvent("dropdown_supplier$rand", 
+      $params = ['supplier' => '__VALUE__'];
+
+      Ajax::updateItemOnSelectEvent("dropdown_supplier$rand",
                                     "show_preconfig",
                                     "../ajax/dropdownSuppliers.php",
                                     $params);
@@ -306,12 +306,12 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
 
       echo "<td class='tab_bg_2 center'>".__('Manufacturer')."</td>";
       echo "<td class='tab_bg_2 left'>";
-      Dropdown::show('Manufacturer', 
-                     array('name'  => "manufacturers_id",
-                           'value' => $this->fields["manufacturers_id"]));
+      Dropdown::show('Manufacturer',
+                     ['name'  => "manufacturers_id",
+                           'value' => $this->fields["manufacturers_id"]]);
       echo "</td>";
       echo "</tr>";
-      
+
       //if ($this->fields["name"] != self::DELL) {
          echo "<tr>";
          echo "<td class='tab_bg_2 center' colspan='2'>".__('Manufacturer web address', 'manufacturersimports')."</td>";
@@ -323,15 +323,15 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
       echo "<tr>";
       echo "<td class='tab_bg_2 center' colspan='2'>".__('Default supplier attached', 'manufacturersimports')."</td>";
       echo "<td class='tab_bg_2 left' colspan='2'>";
-      Dropdown::show('Supplier', array('name'  => "suppliers_id",
-                                       'value' => $this->fields["suppliers_id"]));
+      Dropdown::show('Supplier', ['name'  => "suppliers_id",
+                                       'value' => $this->fields["suppliers_id"]]);
       echo "</td>";
       echo "</tr>";
 
       if ($this->fields["name"] == self::FUJITSU) {
          echo "<tr>";
          echo "<td class='tab_bg_2 center' colspan='2'>".
-            __('New warranty affected by default (Replace if 0)', 
+            __('New warranty affected by default (Replace if 0)',
             'manufacturersimports')."</td>";
          echo "<td class='tab_bg_2 left' colspan='2'>";
          Dropdown::showNumber("warranty_duration", ['value' => $this->fields["warranty_duration"],
@@ -346,15 +346,15 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
          echo "<tr>";
          echo "<td class='tab_bg_2 center' colspan='2'>".__('Auto add of document', 'manufacturersimports')."</td>";
          echo "<td class='tab_bg_2 left' colspan='2'>";
-         Dropdown::showYesNo("document_adding",$this->fields["document_adding"]);
+         Dropdown::showYesNo("document_adding", $this->fields["document_adding"]);
          echo "</td>";
          echo "</tr>";
 
          echo "<tr>";
          echo "<td class='tab_bg_2 center' colspan='2'>".__('Section for document records', 'manufacturersimports')."</td>";
          echo "<td class='tab_bg_2 left' colspan='2'>";
-         Dropdown::show('DocumentCategory', array('name'  => "documentcategories_id",
-                                                   'value' => $this->fields["documentcategories_id"]));
+         Dropdown::show('DocumentCategory', ['name'  => "documentcategories_id",
+                                                   'value' => $this->fields["documentcategories_id"]]);
          echo "</td>";
          echo "</tr>";
       } else {
@@ -368,7 +368,7 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
       echo "<tr>";
       echo "<td class='tab_bg_2 center' colspan='2'>".__('Add a comment line', 'manufacturersimports')."</td>";
       echo "<td class='tab_bg_2 left' colspan='2'>";
-      Dropdown::showYesNo("comment_adding",$this->fields["comment_adding"]);
+      Dropdown::showYesNo("comment_adding", $this->fields["comment_adding"]);
       echo "</td>";
       echo "</tr>";
 
@@ -443,7 +443,7 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
       }
       return $name;
    }
-   
+
    static function checkManufacturerID($itemtype, $items_id) {
 
       $item = new $itemtype();
@@ -471,21 +471,21 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
    * @return nothing (print out a table)
    *
    */
-   static function showInformationsForm($itemtype,$items_id) {
+   static function showInformationsForm($itemtype, $items_id) {
 
       $item = new $itemtype();
       if ($item->getFromDB($items_id)) {
          $suppliername = PluginManufacturersimportsConfig::checkManufacturerName($itemtype, $items_id);
          $model        = new PluginManufacturersimportsModel();
          $otherserial  = $model->checkIfModelNeeds($itemtype, $items_id);
-         
+
          $configID = PluginManufacturersimportsConfig::checkManufacturerID($itemtype, $items_id);
          $config = new PluginManufacturersimportsConfig();
          $config->getFromDB($configID);
          $supplierkey  = (isset($config->fields["supplier_key"]))?$config->fields["supplier_key"]:false;
          $supplierurl  = (isset($config->fields["supplier_url"]))?$config->fields["supplier_url"]:false;
-         
-         $url          = PluginManufacturersimportsPreImport::selectSupplier($suppliername, $supplierurl, $item->fields['serial'], $otherserial,$supplierkey);
+
+         $url          = PluginManufacturersimportsPreImport::selectSupplier($suppliername, $supplierurl, $item->fields['serial'], $otherserial, $supplierkey);
 
          echo "<div align=\"center\"><table class=\"tab_cadre_fixe\"  cellspacing=\"2\" cellpadding=\"2\">";
          echo "<tr>";
@@ -506,7 +506,7 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
    }
 
    //Massive action
-   function getSpecificMassiveActions($checkitem = NULL) {
+   function getSpecificMassiveActions($checkitem = null) {
       $isadmin = static::canUpdate();
       $actions = parent::getSpecificMassiveActions($checkitem);
 
@@ -520,12 +520,12 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
       return $actions;
    }
 
-   function showSpecificMassiveActionsParameters($input = array()) {
+   function showSpecificMassiveActionsParameters($input = []) {
 
       switch ($input['action']) {
          case "Transfert" :
             Dropdown::show('Entity');
-            echo Html::submit(_sx('button', 'Post'), array('name' => 'massiveaction'));
+            echo Html::submit(_sx('button', 'Post'), ['name' => 'massiveaction']);
             //echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value='" . _sx('button', 'Post') . "'>";
             return true;
             break;
@@ -537,9 +537,9 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
       return false;
    }
 
-   function doSpecificMassiveActions($input = array()) {
+   function doSpecificMassiveActions($input = []) {
 
-      $res = array('ok' => 0, 'ko' => 0, 'noright' => 0);
+      $res = ['ok' => 0, 'ko' => 0, 'noright' => 0];
 
       switch ($input['action']) {
          case "Transfert" :

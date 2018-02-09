@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of Manufacturersimports.
 
  Manufacturersimports is free software; you can redistribute it and/or modify
@@ -37,7 +37,7 @@ Html::header_nocache();
 if (isset($_POST["action"])||isset($_POST["id"])) {
    echo "<input type='hidden' name='action' value='".$_POST["action"]."'>";
    echo "<input type='hidden' name='id' value='".$_POST["id"]."'>";
-   switch($_POST["action"]) {
+   switch ($_POST["action"]) {
 
       case "import":
          echo "<input type='hidden' name='itemtype' value='".$_POST["itemtype"]."'>";

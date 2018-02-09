@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of Manufacturersimports.
 
  Manufacturersimports is free software; you can redistribute it and/or modify
@@ -41,14 +41,14 @@ class PluginManufacturersimportsDellSoap extends SoapClient {
    const ADDR = 'http://143.166.84.118/services/assetservice.asmx?WSDL';
    const GUID = 'F5EE89B0-5332-11E1-B47D-8E584824019B';
 
-   function __construct($options = array()) {
+   function __construct($options = []) {
       global $CFG_GLPI;
-      
+
       if (!isset($options['exceptions'])) {
          $options['exceptions'] = false;
       }
       $options['features'] = SOAP_SINGLE_ELEMENT_ARRAYS;
-      
+
       if (!empty($CFG_GLPI["proxy_name"])) {
          $options['proxy_host'] = $CFG_GLPI["proxy_name"];
          $options['proxy_port'] = intval($CFG_GLPI["proxy_port"]);
@@ -60,48 +60,48 @@ class PluginManufacturersimportsDellSoap extends SoapClient {
    }
 
    static function obj2array($obj) {
-     $out = array();
-     foreach ($obj as $key => $val) {
-       switch(true) {
-           case is_object($val):
-            $out[$key] = self::obj2array($val);
-            break;
-         case is_array($val):
-            $out[$key] = self::obj2array($val);
-            break;
-         default:
-           $out[$key] = $val;
-       }
-     }
-     return $out;
+      $out = [];
+      foreach ($obj as $key => $val) {
+         switch (true) {
+            case is_object($val):
+               $out[$key] = self::obj2array($val);
+              break;
+            case is_array($val):
+               $out[$key] = self::obj2array($val);
+              break;
+            default:
+               $out[$key] = $val;
+         }
+      }
+      return $out;
    }
-   
+
    function getInfo($tag) {
-      $args = array(
+      $args = [
          'guid'            => self::GUID,
          'applicationName' => 'GLPI',
          'serviceTags'     => $tag
-      );
-      $reponse = parent::__soapCall('GetAssetInformation', array($args));
+      ];
+      $reponse = parent::__soapCall('GetAssetInformation', [$args]);
          //print_r($reponse);
 
       if (is_soap_fault($reponse)) {
          echo "SOAP Fault: ";
          print_r($reponse);
-         return NULL;
+         return null;
       }
-      return (isset($reponse->GetAssetInformationResult) ? $reponse->GetAssetInformationResult : NULL);
+      return (isset($reponse->GetAssetInformationResult) ? $reponse->GetAssetInformationResult : null);
    }
-   
+
    static function getInfos ($serial, $field) {
-      
+
       $output = "";
       $self = new self();
       $infos = $self->getInfo($serial);
       $infos = self::obj2array($infos);
-      
-      $dates = array();
-      foreach($infos['Asset'] as $line) {
+
+      $dates = [];
+      foreach ($infos['Asset'] as $line) {
          //Sometimes it happends on Windows that the array looks a little bit different
          //so check both cases
          if (isset($line['Entitlements']['EntitlementData'])
@@ -111,21 +111,21 @@ class PluginManufacturersimportsDellSoap extends SoapClient {
             } else {
                $tmp = $line['EntitlementData'];
             }
-            foreach($tmp as $info) {
+            foreach ($tmp as $info) {
                if (is_array($info)) {
                   $dates[]=$info[$field];
                }
             }
-          }
+         }
       }
-      
-      $alldates = array();
+
+      $alldates = [];
       if (!empty($dates)) {
-         foreach($dates as $date) {
-            $tab = explode("T",$date);
+         foreach ($dates as $date) {
+            $tab = explode("T", $date);
             $maDate = PluginManufacturersimportsPostImport::checkDate($tab[0]);
             $alldates[] = $maDate;
-            
+
          }
       }
       if ($field == "StartDate") {
@@ -137,11 +137,11 @@ class PluginManufacturersimportsDellSoap extends SoapClient {
 
       return $output;
    }
-   
+
    static function getDates($serial, $field) {
 
       $maDate = '0000-00-00';
-      
+
       $infos = self::getInfos($serial, $field);
       if (!empty($infos)) {
          $maDate = $infos;

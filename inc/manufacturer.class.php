@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of Manufacturersimports.
 
  Manufacturersimports is free software; you can redistribute it and/or modify
@@ -86,8 +86,8 @@ class PluginManufacturersimportsManufacturer extends CommonDBTM {
    function showDocItem($output_type, $item_num, $row_num, $documents_id = null) {
       $doc = new document();
       if ($doc->getFromDB($documents_id)) {
-         return  Search::showItem($output_type, 
-                                  $doc->getDownloadLink(), 
+         return  Search::showItem($output_type,
+                                  $doc->getDownloadLink(),
                                   $item_num, $row_num);
       }
       return Search::showItem($output_type, "", $item_num, $row_num);
@@ -95,7 +95,7 @@ class PluginManufacturersimportsManufacturer extends CommonDBTM {
    }
 
    /**
-    * 
+    *
     * @param type $ID
     * @param type $supplierWarranty
     */
@@ -107,14 +107,14 @@ class PluginManufacturersimportsManufacturer extends CommonDBTM {
 
    /**
     * Get supplier information with url
-    * 
+    *
     * @param null $compSerial
     * @param null $otherserial
     * @param null $key
     * @param null $supplierUrl
     * @return mixed
     */
-   function getSupplierInfo($compSerial = null, $otherSerial = null, $key=null, $supplierUrl=null) {
+   function getSupplierInfo($compSerial = null, $otherSerial = null, $key = null, $supplierUrl = null) {
 
    }
 

@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of Manufacturersimports.
 
  Manufacturersimports is free software; you can redistribute it and/or modify
@@ -30,8 +30,8 @@
 include ('../../../inc/includes.php');
 
 
-Html::header(PluginManufacturersimportsPreImport::getTypeName(),'',
-             "tools","pluginmanufacturersimportsmenu");
+Html::header(PluginManufacturersimportsPreImport::getTypeName(), '',
+             "tools", "pluginmanufacturersimportsmenu");
 
 $preimport = new PluginManufacturersimportsPreImport();
 if ($preimport->canView() || Session::haveRight("config", UPDATE)) {

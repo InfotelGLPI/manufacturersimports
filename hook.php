@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-		
+
  This file is part of Manufacturersimports.
 
  Manufacturersimports is free software; you can redistribute it and/or modify
@@ -87,10 +87,10 @@ function plugin_manufacturersimports_install() {
              WHERE `name` ='" . PluginManufacturersimportsConfig::LENOVO . "'";
    $DB->query($query);
 
-//   $query = "UPDATE `glpi_plugin_manufacturersimports_configs`
-//             SET `Supplier_url` = 'https://support.ts.fujitsu.com/Warranty/WarrantyStatus.asp?lng=EN&IDNR='
-//             WHERE `name` ='" . PluginManufacturersimportsConfig::FUJITSU . "'";
-//   $DB->query($query);
+   //   $query = "UPDATE `glpi_plugin_manufacturersimports_configs`
+   //             SET `Supplier_url` = 'https://support.ts.fujitsu.com/Warranty/WarrantyStatus.asp?lng=EN&IDNR='
+   //             WHERE `name` ='" . PluginManufacturersimportsConfig::FUJITSU . "'";
+   //   $DB->query($query);
 
    $query = "UPDATE `glpi_plugin_manufacturersimports_configs` 
              SET `Supplier_url` = 'https://www.wortmann.de/fr-fr/profile/snsearch.aspx?SN=' 
@@ -102,11 +102,10 @@ function plugin_manufacturersimports_install() {
              WHERE `name` ='" . PluginManufacturersimportsConfig::HP . "'";
    $DB->query($query);
 
-
    /* Version 1.9.1 */
    $cron = new CronTask();
    if (!$cron->getFromDBbyName('PluginManufacturersimportsDell', 'DataRecoveryDELL')) {
-      CronTask::Register('PluginManufacturersimportsDell', 'DataRecoveryDELL', WEEK_TIMESTAMP, array('state' => CronTask::STATE_DISABLE));
+      CronTask::Register('PluginManufacturersimportsDell', 'DataRecoveryDELL', WEEK_TIMESTAMP, ['state' => CronTask::STATE_DISABLE]);
    }
 
    if ($update) {
@@ -120,13 +119,12 @@ function plugin_manufacturersimports_install() {
       $migration->dropField('glpi_plugin_manufacturersimports_profiles', 'name');
 
       Plugin::migrateItemType(
-         array(2150 => 'PluginManufacturersimportsModel',
-               2151 => 'PluginManufacturersimportsConfig'),
-         array("glpi_savedsearches", "glpi_savedsearches_users", "glpi_displaypreferences",
-               "glpi_documents_items", "glpi_infocoms", "glpi_logs", "glpi_items_tickets"),
-         array("glpi_plugin_manufacturersimports_models", "glpi_plugin_manufacturersimports_logs"));
+         [2150 => 'PluginManufacturersimportsModel',
+               2151 => 'PluginManufacturersimportsConfig'],
+         ["glpi_savedsearches", "glpi_savedsearches_users", "glpi_displaypreferences",
+               "glpi_documents_items", "glpi_infocoms", "glpi_logs", "glpi_items_tickets"],
+         ["glpi_plugin_manufacturersimports_models", "glpi_plugin_manufacturersimports_logs"]);
    }
-
 
    //Migrate profiles to the system introduced in 0.85
    PluginManufacturersimportsProfile::initProfile();
@@ -143,18 +141,18 @@ function plugin_manufacturersimports_uninstall() {
    include_once(GLPI_ROOT . "/plugins/manufacturersimports/inc/menu.class.php");
 
    $migration = new Migration("1.9.1");
-   $tables    = array("glpi_plugin_manufacturersimports_configs",
+   $tables    = ["glpi_plugin_manufacturersimports_configs",
                       "glpi_plugin_manufacturersimports_models",
-                      "glpi_plugin_manufacturersimports_logs");
+                      "glpi_plugin_manufacturersimports_logs"];
    foreach ($tables as $table) {
       $migration->dropTable($table);
    }
 
    //old versions
-   $tables = array("glpi_plugin_suppliertag_config",
+   $tables = ["glpi_plugin_suppliertag_config",
                    "glpi_plugin_suppliertag_profiles",
                    "glpi_plugin_suppliertag_models",
-                   "glpi_plugin_suppliertag_imported");
+                   "glpi_plugin_suppliertag_imported"];
    foreach ($tables as $table) {
       $migration->dropTable($table);
    }
@@ -167,7 +165,7 @@ function plugin_manufacturersimports_uninstall() {
    $profileRight = new ProfileRight();
 
    foreach (PluginManufacturersimportsProfile::getAllRights() as $right) {
-      $profileRight->deleteByCriteria(array('name' => $right['field']));
+      $profileRight->deleteByCriteria(['name' => $right['field']]);
    }
 
    //Remove rigth from $_SESSION['glpiactiveprofile'] if exists
@@ -188,24 +186,24 @@ function plugin_manufacturersimports_postinit() {
 function plugin_manufacturersimports_getDatabaseRelations() {
    $plugin = new Plugin();
    if ($plugin->isActivated("manufacturersimports")) {
-      return array("glpi_entities"
-                   => array("glpi_plugin_manufacturersimports_configs"
-                            => "entities_id"),
+      return ["glpi_entities"
+                   => ["glpi_plugin_manufacturersimports_configs"
+                            => "entities_id"],
                    "glpi_manufacturers"
-                   => array("glpi_plugin_manufacturersimports_configs"
-                            => "manufacturers_id"),
+                   => ["glpi_plugin_manufacturersimports_configs"
+                            => "manufacturers_id"],
                    "glpi_suppliers"
-                   => array("glpi_plugin_manufacturersimports_configs"
-                            => "suppliers_id"),
+                   => ["glpi_plugin_manufacturersimports_configs"
+                            => "suppliers_id"],
                    "glpi_documentcategories"
-                   => array("glpi_plugin_manufacturersimports_configs"
-                            => "documentcategories_id"),
+                   => ["glpi_plugin_manufacturersimports_configs"
+                            => "documentcategories_id"],
                    "glpi_documents"
-                   => array("glpi_plugin_manufacturersimports_logs"
-                            => "documents_id")
-      );
+                   => ["glpi_plugin_manufacturersimports_logs"
+                            => "documents_id"]
+      ];
    } else {
-      return array();
+      return [];
    }
 }
 
@@ -213,7 +211,7 @@ function plugin_manufacturersimports_getDatabaseRelations() {
 
 function plugin_manufacturersimports_getAddSearchOptions($itemtype) {
 
-   $sopt = array();
+   $sopt = [];
 
    if (in_array($itemtype, PluginManufacturersimportsConfig::getTypes())) {
       //TODO change right manufacturersimports READ
@@ -227,7 +225,7 @@ function plugin_manufacturersimports_getAddSearchOptions($itemtype) {
                                            'manufacturersimports')
                                         . " - " . __('Model number', 'manufacturersimports');
          $sopt[2150]['forcegroupby']  = true;
-         $sopt[2150]['joinparams']    = array('jointype' => 'itemtype_item');
+         $sopt[2150]['joinparams']    = ['jointype' => 'itemtype_item'];
          $sopt[2150]['massiveaction'] = false;
       }
    }
@@ -250,8 +248,8 @@ function plugin_manufacturersimports_forceGroupBy($type) {
 ////// SPECIFIC MODIF MASSIVE FUNCTIONS ///////
 function plugin_manufacturersimports_MassiveActions($type) {
    if (in_array($type, PluginManufacturersimportsConfig::getTypes(true))) {
-      return array('PluginManufacturersimportsModel' . MassiveAction::CLASS_ACTION_SEPARATOR . "add_model"
-                   => __('Add new material brand number', 'manufacturersimports'));
+      return ['PluginManufacturersimportsModel' . MassiveAction::CLASS_ACTION_SEPARATOR . "add_model"
+                   => __('Add new material brand number', 'manufacturersimports')];
    }
-   return array();
+   return [];
 }

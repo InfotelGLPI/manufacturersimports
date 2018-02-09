@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of Manufacturersimports.
 
  Manufacturersimports is free software; you can redistribute it and/or modify
@@ -39,8 +39,8 @@ class PluginManufacturersimportsToshiba extends PluginManufacturersimportsManufa
    /**
     * @see PluginManufacturersimportsManufacturer::showDocTitle()
     */
-   function showDocTitle($output_type,$header_num) {
-      return Search::showHeaderItem($output_type,__('File'),$header_num);
+   function showDocTitle($output_type, $header_num) {
+      return Search::showHeaderItem($output_type, __('File'), $header_num);
    }
 
    function getSearchField() {
@@ -50,7 +50,7 @@ class PluginManufacturersimportsToshiba extends PluginManufacturersimportsManufa
    /**
     * @see PluginManufacturersimportsManufacturer::getSupplierInfo()
     */
-   function getSupplierInfo($compSerial=null,$otherSerial=null, $key=null, $supplierUrl=null) {
+   function getSupplierInfo($compSerial = null, $otherSerial = null, $key = null, $supplierUrl = null) {
       $info["name"]         = PluginManufacturersimportsConfig::TOSHIBA;
       $info["supplier_url"] = "http://aps2.toshiba-tro.de/unit-details-php/unitdetails.aspx?";
       $info["url"]          = $supplierUrl.
@@ -63,7 +63,7 @@ class PluginManufacturersimportsToshiba extends PluginManufacturersimportsManufa
     * @see PluginManufacturersimportsManufacturer::getBuyDate()
     */
    function getBuyDate($contents) {
-      $days           = substr($contents,118,3);
+      $days           = substr($contents, 118, 3);
       $days           = trim($days);
       $myDate         = "0000-00-00";
       $ExpirationDate = self::getExpirationDate($contents);
@@ -71,11 +71,11 @@ class PluginManufacturersimportsToshiba extends PluginManufacturersimportsManufa
          list($year, $month, $day) = explode('-', $ExpirationDate);
          //Drop days of warranty
          $myDate = date("Y-m-d",
-                        mktime(0, 0, 0, $month, $day-$days,  $year));
+                        mktime(0, 0, 0, $month, $day-$days, $year));
       }
       return $myDate;
    }
-   
+
    /**
     * @see PluginManufacturersimportsManufacturer::getStartDate()
     */
@@ -90,7 +90,7 @@ class PluginManufacturersimportsToshiba extends PluginManufacturersimportsManufa
    function getExpirationDate($contents) {
       $field     = "Expiration Date";
       $searchfin = stristr($contents, $field);
-      $myEndDate = substr($searchfin,138,10);
+      $myEndDate = substr($searchfin, 138, 10);
       $myEndDate = trim($myEndDate);
       $myEndDate = PluginManufacturersimportsPostImport::checkDate($myEndDate);
       return $myEndDate;

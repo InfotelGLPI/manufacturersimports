@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-                
+
  This file is part of Manufacturersimports.
 
  Manufacturersimports is free software; you can redistribute it and/or modify
@@ -76,10 +76,10 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
    /**
     * @see PluginManufacturersimportsManufacturer::getSupplierInfo()
     */
-   function getSupplierInfo($compSerial = null, $otherserial = null, $key=null, $supplierUrl=null) {
+   function getSupplierInfo($compSerial = null, $otherserial = null, $key = null, $supplierUrl = null) {
       $info["name"]         = PluginManufacturersimportsConfig::DELL;
       // v4
-      $info['supplier_url'] = "https://api.dell.com/support/assetinfo/v4/getassetwarranty/" ;
+      $info['supplier_url'] = "https://api.dell.com/support/assetinfo/v4/getassetwarranty/";
       //$info['supplier_url'] = "https://sandbox.api.dell.com/support/assetinfo/v4/getassetwarranty/" ;
       // v4
       $info["url"] = $supplierUrl . "$compSerial?apikey=" . $key;
@@ -97,13 +97,13 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
     * @see PluginManufacturersimportsManufacturer::getBuyDate()
     */
    function getBuyDate($contents) {
-      $info = json_decode($contents, TRUE);
+      $info = json_decode($contents, true);
       // v4
-      if( isset( $info['AssetWarrantyResponse'][0]['AssetHeaderData'][0]['ShipDate'] ) ) {
+      if (isset( $info['AssetWarrantyResponse'][0]['AssetHeaderData'][0]['ShipDate'] )) {
          return $info['AssetWarrantyResponse'][0]['AssetHeaderData'][0]['ShipDate'];
-         
-      } elseif(isset($info['AssetWarrantyResponse'][0]['AssetEntitlementData'])) {
-       $nb =  count($info['AssetWarrantyResponse'][0]['AssetEntitlementData'])-1;
+
+      } else if (isset($info['AssetWarrantyResponse'][0]['AssetEntitlementData'])) {
+         $nb =  count($info['AssetWarrantyResponse'][0]['AssetEntitlementData'])-1;
          if (isset($info['AssetWarrantyResponse'][0]['AssetEntitlementData'][$nb]['StartDate'])) {
             return $info['AssetWarrantyResponse'][0]['AssetEntitlementData'][$nb]['StartDate'];
 
@@ -119,7 +119,7 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
     * @see PluginManufacturersimportsManufacturer::getStartDate()
     */
    function getStartDate($contents) {
-      $info = json_decode($contents, TRUE);
+      $info = json_decode($contents, true);
       // v4
       if (isset($info['AssetWarrantyResponse'][0]['AssetEntitlementData'])) {
          if (isset($info['AssetWarrantyResponse'][0]['AssetEntitlementData'][0]['StartDate'])) {
@@ -134,16 +134,16 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
     * @see PluginManufacturersimportsManufacturer::getExpirationDate()
     */
    function getExpirationDate($contents) {
-      $info = json_decode($contents, TRUE);
+      $info = json_decode($contents, true);
       // v4
-      if( isset( $info['AssetWarrantyResponse'][0]['AssetEntitlementData'] ) ) {
-          if(isset($info['AssetWarrantyResponse'][0]['AssetEntitlementData'][0])) {
-             return $info['AssetWarrantyResponse'][0]['AssetEntitlementData'][0]["EndDate"];
-          } else if (isset($info['AssetWarrantyResponse'][0]['AssetEntitlementData']["EndDate"])) {
-             return $info['AssetWarrantyResponse'][0]['AssetEntitlementData']["EndDate"];
-          }
-       }
-      
+      if (isset( $info['AssetWarrantyResponse'][0]['AssetEntitlementData'] )) {
+         if (isset($info['AssetWarrantyResponse'][0]['AssetEntitlementData'][0])) {
+            return $info['AssetWarrantyResponse'][0]['AssetEntitlementData'][0]["EndDate"];
+         } else if (isset($info['AssetWarrantyResponse'][0]['AssetEntitlementData']["EndDate"])) {
+            return $info['AssetWarrantyResponse'][0]['AssetEntitlementData']["EndDate"];
+         }
+      }
+
       return false;
    }
 
@@ -151,9 +151,9 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
     * @see PluginManufacturersimportsManufacturer::getWarrantyInfo()
     */
    function getWarrantyInfo($contents) {
-      $info = json_decode($contents, TRUE);
-      if( isset( $info['AssetWarrantyResponse'][0]['AssetEntitlementData'] ) ) {
-         if(isset($info['AssetWarrantyResponse'][0]['AssetEntitlementData'][0])) {
+      $info = json_decode($contents, true);
+      if (isset( $info['AssetWarrantyResponse'][0]['AssetEntitlementData'] )) {
+         if (isset($info['AssetWarrantyResponse'][0]['AssetEntitlementData'][0])) {
             return $info['AssetWarrantyResponse'][0]['AssetEntitlementData'][0]["ServiceLevelDescription"];
          } else if (isset($info['AssetWarrantyResponse'][0]['AssetEntitlementData']["ServiceLevelDescription"])) {
             return $info['AssetWarrantyResponse'][0]['AssetEntitlementData']["ServiceLevelDescription"];
@@ -168,14 +168,13 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
     *
     * @return array
     */
-   static function cronInfo($name)
-   {
+   static function cronInfo($name) {
 
       switch ($name) {
          case "DataRecoveryDELL" :
-            return array('description' => PluginManufacturersimportsModel::getTypeName(1) . " - " . __('Data recovery DELL for computer', 'manufacturersimports'));
+            return ['description' => PluginManufacturersimportsModel::getTypeName(1) . " - " . __('Data recovery DELL for computer', 'manufacturersimports')];
       }
-      return array();
+      return [];
    }
 
 
@@ -187,7 +186,7 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
     * @return integer : 0 (nothing to do)
     *                   >0 (endded)
     **/
-  static function cronDataRecoveryDELL($task) {
+   static function cronDataRecoveryDELL($task) {
 
       $cron_status = 0;
 
