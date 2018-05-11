@@ -52,7 +52,7 @@ class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacture
     */
    function getSupplierInfo($compSerial = null, $otherSerial = null, $key = null, $supplierUrl = null) {
       $info["name"]          = PluginManufacturersimportsConfig::HP;
-      $info["supplier_url "] = "http://h20565.www2.hpe.com/hpsc/wc/public/find";
+      $info["supplier_url"] = "http://h20565.www2.hpe.com/hpsc/wc/public/find";
 
       if (empty($otherSerial)) {
          $info["url"] = $supplierUrl."?rows[0].item.countryCode=FR&rows[0].item.serialNumber=$compSerial&submitButton=Envoyer";
