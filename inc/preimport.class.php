@@ -162,7 +162,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
       if (!empty($suppliername)) {
          $supplierclass = "PluginManufacturersimports" . $suppliername;
          $supplier      = new $supplierclass();
-         $infos         = $supplier->getSupplierInfo($compSerial, $otherserial);
+         $infos         = $supplier->getSupplierInfo($compSerial, $otherserial, $supplierKey, $supplierUrl, $supplierSecret);
          if (isset($infos['post'])) {
             $post = $infos['post'];
          }
