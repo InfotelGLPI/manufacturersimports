@@ -44,7 +44,6 @@ class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacture
    }
 
    function getSearchField() {
-      // return "Start date";
 	  return false;	// Do nothing: So, that all the content is returned 
    }
 
@@ -53,15 +52,12 @@ class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacture
     */
    function getSupplierInfo($compSerial = null, $otherSerial = null, $key = null, $supplierUrl = null, $secret = null) {
       $info["name"]          = PluginManufacturersimportsConfig::HP;
-	  $info["supplier_url "] = "https://css.api.hp.com";
+      $info["supplier_url "] = "https://css.api.hp.com";
       if (empty($otherSerial)) {
-
 		$info["url"] = $supplierUrl;
       } else {
-
-
-       $info["url"] = $supplierUrl;
-		$info['post']['pn'] = $otherSerial;
+        $info["url"] = $supplierUrl;
+        $info['post']['pn'] = $otherSerial;
 	  }
 
 	  $info['post'] = [ 'apiKey' => $key, 
@@ -78,59 +74,59 @@ class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacture
     * @see PluginManufacturersimportsManufacturer::getBuyDate()
     */
    function getBuyDate($contents) {
-$exp = explode(',', $contents);
-		foreach( $exp as $e => $val) {
-			$elt = explode(':', $val);
-			if( in_array('"startDate"', $elt)) {		// BuyDate is identical to startDate
-				$startDate = str_replace('"','', $elt[1]);
-				return $startDate; // BuyDate found
-			}
-		}
-		return false;	// BuyDate not found!!!
+      $exp = explode(',', $contents);
+      foreach( $exp as $e => $val) {
+         $elt = explode(':', $val);
+         if( in_array('"startDate"', $elt)) {		// BuyDate is identical to startDate
+            $startDate = str_replace('"','', $elt[1]);
+            return $startDate; // BuyDate found
+         }
+      }
+      return false;
    }
 
    /**
     * @see PluginManufacturersimportsManufacturer::getStartDate()
     */
    function getStartDate($contents) {
-$exp = explode(',', $contents);
-		foreach( $exp as $e => $val) {
-			$elt = explode(':', $val);
-			if( in_array('"startDate"', $elt)) {
-				$startDate = str_replace('"','', $elt[1]);
-				return $startDate; // StartDate found
-			}
-		}
-		return false;	// StartDate not found!!!
+      $exp = explode(',', $contents);
+      foreach( $exp as $e => $val) {
+         $elt = explode(':', $val);
+         if( in_array('"startDate"', $elt)) {
+            $startDate = str_replace('"','', $elt[1]);
+            return $startDate; // StartDate found
+         }
+      }
+      return false;
    }
 
    /**
     * @see PluginManufacturersimportsManufacturer::getExpirationDate()
     */
    function getExpirationDate($contents) {
-		$exp = explode(',', $contents);
-		foreach( $exp as $e => $val) {
-			$elt = explode(':', $val);
-			if( in_array('"endDate"', $elt)) {
-				$endDate = str_replace('"','', $elt[1]);
-				return $endDate; // EndDate found
-			}
-		}
-		return false;	// EndDate not found!!!  
+      $exp = explode(',', $contents);
+      foreach( $exp as $e => $val) {
+         $elt = explode(':', $val);
+         if( in_array('"endDate"', $elt)) {
+            $endDate = str_replace('"','', $elt[1]);
+            return $endDate; // EndDate found
+         }
+      }
+      return false;	  
 	}
-/* NEW method: */   
+
    /**
     * @see PluginManufacturersimportsManufacturer::getWarrantyInfo()
     */
    function getWarrantyInfo($contents) {
       $exp = explode(',', $contents);
-		foreach( $exp as $e => $val) {
-			$elt = explode(':', $val);
-			if( in_array('"status"', $elt)) {
-				$warrantyInfo = str_replace('"','', $elt[1]);
-				return $warrantyInfo; // warrantyInfo found
-			}
-		}
-		return false;	// Warranty Info not found!!!
+      foreach( $exp as $e => $val) {
+         $elt = explode(':', $val);
+         if( in_array('"status"', $elt)) {
+           $warrantyInfo = str_replace('"','', $elt[1]);
+           return $warrantyInfo; // warrantyInfo found
+         }
+      }
+      return false;
    }
 }
