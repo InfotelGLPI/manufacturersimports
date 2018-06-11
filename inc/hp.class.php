@@ -52,7 +52,7 @@ class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacture
     */
    function getSupplierInfo($compSerial = null, $otherSerial = null, $key = null, $supplierUrl = null, $secret = null) {
       $info["name"]          = PluginManufacturersimportsConfig::HP;
-      $info["supplier_url "] = "https://css.api.hp.com";
+      $info["supplier_url"] = "https://css.api.hp.com/oauth/v1/token";
       if (empty($otherSerial)) {
 		$info["url"] = $supplierUrl;
       } else {
