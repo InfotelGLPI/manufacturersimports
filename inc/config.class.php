@@ -106,11 +106,10 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
                $this->fields["supplier_key"] = "123456789";
             }
             if ($type == self::HP) {
-			   $apiKey = '123456789990900AAAAAA';
-			   $apiSecret = 'abcdefabcdefAaBBBBB';
+               $apiKey = '123456789990900AAAAAA';
+               $apiSecret = 'abcdefabcdefAaBBBBB';
                $this->fields["supplier_key"] = $apiKey;
                $this->fields["supplier_secret"] = $apiSecret;
-			   $this->fields["supplier_url"] = "https://css.api.hp.com/oauth/v1/token";
             }
             break;
          default:

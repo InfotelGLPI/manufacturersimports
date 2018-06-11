@@ -60,13 +60,13 @@ class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacture
         $info['post']['pn'] = $otherSerial;
 	  }
 
-	  $info['post'] = [ 'apiKey' => $key, 
-		'apiSecret' => $secret, 
-		'grantType' => 'client_credentials', 
-		'scope'     => 'warranty',
-		'sn'        => $compSerial,
-	  ];
-	  
+      $info['post'] = [ 'apiKey' => $key, 
+         'apiSecret' => $secret, 
+         'grantType' => 'client_credentials', 
+         'scope'     => 'warranty',
+         'sn'        => $compSerial,
+      ];
+
       return $info;
    }
 
