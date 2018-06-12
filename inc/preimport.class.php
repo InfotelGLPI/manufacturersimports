@@ -88,17 +88,19 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
     * @param $supplierUrl the supplierUrl (in plugin config)
     * @param $compSerial the serial of the device
     * @param $otherSerial the otherSerial (model) of the device
+    * @param null $supplierkey the supplierkey 
+    * @param null $supplierSecret the supplierSecret
     *
     * @return $url of the supplier
     *
     */
-   static function selectSupplier($suppliername, $supplierUrl, $compSerial, $otherserial = null, $supplierkey = null) {
+   static function selectSupplier($suppliername, $supplierUrl, $compSerial, $otherserial = null, $supplierkey = null, $supplierSecret = null) {
 
       $url = "";
       if (!empty($suppliername)) {
          $supplierclass = "PluginManufacturersimports" . $suppliername;
          $supplier      = new $supplierclass();
-         $infos         = $supplier->getSupplierInfo($compSerial, $otherserial, $supplierkey, $supplierUrl);
+         $infos         = $supplier->getSupplierInfo($compSerial, $otherserial, $supplierkey, $supplierUrl, $supplierSecret);
          $url           = $infos['url'];
       }
       //toolbox::logdebug($url);
@@ -153,16 +155,18 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
     * @param      $suppliername
     * @param      $compSerial
     * @param null $otherserial
+    * @param null $supplierKey the supplierkey 
+    * @param null $supplierSecret the supplierSecret
     *
     * @return string
     */
-   static function getSupplierPost($suppliername, $compSerial, $otherserial = null) {
+   static function getSupplierPost($suppliername, $compSerial, $otherserial = null, $supplierKey = null, $supplierSecret = null, $supplierUrl = null) {
 
       $post = "";
       if (!empty($suppliername)) {
          $supplierclass = "PluginManufacturersimports" . $suppliername;
          $supplier      = new $supplierclass();
-         $infos         = $supplier->getSupplierInfo($compSerial, $otherserial);
+         $infos         = $supplier->getSupplierInfo($compSerial, $otherserial, $supplierKey, $supplierUrl, $supplierSecret);
          if (isset($infos['post'])) {
             $post = $infos['post'];
          }

@@ -111,6 +111,28 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
          curl_setopt($ch, CURLOPT_POST, true);
          curl_setopt($ch, CURLOPT_POSTREDIR, 2);
          curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+
+        // ADDED FOR HP curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
+        if( $options['suppliername'] == PluginManufacturersimportsConfig::HP) {
+          curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
+
+          if( isset( $options["token"])) {
+            $token = $options["token"];
+            /*		Example: $postHP = '[{"sn": "CND3210W9M","pn": "D5H49AV"}]'; */
+            $postHP = '[{';
+            foreach( $options['post'] as $key => $value)
+               $postHP.= '"'.$key.'": "'.$value.'",';
+            $postHP.='}]';
+            $postHP = str_replace(',}]', '}]', $postHP);
+
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+               'Accept: application/json',
+               'Content-Type: application/json',
+               'Authorization: Bearer ' . $token
+            ));
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $postHP);
+          }
+		}
       }
 
       if (!$options["download"]) {
@@ -138,7 +160,6 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
       } else {
          $data = curl_exec($ch);
       }
-
       if (!$options["download"] && !$data) {
          $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
          curl_close($ch); // make sure we closeany current curl sessions
@@ -347,7 +368,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
       $suppliername = $config->fields["name"];
       $supplierUrl  = $config->fields["supplier_url"];
       $supplierkey  = $config->fields["supplier_key"];
-
+      $supplierSecret  = $config->fields["supplier_secret"];
       $itemtable = getTableForItemType($type);
 
       $query  = "SELECT `" . $itemtable . "`.`id`,
@@ -379,8 +400,8 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
          }
          echo "<a href='" . $link . "?id=" . $ID . "'>" . $line["name"] . $dID . "</a><br>" . $otherSerial . "</td>";
 
-         $url  = PluginManufacturersimportsPreImport::selectSupplier($suppliername, $supplierUrl, $compSerial, $otherSerial, $supplierkey);
-         $post = PluginManufacturersimportsPreImport::getSupplierPost($suppliername, $compSerial, $otherSerial);
+         $url  = PluginManufacturersimportsPreImport::selectSupplier($suppliername, $supplierUrl, $compSerial, $otherSerial, $supplierkey, $supplierSecret);
+         $post = PluginManufacturersimportsPreImport::getSupplierPost($suppliername, $compSerial, $otherSerial, $supplierkey, $supplierSecret);
 
          //On complete l url du support du fournisseur avec le serial
          echo "<td>" . $compSerial . "</td>";
@@ -458,6 +479,21 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
                        "suppliername" => $suppliername];
 
       $contents    = self::cURLData($options);
+      if( $suppliername == PluginManufacturersimportsConfig::HP){
+        $json   = json_decode($contents);
+        $token = $json->access_token;
+
+        $url = 'https://css.api.hp.com/productWarranty/v1/queries';  // Second Curl to get the Warranty data passing $token
+
+        $options2 = array("url"          => $url,
+                       "download"     => false,
+                       "file"         => false,
+                       "post"         => $post,
+                       "suppliername" => $suppliername,
+                       "token"        => $token); // Passing Token
+        $contents    = self::cURLData($options2); // Getting Warranty Data
+      }
+
       $allcontents = $contents;
       // On extrait la date de garantie de la variable contents.
       $field = self::selectSupplierfield($suppliername);

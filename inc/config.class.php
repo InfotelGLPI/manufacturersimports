@@ -105,6 +105,12 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
             if ($type == self::DELL) {
                $this->fields["supplier_key"] = "123456789";
             }
+            if ($type == self::HP) {
+               $apiKey = '123456789990900AAAAAA';
+               $apiSecret = 'abcdefabcdefAaBBBBB';
+               $this->fields["supplier_key"] = $apiKey;
+               $this->fields["supplier_secret"] = $apiSecret;
+            }
             break;
          default:
             $this->post_getEmpty();
@@ -342,6 +348,21 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
       } else {
          echo "<input type='hidden' name='warranty_duration' value='0'>\n";
       }
+
+      if ($this->fields["name"] == self::HP) {
+         echo "<tr>";
+         echo "<td class='tab_bg_2 center' colspan='2'>".__('Manufacturer API key', 'manufacturersimports')."</td>";
+         echo "<td class='tab_bg_2 left' colspan='2'>";
+         echo "<input type='text' name='supplier_key' size='100' value='".$this->fields["supplier_key"]."'>";
+         echo "</td>";
+         echo "</tr>";
+         echo "<tr>";
+         echo "<td class='tab_bg_2 center' colspan='2'>".__('Manufacturer API Secret', 'manufacturersimports')."</td>";
+         echo "<td class='tab_bg_2 left' colspan='2'>";
+         echo "<input type='text' name='supplier_secret' size='100' value='".$this->fields["supplier_secret"]."'>";
+         echo "</td>";
+         echo "</tr>";
+	  } else
       if ($this->fields["name"] != self::DELL) {
          echo "<tr>";
          echo "<td class='tab_bg_2 center' colspan='2'>".__('Auto add of document', 'manufacturersimports')."</td>";
