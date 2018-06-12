@@ -112,12 +112,12 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
          curl_setopt($ch, CURLOPT_POSTREDIR, 2);
          curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
 
-		// ADDED FOR HP curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
-		if( $options['suppliername'] == PluginManufacturersimportsConfig::HP) {
+        // ADDED FOR HP curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
+        if( $options['suppliername'] == PluginManufacturersimportsConfig::HP) {
           curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
-          $token = $options["token"];
 
-          if( $token != '') {
+          if( isset( $options["token"])) {
+            $token = $options["token"];
             /*		Example: $postHP = '[{"sn": "CND3210W9M","pn": "D5H49AV"}]'; */
             $postHP = '[{';
             foreach( $options['post'] as $key => $value)

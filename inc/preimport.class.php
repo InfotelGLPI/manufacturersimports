@@ -160,7 +160,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
     *
     * @return string
     */
-   static function getSupplierPost($suppliername, $compSerial, $otherserial = null, $supplierKey = null, $supplierSecret = null) {
+   static function getSupplierPost($suppliername, $compSerial, $otherserial = null, $supplierKey = null, $supplierSecret = null, $supplierUrl = null) {
 
       $post = "";
       if (!empty($suppliername)) {
