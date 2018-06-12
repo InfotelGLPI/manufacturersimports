@@ -479,23 +479,22 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
                        "suppliername" => $suppliername];
 
       $contents    = self::cURLData($options);
-	// MODIF HP
-	  if( $suppliername == PluginManufacturersimportsConfig::HP){
-		$json   = json_decode($contents);
-		$token = $json->access_token;
-	
-		$url = 'https://css.api.hp.com/productWarranty/v1/queries';  // Second Curl to get the Warranty data passing $token
-		
-		$options2 = array("url"          => $url,
+      if( $suppliername == PluginManufacturersimportsConfig::HP){
+        $json   = json_decode($contents);
+        $token = $json->access_token;
+
+        $url = 'https://css.api.hp.com/productWarranty/v1/queries';  // Second Curl to get the Warranty data passing $token
+
+        $options2 = array("url"          => $url,
                        "download"     => false,
                        "file"         => false,
                        "post"         => $post,
                        "suppliername" => $suppliername,
-					   "token"		  => $token);	// Passing Token
-		$contents    = self::cURLData($options2);	// Getting Warranty Data
-	  }
-	
-	  $allcontents = $contents;
+                       "token"        => $token); // Passing Token
+        $contents    = self::cURLData($options2); // Getting Warranty Data
+      }
+
+      $allcontents = $contents;
       // On extrait la date de garantie de la variable contents.
       $field = self::selectSupplierfield($suppliername);
 

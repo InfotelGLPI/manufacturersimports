@@ -44,7 +44,7 @@ class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacture
    }
 
    function getSearchField() {
-	  return false;	// Do nothing: So, that all the content is returned 
+      return false;	// Do nothing: So, that all the content is returned 
    }
 
    /**
@@ -54,11 +54,11 @@ class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacture
       $info["name"]          = PluginManufacturersimportsConfig::HP;
       $info["supplier_url"] = "https://css.api.hp.com/oauth/v1/token";
       if (empty($otherSerial)) {
-		$info["url"] = $supplierUrl;
+        $info["url"] = $supplierUrl;
       } else {
         $info["url"] = $supplierUrl;
         $info['post']['pn'] = $otherSerial;
-	  }
+      }
 
       $info['post'] = [ 'apiKey' => $key, 
          'apiSecret' => $secret, 
@@ -113,7 +113,7 @@ class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacture
          }
       }
       return false;	  
-	}
+   }
 
    /**
     * @see PluginManufacturersimportsManufacturer::getWarrantyInfo()
