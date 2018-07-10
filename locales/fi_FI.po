@@ -1,6 +1,6 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR $copyright
-# This file is distributed under the same license as the PACKAGE package.
+# This file is distributed under the same license as the $soft package.
 # 
 # Translators:
 # Markku Vepsä, 2018
@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - manufacturersimports plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-19 10:34+0200\n"
-"PO-Revision-Date: 2018-06-09 12:36+0000\n"
-"Last-Translator: Markku Vepsä\n"
+"POT-Creation-Date: 2018-07-10 14:04+0200\n"
+"PO-Revision-Date: 2018-07-10 12:05+0000\n"
+"Last-Translator: Amandine Manceau\n"
 "Language-Team: Finnish (Finland) (http://www.transifex.com/tsmr/GLPI_manufacturersimports/language/fi_FI/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,18 +18,18 @@ msgstr ""
 "Language: fi_FI\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: hook.php:223 setup.php:68 ajax/massiveaction.php:40 inc/menu.class.php:45
+#: hook.php:224 setup.php:68 ajax/massiveaction.php:40 inc/menu.class.php:45
 #: inc/model.class.php:48 inc/preimport.class.php:50 inc/profile.class.php:71
 msgid "Suppliers import"
 msgid_plural "Suppliers imports"
 msgstr[0] "Toimitustiedon tuonti"
 msgstr[1] "Toimitustietojen tuonti"
 
-#: hook.php:227 inc/lenovo.class.php:53
+#: hook.php:228 inc/lenovo.class.php:53
 msgid "Model number"
 msgstr "Mallinumero"
 
-#: hook.php:253
+#: hook.php:254
 msgid "Add new material brand number"
 msgstr "Lisää uusi materiaalin tuotemerkin numero"
 
@@ -41,39 +41,43 @@ msgstr "Yhteensopimaton PHP-asennus. Vaatii moduulin"
 msgid "Please activate the plugin"
 msgstr "Ole hyvä ja aktivoi liitännäinen"
 
-#: inc/config.class.php:196 inc/config.class.php:317
+#: inc/config.class.php:208 inc/config.class.php:335
 msgid "Manufacturer web address"
 msgstr "Valmistajan web-osoite"
 
-#: inc/config.class.php:203 inc/config.class.php:324
+#: inc/config.class.php:217 inc/config.class.php:341
 msgid "Default supplier attached"
 msgstr "Oletus laitetoimittaja"
 
-#: inc/config.class.php:209 inc/preimport.class.php:598
+#: inc/config.class.php:225 inc/preimport.class.php:636
 msgid "New warranty attached"
 msgstr "Uusi takuutieto liitetään"
 
-#: inc/config.class.php:216 inc/config.class.php:347
+#: inc/config.class.php:234 inc/config.class.php:382
 msgid "Auto add of document"
 msgstr "Dokumentin automaattinen lisäys"
 
-#: inc/config.class.php:228 inc/config.class.php:369
+#: inc/config.class.php:251 inc/config.class.php:397
 msgid "Add a comment line"
 msgstr "Lisää kommenttirivi"
 
-#: inc/config.class.php:334
+#: inc/config.class.php:351
 msgid "New warranty affected by default (Replace if 0)"
 msgstr "Oletustakuu (Korvaa jos 0)"
 
-#: inc/config.class.php:354
-msgid "Section for document records"
-msgstr "Dokumentin kategoria"
-
-#: inc/config.class.php:362
+#: inc/config.class.php:365
 msgid "Manufacturer API key"
 msgstr "Valmistajan API-avain"
 
-#: inc/config.class.php:501 inc/preimport.class.php:303
+#: inc/config.class.php:373
+msgid "Manufacturer API Secret"
+msgstr ""
+
+#: inc/config.class.php:389
+msgid "Section for document records"
+msgstr "Dokumentin kategoria"
+
+#: inc/config.class.php:529 inc/preimport.class.php:334
 msgid "Manufacturer information"
 msgstr "Valmistajan tiedot"
 
@@ -81,15 +85,15 @@ msgstr "Valmistajan tiedot"
 msgid "Data recovery DELL for computer"
 msgstr "Tietojen palautus DELL-tietokoneille"
 
-#: inc/import.class.php:117 inc/postimport.class.php:629
+#: inc/import.class.php:119 inc/postimport.class.php:665
 msgid "Import OK"
 msgstr "Tuonti onnistui"
 
-#: inc/import.class.php:120 inc/postimport.class.php:733
+#: inc/import.class.php:122 inc/postimport.class.php:769
 msgid "Import failed"
 msgstr "Tuonti epäonnistui"
 
-#: inc/model.class.php:137 inc/preimport.class.php:590
+#: inc/model.class.php:137 inc/preimport.class.php:628
 msgid "Model Number"
 msgstr "Mallinumero"
 
@@ -97,88 +101,88 @@ msgstr "Mallinumero"
 msgid "Curl PHP package not installed"
 msgstr "Curl PHP pakettia ei ole asennettu"
 
-#: inc/postimport.class.php:169
+#: inc/postimport.class.php:182
 msgid "Launching of imports"
 msgstr "Tuonnin käynnistäminen"
 
-#: inc/postimport.class.php:172
+#: inc/postimport.class.php:185
 msgid "Post import"
 msgstr "Tuonnin yhteenveto"
 
-#: inc/postimport.class.php:180
+#: inc/postimport.class.php:193
 msgid "Result"
 msgstr "Tulos"
 
-#: inc/postimport.class.php:181
+#: inc/postimport.class.php:194
 msgid "Details"
 msgstr "Yksityiskohdat"
 
-#: inc/postimport.class.php:199
+#: inc/postimport.class.php:212
 msgid "Import in progress"
 msgstr "Tuonti käynnissä"
 
-#: inc/postimport.class.php:207
+#: inc/postimport.class.php:220
 #, php-format
 msgid "Total number of devices imported %s"
 msgstr "Tuotujen laitteiden kokonaismäärä %s "
 
-#: inc/postimport.class.php:608 inc/postimport.class.php:617
+#: inc/postimport.class.php:644 inc/postimport.class.php:653
 msgid "Imported from web site"
 msgstr "Tuotu verkkosivustosta"
 
-#: inc/postimport.class.php:609 inc/postimport.class.php:618
+#: inc/postimport.class.php:645 inc/postimport.class.php:654
 msgid "With the manufacturersimports plugin"
 msgstr "\"manufacturersimports\" -liitännäisellä"
 
-#: inc/postimport.class.php:751
+#: inc/postimport.class.php:792
 msgid "Connection failed/data download from manufacturer web site"
 msgstr "Yhteysvirhe tai tietojen lataus valmistajan verkkosivustolta ei onnistunut"
 
-#: inc/preimport.class.php:275
+#: inc/preimport.class.php:306
 msgid "The choosen supplier is not recursive"
 msgstr "Valittu laitetoimittaja ei ole rekursiivinen"
 
-#: inc/preimport.class.php:309
+#: inc/preimport.class.php:346
 msgid "Not yet imported"
 msgstr "Ei vielä tuotu"
 
-#: inc/preimport.class.php:312
+#: inc/preimport.class.php:349
 msgid "Problem during the importation"
 msgstr "Ongelma tuonnin yhteydessä"
 
-#: inc/preimport.class.php:320
+#: inc/preimport.class.php:357
 msgid "Already imported"
 msgstr "Aiemmin tuotu"
 
-#: inc/preimport.class.php:356
+#: inc/preimport.class.php:393
 msgid "Choose inventory type and manufacturer"
 msgstr "Valitse inventaarion tyyppi ja valmistaja"
 
-#: inc/preimport.class.php:395
+#: inc/preimport.class.php:433
 msgid "Devices not imported"
 msgstr "Ei tuodut laitteet"
 
-#: inc/preimport.class.php:397
+#: inc/preimport.class.php:435
 msgid "Devices already imported"
 msgstr "Aiemmin tuodut laitteet"
 
-#: inc/preimport.class.php:404 inc/preimport.class.php:407
+#: inc/preimport.class.php:442 inc/preimport.class.php:445
 msgid "No manufacturer available. Please configure at least one manufacturer"
 msgstr "Valmistajia ei ole käytettävissä. Ole hyvä ja määritä vähintään yksi valmistaja"
 
-#: inc/preimport.class.php:595
+#: inc/preimport.class.php:633
 msgid "Supplier attached"
 msgstr "Liitetty toimittaja"
 
-#: inc/preimport.class.php:644
+#: inc/preimport.class.php:683
 #, php-format
 msgid "Total number of devices to import %s"
 msgstr "Tuonnissa olevien laitteiden kokonaismäärä %s "
 
-#: inc/preimport.class.php:691
+#: inc/preimport.class.php:730
 msgid "No device finded"
 msgstr "Laitetta ei löytynyt"
 
-#: inc/preimport.class.php:989
+#: inc/preimport.class.php:1025
 msgid "Reset the import"
 msgstr "Palauta tuonnin tila"
