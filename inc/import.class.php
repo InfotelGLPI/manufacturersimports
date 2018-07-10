@@ -49,7 +49,7 @@ class PluginManufacturersimportsImport extends CommonDBTM {
       global $DB;
 
       $config = new PluginManufacturersimportsConfig();
-      $config->getFromDBByQuery("WHERE `name` ='" . $supplier . "'");
+      $config->getFromDBByCrit(['name' => $supplier]);
 
       $log = new PluginManufacturersimportsLog();
 
@@ -93,8 +93,10 @@ class PluginManufacturersimportsImport extends CommonDBTM {
             $model       = new PluginManufacturersimportsModel();
             $otherSerial = $model->checkIfModelNeeds($type, $ID);
 
-            $url  = PluginManufacturersimportsPreImport::selectSupplier($suppliername, $supplierUrl, $compSerial, $otherSerial, $supplierkey);
-            $post = PluginManufacturersimportsPreImport::getSupplierPost($suppliername, $compSerial, $otherSerial);
+            $url  = PluginManufacturersimportsPreImport::selectSupplier($suppliername, $supplierUrl,
+                                                                        $compSerial, $otherSerial, $supplierkey);
+            $post = PluginManufacturersimportsPreImport::getSupplierPost($suppliername, $compSerial,
+                                                                         $otherSerial);
 
             $options = ["url"     => $url,
                              "post"    => $post,

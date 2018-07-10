@@ -173,75 +173,101 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
       return $options;
    }
 
-   function getSearchOptions() {
+   /**
+    * Provides search options configuration. Do not rely directly
+    * on this, @see CommonDBTM::searchOptions instead.
+    *
+    * @since 9.3
+    *
+    * This should be overloaded in Class
+    *
+    * @return array a *not indexed* array of search options
+    *
+    * @see https://glpi-developer-documentation.rtfd.io/en/master/devapi/search.html
+    **/
+   public function rawSearchOptions() {
 
-      $tab = [];
+      $tab = parent::rawSearchOptions();
 
-      $tab['common']             = self::getTypeName(2);
+      $tab[] = [
+         'id'                 => 'common',
+         'name'               => self::getTypeName(2)
+      ];
 
-      $tab[1]['table']           = $this->getTable();
-      $tab[1]['field']           = 'name';
-      $tab[1]['name']            = __('Name');
-      $tab[1]['datatype']        = 'itemlink';
-      $tab[1]['itemlink_type']   = $this->getType();
+      $tab[] = [
+         'id'                 => '2',
+         'table'              => 'glpi_manufacturers',
+         'field'              => 'name',
+         'name'               => __('Manufacturer'),
+         'datatype'           => 'dropdown',
+         'massiveaction'      => false
+      ];
 
-      $tab[2]['table']           = 'glpi_manufacturers';
-      $tab[2]['field']           = 'name';
-      $tab[2]['name']            = __('Manufacturer');
-      $tab[2]['datatype']        = 'dropdown';
-      $tab[2]['massiveaction']   = false;
+      $tab[] = [
+         'id'                 => '3',
+         'table'              => $this->getTable(),
+         'field'              => 'supplier_url',
+         'name'               => __('Manufacturer web address', 'manufacturersimports'),
+         'datatype'           => 'weblink',
+         'massiveaction'      => false
+      ];
 
-      $tab[3]['table']           = $this->getTable();
-      $tab[3]['field']           = 'supplier_url';
-      $tab[3]['name']            = __('Manufacturer web address',
-                                      'manufacturersimports');
-      $tab[3]['datatype']        = 'weblink';
-      $tab[3]['massiveaction']   = false;
+      $tab[] = [
+         'id'                 => '4',
+         'table'              => 'glpi_suppliers',
+         'field'              => 'name',
+         'name'               => __('Default supplier attached', 'manufacturersimports'),
+         'datatype'           => 'dropdown'
+      ];
 
-      $tab[4]['table']           = 'glpi_suppliers';
-      $tab[4]['field']           =  'name';
-      $tab[4]['name']            =  __('Default supplier attached',
-                                       'manufacturersimports');
-      $tab[4]['datatype']        = 'dropdown';
+      $tab[] = [
+         'id'                 => '5',
+         'table'              => $this->getTable(),
+         'field'              => 'warranty_duration',
+         'name'               => __('New warranty attached', 'manufacturersimports'),
+         'datatype'           => 'integer',
+         'massiveaction'      => false
+      ];
 
-      $tab[5]['table']           = $this->getTable();
-      $tab[5]['field']           = 'warranty_duration';
-      $tab[5]['name']            = __('New warranty attached',
-                                      'manufacturersimports');
-      $tab[5]['datatype']        = 'integer';
-      $tab[5]['massiveaction']   = false;
+      $tab[] = [
+         'id'                 => '6',
+         'table'              => $this->getTable(),
+         'field'              => 'document_adding',
+         'name'               => __('Auto add of document', 'manufacturersimports'),
+         'datatype'           => 'bool',
+         'massiveaction'      => false
+      ];
 
-      $tab[6]['table']           = $this->getTable();
-      $tab[6]['field']           = 'document_adding';
-      $tab[6]['name']            = __('Auto add of document',
-                                      'manufacturersimports');
-      $tab[6]['datatype']        = 'bool';
-      $tab[6]['massiveaction']   = false;
+      $tab[] = [
+         'id'                 => '7',
+         'table'              => 'glpi_documentcategories',
+         'field'              => 'name',
+         'name'               => __('Document heading'),
+         'massiveaction'      => false
+      ];
 
-      $tab[7]['table']           = 'glpi_documentcategories';
-      $tab[7]['field']           = 'name';
-      $tab[7]['name']            = __('Document heading');
-      $tab[7]['massiveaction']   = false;
+      $tab[] = [
+         'id'                 => '8',
+         'table'              => $this->getTable(),
+         'field'              => 'comment_adding',
+         'name'               => __('Add a comment line', 'manufacturersimports'),
+         'datatype'           => 'bool'
+      ];
 
-      $tab[8]['table']           = $this->getTable();
-      $tab[8]['field']           = 'comment_adding';
-      $tab[8]['name']            = __('Add a comment line',
-                                      'manufacturersimports');
-      $tab[8]['datatype']        = 'bool';
+      $tab[] = [
+         'id'                 => '30',
+         'table'              => $this->getTable(),
+         'field'              => 'id',
+         'name'               => __('ID')
+      ];
 
-      $tab[30]['table']          = $this->getTable();
-      $tab[30]['field']          = 'id';
-      $tab[30]['name']           = __('ID');
-
-      $tab[80]['table']          = 'glpi_entities';
-      $tab[80]['field']          = 'completename';
-      $tab[80]['name']           = __('Entity');
-      $tab[80]['datatype']       = 'dropdown';
-
-      $tab[86]['table']          = $this->getTable();
-      $tab[86]['field']          = 'is_recursive';
-      $tab[86]['name']           = __('Child entities');
-      $tab[86]['datatype']       = 'bool';
+      $tab[] = [
+         'id'                 => '80',
+         'table'              => 'glpi_entities',
+         'field'              => 'completename',
+         'name'               => __('Entity'),
+         'datatype'           => 'dropdown'
+      ];
 
       return $tab;
    }

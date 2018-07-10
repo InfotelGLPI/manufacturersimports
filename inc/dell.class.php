@@ -188,8 +188,6 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
     **/
    static function cronDataRecoveryDELL($task) {
 
-      $cron_status = 0;
-
       $cron_status = PluginManufacturersimportsImport::importCron($task, PluginManufacturersimportsConfig::DELL);
 
       return $cron_status;
