@@ -12,6 +12,7 @@ CREATE TABLE `glpi_plugin_manufacturersimports_configs` (
    `documentcategories_id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_documentcategories (id)',
    `comment_adding` int(11) NOT NULL default '0',
    `supplier_key` VARCHAR(255) default NULL,
+   `supplier_secret` VARCHAR(255) NOT NULL,
    PRIMARY KEY  (`id`),
    KEY `name` (`name`),
    KEY `entities_id` (`entities_id`),

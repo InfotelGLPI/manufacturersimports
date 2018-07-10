@@ -44,21 +44,29 @@ class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacture
    }
 
    function getSearchField() {
-      return "Start date";
+      return false;
    }
 
    /**
     * @see PluginManufacturersimportsManufacturer::getSupplierInfo()
     */
-   function getSupplierInfo($compSerial = null, $otherSerial = null, $key = null, $supplierUrl = null) {
-      $info["name"]          = PluginManufacturersimportsConfig::HP;
-      $info["supplier_url"] = "http://h20565.www2.hpe.com/hpsc/wc/public/find";
+   function getSupplierInfo($compSerial = null, $otherSerial = null, $key = null, $apisecret = null,
+                            $supplierUrl = null) {
+      $info["name"]         = PluginManufacturersimportsConfig::HP;
+      $info["supplier_url"] = "https://css.api.hp.com/oauth/v1/token";
 
-      if (empty($otherSerial)) {
-         $info["url"] = $supplierUrl."?rows[0].item.countryCode=FR&rows[0].item.serialNumber=$compSerial&submitButton=Envoyer";
-      } else {
-         $info["url"] = $supplierUrl."?rows[0].item.countryCode=FR&rows[0].item.serialNumber=$compSerial&submitButton=Envoyer&rows[0].item.productNumber=$otherSerial";
+      $info["url"] = $supplierUrl;
+      if (!empty($otherSerial)) {
+         $info['post']['pn'] = $otherSerial;
       }
+      $info['url_warranty'] = 'https://css.api.hp.com/productWarranty/v1/queries';
+
+      $info['post'] = ['apiKey'    => $key,
+                       'apiSecret' => $apisecret,
+                       'grantType' => 'client_credentials',
+                       'scope'     => 'warranty',
+                       'sn'        => rtrim($compSerial),
+      ];
       return $info;
    }
 
@@ -66,82 +74,19 @@ class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacture
     * @see PluginManufacturersimportsManufacturer::getBuyDate()
     */
    function getBuyDate($contents) {
-      $matchesarray = [];
-      preg_match_all("/([A-Z][a-z][a-z] \d\d?, \d{4})/", $contents, $matchesarray);
-
-      $datetimestamp = date('U');
-      Toolbox::logDebug($matchesarray);
-      if (isset($matchesarray[0][0])) {
-         $myDate = $matchesarray[0][0];
-         $myDate = str_replace(' ', '-', $myDate);
-         $myDate = str_replace(',', '', $myDate);
-         $myDate = str_replace('Jan', '01', $myDate);
-         $myDate = str_replace('Feb', '02', $myDate);
-         $myDate = str_replace('Mar', '03', $myDate);
-         $myDate = str_replace('Apr', '04', $myDate);
-         $myDate = str_replace('May', '05', $myDate);
-         $myDate = str_replace('Jun', '06', $myDate);
-         $myDate = str_replace('Jul', '07', $myDate);
-         $myDate = str_replace('Aug', '08', $myDate);
-         $myDate = str_replace('Sep', '09', $myDate);
-         $myDate = str_replace('Oct', '10', $myDate);
-         $myDate = str_replace('Nov', '11', $myDate);
-         $myDate = str_replace('Dec', '12', $myDate);
-
-         list($month, $day, $year) = explode('-', $myDate);
-         $myDate = date("U", mktime(0, 0, 0, $month, $day, $year));
-         if ($myDate < $datetimestamp) {
-            $datetimestamp = $myDate;
-         }
-
-         $myDate = date("Y-m-d", $datetimestamp);
-
-         return $myDate;
-      } else {
-         return false;
+      $contents = json_decode($contents, true);
+      $contents = reset($contents);
+      if (isset($contents['startDate'])) {
+         return $contents['startDate'];
       }
+      return false;
    }
 
    /**
     * @see PluginManufacturersimportsManufacturer::getStartDate()
     */
    function getStartDate($contents) {
-
-      $matchesarray = [];
-      preg_match_all("/([A-Z][a-z][a-z] \d\d?, \d{4})/", $contents, $matchesarray);
-
-      $datetimestamp = date('U');
-
-      $index = count($matchesarray[0])-2;
-      if (isset($matchesarray[0][$index])) {
-         $myDate = $matchesarray[0][$index];
-         $myDate = str_replace(' ', '-', $myDate);
-         $myDate = str_replace(',', '', $myDate);
-         $myDate = str_replace('Jan', '01', $myDate);
-         $myDate = str_replace('Feb', '02', $myDate);
-         $myDate = str_replace('Mar', '03', $myDate);
-         $myDate = str_replace('Apr', '04', $myDate);
-         $myDate = str_replace('May', '05', $myDate);
-         $myDate = str_replace('Jun', '06', $myDate);
-         $myDate = str_replace('Jul', '07', $myDate);
-         $myDate = str_replace('Aug', '08', $myDate);
-         $myDate = str_replace('Sep', '09', $myDate);
-         $myDate = str_replace('Oct', '10', $myDate);
-         $myDate = str_replace('Nov', '11', $myDate);
-         $myDate = str_replace('Dec', '12', $myDate);
-
-         list($month, $day, $year) = explode('-', $myDate);
-         $myDate = date("U", mktime(0, 0, 0, $month, $day, $year));
-         if ($myDate < $datetimestamp) {
-            $datetimestamp = $myDate;
-         }
-         $myDate = date("Y-m-d", $datetimestamp);
-
-         return $myDate;
-      } else {
-         return false;
-      }
-
+      return self::getBuyDate($contents);
    }
 
    /**
@@ -149,38 +94,28 @@ class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacture
     */
    function getExpirationDate($contents) {
 
-      preg_match_all("/([A-Z][a-z][a-z] \d\d?, \d{4})/", $contents, $matchesarray);
-
-      if (isset($matchesarray[0])) {
-         $date = date("Y-m-d", strtotime(0));
-
-         foreach ($matchesarray[0] as $myDate) {
-            $myEndDate = str_replace(' ', '-', $myDate);
-            $myEndDate = str_replace(',', '', $myEndDate);
-            $myEndDate = str_replace('Jan', '01', $myEndDate);
-            $myEndDate = str_replace('Feb', '02', $myEndDate);
-            $myEndDate = str_replace('Mar', '03', $myEndDate);
-            $myEndDate = str_replace('Apr', '04', $myEndDate);
-            $myEndDate = str_replace('May', '05', $myEndDate);
-            $myEndDate = str_replace('Jun', '06', $myEndDate);
-            $myEndDate = str_replace('Jul', '07', $myEndDate);
-            $myEndDate = str_replace('Aug', '08', $myEndDate);
-            $myEndDate = str_replace('Sep', '09', $myEndDate);
-            $myEndDate = str_replace('Oct', '10', $myEndDate);
-            $myEndDate = str_replace('Nov', '11', $myEndDate);
-            $myEndDate = str_replace('Dec', '12', $myEndDate);
-
-            list($month, $day, $year) = explode('-', $myEndDate);
-            $myEndDate = $year."-".$month."-".$day;
-
-            if (strtotime($myEndDate) > strtotime($date)) {
-               $date = $myEndDate;
-            }
-         }
-
-         return $date;
-      } else {
-         return false;
+      $contents = json_decode($contents, true);
+      $contents = reset($contents);
+      if (isset($contents['endDate'])) {
+         return $contents['endDate'];
       }
+      return false;
+   }
+
+   /**
+    * @see PluginManufacturersimportsManufacturer::getWarrantyInfo()
+    */
+   function getWarrantyInfo($contents) {
+      $contents = json_decode($contents, true);
+      $contents = reset($contents);
+
+      $warrantyInfo = "";
+      if (isset($contents['status'])) {
+         $warrantyInfo .= $contents['status'] . " ";
+      }
+      if (isset($contents['type'])) {
+         $warrantyInfo .= $contents['type'] . " ";
+      }
+      return $warrantyInfo;
    }
 }

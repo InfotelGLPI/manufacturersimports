@@ -88,21 +88,49 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
     * @param $supplierUrl the supplierUrl (in plugin config)
     * @param $compSerial the serial of the device
     * @param $otherSerial the otherSerial (model) of the device
+    * @param null $supplierkey the supplierkey
+    * @param null $supplierSecret the supplierSecret
     *
     * @return $url of the supplier
     *
     */
-   static function selectSupplier($suppliername, $supplierUrl, $compSerial, $otherserial = null, $supplierkey = null) {
-
+   static function selectSupplier($suppliername, $supplierUrl, $compSerial, $otherserial = null,
+                                  $supplierkey = null, $supplierSecret = null) {
       $url = "";
       if (!empty($suppliername)) {
          $supplierclass = "PluginManufacturersimports" . $suppliername;
          $supplier      = new $supplierclass();
-         $infos         = $supplier->getSupplierInfo($compSerial, $otherserial, $supplierkey, $supplierUrl);
+         $infos         = $supplier->getSupplierInfo($compSerial, $otherserial, $supplierkey,
+                                                     $supplierSecret, $supplierUrl);
          $url           = $infos['url'];
       }
-      //toolbox::logdebug($url);
       return $url;
+   }
+
+   /**
+    * Fonction to use the supplier url
+    *
+    * @param $suppliername the suppliername
+    * @param $supplierUrl the supplierUrl (in plugin config)
+    * @param $compSerial the serial of the device
+    * @param $otherSerial the otherSerial (model) of the device
+    * @param null $supplierkey the supplierkey
+    * @param null $supplierSecret the supplierSecret
+    *
+    * @return $url of the supplier
+    *
+    */
+   static function selectSupplierWarranty($suppliername, $supplierUrl, $compSerial, $otherserial = null,
+                                  $supplierkey = null, $supplierSecret = null) {
+      $url_warranty = "";
+      if (!empty($suppliername)) {
+         $supplierclass = "PluginManufacturersimports" . $suppliername;
+         $supplier      = new $supplierclass();
+         $infos         = $supplier->getSupplierInfo($compSerial, $otherserial, $supplierkey,
+                                                     $supplierSecret, $supplierUrl);
+         $url_warranty           = $infos['url_warranty'];
+      }
+      return $url_warranty;
    }
 
    /**
@@ -156,13 +184,14 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
     *
     * @return string
     */
-   static function getSupplierPost($suppliername, $compSerial, $otherserial = null) {
+   static function getSupplierPost($suppliername, $compSerial, $otherserial = null,
+                                   $supplierkey = null, $supplierSecret = null) {
 
       $post = "";
       if (!empty($suppliername)) {
          $supplierclass = "PluginManufacturersimports" . $suppliername;
          $supplier      = new $supplierclass();
-         $infos         = $supplier->getSupplierInfo($compSerial, $otherserial);
+         $infos         = $supplier->getSupplierInfo($compSerial, $otherserial, $supplierkey, $supplierSecret);
          if (isset($infos['post'])) {
             $post = $infos['post'];
          }
@@ -187,13 +216,14 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
       $config  = new PluginManufacturersimportsConfig();
       $config->getFromDB($configID);
 
-      $suppliername     = $config->fields["name"];
-      $supplierUrl      = $config->fields["supplier_url"];
-      $supplierId       = $config->fields["suppliers_id"];
-      $supplierWarranty = $config->fields["warranty_duration"];
-      $supplierkey      = $config->fields["supplier_key"];
-      $supplierclass    = "PluginManufacturersimports" . $suppliername;
-      $supplier         = new $supplierclass();
+      $suppliername      = $config->fields["name"];
+      $supplierUrl       = $config->fields["supplier_url"];
+      $supplierId        = $config->fields["suppliers_id"];
+      $supplierWarranty  = $config->fields["warranty_duration"];
+      $supplierkey       = $config->fields["supplier_key"];
+      $supplierkeysecret = $config->fields["supplier_secret"];
+      $supplierclass     = "PluginManufacturersimports" . $suppliername;
+      $supplier          = new $supplierclass();
 
       $row_num++;
 
@@ -233,7 +263,8 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
                                   $row_num);
          }
 
-         $url = self::selectSupplier($suppliername, $supplierUrl, $line["serial"], $otherSerial, $supplierkey);
+         $url = self::selectSupplier($suppliername, $supplierUrl, $line["serial"], $otherSerial,
+                                     $supplierkey, $supplierkeysecret);
          //serial
          echo Search::showItem($output_type, $line["serial"], $item_num, $row_num);
          //otherserial
@@ -301,6 +332,12 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
          //url to supplier
          $output_url = "<a href='" . $url . "' target='_blank'>" .
                        __('Manufacturer information', 'manufacturersimports') . "</a>";
+         if( $suppliername == PluginManufacturersimportsConfig::HP) {
+            $output_url = "";
+//            $output_url = "<a href='" . Toolbox::getItemTypeFormURL("PluginManufacturersimportsHP") .
+//                          "?sn=".$line["serial"]."&manufacturers_id=$configID' target='_blank'>" .
+//                         __('Manufacturer information', 'manufacturersimports') . "</a>";
+         }
          echo Search::showItem($output_type, $output_url, $item_num, $row_num);
 
          //status

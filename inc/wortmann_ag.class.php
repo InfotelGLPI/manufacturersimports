@@ -50,7 +50,8 @@ class PluginManufacturersimportsWortmann_ag extends PluginManufacturersimportsMa
    /**
     * @see PluginManufacturersimportsManufacturer::getSupplierInfo()
     */
-   function getSupplierInfo($compSerial = null, $otherSerial = null, $key = null, $supplierUrl = null) {
+   function getSupplierInfo($compSerial = null, $otherSerial = null, $key = null, $apisecret = null,
+                            $supplierUrl = null) {
       $info["name"]         = PluginManufacturersimportsConfig::WORTMANN_AG;
       $info["supplier_url"] = "https://www.wortmann.de/fr-fr/profile/snsearch.aspx?SN=";
       $info["url"]          = $supplierUrl.$compSerial;

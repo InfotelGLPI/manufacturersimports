@@ -76,7 +76,8 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
    /**
     * @see PluginManufacturersimportsManufacturer::getSupplierInfo()
     */
-   function getSupplierInfo($compSerial = null, $otherserial = null, $key = null, $supplierUrl = null) {
+   function getSupplierInfo($compSerial = null, $otherSerial = null, $key = null, $apisecret = null,
+                            $supplierUrl = null) {
       $info["name"]         = PluginManufacturersimportsConfig::DELL;
       // v4
       $info['supplier_url'] = "https://api.dell.com/support/assetinfo/v4/getassetwarranty/";

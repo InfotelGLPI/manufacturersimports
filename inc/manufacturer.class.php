@@ -114,7 +114,8 @@ class PluginManufacturersimportsManufacturer extends CommonDBTM {
     * @param null $supplierUrl
     * @return mixed
     */
-   function getSupplierInfo($compSerial = null, $otherSerial = null, $key = null, $supplierUrl = null) {
+   function getSupplierInfo($compSerial = null, $otherSerial = null, $key = null, $apisecret = null,
+                            $supplierUrl = null) {
 
    }
 

@@ -97,13 +97,16 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
          case self::LENOVO:
          case self::TOSHIBA:
          case self::WORTMANN_AG:
-            $supplierclass                = "PluginManufacturersimports".$type;
+            $supplierclass                = "PluginManufacturersimports" . $type;
             $supplier                     = new $supplierclass();
             $infos                        = $supplier->getSupplierInfo();
             $this->fields["name"]         = $infos["name"];
             $this->fields["supplier_url"] = $infos["supplier_url"];
-            if ($type == self::DELL) {
+            if ($type == self::DELL || $type == self::HP) {
                $this->fields["supplier_key"] = "123456789";
+            }
+            if ($type == self::HP) {
+               $this->fields["supplier_secret"] = 'abcdefabcdefAaBBBBB';
             }
             break;
          default:
@@ -188,11 +191,6 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
    public function rawSearchOptions() {
 
       $tab = parent::rawSearchOptions();
-
-      $tab[] = [
-         'id'                 => 'common',
-         'name'               => self::getTypeName(2)
-      ];
 
       $tab[] = [
          'id'                 => '2',
@@ -290,11 +288,6 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
          }
       }
 
-      $input   = ["name"         => $this->fields["name"],
-                       "supplier_url" => $this->fields["supplier_url"]];
-      $canedit = $this->can($ID, UPDATE, $input);
-      $canrecu = $this->can($ID, 'recursive', $input);
-
       echo "<table class='tab_cadre_fixe'>";
       echo "<tr>";
       echo "<td class='tab_bg_2 center' colspan='2'>".__('Preconfiguration')."&nbsp;";
@@ -334,23 +327,21 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
       echo "<td class='tab_bg_2 left'>";
       Dropdown::show('Manufacturer',
                      ['name'  => "manufacturers_id",
-                           'value' => $this->fields["manufacturers_id"]]);
+                      'value' => $this->fields["manufacturers_id"]]);
       echo "</td>";
       echo "</tr>";
 
-      //if ($this->fields["name"] != self::DELL) {
-         echo "<tr>";
-         echo "<td class='tab_bg_2 center' colspan='2'>".__('Manufacturer web address', 'manufacturersimports')."</td>";
-         echo "<td class='tab_bg_2 left' colspan='2'>";
-         echo "<input type='text' name='supplier_url' size='100' value='".$this->fields["supplier_url"]."'>";
-         echo "</td>";
-         echo "</tr>";
-      //}
+      echo "<tr>";
+      echo "<td class='tab_bg_2 center' colspan='2'>".__('Manufacturer web address', 'manufacturersimports')."</td>";
+      echo "<td class='tab_bg_2 left' colspan='2'>";
+      echo "<input type='text' name='supplier_url' size='100' value='".$this->fields["supplier_url"]."'>";
+      echo "</td>";
+      echo "</tr>";
       echo "<tr>";
       echo "<td class='tab_bg_2 center' colspan='2'>".__('Default supplier attached', 'manufacturersimports')."</td>";
       echo "<td class='tab_bg_2 left' colspan='2'>";
       Dropdown::show('Supplier', ['name'  => "suppliers_id",
-                                       'value' => $this->fields["suppliers_id"]]);
+                                  'value' => $this->fields["suppliers_id"]]);
       echo "</td>";
       echo "</tr>";
 
@@ -368,7 +359,25 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
       } else {
          echo "<input type='hidden' name='warranty_duration' value='0'>\n";
       }
-      if ($this->fields["name"] != self::DELL) {
+      if ($this->fields["name"] == self::DELL || $this->fields["name"] == self::HP) {
+
+         echo "<tr>";
+         echo "<td class='tab_bg_2 center' colspan='2'>" . __('Manufacturer API key', 'manufacturersimports') . "</td>";
+         echo "<td class='tab_bg_2 left' colspan='2'>";
+         echo "<input type='text' name='supplier_key' size='100' value='" . $this->fields["supplier_key"] . "'>";
+         echo "</td>";
+         echo "</tr>";
+
+         if ($this->fields["name"] == self::HP) {
+            echo "<tr>";
+            echo "<td class='tab_bg_2 center' colspan='2'>" . __('Manufacturer API Secret', 'manufacturersimports') . "</td>";
+            echo "<td class='tab_bg_2 left' colspan='2'>";
+            echo "<input type='text' name='supplier_secret' size='100' value='" . $this->fields["supplier_secret"] . "'>";
+            echo "</td>";
+            echo "</tr>";
+         }
+
+      } else {
          echo "<tr>";
          echo "<td class='tab_bg_2 center' colspan='2'>".__('Auto add of document', 'manufacturersimports')."</td>";
          echo "<td class='tab_bg_2 left' colspan='2'>";
@@ -380,14 +389,7 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
          echo "<td class='tab_bg_2 center' colspan='2'>".__('Section for document records', 'manufacturersimports')."</td>";
          echo "<td class='tab_bg_2 left' colspan='2'>";
          Dropdown::show('DocumentCategory', ['name'  => "documentcategories_id",
-                                                   'value' => $this->fields["documentcategories_id"]]);
-         echo "</td>";
-         echo "</tr>";
-      } else {
-         echo "<tr>";
-         echo "<td class='tab_bg_2 center' colspan='2'>".__('Manufacturer API key', 'manufacturersimports')."</td>";
-         echo "<td class='tab_bg_2 left' colspan='2'>";
-         echo "<input type='text' name='supplier_key' size='50' value='".$this->fields["supplier_key"]."'>";
+                                             'value' => $this->fields["documentcategories_id"]]);
          echo "</td>";
          echo "</tr>";
       }

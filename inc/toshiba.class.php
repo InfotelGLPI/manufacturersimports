@@ -50,7 +50,8 @@ class PluginManufacturersimportsToshiba extends PluginManufacturersimportsManufa
    /**
     * @see PluginManufacturersimportsManufacturer::getSupplierInfo()
     */
-   function getSupplierInfo($compSerial = null, $otherSerial = null, $key = null, $supplierUrl = null) {
+   function getSupplierInfo($compSerial = null, $otherSerial = null, $key = null, $apisecret = null,
+                            $supplierUrl = null) {
       $info["name"]         = PluginManufacturersimportsConfig::TOSHIBA;
       $info["supplier_url"] = "http://aps2.toshiba-tro.de/unit-details-php/unitdetails.aspx?";
       $info["url"]          = $supplierUrl.

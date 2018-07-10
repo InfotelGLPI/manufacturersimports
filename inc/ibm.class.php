@@ -39,7 +39,8 @@ class PluginManufacturersimportsIBM extends CommonDBTM {
    /**
     * @see PluginManufacturersimportsManufacturer::getSupplierInfo()
     */
-   function getSupplierInfo($compSerial = null, $otherSerial = null, $key = null, $supplierUrl = null) {
+   function getSupplierInfo($compSerial = null, $otherSerial = null, $key = null, $apisecret = null,
+                            $supplierUrl = null) {
 
       $info["name"]="IBM";
       $info["supplier_url"] = "http://www-304.ibm.com/jct01004c/systems/support/supportsite.wss/warranty?";
