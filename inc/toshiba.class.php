@@ -67,7 +67,7 @@ class PluginManufacturersimportsToshiba extends PluginManufacturersimportsManufa
       $days           = substr($contents, 118, 3);
       $days           = trim($days);
       $myDate         = "0000-00-00";
-      $ExpirationDate = self::getExpirationDate($contents);
+      $ExpirationDate = self::getFirstExpirationDate($contents);
       if ($ExpirationDate != "0000-00-00") {
          list($year, $month, $day) = explode('-', $ExpirationDate);
          //Drop days of warranty
@@ -85,13 +85,23 @@ class PluginManufacturersimportsToshiba extends PluginManufacturersimportsManufa
       return self::getBuyDate($contents);
    }
 
+   function getFirstExpirationDate($contents) {
+      $field     = "Expiration Date";
+      $searchfin = stristr($contents, $field);
+      $myEndDate = substr($searchfin, 138, 10);
+      $myEndDate = trim($myEndDate);
+      $myEndDate = PluginManufacturersimportsPostImport::checkDate($myEndDate);
+      return $myEndDate;
+   }
+
    /**
     * @see PluginManufacturersimportsManufacturer::getExpirationDate()
     */
    function getExpirationDate($contents) {
       $field     = "Expiration Date";
-      $searchfin = stristr($contents, $field);
-      $myEndDate = substr($searchfin, 138, 10);
+      $pos       = strripos($contents, $field);
+      $searchfin = substr($contents, $pos);
+      $myEndDate = substr($searchfin, 143, 10);
       $myEndDate = trim($myEndDate);
       $myEndDate = PluginManufacturersimportsPostImport::checkDate($myEndDate);
       return $myEndDate;
