@@ -76,7 +76,7 @@ function plugin_manufacturersimports_install() {
    } else if (!$DB->fieldExists("glpi_plugin_manufacturersimports_configs", "supplier_key")) {
       $DB->runFile($sql_root . "/update-1.7.0.sql");
    } else if (!$DB->fieldExists("glpi_plugin_manufacturersimports_configs", "supplier_secret")) {
-      $DB->runFile($sql_root . "/update-2.2.0.sql");
+      $DB->runFile($sql_root . "/update-2.1.0.sql");
    }
 
    $query = "UPDATE `glpi_plugin_manufacturersimports_configs` 
