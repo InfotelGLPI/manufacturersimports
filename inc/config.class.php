@@ -119,12 +119,13 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
       global $DB;
 
       if ($this->fields["is_recursive"]) {
+         $dbu = new DbUtils();
          $query = "DELETE FROM `".$this->getTable()."`
                    WHERE `name` = '".$this->fields["name"]."'
                      AND `id` != '".$this->fields['id']."' " .
-                  getEntitiesRestrictRequest('AND', $this->getTable(),
+                  $dbu->getEntitiesRestrictRequest('AND', $this->getTable(),
                                              '',
-                                             getSonsOf("glpi_entities",
+                                                   $dbu->getSonsOf("glpi_entities",
                                                        $this->fields["entities_id"]));
          $DB->query($query);
       }
@@ -134,12 +135,13 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
       global $DB;
 
       if ($this->fields["is_recursive"]) {
+         $dbu = new DbUtils();
          $query = "DELETE FROM `".$this->getTable()."`
                   WHERE `name` = '".$this->fields["name"]."'
                      AND `id` != '".$this->fields["id"]."' " .
-                getEntitiesRestrictRequest('AND', $this->getTable(),
+                  $dbu->getEntitiesRestrictRequest('AND', $this->getTable(),
                                            '',
-                                           getSonsOf("glpi_entities",
+                                                   $dbu->getSonsOf("glpi_entities",
                                                      $this->fields["entities_id"]));
          $DB->query($query);
       }

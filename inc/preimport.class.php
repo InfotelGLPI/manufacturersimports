@@ -388,6 +388,8 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
          $p[$key] = $val;
       }
 
+      $dbu = new DbUtils();
+
       echo "<form name='form' method='post' action='" . $CFG_GLPI["root_doc"] . "/plugins/manufacturersimports/front/import.php'>";
       echo "<div align='center'><table class='tab_cadre_fixe' cellpadding='5'>";
       echo "<tr><th colspan='4'>" . __('Choose inventory type and manufacturer', 'manufacturersimports') . "</th></tr>";
@@ -399,7 +401,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
                  FROM `glpi_plugin_manufacturersimports_configs` ";
       $query .= " LEFT JOIN `glpi_entities` ON (`glpi_entities`.`id` = `glpi_plugin_manufacturersimports_configs`.`entities_id`)"
                 . " WHERE `glpi_plugin_manufacturersimports_configs`.`manufacturers_id` != '0'";
-      $query .= "" . getEntitiesRestrictRequest(" AND", "glpi_plugin_manufacturersimports_configs", '', '', true);
+      $query .= "" . $dbu->getEntitiesRestrictRequest(" AND", "glpi_plugin_manufacturersimports_configs", '', '', true);
       $query .= " ORDER BY `glpi_plugin_manufacturersimports_configs`.`entities_id`, 
                             `glpi_plugin_manufacturersimports_configs`.`name`";
 
@@ -810,10 +812,12 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
     */
    static function queryImport($p, $config, $toview) {
 
-      $modeltable = getTableForItemType($p['itemtype'] . "Model");
-      $modelfield = getForeignKeyFieldForTable(getTableForItemType($p['itemtype'] . "Model"));
+      $dbu = new DbUtils();
+
+      $modeltable = $dbu->getTableForItemType($p['itemtype'] . "Model");
+      $modelfield = $dbu->getForeignKeyFieldForTable($dbu->getTableForItemType($p['itemtype'] . "Model"));
       $item       = new $p['itemtype']();
-      $itemtable  = getTableForItemType($p['itemtype']);
+      $itemtable  = $dbu->getTableForItemType($p['itemtype']);
 
       $query = "SELECT `" . $itemtable . "`.`id`,
                         `" . $itemtable . "`.`name`, 
@@ -856,11 +860,11 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
       }
       $entities = "";
       if ($config->isRecursive()) {
-         $entities = getSonsOf('glpi_entities', $config->getEntityID());
+         $entities = $dbu->getSonsOf('glpi_entities', $config->getEntityID());
       } else {
          $entities = $config->getEntityID();
       }
-      $query .= "" . getEntitiesRestrictRequest(" AND", $itemtable, '', '', $item->maybeRecursive());
+      $query .= "" . $dbu->getEntitiesRestrictRequest(" AND", $itemtable, '', '', $item->maybeRecursive());
 
       //// 4 - ORDER
       $ORDER = " ORDER BY `entities_id`,`" . $itemtable . "`.`name` ";
@@ -900,9 +904,10 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
       $field = $searchopt[$ID]["field"];
 
       $addtable = '';
+      $dbu      = new DbUtils();
 
-      if ($table != getTableForItemType($itemtype)
-          && $searchopt[$ID]["linkfield"] != getForeignKeyFieldForTable($table)) {
+      if ($table != $dbu->getTableForItemType($itemtype)
+          && $searchopt[$ID]["linkfield"] != $dbu->getForeignKeyFieldForTable($table)) {
          $addtable .= "_" . $searchopt[$ID]["linkfield"];
       }
 

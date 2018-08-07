@@ -362,7 +362,8 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
       $supplierkey  = $config->fields["supplier_key"];
       $supplierSecret  = $config->fields["supplier_secret"];
 
-      $itemtable = getTableForItemType($type);
+      $dbu       = new DbUtils();
+      $itemtable = $dbu->getTableForItemType($type);
 
       $query  = "SELECT `" . $itemtable . "`.`id`,
                         `" . $itemtable . "`.`name`,

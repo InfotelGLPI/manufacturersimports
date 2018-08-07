@@ -115,7 +115,7 @@ class PluginManufacturersimportsProfile extends profile {
          $current_rights = ProfileRight::getProfileRights($profiles_id, array_values($matching));
          if (!isset($current_rights['plugin_manufacturersimports'])) {
             $query = "UPDATE `glpi_profilerights` 
-                      SET `rights`='" . self::translateARight($profile_data[$old]) . "' 
+                      SET `rights`='" . self::translateARight($profile_data['plugin_manufacturersimports']) . "' 
                       WHERE `name`='plugin_manufacturersimports' 
                         AND `profiles_id`='$profiles_id'";
             $DB->query($query);
