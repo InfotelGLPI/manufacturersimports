@@ -29,6 +29,10 @@
     </authors>
     <versions>
         <version>
+            <num>2.1.2</num>
+            <compatibility>9.3</compatibility>
+        </version>
+        <version>
             <num>2.1.1</num>
             <compatibility>9.3</compatibility>
         </version>
@@ -108,6 +112,7 @@
         <lang>ro_RO</lang>
         <lang>ru_RU</lang>
         <lang>tr_TR</lang>
+        <lang>zh_TW</lang>
     </langs>
     <license><![CDATA[GPL v2+]]></license>
     <tags>
