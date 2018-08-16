@@ -93,7 +93,7 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
       switch ($type) {
          case self::DELL:
          case self::HP:
-            //         case self::FUJITSU:
+         case self::FUJITSU:
          case self::LENOVO:
          case self::TOSHIBA:
          case self::WORTMANN_AG:

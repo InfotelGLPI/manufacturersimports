@@ -332,7 +332,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
          //url to supplier
          $output_url = "<a href='" . $url . "' target='_blank'>" .
                        __('Manufacturer information', 'manufacturersimports') . "</a>";
-         if( $suppliername == PluginManufacturersimportsConfig::HP) {
+         if ($suppliername == PluginManufacturersimportsConfig::HP) {
             $output_url = "";
 //            $output_url = "<a href='" . Toolbox::getItemTypeFormURL("PluginManufacturersimportsHP") .
 //                          "?sn=".$line["serial"]."&manufacturers_id=$configID' target='_blank'>" .

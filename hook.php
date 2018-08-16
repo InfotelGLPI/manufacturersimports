@@ -89,10 +89,10 @@ function plugin_manufacturersimports_install() {
              WHERE `name` ='" . PluginManufacturersimportsConfig::LENOVO . "'";
    $DB->query($query);
 
-   //   $query = "UPDATE `glpi_plugin_manufacturersimports_configs`
-   //             SET `Supplier_url` = 'https://support.ts.fujitsu.com/Warranty/WarrantyStatus.asp?lng=EN&IDNR='
-   //             WHERE `name` ='" . PluginManufacturersimportsConfig::FUJITSU . "'";
-   //   $DB->query($query);
+   $query = "UPDATE `glpi_plugin_manufacturersimports_configs`
+             SET `Supplier_url` = 'http://support.ts.fujitsu.com/Warranty/WarrantyStatus.asp?lng=com&IDNR'
+             WHERE `name` ='" . PluginManufacturersimportsConfig::FUJITSU . "'";
+   $DB->query($query);
 
    $query = "UPDATE `glpi_plugin_manufacturersimports_configs` 
              SET `Supplier_url` = 'https://www.wortmann.de/fr-fr/profile/snsearch.aspx?SN=' 

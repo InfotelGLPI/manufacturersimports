@@ -53,8 +53,9 @@ class PluginManufacturersimportsFujitsu extends PluginManufacturersimportsManufa
    function getSupplierInfo($compSerial = null, $otherSerial = null, $key = null, $apisecret = null,
                             $supplierUrl = null) {
       $info["name"]         = PluginManufacturersimportsConfig::FUJITSU;
-      $info["supplier_url"] = "https://support.ts.fujitsu.com/Warranty/WarrantyStatus.asp?lng=EN&IDNR=";
-      $info["url"]          = $supplierUrl.$compSerial."&HardwareGUID=&Version=3.5";
+      $info["supplier_url"] = "http://support.ts.fujitsu.com/Warranty/WarrantyStatus.asp?lng=com&IDNR=";
+      $info["url"]          = $supplierUrl.$compSerial."&Version=3.51";
+
       return $info;
    }
 
