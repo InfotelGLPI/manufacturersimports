@@ -83,8 +83,8 @@ class PluginManufacturersimportsLenovo extends PluginManufacturersimportsManufac
                             $supplierUrl = null) {
 
       $info["name"]         = PluginManufacturersimportsConfig::LENOVO;
-      $info["supplier_url"] = "http://www3.lenovo.com/us/en/warranty/";
-      $info["url"]          = $supplierUrl . $compSerial . "?machineType=" . $otherSerial . "&btnSubmit";
+      $info["supplier_url"] = "https://www.lenovo.com/us/en/warranty/";
+      $info["url"]          = $supplierUrl . $compSerial."?machineType=&btnSubmit";
       return $info;
    }
 
@@ -92,7 +92,7 @@ class PluginManufacturersimportsLenovo extends PluginManufacturersimportsManufac
     * @see PluginManufacturersimportsManufacturer::getBuyDate()
     */
    function getBuyDate($contents) {
-      $buy_date = null;
+
       $contents = json_decode($contents, true);
 
       if (isset($contents['startDate'])) {
@@ -118,8 +118,13 @@ class PluginManufacturersimportsLenovo extends PluginManufacturersimportsManufac
    function getExpirationDate($contents) {
       $contents = json_decode($contents, true);
 
-      if (isset($contents['expirationDate'])) {
+      if(isset($contents['upgrade_expirationDate']) && !empty($contents['upgrade_expirationDate'])) {
+         $myDate = trim($contents['upgrade_expirationDate']);
+      } else if (isset($contents['expirationDate'])) {
          $myDate = trim($contents['expirationDate']);
+      }
+
+      if(isset($myDate)) {
          list($month, $day, $year) = explode('/', $myDate);
          $myDate = date("Y-m-d", mktime(0, 0, 0, $month, $day, $year));
 
@@ -131,11 +136,19 @@ class PluginManufacturersimportsLenovo extends PluginManufacturersimportsManufac
     * @see PluginManufacturersimportsManufacturer::getWarrantyInfo()
     */
    function getWarrantyInfo($contents) {
-      $temp_date = json_decode($contents, true);
-      if (isset($temp_date['description'])) {
-         $warranty_info = $temp_date['description'];
-         return $warranty_info;
+      $contents = json_decode($contents, true);
+
+      $warranty_info = false;
+      if (isset($contents['upgrade_sdfDesc']) && $contents['upgrade_sdfDesc'] != 'null') {
+         $warranty_info = $contents['upgrade_sdfDesc'];
+      } else if (isset($contents['description'])) {
+         $warranty_info = $contents['description'];
+      } else if (isset($contents['errorMsg'])) {
+         $warranty_info = $contents['errorMsg'];
       }
-      return false;
+      if (strlen($warranty_info) > 255) {
+         $warranty_info = substr($warranty_info, 0, 254);
+      }
+      return $warranty_info;
    }
 }

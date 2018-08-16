@@ -85,7 +85,7 @@ function plugin_manufacturersimports_install() {
    $DB->query($query);
 
    $query = "UPDATE `glpi_plugin_manufacturersimports_configs` 
-             SET `Supplier_url` = 'http://shop.lenovo.com/SEUILibrary/controller/e/web/LenovoPortal/en_US/config.workflow:VerifyWarranty?country-code=897&' 
+             SET `Supplier_url` = 'https://www.lenovo.com/us/en/warrantyApos?serialNumber=' 
              WHERE `name` ='" . PluginManufacturersimportsConfig::LENOVO . "'";
    $DB->query($query);
 

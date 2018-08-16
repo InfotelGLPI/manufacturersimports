@@ -787,6 +787,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
          if (!empty($contents)) {
             switch ($suppliername) {
                case PluginManufacturersimportsConfig::HP :
+               case PluginManufacturersimportsConfig::LENOVO :
                   $msgerr = self::importWarrantyInfo($suppliername, $contents);
                   break;
                default:
