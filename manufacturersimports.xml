@@ -10,6 +10,8 @@
                 <![CDATA[Imports des informations financières des matériels directement depuis le site web des fabricants.<br />Works with Dell, HP, Toshiba, Fujitsu-Siemens et Lenovo]]></fr>
             <en>
                 <![CDATA[Imports of financials informations for items from manufacturers web site.<br />Works with Dell, HP, Toshiba, Fujitsu-Siemens and Lenovo]]></en>
+            <cs>
+                <![CDATA[Importy finančních informací pro položky z webu výrobce.<br />Funguje s Dell, HP, Toshiba, Fujitsu-Siemens a Lenovo]]></cs>
         </short>
         <long>
             <fr>
@@ -22,6 +24,11 @@
                 - You select your type of equipment in advance and if you provided serial number and model number (different from manufacturers) you can import the warranty, the date of purchase and save the page HMTL manufacturers.
                 - Works with Dell, HP, Toshiba, Lenovo (> 1.5.0) and Fujitsu-Siemens
             </en>
+            <cs>
+                Tento zásuvný modul umožňuje vpravovat finannčí informace z webů výrobců do GLPI.
+                - Předem vyberete typ vybavení a když zadáte sériové číslo a označení modelu (liší se mezi výrobci) můžete importovat informace o záruce, datu zakoupení a uložit v podobě HTML stránky.
+                - Funguje s Dell, HP, Toshiba, Lenovo (verze > 1.5.0) a Fujitsu-Siemens
+            </cs>
         </long>
     </description>
     <homepage>https://github.com/InfotelGLPI/manufacturersimports</homepage>
@@ -132,5 +139,11 @@
             <tag>Manufacturer</tag>
             <tag>Web</tag>
         </en>
+        <cs>
+            <tag>Import</tag>
+            <tag>Výrobce</tag>
+            <tag>Web</tag>
+        </cs>
+      
     </tags>
 </root>
