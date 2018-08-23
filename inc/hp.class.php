@@ -56,9 +56,6 @@ class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacture
       $info["supplier_url"] = "https://css.api.hp.com/oauth/v1/token";
 
       $info["url"] = $supplierUrl;
-      if (!empty($otherSerial)) {
-         $info['post']['pn'] = $otherSerial;
-      }
       $info['url_warranty'] = 'https://css.api.hp.com/productWarranty/v1/queries';
 
       $info['post'] = ['apiKey'    => $key,
@@ -67,6 +64,11 @@ class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacture
                        'scope'     => 'warranty',
                        'sn'        => rtrim($compSerial),
       ];
+
+      if (!empty($otherSerial)) {
+         $info['post']['pn'] = $otherSerial;
+      }
+
       return $info;
    }
 
