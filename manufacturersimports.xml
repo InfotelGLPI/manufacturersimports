@@ -6,29 +6,29 @@
     <logo>https://raw.githubusercontent.com/InfotelGLPI/manufacturersimports/master/manufacturersimports.png</logo>
     <description>
         <short>
-            <fr>
-                <![CDATA[Imports des informations financières des matériels directement depuis le site web des fabricants.<br />Works with Dell, HP, Toshiba, Fujitsu-Siemens et Lenovo]]></fr>
+            <cs>
+                <![CDATA[Importy finančních informací pro položky z webů výrobců.<br />Funguje s Dell, HP, Toshiba, Fujitsu-Siemens a Lenovo]]></cs>
             <en>
                 <![CDATA[Imports of financials informations for items from manufacturers web site.<br />Works with Dell, HP, Toshiba, Fujitsu-Siemens and Lenovo]]></en>
-            <cs>
-                <![CDATA[Importy finančních informací pro položky z webu výrobce.<br />Funguje s Dell, HP, Toshiba, Fujitsu-Siemens a Lenovo]]></cs>
+            <fr>
+                <![CDATA[Imports des informations financières des matériels directement depuis le site web des fabricants.<br />Works with Dell, HP, Toshiba, Fujitsu-Siemens et Lenovo]]></fr>        
         </short>
         <long>
-            <fr>
-               Ce plugin vous permet d’injecter des informations financières depuis les sites fabricants directement dans GLPI.
-                - Vous sélectionnez vos types de matériels et si au préalable vous avez fourni numéro de série et numéro de modèle (selon les fabricants) vous pourrez importer la garantie, la date d'achat, ainsi qu'enregistrer la page hmtl des fabricants.
-                - Fonctionne avec Dell, HP, Toshiba, Lenovo (> 1.5.0) et Fujitsu-Siemens
-            </fr>
+            <cs>
+                Tento zásuvný modul umožňuje importovat finanční informace z webů výrobců do GLPI.
+                - Předem vyberete typ vybavení a pokud jste zadali sériové číslo a označení modelu (liší se mezi výrobci) můžete importovat informace o záruce, datu zakoupení a uložit v podobě HTML stránky.
+                - Funguje pro Dell, HP, Toshiba, Lenovo (verze > 1.5.0) a Fujitsu-Siemens
+            </cs>
             <en>
                 This plugin allows you to inject financials informations from manufacturers web site files in GLPI.
                 - You select your type of equipment in advance and if you provided serial number and model number (different from manufacturers) you can import the warranty, the date of purchase and save the page HMTL manufacturers.
                 - Works with Dell, HP, Toshiba, Lenovo (> 1.5.0) and Fujitsu-Siemens
             </en>
-            <cs>
-                Tento zásuvný modul umožňuje vpravovat finannčí informace z webů výrobců do GLPI.
-                - Předem vyberete typ vybavení a když zadáte sériové číslo a označení modelu (liší se mezi výrobci) můžete importovat informace o záruce, datu zakoupení a uložit v podobě HTML stránky.
-                - Funguje s Dell, HP, Toshiba, Lenovo (verze > 1.5.0) a Fujitsu-Siemens
-            </cs>
+            <fr>
+               Ce plugin vous permet d’injecter des informations financières depuis les sites fabricants directement dans GLPI.
+                - Vous sélectionnez vos types de matériels et si au préalable vous avez fourni numéro de série et numéro de modèle (selon les fabricants) vous pourrez importer la garantie, la date d'achat, ainsi qu'enregistrer la page hmtl des fabricants.
+                - Fonctionne avec Dell, HP, Toshiba, Lenovo (> 1.5.0) et Fujitsu-Siemens
+            </fr>
         </long>
     </description>
     <homepage>https://github.com/InfotelGLPI/manufacturersimports</homepage>
@@ -129,21 +129,20 @@
     </langs>
     <license><![CDATA[GPL v2+]]></license>
     <tags>
-        <fr>
-            <tag>Import</tag>
-            <tag>Fabricant</tag>
-            <tag>Internet</tag>
-        </fr>
-        <en>
-            <tag>Import</tag>
-            <tag>Manufacturer</tag>
-            <tag>Web</tag>
-        </en>
         <cs>
             <tag>Import</tag>
             <tag>Výrobce</tag>
             <tag>Web</tag>
         </cs>
-      
+        <en>
+            <tag>Import</tag>
+            <tag>Manufacturer</tag>
+            <tag>Web</tag>
+        </en>
+        <fr>
+            <tag>Import</tag>
+            <tag>Fabricant</tag>
+            <tag>Internet</tag>
+        </fr>
     </tags>
 </root>
