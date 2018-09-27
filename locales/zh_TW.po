@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: GLPI Project - manufacturersimports plugin\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-07-10 14:04+0200\n"
-"PO-Revision-Date: 2018-08-16 13:15+0000\n"
+"PO-Revision-Date: 2018-08-17 05:44+0000\n"
 "Last-Translator: WooboyTW <transifex@wooboy.me>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/tsmr/GLPI_manufacturersimports/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -54,31 +54,31 @@ msgstr "保固期已套用"
 
 #: inc/config.class.php:234 inc/config.class.php:382
 msgid "Auto add of document"
-msgstr ""
+msgstr "自動新增文件"
 
 #: inc/config.class.php:251 inc/config.class.php:397
 msgid "Add a comment line"
-msgstr ""
+msgstr "新增備註"
 
 #: inc/config.class.php:351
 msgid "New warranty affected by default (Replace if 0)"
-msgstr ""
+msgstr "保固期已套用預設值(如果取得資訊為0)"
 
 #: inc/config.class.php:365
 msgid "Manufacturer API key"
-msgstr ""
+msgstr "製造商API金鑰"
 
 #: inc/config.class.php:373
 msgid "Manufacturer API Secret"
-msgstr ""
+msgstr "製造商API密碼"
 
 #: inc/config.class.php:389
 msgid "Section for document records"
-msgstr ""
+msgstr "文件記錄區塊"
 
 #: inc/config.class.php:529 inc/preimport.class.php:334
 msgid "Manufacturer information"
-msgstr ""
+msgstr "製造商資訊"
 
 #: inc/dell.class.php:176
 msgid "Data recovery DELL for computer"
@@ -86,102 +86,102 @@ msgstr ""
 
 #: inc/import.class.php:119 inc/postimport.class.php:665
 msgid "Import OK"
-msgstr ""
+msgstr "匯入完成"
 
 #: inc/import.class.php:122 inc/postimport.class.php:769
 msgid "Import failed"
-msgstr ""
+msgstr "匯入失敗"
 
 #: inc/model.class.php:137 inc/preimport.class.php:628
 msgid "Model Number"
-msgstr ""
+msgstr "型號"
 
 #: inc/postimport.class.php:73
 msgid "Curl PHP package not installed"
-msgstr ""
+msgstr "Curl PHP套件未安裝"
 
 #: inc/postimport.class.php:182
 msgid "Launching of imports"
-msgstr ""
+msgstr "開始匯入"
 
 #: inc/postimport.class.php:185
 msgid "Post import"
-msgstr ""
+msgstr "匯入後處理"
 
 #: inc/postimport.class.php:193
 msgid "Result"
-msgstr ""
+msgstr "結果"
 
 #: inc/postimport.class.php:194
 msgid "Details"
-msgstr ""
+msgstr "詳細內容"
 
 #: inc/postimport.class.php:212
 msgid "Import in progress"
-msgstr ""
+msgstr "匯入處理中"
 
 #: inc/postimport.class.php:220
 #, php-format
 msgid "Total number of devices imported %s"
-msgstr ""
+msgstr "%s組設備已備匯入"
 
 #: inc/postimport.class.php:644 inc/postimport.class.php:653
 msgid "Imported from web site"
-msgstr ""
+msgstr "從網站匯入"
 
 #: inc/postimport.class.php:645 inc/postimport.class.php:654
 msgid "With the manufacturersimports plugin"
-msgstr ""
+msgstr "透過 manufacturersimports 外掛程式"
 
 #: inc/postimport.class.php:792
 msgid "Connection failed/data download from manufacturer web site"
-msgstr ""
+msgstr "從製造商網站取得資料失敗"
 
 #: inc/preimport.class.php:306
 msgid "The choosen supplier is not recursive"
-msgstr ""
+msgstr "選擇的供應商不會遞迴查詢"
 
 #: inc/preimport.class.php:346
 msgid "Not yet imported"
-msgstr ""
+msgstr "尚未匯入"
 
 #: inc/preimport.class.php:349
 msgid "Problem during the importation"
-msgstr ""
+msgstr "匯入發生問題"
 
 #: inc/preimport.class.php:357
 msgid "Already imported"
-msgstr ""
+msgstr "已滙入"
 
 #: inc/preimport.class.php:393
 msgid "Choose inventory type and manufacturer"
-msgstr ""
+msgstr "選擇資產類別與製造商"
 
 #: inc/preimport.class.php:433
 msgid "Devices not imported"
-msgstr ""
+msgstr "設備未匯入"
 
 #: inc/preimport.class.php:435
 msgid "Devices already imported"
-msgstr ""
+msgstr "設備已匯入"
 
 #: inc/preimport.class.php:442 inc/preimport.class.php:445
 msgid "No manufacturer available. Please configure at least one manufacturer"
-msgstr ""
+msgstr "沒有可用的製造商，請至少設定一個製造商"
 
 #: inc/preimport.class.php:633
 msgid "Supplier attached"
-msgstr ""
+msgstr "供應商已設定"
 
 #: inc/preimport.class.php:683
 #, php-format
 msgid "Total number of devices to import %s"
-msgstr ""
+msgstr "總共%s組設備要被匯入"
 
 #: inc/preimport.class.php:730
 msgid "No device finded"
-msgstr ""
+msgstr "沒有找到設備"
 
 #: inc/preimport.class.php:1025
 msgid "Reset the import"
-msgstr ""
+msgstr "重設匯入狀態"
