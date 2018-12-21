@@ -66,7 +66,7 @@ class PluginManufacturersimportsLenovo extends PluginManufacturersimportsManufac
    /**
     * @see PluginManufacturersimportsManufacturer::showItem()
     */
-   function showItem($output_type, $otherSerial, $item_num, $row_num) {
+   function showItem($output_type, $otherSerial = false, $item_num, $row_num) {
 
       return Search::showItem($output_type, $otherSerial, $item_num, $row_num);
    }

@@ -249,9 +249,12 @@ function plugin_manufacturersimports_forceGroupBy($type) {
 
 ////// SPECIFIC MODIF MASSIVE FUNCTIONS ///////
 function plugin_manufacturersimports_MassiveActions($type) {
-   if (in_array($type, PluginManufacturersimportsConfig::getTypes(true))) {
-      return ['PluginManufacturersimportsModel' . MassiveAction::CLASS_ACTION_SEPARATOR . "add_model"
-                   => __('Add new material brand number', 'manufacturersimports')];
+   $plugin = new Plugin();
+   if ($plugin->isActivated('manufacturersimports')) {
+      if (in_array($type, PluginManufacturersimportsConfig::getTypes(true))) {
+         return ['PluginManufacturersimportsModel' . MassiveAction::CLASS_ACTION_SEPARATOR . "add_model"
+                 => __('Add new material brand number', 'manufacturersimports')];
+      }
    }
    return [];
 }
