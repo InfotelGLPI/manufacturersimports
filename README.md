@@ -2,10 +2,10 @@
 Plugin manufacturersimports pour GLPI
 
 Ce plugin est sur Transifex - Aidez-nous à le traduire :
-https://www.transifex.com/tsmr/GLPI_manufacturersimports/
+https://www.transifex.com/infotelGLPI/GLPI_manufacturersimports/
 
 This plugin is on Transifex - Help us to translate :
-https://www.transifex.com/tsmr/GLPI_manufacturersimports/
+https://www.transifex.com/infotelGLPI/GLPI_manufacturersimports/
 
 
 Ce plugin vous permet d'injecter des informations financières depuis les sites fabricants directement dans GLPI.
