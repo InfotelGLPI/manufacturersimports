@@ -63,7 +63,7 @@ if (isset($_POST["action"])&&isset($_POST["id"])&&isset($_POST["item"])&&count($
    }
 } else {
         echo "<div align='center'>";
-        echo "<img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt=\"warning\"><br><br>";
+        echo "<i class='fas fa-exclamation-triangle fa-4x' style='color:orange'></i><br><br>";
         echo "<b>".__('No selected element or badly defined operation')."</b></div>";
 }
 

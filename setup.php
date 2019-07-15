@@ -26,6 +26,8 @@
  along with Manufacturersimports. If not, see <http://www.gnu.org/licenses/>.
  --------------------------------------------------------------------------
  */
+ 
+define('PLUGIN_MANUFACTURERSIMPORTS_VERSION', '2.2.0');
 
 // Init the hooks of the plugins -Needed
 function plugin_init_manufacturersimports() {
@@ -68,27 +70,29 @@ function plugin_version_manufacturersimports() {
    return  ['name'           => _n('Suppliers import', 'Suppliers imports', 2,
                                         'manufacturersimports'),
                  'oldname'        => 'suppliertag',
-                 'version'        => '2.2.0',
+                 'version'        => PLUGIN_MANUFACTURERSIMPORTS_VERSION,
                  'license'        => 'GPLv2+',
                  'author'         => "<a href='http://infotel.com/services/expertise-technique/glpi/'>Infotel</a>",
                  'homepage'       => 'https://github.com/InfotelGLPI/manufacturersimports/',
-            'requirements'   => [
-               'glpi' => [
-                  'min' => '9.4',
-                  'dev' => false
-               ]
-            ]];
+                 'requirements'   => [
+                     'glpi' => [
+                        'min' => '9.4',
+                        'dev' => false
+                     ]
+                  ]
+            ];
 }
 
 // Optional : check prerequisites before install : may print errors or add to message after redirect
 function plugin_manufacturersimports_check_prerequisites() {
 
-   if (version_compare(GLPI_VERSION, '9.4', 'lt')
-       || version_compare(GLPI_VERSION, '9.5', 'ge')) {
+   if (version_compare(GLPI_VERSION, '9.3', 'lt') 
+         || version_compare(GLPI_VERSION, '9.5', 'ge')) {
       if (method_exists('Plugin', 'messageIncompatible')) {
-         echo Plugin::messageIncompatible('core', '9.4');
+         echo Plugin::messageIncompatible('core', '9.3');
       }
       return false;
+
    } else if (!extension_loaded("soap")) {
       echo __('Incompatible PHP Installation. Requires module',
               'manufacturersimports'). " soap";
