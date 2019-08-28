@@ -496,6 +496,17 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
          }
       }
 
+      if ($suppliername == PluginManufacturersimportsConfig::LENOVO && $contents != null) {
+         $lines = explode("\n", $contents);
+         foreach($lines as $line){
+            if(preg_match("/var tempJSON = /", $line)){
+               $line = preg_replace("/\s+var tempJSON = /", "", $line);
+               $contents = substr($line, 0, -1);
+               break;
+            }
+         }
+      }
+
       $allcontents = $contents;
 
       // On extrait la date de garantie de la variable contents.
