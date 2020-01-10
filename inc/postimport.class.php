@@ -522,15 +522,15 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
 
          $date    = date("Y-m-d");
          $options = ["itemtype"      => $values['type'],
-                          "ID"            => $values['ID'],
-                          "date"          => $date,
-                          "supplierId"    => $supplierId,
-                          "warranty"      => $warranty,
-                          "suppliername"  => $suppliername,
-                          "addcomments"   => $addcomments,
-                          "maDate"        => $maDate,
-                          "buyDate"       => $maBuyDate,
-                          "warranty_info" => $warrantyinfo];
+                     "ID"            => $values['ID'],
+                     "date"          => $date,
+                     "supplierId"    => $supplierId,
+                     "warranty"      => $warranty,
+                     "suppliername"  => $suppliername,
+                     "addcomments"   => $addcomments,
+                     "maDate"        => $maDate,
+                     "buyDate"       => $maBuyDate,
+                     "warranty_info" => $warrantyinfo];
          self::saveInfocoms($options, $values['display']);
 
          // on cree un doc dans GLPI qu'on va lier au materiel
@@ -542,16 +542,16 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
                                        "entities_id"  => $values['line']['entities_id'],
                                        "rubrique"     => $rubrique,
                                        "suppliername" => $suppliername];
-            $values["documents_id"] = self::addDocument($options);
+            $logs["documents_id"] = self::addDocument($options);
          }
 
          //insert base locale
-         $values["import_status"] = 1;
-         $values["items_id"]      = $values['ID'];
-         $values["itemtype"]      = $values['type'];
-         $values["date_import"]   = $date;
-         $log                     = new PluginManufacturersimportsLog();
-         $log->add($values);
+         $logs["import_status"] = 1;
+         $logs["items_id"]      = $values['ID'];
+         $logs["itemtype"]      = $values['type'];
+         $logs["date_import"]   = $date;
+         $log                   = new PluginManufacturersimportsLog();
+         $log->add($logs);
 
          // cleanup Log
          $log_clean = new PluginManufacturersimportsLog();
