@@ -80,8 +80,9 @@ function plugin_manufacturersimports_install() {
    }
 
    $query = "UPDATE `glpi_plugin_manufacturersimports_configs` 
-             SET `Supplier_url` = 'https://apigtwb2c.us.dell.com/PROD/sbil/eapi/v5/asset-entitlements?servicetags=', 
-                 `token_url` = 'https://apigtwb2c.us.dell.com/auth/oauth/v2/token'
+             SET `Supplier_url` = 'https://www.dell.com/support/home/product-support/servicetag/',
+                 `warranty_url` ='https://apigtwb2c.us.dell.com/PROD/sbil/eapi/v5/asset-entitlements?servicetags=', 
+                 `token_url`    = 'https://apigtwb2c.us.dell.com/auth/oauth/v2/token'
              WHERE `name` ='" . PluginManufacturersimportsConfig::DELL . "'";
    $DB->query($query);
 
