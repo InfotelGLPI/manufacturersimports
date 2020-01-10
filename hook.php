@@ -33,7 +33,7 @@ function plugin_manufacturersimports_install() {
    include_once(GLPI_ROOT . "/plugins/manufacturersimports/inc/profile.class.php");
    include_once(GLPI_ROOT . "/plugins/manufacturersimports/inc/config.class.php");
 
-   $migration = new Migration("2.0.1");
+   $migration = new Migration("2.0.2");
    $update    = false;
 
    //Root of SQL files for DB installation or upgrade
@@ -41,7 +41,7 @@ function plugin_manufacturersimports_install() {
 
    if (!$DB->tableExists("glpi_plugin_manufacturersimports_configs")) {
 
-      $DB->runFile($sql_root . "/empty-2.0.1.sql");
+      $DB->runFile($sql_root . "/empty-2.0.2.sql");
 
    } else if ($DB->tableExists("glpi_plugin_suppliertag_config")
               && !$DB->fieldExists("glpi_plugin_suppliertag_config", "FK_entities")) {
@@ -75,12 +75,13 @@ function plugin_manufacturersimports_install() {
 
    } else if (!$DB->fieldExists("glpi_plugin_manufacturersimports_configs", "supplier_key")) {
       $DB->runFile($sql_root . "/update-1.7.0.sql");
-   } else{
-      $DB->runFile($sql_root . "/update-2.0.1.sql");
+   } else if (!$DB->fieldExists("glpi_plugin_manufacturersimports_configs", "supplier_secret")) {
+      $DB->runFile($sql_root . "/update-2.0.2.sql");
    }
 
    $query = "UPDATE `glpi_plugin_manufacturersimports_configs` 
-             SET `Supplier_url` = 'https://api.dell.com/support/assetinfo/v4/getassetwarranty/' 
+             SET `Supplier_url` = 'https://apigtwb2c.us.dell.com/PROD/sbil/eapi/v5/asset-entitlements?servicetags=', 
+                 `token_url` = 'https://apigtwb2c.us.dell.com/auth/oauth/v2/token'
              WHERE `name` ='" . PluginManufacturersimportsConfig::DELL . "'";
    $DB->query($query);
 

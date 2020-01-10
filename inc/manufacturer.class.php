@@ -131,10 +131,10 @@ class PluginManufacturersimportsManufacturer extends CommonDBTM {
     * Get start date of warranty
     *
     * @param $contents
-    * @return bool
+    * @return mixed
     */
    function getStartDate($contents) {
-
+      return false;
    }
 
    /**
@@ -153,6 +153,26 @@ class PluginManufacturersimportsManufacturer extends CommonDBTM {
     */
    function getWarrantyInfo($contents) {
 
+   }
+
+   /**
+    * Summary of getToken
+    * @param  $config
+    * @return mixed
+    */
+   static function getToken($config) {
+      return false;
+   }
+
+
+   /**
+    * Summary of getWarrantyUrl
+    * @param  $config 
+    * @param  $compSerial 
+    * @return string[]|boolean
+    */
+   static function getWarrantyUrl($config, $compSerial) {
+      return false;
    }
 
 }
