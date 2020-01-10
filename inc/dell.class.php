@@ -77,12 +77,19 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
     * @see PluginManufacturersimportsManufacturer::getSupplierInfo()
     */
    function getSupplierInfo($compSerial = null, $otherserial = null, $key = null, $supplierUrl = null) {
-      $info["name"]         = PluginManufacturersimportsConfig::DELL;
-      // v4
-      $info['supplier_url'] = "https://api.dell.com/support/assetinfo/v4/getassetwarranty/";
-      //$info['supplier_url'] = "https://sandbox.api.dell.com/support/assetinfo/v4/getassetwarranty/" ;
-      // v4
-      $info["url"] = $supplierUrl . "$compSerial?apikey=" . $key;
+
+      if (!$compSerial) {
+         // by default
+         $info["name"]            = PluginManufacturersimportsConfig::DELL;
+         $info['supplier_url']    = "https://www.dell.com/support/home/product-support/servicetag/";
+         $info['token_url']       = "https://apigtwb2c.us.dell.com/auth/oauth/v2/token";
+         $info['warranty_url']    = "https://apigtwb2c.us.dell.com/PROD/sbil/eapi/v5/asset-entitlements?servicetags=";
+         $info["supplier_key"]    = "123456789";
+         $info["supplier_secret"] = "987654321";
+         return $info;
+      }
+
+      $info["url"] = $supplierUrl. "$compSerial";
       return $info;
    }
 
@@ -98,18 +105,9 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
     */
    function getBuyDate($contents) {
       $info = json_decode($contents, true);
-      // v4
-      if (isset( $info['AssetWarrantyResponse'][0]['AssetHeaderData'][0]['ShipDate'] )) {
-         return $info['AssetWarrantyResponse'][0]['AssetHeaderData'][0]['ShipDate'];
-
-      } else if (isset($info['AssetWarrantyResponse'][0]['AssetEntitlementData'])) {
-         $nb =  count($info['AssetWarrantyResponse'][0]['AssetEntitlementData'])-1;
-         if (isset($info['AssetWarrantyResponse'][0]['AssetEntitlementData'][$nb]['StartDate'])) {
-            return $info['AssetWarrantyResponse'][0]['AssetEntitlementData'][$nb]['StartDate'];
-
-         } else if (isset($info['AssetWarrantyResponse'][0]['AssetEntitlementData'][0]['StartDate'])) {
-            return $info['AssetWarrantyResponse'][0]['AssetEntitlementData'][0]['StartDate'];
-         }
+      // v5
+      if (isset($info[0]['shipDate'])) {
+         return $info[0]['shipDate'];
       }
 
       return false;
@@ -120,11 +118,9 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
     */
    function getStartDate($contents) {
       $info = json_decode($contents, true);
-      // v4
-      if (isset($info['AssetWarrantyResponse'][0]['AssetEntitlementData'])) {
-         if (isset($info['AssetWarrantyResponse'][0]['AssetEntitlementData'][0]['StartDate'])) {
-            return $info['AssetWarrantyResponse'][0]['AssetEntitlementData'][0]['StartDate'];
-         }
+      // v5
+      if (isset($info[0]['entitlements'][0]['startDate'])) {
+         return $info[0]['entitlements'][0]['startDate'];
       }
 
       return false;
@@ -135,13 +131,10 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
     */
    function getExpirationDate($contents) {
       $info = json_decode($contents, true);
-      // v4
-      if (isset( $info['AssetWarrantyResponse'][0]['AssetEntitlementData'] )) {
-         if (isset($info['AssetWarrantyResponse'][0]['AssetEntitlementData'][0])) {
-            return $info['AssetWarrantyResponse'][0]['AssetEntitlementData'][0]["EndDate"];
-         } else if (isset($info['AssetWarrantyResponse'][0]['AssetEntitlementData']["EndDate"])) {
-            return $info['AssetWarrantyResponse'][0]['AssetEntitlementData']["EndDate"];
-         }
+      // v5
+      // when several dates are available, will take the last one
+      if (isset($info[0]['entitlements'][0]['endDate'])) {
+         return array_pop($info[0]['entitlements'])['endDate'];
       }
 
       return false;
@@ -152,12 +145,10 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
     */
    function getWarrantyInfo($contents) {
       $info = json_decode($contents, true);
-      if (isset( $info['AssetWarrantyResponse'][0]['AssetEntitlementData'] )) {
-         if (isset($info['AssetWarrantyResponse'][0]['AssetEntitlementData'][0])) {
-            return $info['AssetWarrantyResponse'][0]['AssetEntitlementData'][0]["ServiceLevelDescription"];
-         } else if (isset($info['AssetWarrantyResponse'][0]['AssetEntitlementData']["ServiceLevelDescription"])) {
-            return $info['AssetWarrantyResponse'][0]['AssetEntitlementData']["ServiceLevelDescription"];
-         }
+      // v5
+      // when several warranties are available, will take the last one
+      if (isset($info[0]['entitlements'][0]['serviceLevelDescription'])) {
+         return array_pop($info[0]['entitlements'])['serviceLevelDescription'];
       }
 
       return false;
@@ -195,4 +186,38 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
       return $cron_status;
    }
 
+   /**
+    * Summary of getToken
+    * @param  $config
+    * @return mixed
+    */
+   static function getToken($config){
+      $token = false;
+      // must manage token
+      $options = ["url"          => $config->fields["token_url"],
+                  "download"     => false,
+                  "file"         => false,
+                  "post"         => ['client_id' => $config->fields["supplier_key"],
+                                     'client_secret' => $config->fields["supplier_secret"],
+                                     'grant_type' => 'client_credentials'],
+                  "suppliername" => $config->fields["name"]];
+      $contents    = PluginManufacturersimportsPostImport::cURLData($options);
+      // must extract from $contents the token bearer
+      $response = json_decode($contents, true);
+      if (isset($response['access_token'])) {
+         $token = $response['access_token'];
+      }
+      return $token;
+   }
+
+
+   /**
+    * Summary of getWarrantyUrl
+    * @param  $config 
+    * @param  $compSerial 
+    * @return string[]
+    */
+   static function getWarrantyUrl($config, $compSerial) {
+      return ["url" => $config->fields['warranty_url']. "$compSerial"];
+   }
 }

@@ -68,7 +68,7 @@ function plugin_version_manufacturersimports() {
    return  ['name'           => _n('Suppliers import', 'Suppliers imports', 2,
                                         'manufacturersimports'),
                  'oldname'        => 'suppliertag',
-                 'version'        => '2.0.1',
+                 'version'        => '2.0.2',
                  'license'        => 'GPLv2+',
                  'author'         => "<a href='http://infotel.com/services/expertise-technique/glpi/'>Infotel</a>",
                  'homepage'       => 'https://github.com/InfotelGLPI/manufacturersimports/',
