@@ -12,14 +12,16 @@ CREATE TABLE `glpi_plugin_manufacturersimports_configs` (
    `documentcategories_id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_documentcategories (id)',
    `comment_adding` int(11) NOT NULL default '0',
    `supplier_key` VARCHAR(255) default NULL,
-   `supplier_secret` VARCHAR(255) NOT NULL,
+   `supplier_secret` VARCHAR(255) NULL DEFAULT NULL,
+   `token_url` VARCHAR(255) NULL DEFAULT NULL,
+   `warranty_url` VARCHAR(255) NULL DEFAULT NULL,
    PRIMARY KEY  (`id`),
    KEY `name` (`name`),
    KEY `entities_id` (`entities_id`),
    KEY `manufacturers_id` (`manufacturers_id`),
    KEY `suppliers_id` (`suppliers_id`),
    KEY `documentcategories_id` (`documentcategories_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 DROP TABLE IF EXISTS `glpi_plugin_manufacturersimports_models`;
 CREATE TABLE `glpi_plugin_manufacturersimports_models` (
@@ -31,7 +33,7 @@ CREATE TABLE `glpi_plugin_manufacturersimports_models` (
    UNIQUE KEY `unicity` (`model_name`,`items_id`,`itemtype`),
    KEY `FK_device` (`items_id`,`itemtype`),
    KEY `item` (`itemtype`,`items_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 DROP TABLE IF EXISTS `glpi_plugin_manufacturersimports_logs`;
 CREATE TABLE `glpi_plugin_manufacturersimports_logs` (
@@ -45,4 +47,4 @@ CREATE TABLE `glpi_plugin_manufacturersimports_logs` (
    UNIQUE KEY `unicity` (`import_status`,`items_id`,`itemtype`),
   KEY `FK_device` (`items_id`,`itemtype`),
   KEY `item` (`itemtype`,`items_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

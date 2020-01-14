@@ -102,9 +102,7 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
             $infos                        = $supplier->getSupplierInfo();
             $this->fields["name"]         = $infos["name"];
             $this->fields["supplier_url"] = $infos["supplier_url"];
-            if ($type == self::DELL || $type == self::HP) {
-               $this->fields["supplier_key"] = "123456789";
-            }
+
             if ($type == self::HP) {
                $this->fields["supplier_secret"] = 'abcdefabcdefAaBBBBB';
             }
@@ -339,6 +337,22 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
       echo "<input type='text' name='supplier_url' size='100' value='".$this->fields["supplier_url"]."'>";
       echo "</td>";
       echo "</tr>";
+
+      if ($this->fields["name"] == self::DELL) {
+         echo "<tr>";
+         echo "<td class='tab_bg_2 center' colspan='2'>".__('Access token API address', 'manufacturersimports')."</td>";
+         echo "<td class='tab_bg_2 left' colspan='2'>";
+         echo "<input type='text' name='token_url' size='100' value='".$this->fields["token_url"]."'>";
+         echo "</td>";
+         echo "</tr>";
+         echo "<tr>";
+         echo "<td class='tab_bg_2 center' colspan='2'>".__('Warranty API address', 'manufacturersimports')."</td>";
+         echo "<td class='tab_bg_2 left' colspan='2'>";
+         echo "<input type='text' name='warranty_url' size='100' value='".$this->fields["warranty_url"]."'>";
+         echo "</td>";
+         echo "</tr>";
+      }
+
       echo "<tr>";
       echo "<td class='tab_bg_2 center' colspan='2'>".__('Default supplier attached', 'manufacturersimports')."</td>";
       echo "<td class='tab_bg_2 left' colspan='2'>";
@@ -361,7 +375,7 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
       } else {
          echo "<input type='hidden' name='warranty_duration' value='0'>\n";
       }
-      if ($this->fields["name"] == self::DELL || $this->fields["name"] == self::HP) {
+      if ($this->fields["name"] == self::HP) {
 
          echo "<tr>";
          echo "<td class='tab_bg_2 center' colspan='2'>" . __('Manufacturer API key', 'manufacturersimports') . "</td>";
@@ -370,16 +384,14 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
          echo "</td>";
          echo "</tr>";
 
-         if ($this->fields["name"] == self::HP) {
-            echo "<tr>";
-            echo "<td class='tab_bg_2 center' colspan='2'>" . __('Manufacturer API Secret', 'manufacturersimports') . "</td>";
-            echo "<td class='tab_bg_2 left' colspan='2'>";
-            echo "<input type='text' name='supplier_secret' size='100' value='" . $this->fields["supplier_secret"] . "'>";
-            echo "</td>";
-            echo "</tr>";
-         }
+         echo "<tr>";
+         echo "<td class='tab_bg_2 center' colspan='2'>" . __('Manufacturer API Secret', 'manufacturersimports') . "</td>";
+         echo "<td class='tab_bg_2 left' colspan='2'>";
+         echo "<input type='text' name='supplier_secret' size='100' value='" . $this->fields["supplier_secret"] . "'>";
+         echo "</td>";
+         echo "</tr>";
 
-      } else {
+      } else if ($this->fields["name"] != self::DELL) {
          echo "<tr>";
          echo "<td class='tab_bg_2 center' colspan='2'>".__('Auto add of document', 'manufacturersimports')."</td>";
          echo "<td class='tab_bg_2 left' colspan='2'>";
@@ -391,7 +403,20 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
          echo "<td class='tab_bg_2 center' colspan='2'>".__('Section for document records', 'manufacturersimports')."</td>";
          echo "<td class='tab_bg_2 left' colspan='2'>";
          Dropdown::show('DocumentCategory', ['name'  => "documentcategories_id",
-                                             'value' => $this->fields["documentcategories_id"]]);
+                                                   'value' => $this->fields["documentcategories_id"]]);
+         echo "</td>";
+         echo "</tr>";
+      } else { // DELL
+         echo "<tr>";
+         echo "<td class='tab_bg_2 center' colspan='2'>".__('Client id', 'manufacturersimports')."</td>";
+         echo "<td class='tab_bg_2 left' colspan='2'>";
+         echo "<input type='text' name='supplier_key' size='50' value='".$this->fields["supplier_key"]."'>";
+         echo "</td>";
+         echo "</tr>";
+         echo "<tr>";
+         echo "<td class='tab_bg_2 center' colspan='2'>".__('Client secret', 'manufacturersimports')."</td>";
+         echo "<td class='tab_bg_2 left' colspan='2'>";
+         echo "<input type='text' name='supplier_secret' size='50' value='".$this->fields["supplier_secret"]."'>";
          echo "</td>";
          echo "</tr>";
       }
