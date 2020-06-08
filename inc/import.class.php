@@ -80,7 +80,7 @@ class PluginManufacturersimportsImport extends CommonDBTM {
       $result = $DB->query($query);
 
       if ($DB->numrows($result) > 0) {
-         while ($data = $DB->fetch_array($result)) {
+         while ($data = $DB->fetchArray($result)) {
 
             $log->reinitializeImport($type, $data['id']);
 

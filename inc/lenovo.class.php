@@ -100,7 +100,7 @@ class PluginManufacturersimportsLenovo extends PluginManufacturersimportsManufac
          list($month, $day, $year) = explode('/', $myDate);
          $myDate = date("Y-m-d", mktime(0, 0, 0, $month, $day, $year));
 
-         return PluginManufacturersimportsPostImport::checkDate($myDate);;
+         return PluginManufacturersimportsPostImport::checkDate($myDate);
       }
    }
 

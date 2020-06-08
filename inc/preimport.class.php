@@ -662,7 +662,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
                $i++;
 
                $item_num   = 1;
-               $line       = $DB->fetch_array($result);
+               $line       = $DB->fetchArray($result);
                $compSerial = $line['serial'];
                $compId     = $line['id'];
                $model      = $line["model_name"];

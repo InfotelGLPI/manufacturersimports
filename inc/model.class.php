@@ -66,7 +66,7 @@ class PluginManufacturersimportsModel extends CommonDBTM {
          if ($DB->numrows($result) != 1) {
             return false;
          }
-         $this->fields = $DB->fetch_assoc($result);
+         $this->fields = $DB->fetchAssoc($result);
          if (is_array($this->fields) && count($this->fields)) {
             return true;
          } else {
@@ -138,7 +138,7 @@ class PluginManufacturersimportsModel extends CommonDBTM {
       echo "</tr>";
 
       if ($number == 1) {
-         while ($line = $DB->fetch_array($result)) {
+         while ($line = $DB->fetchArray($result)) {
             $ID = $line["id"];
             echo "<tr class='tab_bg_1'>";
             echo "<td class='left'>";

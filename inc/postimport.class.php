@@ -389,7 +389,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
       $supplierclass = "PluginManufacturersimports" . $suppliername;
       $token = $supplierclass::getToken($config);
 
-      while ($line = $DB->fetch_array($result)) {
+      while ($line = $DB->fetchArray($result)) {
 
          $compSerial = $line['serial'];
          $ID         = $line['id'];

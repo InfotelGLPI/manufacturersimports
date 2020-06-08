@@ -27,7 +27,7 @@
  --------------------------------------------------------------------------
  */
  
-define('PLUGIN_MANUFACTURERSIMPORTS_VERSION', '2.2.1');
+define('PLUGIN_MANUFACTURERSIMPORTS_VERSION', '2.3.0');
 
 // Init the hooks of the plugins -Needed
 function plugin_init_manufacturersimports() {
@@ -76,7 +76,7 @@ function plugin_version_manufacturersimports() {
                  'homepage'       => 'https://github.com/InfotelGLPI/manufacturersimports/',
                  'requirements'   => [
                      'glpi' => [
-                        'min' => '9.4',
+                        'min' => '9.5',
                         'dev' => false
                      ]
                   ]
@@ -86,10 +86,10 @@ function plugin_version_manufacturersimports() {
 // Optional : check prerequisites before install : may print errors or add to message after redirect
 function plugin_manufacturersimports_check_prerequisites() {
 
-   if (version_compare(GLPI_VERSION, '9.3', 'lt') 
-         || version_compare(GLPI_VERSION, '9.5', 'ge')) {
+   if (version_compare(GLPI_VERSION, '9.5', 'lt')
+         || version_compare(GLPI_VERSION, '9.6', 'ge')) {
       if (method_exists('Plugin', 'messageIncompatible')) {
-         echo Plugin::messageIncompatible('core', '9.3');
+         echo Plugin::messageIncompatible('core', '9.5');
       }
       return false;
 
