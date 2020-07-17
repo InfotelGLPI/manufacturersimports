@@ -77,7 +77,13 @@ class PluginManufacturersimportsMenu extends CommonGLPI {
          $menu['options']['config']['links']['add']    = PluginManufacturersimportsConfig::getFormURL(false);
       }
 
+      $menu['icon'] = self::getIcon();
+
       return $menu;
+   }
+
+   static function getIcon() {
+      return "fas fa-calendar-check";
    }
 
    static function removeRightsFromSession() {
