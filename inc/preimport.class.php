@@ -653,7 +653,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
                $i = 0;
             }
             if ($i > 0) {
-               $DB->data_seek($result, $i);
+               $DB->dataSeek($result, $i);
             }
 
             $row_num = 1;
