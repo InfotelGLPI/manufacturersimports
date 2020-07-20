@@ -4,22 +4,22 @@
 # 
 # Translators:
 # Ondrej Krejcik <ondra@tachec.org>, 2013
-# Pavel Borecki <pavel.borecki@gmail.com>, 2018
+# Pavel Borecki <pavel.borecki@gmail.com>, 2018,2020
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - manufacturersimports plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-10 14:04+0200\n"
-"PO-Revision-Date: 2018-07-10 14:35+0000\n"
+"POT-Creation-Date: 2020-07-20 11:48+0200\n"
+"PO-Revision-Date: 2020-01-17 18:56+0000\n"
 "Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>\n"
-"Language-Team: Czech (Czech Republic) (http://www.transifex.com/tsmr/GLPI_manufacturersimports/language/cs_CZ/)\n"
+"Language-Team: Czech (Czech Republic) (http://www.transifex.com/infotelGLPI/GLPI_manufacturersimports/language/cs_CZ/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
 
-#: hook.php:224 setup.php:68 ajax/massiveaction.php:40 inc/menu.class.php:45
+#: hook.php:229 setup.php:70 ajax/massiveaction.php:40 inc/menu.class.php:45
 #: inc/model.class.php:48 inc/preimport.class.php:50 inc/profile.class.php:71
 msgid "Suppliers import"
 msgid_plural "Suppliers imports"
@@ -28,15 +28,15 @@ msgstr[1] "Importy od dodavatelů"
 msgstr[2] "Importů od dodavatelů"
 msgstr[3] "Importy od dodavatelů"
 
-#: hook.php:228 inc/lenovo.class.php:53
+#: hook.php:233 inc/lenovo.class.php:53
 msgid "Model number"
 msgstr "Číslo modelu"
 
-#: hook.php:254
+#: hook.php:261
 msgid "Add new material brand number"
 msgstr "Přidat nové číslo výrobce materiálu"
 
-#: setup.php:87 setup.php:92 setup.php:97
+#: setup.php:97 setup.php:102 setup.php:107
 msgid "Incompatible PHP Installation. Requires module"
 msgstr "Nekompatibilní instalace PHP. Vyžaduje modul"
 
@@ -48,55 +48,71 @@ msgstr "Zapněte zásuvný modul"
 msgid "Manufacturer web address"
 msgstr "Webová adresa výrobce"
 
-#: inc/config.class.php:217 inc/config.class.php:341
+#: inc/config.class.php:217 inc/config.class.php:357
 msgid "Default supplier attached"
 msgstr "Výchozí dodavatel připojen"
 
-#: inc/config.class.php:225 inc/preimport.class.php:636
+#: inc/config.class.php:225 inc/preimport.class.php:638
 msgid "New warranty attached"
 msgstr "Nová záruka připojena"
 
-#: inc/config.class.php:234 inc/config.class.php:382
+#: inc/config.class.php:234 inc/config.class.php:409
 msgid "Auto add of document"
 msgstr "Automaticky přidat dokument"
 
-#: inc/config.class.php:251 inc/config.class.php:397
+#: inc/config.class.php:251 inc/config.class.php:424
 msgid "Add a comment line"
 msgstr "Přidat řádek s komentářem"
 
-#: inc/config.class.php:351
+#: inc/config.class.php:343
+msgid "Access token API address"
+msgstr "Adresa tokenu pro přístup k aplikačnímu programovému rozhraní (API)"
+
+#: inc/config.class.php:349
+msgid "Warranty API address"
+msgstr "Adresa tokenu pro přístup k aplikačnímu programovému rozhraní (API) pro zjišťování záruk"
+
+#: inc/config.class.php:367
 msgid "New warranty affected by default (Replace if 0)"
 msgstr "Nová záruka přiřazena ve výchozím nastavení (nahradit pokud 0)"
 
-#: inc/config.class.php:365
+#: inc/config.class.php:381
 msgid "Manufacturer API key"
 msgstr "Klíč k API výrobce"
 
-#: inc/config.class.php:373
+#: inc/config.class.php:388
 msgid "Manufacturer API Secret"
 msgstr "Heslo k aplikačnímu program. rozhraní poskytovaném výrobcem"
 
-#: inc/config.class.php:389
+#: inc/config.class.php:396
+msgid "Client id"
+msgstr "Identifikátor klienta"
+
+#: inc/config.class.php:402
+msgid "Client secret"
+msgstr "Heslo klienta"
+
+#: inc/config.class.php:416
 msgid "Section for document records"
 msgstr "Sekce pro ukládání dokumentů"
 
-#: inc/config.class.php:529 inc/preimport.class.php:334
+#: inc/config.class.php:556 inc/preimport.class.php:334
 msgid "Manufacturer information"
 msgstr "Informace výrobce"
 
-#: inc/dell.class.php:176
+#: inc/dell.class.php:167
 msgid "Data recovery DELL for computer"
 msgstr "Obnovení dat pro počítače DELL"
 
-#: inc/import.class.php:119 inc/postimport.class.php:665
+#: inc/import.class.php:119 inc/postimport.class.php:679
 msgid "Import OK"
 msgstr "Import proběhl úspěšně"
 
-#: inc/import.class.php:122 inc/postimport.class.php:769
+#: inc/import.class.php:122 inc/postimport.class.php:783
 msgid "Import failed"
 msgstr "Import se nezdařil"
 
-#: inc/model.class.php:137 inc/preimport.class.php:628
+#: inc/model.class.php:137 inc/preimport.class.php:630
 msgid "Model Number"
 msgstr "Číslo modelu"
 
@@ -104,40 +120,40 @@ msgstr "Číslo modelu"
 msgid "Curl PHP package not installed"
 msgstr "Není nainstalován balíček PHP Curl"
 
-#: inc/postimport.class.php:182
+#: inc/postimport.class.php:189
 msgid "Launching of imports"
 msgstr "Spouštění importů"
 
-#: inc/postimport.class.php:185
+#: inc/postimport.class.php:192
 msgid "Post import"
 msgstr "Po importu"
 
-#: inc/postimport.class.php:193
+#: inc/postimport.class.php:200
 msgid "Result"
 msgstr "Výsledek"
 
-#: inc/postimport.class.php:194
+#: inc/postimport.class.php:201
 msgid "Details"
 msgstr "Podrobnosti"
 
-#: inc/postimport.class.php:212
+#: inc/postimport.class.php:219
 msgid "Import in progress"
 msgstr "Probíhá import"
 
-#: inc/postimport.class.php:220
+#: inc/postimport.class.php:227
 #, php-format
 msgid "Total number of devices imported %s"
 msgstr "Celkový počet naimportovaných zařízení %s"
 
-#: inc/postimport.class.php:644 inc/postimport.class.php:653
+#: inc/postimport.class.php:658 inc/postimport.class.php:667
 msgid "Imported from web site"
 msgstr "Naimportováno z webových stránek"
 
-#: inc/postimport.class.php:645 inc/postimport.class.php:654
+#: inc/postimport.class.php:659 inc/postimport.class.php:668
 msgid "With the manufacturersimports plugin"
 msgstr "Se zásuvným modulem import od výrobců"
 
-#: inc/postimport.class.php:792
+#: inc/postimport.class.php:807
 msgid "Connection failed/data download from manufacturer web site"
 msgstr "Spojení se nezdařilo / data se nepodařilo stáhnout z webových stránek výrobce"
 
@@ -157,35 +173,35 @@ msgstr "Problém při importu"
 msgid "Already imported"
 msgstr "Už naimportováno"
 
-#: inc/preimport.class.php:393
+#: inc/preimport.class.php:395
 msgid "Choose inventory type and manufacturer"
 msgstr "Vyberte typ inventáře a výrobce"
 
-#: inc/preimport.class.php:433
+#: inc/preimport.class.php:435
 msgid "Devices not imported"
 msgstr "Dosud nenaimportovaná zařízení"
 
-#: inc/preimport.class.php:435
+#: inc/preimport.class.php:437
 msgid "Devices already imported"
 msgstr "Už naimportovaná zařízení"
 
-#: inc/preimport.class.php:442 inc/preimport.class.php:445
+#: inc/preimport.class.php:444 inc/preimport.class.php:447
 msgid "No manufacturer available. Please configure at least one manufacturer"
 msgstr "Není k dispozici žádný výrobce. Nastavte alespoň jednoho"
 
-#: inc/preimport.class.php:633
+#: inc/preimport.class.php:635
 msgid "Supplier attached"
 msgstr "Dodavatel připojen"
 
-#: inc/preimport.class.php:683
+#: inc/preimport.class.php:685
 #, php-format
 msgid "Total number of devices to import %s"
 msgstr "Celkový počet zařízení k importu %s"
 
-#: inc/preimport.class.php:730
+#: inc/preimport.class.php:732
 msgid "No device finded"
 msgstr "Nenalezeno žádné zařízení"
 
-#: inc/preimport.class.php:1025
+#: inc/preimport.class.php:1030
 msgid "Reset the import"
 msgstr "Spustit import znovu"
