@@ -43,7 +43,8 @@
     <versions>
         <version>
            <num>2.3.0</num>
-           <compatibility>9.5</compatibility>
+            <compatibility>~9.5</compatibility>
+            <download_url>https://github.com/InfotelGLPI/manufacturersimports/releases/download/2.3.0/glpi-manufacturersimports-2.3.0.tar.gz</download_url>
         </version>
         <version>
            <num>2.2.1</num>
