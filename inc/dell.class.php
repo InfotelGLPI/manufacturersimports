@@ -134,9 +134,20 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
       $info = json_decode($contents, true);
       // v5
       // when several dates are available, will take the last one
-      if (isset($info[0]['entitlements'][0]['endDate'])) {
-         return array_pop($info[0]['entitlements'])['endDate'];
+      $max_date = false;
+      if (isset($info[0]['entitlements'])) {
+         foreach ($info[0]['entitlements'] as $d) {
+            $date = new \DateTime($d['endDate']);
+            if ($max_date == false || $date > $max_date) {
+               $max_date = $date;
+            }
+         }
+
+         if ($max_date) {
+            return $max_date->format('c');
+         }
       }
+
 
       return false;
    }
@@ -148,8 +159,20 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
       $info = json_decode($contents, true);
       // v5
       // when several warranties are available, will take the last one
-      if (isset($info[0]['entitlements'][0]['serviceLevelDescription'])) {
-         return array_pop($info[0]['entitlements'])['serviceLevelDescription'];
+      $max_date = false;
+      $i = false;
+      if (isset($info[0]['entitlements'])) {
+         foreach ($info[0]['entitlements'] as $k => $d) {
+            $date = new \DateTime($d['endDate']);
+            if ($max_date == false || $date > $max_date) {
+               $max_date = $date;
+               $i        = $k;
+            }
+         }
+      }
+
+      if ($max_date && $i) {
+         return $info[0]['entitlements'][$i]['serviceLevelDescription'];
       }
 
       return false;
