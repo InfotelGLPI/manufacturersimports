@@ -1,18 +1,21 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR $copyright
 # This file is distributed under the same license as the $soft package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
-# Hugo Avila <hraat007@gmail.com>, 2017
-# Luis Angel Uriarte <luisuriarte@gmail.com>, 2013,2015
+# Xavier CAILLAUD <thetsmr@gmail.com>, 2020
+# Luis Angel Uriarte <luisuriarte@gmail.com>, 2020
+# 
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: GLPI Project - manufacturersimports plugin\n"
+"Project-Id-Version: $soft\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-20 11:48+0200\n"
-"PO-Revision-Date: 2020-01-17 15:32+0000\n"
-"Last-Translator: Kevin HAINRY <kevin.hainry@infotel.com>\n"
-"Language-Team: Spanish (Argentina) (http://www.transifex.com/infotelGLPI/GLPI_manufacturersimports/language/es_AR/)\n"
+"POT-Creation-Date: 2020-11-03 13:30+0000\n"
+"PO-Revision-Date: 2020-11-02 16:09+0000\n"
+"Last-Translator: Luis Angel Uriarte <luisuriarte@gmail.com>, 2020\n"
+"Language-Team: Spanish (Argentina) (https://www.transifex.com/infotelGLPI/teams/12364/es_AR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -64,11 +67,11 @@ msgstr "Agregar linea de comentario"
 
 #: inc/config.class.php:343
 msgid "Access token API address"
-msgstr ""
+msgstr "Dirección de API de token de acceso"
 
 #: inc/config.class.php:349
 msgid "Warranty API address"
-msgstr ""
+msgstr "Dirección de API de Garantía"
 
 #: inc/config.class.php:367
 msgid "New warranty affected by default (Replace if 0)"
@@ -80,15 +83,15 @@ msgstr "Clave API del Fabricante"
 
 #: inc/config.class.php:388
 msgid "Manufacturer API Secret"
-msgstr ""
+msgstr "API Secreto del Fabricante"
 
 #: inc/config.class.php:396
 msgid "Client id"
-msgstr ""
+msgstr "Id. del Cliente"
 
 #: inc/config.class.php:402
 msgid "Client secret"
-msgstr ""
+msgstr "Clave Cliente"
 
 #: inc/config.class.php:416
 msgid "Section for document records"
@@ -98,7 +101,7 @@ msgstr "Sección para guardados de documentos"
 msgid "Manufacturer information"
 msgstr "Información del fabricante"
 
-#: inc/dell.class.php:167
+#: inc/dell.class.php:190
 msgid "Data recovery DELL for computer"
 msgstr "Recuperación de Datos Dell para computadora"
 
@@ -120,7 +123,7 @@ msgstr "No está instalado el paquete Curl PHP"
 
 #: inc/postimport.class.php:189
 msgid "Launching of imports"
-msgstr ""
+msgstr "Comenzar a Importar"
 
 #: inc/postimport.class.php:192
 msgid "Post import"
