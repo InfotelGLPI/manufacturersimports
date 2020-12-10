@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $soft\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-04 11:16+0000\n"
+"POT-Creation-Date: 2020-12-10 17:05+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: hook.php:229 setup.php:70 ajax/massiveaction.php:40 inc/menu.class.php:45
+#: hook.php:229 setup.php:72 ajax/massiveaction.php:40 inc/menu.class.php:45
 #: inc/model.class.php:48 inc/preimport.class.php:50 inc/profile.class.php:71
 msgid "Suppliers import"
 msgid_plural "Suppliers imports"
@@ -33,7 +33,7 @@ msgstr ""
 msgid "Add new material brand number"
 msgstr ""
 
-#: setup.php:97 setup.php:102 setup.php:107
+#: setup.php:99 setup.php:104 setup.php:109
 msgid "Incompatible PHP Installation. Requires module"
 msgstr ""
 
