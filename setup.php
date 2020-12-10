@@ -58,11 +58,13 @@ function plugin_init_manufacturersimports() {
          = 'plugin_manufacturersimports_postinit';
    }
 
-   // Add specific files to add to the header : javascript or css
+   if (isset($_SESSION['glpiactiveprofile']['interface'])
+       && $_SESSION['glpiactiveprofile']['interface'] == 'central') {
+      // Add specific files to add to the header : javascript or css
       $PLUGIN_HOOKS['add_css']['manufacturersimports'] = [
          "manufacturersimports.css",
       ];
-
+   }
 }
 
 // Get the name and the version of the plugin - Needed
