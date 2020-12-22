@@ -106,6 +106,9 @@ class PluginManufacturersimportsImport extends CommonDBTM {
                              "line"    => $data,
                              "display" => false];
 
+            if ($suppliername == PluginManufacturersimportsConfig::LENOVO) {
+               $options['ClientID']  =$supplierkey;
+            }
             if (PluginManufacturersimportsPostImport::saveImport($options)) {
                $task->addVolume(1);
             } else {

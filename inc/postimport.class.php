@@ -105,7 +105,12 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
             ]);
          
       }
+      if (!empty($options['ClientID'])) {
+         curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            "ClientID: ".$options['ClientID']
+         ]);
 
+      }
       //Do we have post field to send?
       if (!empty($options["post"])) {
          //curl_setopt($ch, CURLOPT_POST,true);
@@ -435,6 +440,9 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
                                                                         $compSerial, $otherSerial,
                                                                         $supplierkey, $supplierSecret);
          }
+         if ($suppliername == PluginManufacturersimportsConfig::LENOVO) {
+            $options['ClientID']  =$supplierkey;
+         }
 
          self::saveImport($options);
 
@@ -459,6 +467,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
       $default_values['fromsupplier'] = 0;
       $default_values['fromwarranty'] = 0;
       $default_values['line']         = [];
+      $default_values['ClientID']         = null;
       $default_values['config']       = new PluginManufacturersimportsConfig();
       $default_values['token']        = false;
 
@@ -499,7 +508,9 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
                   "suppliername" => $suppliername,
                   "token"        => $values['token']
                   ];
-
+      if ($suppliername == PluginManufacturersimportsConfig::LENOVO && $values["ClientID"] != null){
+         $options["ClientID"] = $values["ClientID"];
+      }
       $contents    = self::cURLData($options);
 
       if ($suppliername == PluginManufacturersimportsConfig::HP && $contents != null) {
