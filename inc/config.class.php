@@ -404,6 +404,13 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
          echo "<input type='text' name='supplier_secret' size='50' value='".$this->fields["supplier_secret"]."'>";
          echo "</td>";
          echo "</tr>";
+      }else if ($this->fields["name"] == self::LENOVO){
+         echo "<tr>";
+         echo "<td class='tab_bg_2 center' colspan='2'>".__('Client id', 'manufacturersimports')."</td>";
+         echo "<td class='tab_bg_2 left' colspan='2'>";
+         echo "<input type='text' name='supplier_key' size='50' value='".$this->fields["supplier_key"]."'>";
+         echo "</td>";
+         echo "</tr>";
       } else {
           echo "<tr>";
          echo "<td class='tab_bg_2 center' colspan='2'>".__('Auto add of document', 'manufacturersimports')."</td>";
@@ -540,7 +547,12 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
          $supplierkey  = (isset($config->fields["supplier_key"]))?$config->fields["supplier_key"]:false;
          $supplierurl  = (isset($config->fields["supplier_url"]))?$config->fields["supplier_url"]:false;
 
-         $url          = PluginManufacturersimportsPreImport::selectSupplier($suppliername, $supplierurl, $item->fields['serial'], $otherserial, $supplierkey);
+         if($suppliername == PluginManufacturersimportsConfig::LENOVO){
+            $url          = PluginManufacturersimportsPreImport::selectSupplier($suppliername, $supplierurl, $item->fields['serial'], $otherserial, $supplierkey,null,true);
+         }else{
+            $url          = PluginManufacturersimportsPreImport::selectSupplier($suppliername, $supplierurl, $item->fields['serial'], $otherserial, $supplierkey);
+         }
+
 
          echo "<div align=\"center\"><table class=\"tab_cadre_fixe\"  cellspacing=\"2\" cellpadding=\"2\">";
          echo "<tr>";

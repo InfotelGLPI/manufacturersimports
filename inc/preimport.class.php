@@ -95,14 +95,19 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
     *
     */
    static function selectSupplier($suppliername, $supplierUrl, $compSerial, $otherserial = null,
-                                  $supplierkey = null, $supplierSecret = null) {
+                                  $supplierkey = null, $supplierSecret = null, $second_url = false) {
       $url = "";
       if (!empty($suppliername)) {
          $supplierclass = "PluginManufacturersimports" . $suppliername;
          $supplier      = new $supplierclass();
          $infos         = $supplier->getSupplierInfo($compSerial, $otherserial, $supplierkey,
                                                      $supplierSecret, $supplierUrl);
-         $url           = $infos['url'];
+         if(!$second_url){
+            $url           = $infos['url'];
+         }else{
+            $url           = $infos['url_web'];
+         }
+
       }
       return $url;
    }
@@ -337,6 +342,11 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
 //            $output_url = "<a href='" . Toolbox::getItemTypeFormURL("PluginManufacturersimportsHP") .
 //                          "?sn=".$line["serial"]."&manufacturers_id=$configID' target='_blank'>" .
 //                         __('Manufacturer information', 'manufacturersimports') . "</a>";
+         }
+         if ($suppliername == PluginManufacturersimportsConfig::LENOVO) {
+            $output_url = self::selectSupplier($suppliername, $supplierUrl, $line["serial"], $otherSerial,
+                                        $supplierkey, $supplierkeysecret,true);
+
          }
          echo Search::showItem($output_type, $output_url, $item_num, $row_num);
 
