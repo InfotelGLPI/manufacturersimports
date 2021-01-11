@@ -83,7 +83,7 @@ class PluginManufacturersimportsLenovo extends PluginManufacturersimportsManufac
                             $supplierUrl = null) {
 
       $info["name"]         = PluginManufacturersimportsConfig::LENOVO;
-      $info["supplier_url"] = "https://www.lenovo.com/us/en/warranty/";
+      $info["supplier_url"] = "https://SupportAPI.lenovo.com/v2.5/Warranty";
 //      $info["url"]          = $supplierUrl . $compSerial."?machineType=&btnSubmit";
       $info["url"]          = $supplierUrl . "?Serial=".$compSerial;
       $info["url_web"]      = "https://pcsupport.lenovo.com/products/$compSerial/warranty";
