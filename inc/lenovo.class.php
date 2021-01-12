@@ -98,11 +98,38 @@ class PluginManufacturersimportsLenovo extends PluginManufacturersimportsManufac
       $contents = json_decode($contents, true);
 
       if (isset($contents['Purchased'])) {
-         $myDate = trim($contents['Purchased']);
-//         $myDate = date("Y-m-d", mktime(0, 0, 0, $month, $day, $year));
+
+         if(strpos($contents['Purchased'], '0001-01-01') !== false){
+            if(strpos($contents['Shipped'], '0001-01-01') !== false) {
+               if(isset($contents['Warranty']) && !empty($contents['Warranty'])){
+                  $minStart = 0;
+                  $start = 0;
+                  $n = 0;
+                  foreach ($contents['Warranty'] as $id => $warranty){
+                     $myDate= trim($warranty['start']);
+                     $dateStart = strtotime($myDate);
+                     if($n === 0){
+                        $minStart = $dateStart;
+                        $myDate = strtotime(trim($warranty['Start']));
+                     }
+                     if($dateStart > $minStart){
+                        $minStart = $dateStart;
+                        $myDate = strtotime(trim($warranty['Start']));
+                     }
+                     $n++;
+                  }
+               }
+            }else{
+               $myDate = trim($contents['Shipped']);
+            }
+         }else{
+            $myDate = trim($contents['Purchased']);
+         }
+         //         $myDate = date("Y-m-d", mktime(0, 0, 0, $month, $day, $year));
          $myDate = date("Y-m-d", strtotime($myDate));
 
-         return PluginManufacturersimportsPostImport::checkDate($myDate);
+
+         return PluginManufacturersimportsPostImport::checkDate($myDate);;
       }
    }
 
