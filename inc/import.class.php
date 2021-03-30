@@ -75,7 +75,7 @@ class PluginManufacturersimportsImport extends CommonDBTM {
       //      foreach ($types as $type) {
       $type               = "Computer";
       $params['itemtype'] = $type;
-      $query              = PluginManufacturersimportsPreImport::queryImport($params, $config, $toview);
+      $query              = PluginManufacturersimportsPreImport::queryImport($params, $config, $toview, true);
 
       $result = $DB->query($query);
 
@@ -109,6 +109,17 @@ class PluginManufacturersimportsImport extends CommonDBTM {
             if ($suppliername == PluginManufacturersimportsConfig::LENOVO) {
                $options['ClientID']  =$supplierkey;
             }
+
+            if ($suppliername == PluginManufacturersimportsConfig::DELL) {
+               $supplierclass = "PluginManufacturersimports" . $suppliername;
+               $token = $supplierclass::getToken($config);
+               $warranty_url = $supplierclass::getWarrantyUrl($config, $compSerial);
+               $options['token'] = $token;
+               if(isset($warranty_url)){
+                  $options['url'] = $warranty_url['url'];
+               }
+            }
+
             if (PluginManufacturersimportsPostImport::saveImport($options)) {
                $task->addVolume(1);
             } else {

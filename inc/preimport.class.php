@@ -820,7 +820,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
     *
     * @return string
     */
-   static function queryImport($p, $config, $toview) {
+   static function queryImport($p, $config, $toview, $isCron = false) {
 
       $dbu = new DbUtils();
 
@@ -874,8 +874,9 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
       } else {
          $entities = $config->getEntityID();
       }
-      $query .= "" . $dbu->getEntitiesRestrictRequest(" AND", $itemtable, '', '', $item->maybeRecursive());
-
+      if(!$isCron){
+         $query .= "" . $dbu->getEntitiesRestrictRequest(" AND", $itemtable, '', '', $item->maybeRecursive());
+      }
       //// 4 - ORDER
       $ORDER = " ORDER BY `entities_id`,`" . $itemtable . "`.`name` ";
 
