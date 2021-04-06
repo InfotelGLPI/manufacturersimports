@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $soft\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-12 08:08+0000\n"
+"POT-Creation-Date: 2021-03-30 14:03+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -101,11 +101,11 @@ msgstr ""
 msgid "Data recovery DELL for computer"
 msgstr ""
 
-#: inc/import.class.php:122 inc/postimport.class.php:690
+#: inc/import.class.php:133 inc/postimport.class.php:690
 msgid "Import OK"
 msgstr ""
 
-#: inc/import.class.php:125 inc/postimport.class.php:794
+#: inc/import.class.php:136 inc/postimport.class.php:794
 msgid "Import failed"
 msgstr ""
 
@@ -199,6 +199,6 @@ msgstr ""
 msgid "No device finded"
 msgstr ""
 
-#: inc/preimport.class.php:1040
+#: inc/preimport.class.php:1041
 msgid "Reset the import"
 msgstr ""
