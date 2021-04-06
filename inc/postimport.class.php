@@ -73,7 +73,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
          return __('Curl PHP package not installed', 'manufacturersimports') . "\n";
       }
       $data        = '';
-      $timeout     = 10;
+      $timeout     = 30;
       $proxy_host  = !empty($CFG_GLPI["proxy_name"]) ? ($CFG_GLPI["proxy_name"] . ":" . $CFG_GLPI["proxy_port"]) : false; // host:port
       $proxy_ident = !empty($CFG_GLPI["proxy_user"]) ? ($CFG_GLPI["proxy_user"]. ":" .
                      Toolbox::decrypt($CFG_GLPI["proxy_passwd"], GLPIKEY)) : false; // username:password
@@ -605,8 +605,10 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
                                          'LIMIT'         => 1
                                       ]
          );
+         if(isset($_SESSION["glpi_plugin_manufacturersimports_total"])){
+            $_SESSION["glpi_plugin_manufacturersimports_total"] += 1;
+         }
 
-         $_SESSION["glpi_plugin_manufacturersimports_total"] += 1;
          return true;
 
       } else { // Failed check contents
