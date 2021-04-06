@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $soft\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-30 14:03+0000\n"
+"POT-Creation-Date: 2021-04-06 09:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -101,11 +101,11 @@ msgstr ""
 msgid "Data recovery DELL for computer"
 msgstr ""
 
-#: inc/import.class.php:133 inc/postimport.class.php:690
+#: inc/import.class.php:133 inc/postimport.class.php:692
 msgid "Import OK"
 msgstr ""
 
-#: inc/import.class.php:136 inc/postimport.class.php:794
+#: inc/import.class.php:136 inc/postimport.class.php:796
 msgid "Import failed"
 msgstr ""
 
@@ -142,15 +142,15 @@ msgstr ""
 msgid "Total number of devices imported %s"
 msgstr ""
 
-#: inc/postimport.class.php:669 inc/postimport.class.php:678
+#: inc/postimport.class.php:671 inc/postimport.class.php:680
 msgid "Imported from web site"
 msgstr ""
 
-#: inc/postimport.class.php:670 inc/postimport.class.php:679
+#: inc/postimport.class.php:672 inc/postimport.class.php:681
 msgid "With the manufacturersimports plugin"
 msgstr ""
 
-#: inc/postimport.class.php:818
+#: inc/postimport.class.php:820
 msgid "Connection failed/data download from manufacturer web site"
 msgstr ""
 
