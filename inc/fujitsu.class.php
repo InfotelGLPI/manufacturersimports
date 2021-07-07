@@ -44,7 +44,7 @@ class PluginManufacturersimportsFujitsu extends PluginManufacturersimportsManufa
    }
 
    function getSearchField() {
-      return "Service Start Date";
+      return false;
    }
 
    /**
@@ -53,8 +53,8 @@ class PluginManufacturersimportsFujitsu extends PluginManufacturersimportsManufa
    function getSupplierInfo($compSerial = null, $otherSerial = null, $key = null, $apisecret = null,
                             $supplierUrl = null) {
       $info["name"]         = PluginManufacturersimportsConfig::FUJITSU;
-      $info["supplier_url"] = "http://support.ts.fujitsu.com/Warranty/WarrantyStatus.asp?lng=com&IDNR=";
-      $info["url"]          = $supplierUrl.$compSerial."&Version=3.51";
+      $info["supplier_url"] = "https://support.ts.fujitsu.com/Adler/Default.aspx?Lng=en&GotoDiv=Warranty/WarrantyStatus&DivID=indexwarranty&GotoUrl=IndexWarranty&Ident=";
+      $info["url"]          = $supplierUrl.$compSerial;
 
       return $info;
    }
@@ -65,21 +65,10 @@ class PluginManufacturersimportsFujitsu extends PluginManufacturersimportsManufa
    function getBuyDate($contents) {
 
       $matchesarray = [];
-      preg_match_all("/(\d{2}\/\d{2}\/\d{4})/", $contents, $matchesarray);
+      preg_match_all("/value=\"(\d{4}\-\d{2}\-\d{2})\" id=\"Firstuse\"/", $contents, $matchesarray);
 
       $datetimestamp = date('U');
-      $myDate = $matchesarray[0][0];
-
-      $myDate = trim($myDate);
-      $myDate = str_replace('/', '-', $myDate);
-
-      $myDate = PluginManufacturersimportsPostImport::checkDate($myDate, true);
-
-      if ($myDate != "0000-00-00") {
-         list($day, $month, $year) = explode('-', $myDate);
-         $myDate = date("Y-m-d", mktime(0, 0, 0, $month, $day, $year));
-      }
-      return $myDate;
+      return (isset($matchesarray[1][0])?trim($matchesarray[1][0]):'0000-00-00');
    }
 
    /**
@@ -97,20 +86,9 @@ class PluginManufacturersimportsFujitsu extends PluginManufacturersimportsManufa
    function getExpirationDate($contents) {
 
       $matchesarray = [];
-      preg_match_all("/(\d{2}\/\d{2}\/\d{4})/", $contents, $matchesarray);
+      preg_match_all("/value=\"(\d{4}\-\d{2}\-\d{2})\" id=\"WarrantyEndDate\"/", $contents, $matchesarray);
 
       $datetimestamp = date('U');
-      $myDate = $matchesarray[0][1];
-
-      $myDate = trim($myDate);
-      $myDate = str_replace('/', '-', $myDate);
-
-      $myDate = PluginManufacturersimportsPostImport::checkDate($myDate, true);
-
-      if ($myDate != "0000-00-00") {
-         list($day, $month, $year) = explode('-', $myDate);
-         $myDate = date("Y-m-d", mktime(0, 0, 0, $month, $day, $year));
-      }
-      return $myDate;
+      return (isset($matchesarray[1][0])?trim($matchesarray[1][0]):'0000-00-00');
    }
 }
