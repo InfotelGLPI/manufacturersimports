@@ -65,7 +65,7 @@ class PluginManufacturersimportsFujitsu extends PluginManufacturersimportsManufa
    function getBuyDate($contents) {
 
       $matchesarray = [];
-      preg_match_all("/Firstuse.*value=\"(\d{4}\-\d{2}\-\d{2})\"/", $contents, $matchesarray);
+      preg_match_all("/value=\"(\d{4}\-\d{2}\-\d{2})\" id=\"Firstuse\"/", $contents, $matchesarray);
 
       $datetimestamp = date('U');
       return (isset($matchesarray[1][0])?trim($matchesarray[1][0]):'0000-00-00');
@@ -86,7 +86,7 @@ class PluginManufacturersimportsFujitsu extends PluginManufacturersimportsManufa
    function getExpirationDate($contents) {
 
       $matchesarray = [];
-      preg_match_all("/WarrantyEndDate.*value=\"(\d{4}\-\d{2}\-\d{2})\"/", $contents, $matchesarray);
+      preg_match_all("/value=\"(\d{4}\-\d{2}\-\d{2})\" id=\"WarrantyEndDate\"/", $contents, $matchesarray);
 
       $datetimestamp = date('U');
       return (isset($matchesarray[1][0])?trim($matchesarray[1][0]):'0000-00-00');
