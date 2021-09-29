@@ -120,9 +120,19 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
    function getStartDate($contents) {
       $info = json_decode($contents, true);
       // v5
-      if (isset($info[0]['entitlements'][0]['startDate'])) {
-         return $info[0]['entitlements'][0]['startDate'];
-      }
+       $max_date = false;
+       if (isset($info[0]['entitlements'])) {
+           foreach ($info[0]['entitlements'] as $d) {
+               $date = new \DateTime($d['startDate']);
+               if ($max_date == false || $date > $max_date) {
+                   $max_date = $date;
+               }
+           }
+
+           if ($max_date) {
+               return $max_date->format('c');
+           }
+       }
 
       return false;
    }
@@ -157,6 +167,8 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
     */
    function getWarrantyInfo($contents) {
       $info = json_decode($contents, true);
+
+      Toolbox::logWarning($info);
       // v5
       // when several warranties are available, will take the last one
       $max_date = false;
