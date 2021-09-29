@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $soft\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-29 15:58+0000\n"
+"POT-Creation-Date: 2021-09-29 17:05+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: hook.php:229 setup.php:72 ajax/massiveaction.php:40 inc/menu.class.php:45
+#: hook.php:229 setup.php:74 ajax/massiveaction.php:40 inc/menu.class.php:45
 #: inc/model.class.php:48 inc/preimport.class.php:50 inc/profile.class.php:71
 msgid "Suppliers import"
 msgid_plural "Suppliers imports"
@@ -33,7 +33,7 @@ msgstr ""
 msgid "Add new material brand number"
 msgstr ""
 
-#: setup.php:99 setup.php:104 setup.php:109
+#: setup.php:101 setup.php:106 setup.php:111
 msgid "Incompatible PHP Installation. Requires module"
 msgstr ""
 
@@ -41,71 +41,76 @@ msgstr ""
 msgid "Please activate the plugin"
 msgstr ""
 
-#: inc/config.class.php:208 inc/config.class.php:335
+#: inc/config.class.php:218 inc/config.class.php:346
 msgid "Manufacturer web address"
 msgstr ""
 
-#: inc/config.class.php:217 inc/config.class.php:357
+#: inc/config.class.php:227 inc/config.class.php:368
 msgid "Default supplier attached"
 msgstr ""
 
-#: inc/config.class.php:225 inc/preimport.class.php:648
+#: inc/config.class.php:235 inc/preimport.class.php:648
 msgid "New warranty attached"
 msgstr ""
 
-#: inc/config.class.php:234 inc/config.class.php:416
+#: inc/config.class.php:244 inc/config.class.php:427
 msgid "Auto add of document"
 msgstr ""
 
-#: inc/config.class.php:251 inc/config.class.php:431
+#: inc/config.class.php:261 inc/config.class.php:442
 msgid "Add a comment line"
 msgstr ""
 
-#: inc/config.class.php:343
+#: inc/config.class.php:354
 msgid "Access token API address"
 msgstr ""
 
-#: inc/config.class.php:349
+#: inc/config.class.php:360
 msgid "Warranty API address"
 msgstr ""
 
-#: inc/config.class.php:367
+#: inc/config.class.php:378
 msgid "New warranty affected by default (Replace if 0)"
 msgstr ""
 
-#: inc/config.class.php:381
+#: inc/config.class.php:392
 msgid "Manufacturer API key"
 msgstr ""
 
-#: inc/config.class.php:388
+#: inc/config.class.php:399
 msgid "Manufacturer API Secret"
 msgstr ""
 
-#: inc/config.class.php:396 inc/config.class.php:409
+#: inc/config.class.php:407 inc/config.class.php:420
 msgid "Client id"
 msgstr ""
 
-#: inc/config.class.php:402
+#: inc/config.class.php:413
 msgid "Client secret"
 msgstr ""
 
-#: inc/config.class.php:423
+#: inc/config.class.php:434
 msgid "Section for document records"
 msgstr ""
 
-#: inc/config.class.php:568 inc/preimport.class.php:339
+#: inc/config.class.php:647 inc/preimport.class.php:339
 msgid "Manufacturer information"
+msgstr ""
+
+#: inc/config.class.php:652
+msgctxt "button"
+msgid "Retrieve warranty from manufacturer"
 msgstr ""
 
 #: inc/dell.class.php:201
 msgid "Data recovery DELL for computer"
 msgstr ""
 
-#: inc/import.class.php:133 inc/postimport.class.php:692
+#: inc/import.class.php:130 inc/postimport.class.php:692
 msgid "Import OK"
 msgstr ""
 
-#: inc/import.class.php:136 inc/postimport.class.php:796
+#: inc/import.class.php:133 inc/postimport.class.php:796
 msgid "Import failed"
 msgstr ""
 
