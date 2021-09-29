@@ -167,8 +167,7 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
     */
    function getWarrantyInfo($contents) {
       $info = json_decode($contents, true);
-
-      Toolbox::logWarning($info);
+      
       // v5
       // when several warranties are available, will take the last one
       $max_date = false;
