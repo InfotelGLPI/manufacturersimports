@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $soft\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-06 09:43+0000\n"
+"POT-Creation-Date: 2021-09-29 15:57+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -97,7 +97,7 @@ msgstr ""
 msgid "Manufacturer information"
 msgstr ""
 
-#: inc/dell.class.php:190
+#: inc/dell.class.php:202
 msgid "Data recovery DELL for computer"
 msgstr ""
 
