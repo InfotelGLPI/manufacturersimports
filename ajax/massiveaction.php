@@ -27,44 +27,47 @@
  --------------------------------------------------------------------------
  */
 
-include ('../../../inc/includes.php');
+include('../../../inc/includes.php');
 
 header("Content-Type: text/html; charset=UTF-8");
 Html::header_nocache();
 
 Session::checkLoginUser();
 
-$log=new PluginManufacturersimportsLog();
+$log = new PluginManufacturersimportsLog();
 $config = new PluginManufacturersimportsConfig();
 
 Html::header(_n('Suppliers import', 'Suppliers imports', 2, 'manufacturersimports'),
-               $_SERVER['PHP_SELF'], "tools", "pluginmanufacturersimportsmenu");
+    $_SERVER['PHP_SELF'], "tools", "pluginmanufacturersimportsmenu");
 
 $config->checkGlobal(UPDATE);
 
-if (isset($_POST["action"])&&isset($_POST["id"])&&isset($_POST["item"])&&count($_POST["item"])) {
-   switch ($_POST["action"]) {
-      case "import":
-         PluginManufacturersimportsPostImport::massiveimport($_POST);
-         break;
+if (isset($_POST["action"])
+    && isset($_POST["id"])
+    && isset($_POST["item"])
+    && count($_POST["item"])) {
+    switch ($_POST["action"]) {
+        case "import":
+            PluginManufacturersimportsPostImport::massiveimport($_POST);
+            break;
 
-      case "reinit_once":
-         foreach ($_POST["item"] as $key => $val) {
-            if ($val==1) {
-               $log->reinitializeImport($_POST["itemtype"], $key);
+        case "reinit_once":
+            foreach ($_POST["item"] as $key => $val) {
+                if ($val == 1) {
+                    $log->reinitializeImport($_POST["itemtype"], $key);
+                }
             }
-         }
-         Session::addMessageAfterRedirect(__('Operation successful'));
-         Html::redirect($_SERVER['HTTP_REFERER']."?itemtype=".$_POST["itemtype"].
-                     "&manufacturers_id=".$_POST["manufacturers_id"].
-                     "&start=".$_POST["start"].
-                     "&imported=".$_POST["imported"]);
-      break;
-   }
+            Session::addMessageAfterRedirect(__('Operation successful'));
+            Html::redirect($_SERVER['HTTP_REFERER'] . "?itemtype=" . $_POST["itemtype"] .
+                "&manufacturers_id=" . $_POST["manufacturers_id"] .
+                "&start=" . $_POST["start"] .
+                "&imported=" . $_POST["imported"]);
+            break;
+    }
 } else {
-        echo "<div align='center'>";
-        echo "<i class='fas fa-exclamation-triangle fa-4x' style='color:orange'></i><br><br>";
-        echo "<b>".__('No selected element or badly defined operation')."</b></div>";
+    echo "<div align='center'>";
+    echo "<i class='fas fa-exclamation-triangle fa-4x' style='color:orange'></i><br><br>";
+    echo "<b>" . __('No selected element or badly defined operation') . "</b></div>";
 }
 
 Html::footer();

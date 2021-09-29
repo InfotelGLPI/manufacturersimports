@@ -65,6 +65,8 @@ function plugin_init_manufacturersimports() {
          "manufacturersimports.css",
       ];
    }
+
+    $PLUGIN_HOOKS['infocom']['manufacturersimports'] = ['PluginManufacturersimportsConfig', 'showForInfocom'];
 }
 
 // Get the name and the version of the plugin - Needed

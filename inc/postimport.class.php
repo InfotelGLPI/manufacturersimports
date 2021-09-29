@@ -491,7 +491,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
       $adddoc       = $config->fields["document_adding"];
       $rubrique     = $config->fields["documentcategories_id"];
       $addcomments  = $config->fields["comment_adding"];
-
+      $url_warranty  = $config->fields["supplier_url"];
       if (isset($params['fromwarranty']) && $params['fromwarranty']) {
          $warranty = $values['fromwarranty'];
       } else {

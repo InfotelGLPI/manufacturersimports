@@ -87,9 +87,6 @@ class PluginManufacturersimportsImport extends CommonDBTM {
             $compSerial = $data['serial'];
             $ID         = $data['id'];
 
-            $link = Toolbox::getItemTypeFormURL($type);
-            $dID  = "";
-
             $model       = new PluginManufacturersimportsModel();
             $otherSerial = $model->checkIfModelNeeds($type, $ID);
 

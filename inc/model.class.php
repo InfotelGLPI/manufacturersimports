@@ -131,7 +131,7 @@ class PluginManufacturersimportsModel extends CommonDBTM {
 
       $config_url = PluginManufacturersimportsConfig::getFormUrl(true);
       echo "<form method='post' action='".$config_url."'>";
-      echo "<div align='center'><table class='tab_cadre_fixe'  cellspacing='2' cellpadding='2'>";
+      echo "<div align='center'><table class='tab_cadre_fixe'>";
       echo "<tr>";
       echo "<th>".PluginManufacturersimportsPreImport::getTypeName(2)."</th>";
       echo "<th>".__('Model Number', 'manufacturersimports')."</th>";

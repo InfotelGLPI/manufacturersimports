@@ -27,50 +27,57 @@
  --------------------------------------------------------------------------
  */
 
-include ('../../../inc/includes.php');
+include('../../../inc/includes.php');
 
 if (!isset($_GET["id"])) {
-   $_GET["id"] = 0;
+    $_GET["id"] = 0;
 }
 if (!isset($_GET["preconfig"])) {
-   $_GET["preconfig"] = -1;
+    $_GET["preconfig"] = -1;
 }
 
 $config = new PluginManufacturersimportsConfig();
-$model  = new PluginManufacturersimportsModel();
+$model = new PluginManufacturersimportsModel();
 
 if (isset($_POST["add"])) {
-   Session::checkRight("plugin_manufacturersimports", CREATE);
-   $config->add($_POST);
-   Html::back();
+    Session::checkRight("plugin_manufacturersimports", CREATE);
+    $config->add($_POST);
+    Html::back();
 
 } else if (isset($_POST["update"])) {
 
-   Session::checkRight("plugin_manufacturersimports", UPDATE);
-   $config->update($_POST);
-   Html::back();
+    Session::checkRight("plugin_manufacturersimports", UPDATE);
+    $config->update($_POST);
+    Html::back();
 
 } else if (isset($_POST["delete"])) {
 
-   Session::checkRight("plugin_manufacturersimports", PURGE);
-   $config->delete($_POST, true);
-   Html::redirect("./config.form.php");
+    Session::checkRight("plugin_manufacturersimports", PURGE);
+    $config->delete($_POST, true);
+    Html::redirect("./config.form.php");
 
 } else if (isset($_POST["update_model"])) {
-   Session::checkRight("plugin_manufacturersimports", UPDATE);
-   $model->addModel($_POST);
-   Html::back();
+    Session::checkRight("plugin_manufacturersimports", UPDATE);
+    $model->addModel($_POST);
+    Html::back();
 
 } else if (isset($_POST["delete_model"])) {
-   Session::checkRight("plugin_manufacturersimports", UPDATE);
-   $model->delete($_POST);
-   Html::back();
+    Session::checkRight("plugin_manufacturersimports", UPDATE);
+    $model->delete($_POST);
+    Html::back();
+
+} else if (isset($_POST["retrieve_warranty"])) {
+    Session::checkRight("plugin_manufacturersimports", UPDATE);
+
+    PluginManufacturersimportsConfig::retrieveOneWarranty($_POST["itemtype"], $_POST["items_id"]);
+
+    Html::back();
 
 } else {
 
-   Html::header(__('Setup'), '', "tools", "pluginmanufacturersimportsmenu", "config");
+    Html::header(__('Setup'), '', "tools", "pluginmanufacturersimportsmenu", "config");
 
-   $config->checkGlobal(READ);
-   $config->display($_GET);
-   Html::footer();
+    $config->checkGlobal(READ);
+    $config->display($_GET);
+    Html::footer();
 }
