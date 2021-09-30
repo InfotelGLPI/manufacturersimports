@@ -4,7 +4,7 @@ CREATE TABLE `glpi_plugin_manufacturersimports_configs` (
    `name` varchar(255) collate utf8_unicode_ci default NULL,
    `entities_id` int(11) NOT NULL default '0',
    `is_recursive` tinyint(1) NOT NULL default '0',
-   `supplier_url` varchar(255) collate utf8_unicode_ci collate utf8_unicode_ci default NULL,
+   `supplier_url` varchar(255) collate utf8_unicode_ci default NULL,
    `manufacturers_id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_manufacturers (id)',
    `suppliers_id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_suppliers (id)',
    `warranty_duration` int(11) NOT NULL default '0',
