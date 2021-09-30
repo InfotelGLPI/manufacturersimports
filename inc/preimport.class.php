@@ -602,7 +602,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
             }
             //////////////////////HEADER///////////////
             if ($output_type == Search::HTML_OUTPUT) {
-               echo "<form method='post' name='massiveaction_form' id='massiveaction_form' action=\"../ajax/massiveaction.php\">";
+               echo "<form method='post' name='massiveaction_form' id='massiveaction_form' action=\"../front/massiveaction.php\">";
             }
 
             //echo Search::displaySearchHeader($output_type,0); //table + div
