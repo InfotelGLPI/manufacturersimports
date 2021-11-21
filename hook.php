@@ -33,7 +33,7 @@ function plugin_manufacturersimports_install() {
    include_once(GLPI_ROOT . "/plugins/manufacturersimports/inc/profile.class.php");
    include_once(GLPI_ROOT . "/plugins/manufacturersimports/inc/config.class.php");
 
-   $migration = new Migration("2.3.0");
+   $migration = new Migration("3.0.0");
    $update    = false;
 
    //Root of SQL files for DB installation or upgrade
@@ -41,7 +41,7 @@ function plugin_manufacturersimports_install() {
 
    if (!$DB->tableExists("glpi_plugin_manufacturersimports_configs")) {
 
-      $DB->runFile($sql_root . "/empty-2.3.0.sql");
+      $DB->runFile($sql_root . "/empty-3.0.0.sql");
 
    } else if ($DB->tableExists("glpi_plugin_suppliertag_config")
               && !$DB->fieldExists("glpi_plugin_suppliertag_config", "FK_entities")) {

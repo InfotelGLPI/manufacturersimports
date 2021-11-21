@@ -35,23 +35,17 @@ header("Content-Type: text/html; charset=UTF-8");
 Html::header_nocache();
 
 if (isset($_POST["action"])||isset($_POST["id"])) {
-   echo "<input type='hidden' name='action' value='".$_POST["action"]."'>";
-   echo "<input type='hidden' name='id' value='".$_POST["id"]."'>";
+   echo Html::hidden('action', ['value' => $_POST["action"]]);
+   echo Html::hidden('id', ['value' => $_POST["id"]]);
    switch ($_POST["action"]) {
 
-      case "import":
-         echo "<input type='hidden' name='itemtype' value='".$_POST["itemtype"]."'>";
-         echo "<input type='hidden' name='start' value='".$_POST["start"]."'>";
-         echo "<input type='hidden' name='manufacturers_id' value='".$_POST["manufacturers_id"]."'>";
-         echo "<input type='hidden' name='imported' value='".$_POST["imported"]."'>";
-         echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value='"._sx('button', 'Post')."' >";
-         break;
       case "reinit_once":
-         echo "<input type='hidden' name='itemtype' value='".$_POST["itemtype"]."'>";
-         echo "<input type='hidden' name='start' value='".$_POST["start"]."'>";
-         echo "<input type='hidden' name='manufacturers_id' value='".$_POST["manufacturers_id"]."'>";
-         echo "<input type='hidden' name='imported' value='".$_POST["imported"]."'>";
-         echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value='"._sx('button', 'Post')."' >";
+      case "import":
+         echo Html::hidden('itemtype', ['value' => $_POST["itemtype"]]);
+         echo Html::hidden('start', ['value' => $_POST["start"]]);
+         echo Html::hidden('manufacturers_id', ['value' => $_POST["manufacturers_id"]]);
+         echo Html::hidden('imported', ['value' => $_POST["imported"]]);
+         echo Html::submit(_sx('button', 'Post'), ['name' => 'massiveaction', 'class' => 'btn btn-primary']);
          break;
 
    }

@@ -117,7 +117,7 @@ class PluginManufacturersimportsModel extends CommonDBTM {
    * @return nothing (print out a table)
    *
    */
-   static function showForm($itemtype, $items_id) {
+   static function showModelForm($itemtype, $items_id) {
       global $DB;
 
       $canedit = Session::haveRight(static::$rightname, UPDATE);
@@ -142,7 +142,7 @@ class PluginManufacturersimportsModel extends CommonDBTM {
             $ID = $line["id"];
             echo "<tr class='tab_bg_1'>";
             echo "<td class='left'>";
-            echo "<input type='text' name='model_name' size='30' value='".$line["model_name"]."'>";
+            echo Html::input('model_name', ['value' => $line["model_name"], 'size' => 30]);
             echo "</td>";
             if ($canedit) {
                echo "<td class='center' class='tab_bg_2'>";
@@ -160,7 +160,7 @@ class PluginManufacturersimportsModel extends CommonDBTM {
       } else if ($canedit) {
          echo "<tr class='tab_bg_1'>";
          echo "<td colspan='2'>";
-         echo "<input type='text' name='model_name' size='30'>";
+         echo Html::input('model_name', ['size' => 30]);
          echo Html::hidden('items_id', ['value' => $items_id]);
          echo Html::hidden('itemtype', ['value' => $itemtype]);
          echo Html::submit(_sx('button', 'Save'), ['name' => 'update_model']);

@@ -44,7 +44,7 @@ class PluginManufacturersimportsToshiba extends PluginManufacturersimportsManufa
    }
 
    function getSearchField() {
-      return ">Days<";
+      return false;
    }
 
    /**
@@ -53,27 +53,34 @@ class PluginManufacturersimportsToshiba extends PluginManufacturersimportsManufa
    function getSupplierInfo($compSerial = null, $otherSerial = null, $key = null, $apisecret = null,
                             $supplierUrl = null) {
       $info["name"]         = PluginManufacturersimportsConfig::TOSHIBA;
-      $info["supplier_url"] = "http://aps2.toshiba-tro.de/unit-details-php/unitdetails.aspx?";
-      $info["url"]          = $supplierUrl.
-                              "SerialNumber=".$compSerial.
-                              "&openbox=warranty1";
+      $info["supplier_url"] = "https://support.dynabook.com/support/warrantyResults?";
+      $info["url"]          = $supplierUrl .
+                              "sno=" . $compSerial;
       return $info;
+   }
+
+   /**
+    * Summary of getWarrantyUrl
+    *
+    * @param  $config
+    * @param  $compSerial
+    *
+    * @return string[]
+    */
+   static function getWarrantyUrl($config, $compSerial) {
+      return ["url" => "https://support.dynabook.com/support/warrantyResults?sno=" . "$compSerial"];
    }
 
    /**
     * @see PluginManufacturersimportsManufacturer::getBuyDate()
     */
    function getBuyDate($contents) {
-      $days           = substr($contents, 118, 3);
-      $days           = trim($days);
-      $myDate         = "0000-00-00";
-      $ExpirationDate = self::getFirstExpirationDate($contents);
-      if ($ExpirationDate != "0000-00-00") {
-         list($year, $month, $day) = explode('-', $ExpirationDate);
-         //Drop days of warranty
-         $myDate = date("Y-m-d",
-                        mktime(0, 0, 0, $month, $day-$days, $year));
-      }
+      $field  = "shipDate";
+      $search = stristr($contents, $field);
+      $myDate = substr($search, 11, 21);
+      $myDate = trim($myDate);
+      $myDate = PluginManufacturersimportsPostImport::checkDate($myDate);
+
       return $myDate;
    }
 
@@ -81,27 +88,22 @@ class PluginManufacturersimportsToshiba extends PluginManufacturersimportsManufa
     * @see PluginManufacturersimportsManufacturer::getStartDate()
     */
    function getStartDate($contents) {
+      $field  = "customerPurchaseDate";
+      $search = stristr($contents, $field);
+      $myDate = substr($search, 23, 21);
+      $myDate = trim($myDate);
+      $myDate = PluginManufacturersimportsPostImport::checkDate($myDate);
 
-      return self::getBuyDate($contents);
-   }
-
-   function getFirstExpirationDate($contents) {
-      $field     = "Expiration Date";
-      $searchfin = stristr($contents, $field);
-      $myEndDate = substr($searchfin, 138, 10);
-      $myEndDate = trim($myEndDate);
-      $myEndDate = PluginManufacturersimportsPostImport::checkDate($myEndDate);
-      return $myEndDate;
+      return $myDate;
    }
 
    /**
     * @see PluginManufacturersimportsManufacturer::getExpirationDate()
     */
    function getExpirationDate($contents) {
-      $field     = "Expiration Date";
-      $pos       = strripos($contents, $field);
-      $searchfin = substr($contents, $pos);
-      $myEndDate = substr($searchfin, 143, 10);
+      $field     = "warrantyExpiryDate";
+      $search    = stristr($contents, $field);
+      $myEndDate = substr($search, 21, 21);
       $myEndDate = trim($myEndDate);
       $myEndDate = PluginManufacturersimportsPostImport::checkDate($myEndDate);
       return $myEndDate;

@@ -43,7 +43,8 @@ class PluginManufacturersimportsManufacturer extends CommonDBTM {
     * @return string
     */
    function showCheckbox($ID, $sel, $otherSerial = false) {
-      return "<input type='checkbox' name='item[".$ID."]' value='1' $sel>";
+      $name = "item[" . $ID . "]";
+      return Html::getCheckbox(["name" => $name, "value" => 1, "selected" => $sel]);
    }
 
    /**
@@ -62,7 +63,7 @@ class PluginManufacturersimportsManufacturer extends CommonDBTM {
     * @param $row_num
     * @return bool
     */
-   function showItem($output_type, $otherSerial = false, $item_num, $row_num) {
+   function showItem($output_type, $item_num, $row_num, $otherSerial = false) {
       return false;
    }
 
@@ -101,7 +102,8 @@ class PluginManufacturersimportsManufacturer extends CommonDBTM {
     */
    function showWarrantyItem($ID, $supplierWarranty) {
       echo "<td>".__('Automatic');
-      echo "<input type='hidden' name='to_warranty_duration".$ID."' value='0'>";
+      $name = "to_warranty_duration".$ID;
+      echo Html::hidden($name, ['value' => 0]);
       echo "</td>";
    }
 

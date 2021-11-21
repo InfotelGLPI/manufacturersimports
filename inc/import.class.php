@@ -39,11 +39,11 @@ class PluginManufacturersimportsImport extends CommonDBTM {
    /**
     * Import via le cron
     *
-    * @global type $DB
-    *
     * @param type  $supplier
     *
     * @return int
+    * @global type $DB
+    *
     */
    static function importCron($task, $supplier) {
       global $DB;
@@ -96,23 +96,23 @@ class PluginManufacturersimportsImport extends CommonDBTM {
                                                                          $otherSerial);
 
             $options = ["url"     => $url,
-                             "post"    => $post,
-                             "type"    => $type,
-                             "ID"      => $ID,
-                             "config"  => $config,
-                             "line"    => $data,
-                             "display" => false];
+                        "post"    => $post,
+                        "type"    => $type,
+                        "ID"      => $ID,
+                        "config"  => $config,
+                        "line"    => $data,
+                        "display" => false];
 
             if ($suppliername == PluginManufacturersimportsConfig::LENOVO) {
-               $options['ClientID']  =$supplierkey;
+               $options['ClientID'] = $supplierkey;
             }
 
             if ($suppliername == PluginManufacturersimportsConfig::DELL) {
-               $supplierclass = "PluginManufacturersimports" . $suppliername;
-               $token = $supplierclass::getToken($config);
-               $warranty_url = $supplierclass::getWarrantyUrl($config, $compSerial);
+               $supplierclass    = "PluginManufacturersimports" . $suppliername;
+               $token            = $supplierclass::getToken($config);
+               $warranty_url     = $supplierclass::getWarrantyUrl($config, $compSerial);
                $options['token'] = $token;
-               if(isset($warranty_url)){
+               if (isset($warranty_url)) {
                   $options['url'] = $warranty_url['url'];
                }
             }

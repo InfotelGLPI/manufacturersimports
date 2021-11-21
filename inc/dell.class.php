@@ -42,13 +42,14 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
     * @see PluginManufacturersimportsManufacturer::showCheckbox()
     */
    function showCheckbox($ID, $sel, $otherSerial = false) {
-      return "<input type='checkbox' name='item[".$ID."]' value='1' $sel>";
+      $name = "item[" . $ID . "]";
+      return Html::getCheckbox(["name" => $name, "value" => 1, "selected" => $sel]);
    }
 
    /**
     * @see PluginManufacturersimportsManufacturer::showItem()
     */
-   function showItem($output_type, $otherSerial = false, $item_num, $row_num) {
+   function showItem($output_type, $item_num, $row_num, $otherSerial = false) {
       return false;
    }
 
@@ -108,7 +109,8 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
       $info = json_decode($contents, true);
       // v5
       if (isset($info[0]['shipDate'])) {
-         return $info[0]['shipDate'];
+         $date = new \DateTime($info[0]['shipDate']);
+         return $date->format('c');
       }
 
       return false;

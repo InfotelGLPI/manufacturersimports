@@ -72,22 +72,20 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
       }
       asort($options);
       if (count($options)) {
-         echo "<select name='$myname' id='item_type$rand'>\n";
-         echo "<option value='0'>" . Dropdown::EMPTY_VALUE . "</option>\n";
-         foreach ($options as $key => $val) {
-            echo "<option value='" . $key . "' " . ($key == $value ? "selected" : "") . ">" . $val . "</option>\n";
-         }
-         echo "</select>&nbsp;";
+         $id = "item_type$rand";
+         Dropdown::showFromArray($myname, $options, ['value'               => $value,
+                                                     'id'                  => $id,
+                                                     'display_emptychoice' => true]);
       }
    }
 
    /**
     * Fonction to use the supplier url
     *
-    * @param $suppliername the suppliername
-    * @param $supplierUrl the supplierUrl (in plugin config)
-    * @param $compSerial the serial of the device
-    * @param $otherSerial the otherSerial (model) of the device
+    * @param      $suppliername the suppliername
+    * @param      $supplierUrl the supplierUrl (in plugin config)
+    * @param      $compSerial the serial of the device
+    * @param      $otherSerial the otherSerial (model) of the device
     * @param null $supplierkey the supplierkey
     * @param null $supplierSecret the supplierSecret
     *
@@ -102,10 +100,10 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
          $supplier      = new $supplierclass();
          $infos         = $supplier->getSupplierInfo($compSerial, $otherserial, $supplierkey,
                                                      $supplierSecret, $supplierUrl);
-         if(!$second_url){
-            $url           = $infos['url'];
-         }else{
-            $url           = $infos['url_web'];
+         if (!$second_url) {
+            $url = $infos['url'];
+         } else {
+            $url = $infos['url_web'];
          }
 
       }
@@ -115,10 +113,10 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
    /**
     * Fonction to use the supplier url
     *
-    * @param $suppliername the suppliername
-    * @param $supplierUrl the supplierUrl (in plugin config)
-    * @param $compSerial the serial of the device
-    * @param $otherSerial the otherSerial (model) of the device
+    * @param      $suppliername the suppliername
+    * @param      $supplierUrl the supplierUrl (in plugin config)
+    * @param      $compSerial the serial of the device
+    * @param      $otherSerial the otherSerial (model) of the device
     * @param null $supplierkey the supplierkey
     * @param null $supplierSecret the supplierSecret
     *
@@ -126,14 +124,14 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
     *
     */
    static function selectSupplierWarranty($suppliername, $supplierUrl, $compSerial, $otherserial = null,
-                                  $supplierkey = null, $supplierSecret = null) {
+                                          $supplierkey = null, $supplierSecret = null) {
       $url_warranty = "";
       if (!empty($suppliername)) {
          $supplierclass = "PluginManufacturersimports" . $suppliername;
          $supplier      = new $supplierclass();
          $infos         = $supplier->getSupplierInfo($compSerial, $otherserial, $supplierkey,
                                                      $supplierSecret, $supplierUrl);
-         $url_warranty           = $infos['url_warranty'];
+         $url_warranty  = $infos['url_warranty'];
       }
       return $url_warranty;
    }
@@ -281,11 +279,11 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
             $output_ic .= _n('Supplier', 'Suppliers', 1) . ":" .
                           Dropdown::getDropdownName("glpi_suppliers", $ic->fields["suppliers_id"]) . "<br>";
             $output_ic .= __('Date of purchase') . " : " . Html::convdate($ic->fields["buy_date"]) . "<br>";
-            $output_ic .= __('Start date of warranty') . ":" . Html::convdate($ic->fields["warranty_date"]) . "<br>";
+            $output_ic .= __('Start date of warranty') . " : " . Html::convdate($ic->fields["warranty_date"]) . "<br>";
             if ($ic->fields["warranty_duration"] == -1) {
-               $output_ic .= __('Warranty duration') . ":" . __('Lifelong') . "<br>";
+               $output_ic .= __('Warranty duration') . " : " . __('Lifelong') . "<br>";
             } else {
-               $output_ic .= __('Warranty duration') . ":" . $ic->fields["warranty_duration"] . " " . __('month') . "<br>";
+               $output_ic .= __('Warranty duration') . " : " . $ic->fields["warranty_duration"] . " " . __('month') . "<br>";
             }
             $tmpdat    = Infocom::getWarrantyExpir($ic->fields["warranty_date"], $ic->fields["warranty_duration"]);
             $output_ic .= sprintf(__('Valid to %s'), $tmpdat);
@@ -303,19 +301,20 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
                if ($item->fields["is_recursive"]
                    || $item->fields["entities_id"] == $line['entities_id']) {
                   Dropdown::show('Supplier', ['name'     => "to_suppliers_id" . $line["id"],
-                                                   'value'    => $supplierId,
-                                                   'comments' => 0,
-                                                   'entity'   => $line['entities_id']]);
+                                              'value'    => $supplierId,
+                                              'comments' => 0,
+                                              'entity'   => $line['entities_id']]);
                } else {
                   echo "<span class='plugin_manufacturersimports_import_KO'>";
                   echo __('The choosen supplier is not recursive', 'manufacturersimports') . "</span>";
-                  echo "<input type='hidden' name='to_suppliers_id" . $line["id"] . "' value='-1'>";
+                  $name = "to_suppliers_id" . $line["id"];
+                  echo Html::hidden($name, ['value' => -1]);
                }
             } else {
                Dropdown::show('Supplier', ['name'     => "to_suppliers_id" . $line["id"],
-                                                'value'    => $supplierId,
-                                                'comments' => 0,
-                                                'entity'   => $line['entities_id']]);
+                                           'value'    => $supplierId,
+                                           'comments' => 0,
+                                           'entity'   => $line['entities_id']]);
             }
             echo "</td>";
 
@@ -337,15 +336,17 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
          //url to supplier
          $output_url = "<a href='" . $url . "' target='_blank'>" .
                        __('Manufacturer information', 'manufacturersimports') . "</a>";
-         if ($suppliername == PluginManufacturersimportsConfig::HP) {
-            $output_url = "";
-//            $output_url = "<a href='" . Toolbox::getItemTypeFormURL("PluginManufacturersimportsHP") .
-//                          "?sn=".$line["serial"]."&manufacturers_id=$configID' target='_blank'>" .
-//                         __('Manufacturer information', 'manufacturersimports') . "</a>";
-         }
+         //         if ($suppliername == PluginManufacturersimportsConfig::HP) {
+         //            $output_url = "";
+         //            $output_url = "<a href='" . Toolbox::getItemTypeFormURL("PluginManufacturersimportsHP") .
+         //                          "?sn=".$line["serial"]."&manufacturers_id=$configID' target='_blank'>" .
+         //                         __('Manufacturer information', 'manufacturersimports') . "</a>";
+         //         }
          if ($suppliername == PluginManufacturersimportsConfig::LENOVO) {
-            $output_url = self::selectSupplier($suppliername, $supplierUrl, $line["serial"], $otherSerial,
-                                        $supplierkey, $supplierkeysecret,true);
+            $url        = self::selectSupplier($suppliername, $supplierUrl, $line["serial"], $otherSerial,
+                                               $supplierkey, $supplierkeysecret, true);
+            $output_url = "<a href='" . $url . "' target='_blank'>" .
+                          __('Manufacturer information', 'manufacturersimports') . "</a>";
 
          }
          echo Search::showItem($output_type, $output_url, $item_num, $row_num);
@@ -401,7 +402,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
       $dbu = new DbUtils();
 
       echo "<form name='form' method='post' action='" . $CFG_GLPI["root_doc"] . "/plugins/manufacturersimports/front/import.php'>";
-      echo "<div align='center'><table class='tab_cadre_fixe' cellpadding='5'>";
+      echo "<div align='center'><table class='tab_cadre' cellpadding='5'>";
       echo "<tr><th colspan='4'>" . __('Choose inventory type and manufacturer', 'manufacturersimports') . "</th></tr>";
       echo "<tr class='tab_bg_2'>";
       echo "<td class='center'>";
@@ -410,7 +411,10 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
       $query = "SELECT `glpi_plugin_manufacturersimports_configs`.*
                  FROM `glpi_plugin_manufacturersimports_configs` ";
       $query .= " LEFT JOIN `glpi_entities` ON (`glpi_entities`.`id` = `glpi_plugin_manufacturersimports_configs`.`entities_id`)"
-                . " WHERE `glpi_plugin_manufacturersimports_configs`.`manufacturers_id` != '0'";
+                . " WHERE `glpi_plugin_manufacturersimports_configs`.`manufacturers_id` != '0'
+                AND `glpi_plugin_manufacturersimports_configs`.`name` != 'HP'
+                AND `glpi_plugin_manufacturersimports_configs`.`name` != 'Fujitsu'
+                 AND `glpi_plugin_manufacturersimports_configs`.`name` != 'Lenovo'";
       $query .= "" . $dbu->getEntitiesRestrictRequest(" AND", "glpi_plugin_manufacturersimports_configs", '', '', true);
       $query .= " ORDER BY `glpi_plugin_manufacturersimports_configs`.`entities_id`, 
                             `glpi_plugin_manufacturersimports_configs`.`name`";
@@ -422,45 +426,42 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
          self::showAllItems("itemtype", 0, $p['itemtype'], -1,
                             PluginManufacturersimportsConfig::getTypes());
          echo "</td><td>";
-
-         echo "<select name=\"manufacturers_id\">";
-         echo "<option value=\"0\">" . Dropdown::EMPTY_VALUE . "</option>";
-
          foreach ($iterator as $data) {
-            echo "<option value='" . $data["id"] . "' " . ($p['manufacturers_id'] == "" . $data["id"] . "" ? " selected " : "") . ">";
-            if (Session::isMultiEntitiesMode()) {
-               echo Dropdown::getDropdownName("glpi_entities", $data["entities_id"]) . " > ";
-            }
-            echo $data["name"];
+//            if (Session::isMultiEntitiesMode()) {
+//               $name = Dropdown::getDropdownName("glpi_entities", $data["entities_id"]) . " > ";
+//            }
+            $name = $data["name"];
             if (empty($data["name"]) || $_SESSION["glpiis_ids_visible"]) {
-               echo " (";
-               echo $data["id"] . ")";
+               $name .= " (";
+               $name .= $data["id"] . ")";
             }
-            echo "</option>";
+            $opt[$data["id"]] = $name;
          }
-         echo "</select>";
+
+         Dropdown::showFromArray('manufacturers_id', $opt, ['value' => $p['manufacturers_id']]);
+
          echo "</td><td>";
-         echo "<select name=\"imported\">";
-         echo "<option value='" . self::NOT_IMPORTED . "' " . ($p['imported'] == self::NOT_IMPORTED ? " selected " : "") . ">";
-         echo __('Devices not imported', 'manufacturersimports') . "</option>";
-         echo "<option value='" . self::IMPORTED . "' " . ($p['imported'] == self::IMPORTED ? " selected " : "") . ">";
-         echo __('Devices already imported', 'manufacturersimports') . "</option>";
-         echo "</select>";
+
+         $options[self::NOT_IMPORTED] = __('Devices not imported', 'manufacturersimports');
+         $options[self::IMPORTED]     = __('Devices already imported', 'manufacturersimports');
+         Dropdown::showFromArray('imported', $options, ['value' => $p['imported']]);
+
 
       } else {
          if (Session::haveRight('config', UPDATE)) {
             //Please configure a supplier
-            echo "<a href='" . $CFG_GLPI["root_doc"] . "/plugins/manufacturersimports/front/config.form.php'>";
+            echo "<a class='btn btn-primary' href='" . $CFG_GLPI["root_doc"] . "/plugins/manufacturersimports/front/config.form.php'>";
             echo __('No manufacturer available. Please configure at least one manufacturer', 'manufacturersimports');
             echo "</a>";
          } else {
+            echo "<div class='alert alert-important alert-warning d-flex'>";
             echo __('No manufacturer available. Please configure at least one manufacturer', 'manufacturersimports');
+            echo "</div>";
          }
       }
-
       echo "</td><td>";
       if ($number > 0) {
-         echo "<input type=\"submit\" name=\"typechoice\" class=\"submit\" value='" . _sx('button', 'Post') . "' >";
+         echo Html::submit(_sx('button', 'Post'), ['name' => 'typechoice', 'class' => 'btn btn-primary']);
       }
       echo "</td>";
       echo "</tr>";
@@ -478,19 +479,19 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
     * @return nothing (print out a table)
     *
     */
-   static function displaySearchHeader($output_type, $fixed = 0) {
-      $out = "";
-      switch ($output_type) {
-         default :
-            if ($fixed) {
-               $out = "<div class='center'><table border='0' class='tab_cadre_fixehov'>\n";
-            } else {
-               $out = "<div class='center'><table border='0' class='tab_cadrehov'>\n";
-            }
-            break;
-      }
-      return $out;
-   }
+//   static function displaySearchHeader($output_type, $fixed = 0) {
+//      $out = "";
+//      switch ($output_type) {
+//         default :
+//            if ($fixed) {
+//               $out = "<div class='center'><table border='0' class='tab_cadre_fixehov'>\n";
+//            } else {
+//               $out = "<div class='center'><table border='0' class='tab_cadrehov'>\n";
+//            }
+//            break;
+//      }
+//      return $out;
+//   }
 
    /**
     * Prints display pre import
@@ -759,27 +760,25 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
       if ($fixed) {
          echo "<table class='tab_glpi' width='950px'>";
       } else {
-         echo "<table class='tab_glpi' width='80%'>";
+         echo "<table class='tab_glpi' width='100%'>";
       }
 
       echo "<tr>";
       if (!$onright) {
-         echo "<td><img src='".$CFG_GLPI["root_doc"]."/pics/arrow-left".($ontop?'-top':'').".png'
-                    alt=''></td>";
+         echo "<td><i class='fas fa-level-up-alt fa-flip-horizontal fa-lg mx-2'></i></td>";
       } else {
          echo "<td class='left' width='80%'></td>";
       }
       echo "<td class='center' style='white-space:nowrap;'>";
       echo "<a onclick= \"if ( markCheckboxes('$formname') ) return false;\"
-             href='#'>".__('Check all')."</a></td>";
+             href='#'>" . __('Check all') . "</a></td>";
       echo "<td>/</td>";
       echo "<td class='center' style='white-space:nowrap;'>";
       echo "<a onclick= \"if ( unMarkCheckboxes('$formname') ) return false;\"
-             href='#'>".__('Uncheck all')."</a></td>";
+             href='#'>" . __('Uncheck all') . "</a></td>";
 
       if ($onright) {
-         echo "<td><img src='".$CFG_GLPI["root_doc"]."/pics/arrow-right".($ontop?'-top':'').".png'
-                    alt=''>";
+         echo "<td><i class='fas fa-level-up-alt fa-lg mx-2'></i>";
       } else {
          echo "<td class='left' width='80%'>";
       }
@@ -804,13 +803,14 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
                if (is_array($confirm) && isset($confirm[$name])) {
                   echo self::addConfirmationOnAction($confirm[$name]);
                }
-               echo "value=\"".addslashes($label)."\" class='submit'>&nbsp;";
+               echo "value=\"" . addslashes($label) . "\" class='btn btn-primary'>&nbsp;";
             }
          }
       }
       echo "</td></tr>";
       echo "</table>";
    }
+
    /**
     * Request
     *
@@ -874,7 +874,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
       } else {
          $entities = $config->getEntityID();
       }
-      if(!$isCron){
+      if (!$isCron) {
          $query .= "" . $dbu->getEntitiesRestrictRequest(" AND", $itemtable, '', '', $item->maybeRecursive());
       }
       //// 4 - ORDER
@@ -1032,7 +1032,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
    static function dropdownMassiveAction($ID, $type, $manufacturer, $start, $imported) {
       global $CFG_GLPI;
 
-      echo "<select name=\"massiveaction\" id='massiveaction'>";
+      echo "<select class='form-select' name=\"massiveaction\" id='massiveaction' style='width: 20%;display: unset;'>";
       echo "<option value=\"-1\" selected>" . Dropdown::EMPTY_VALUE . "</option>";
       //not imported
       if ($imported == self::NOT_IMPORTED) {
@@ -1040,14 +1040,14 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
       }
       echo "<option value=\"reinit_once\">" . __('Reset the import', 'manufacturersimports') . "</option>";
 
-      echo "</select>";
+      echo "</select>&nbsp;";
 
       $params = ['action'           => '__VALUE__',
-                      'manufacturers_id' => $manufacturer,
-                      'itemtype'         => $type,
-                      'start'            => $start,
-                      'imported'         => $imported,
-                      'id'               => $ID,
+                 'manufacturers_id' => $manufacturer,
+                 'itemtype'         => $type,
+                 'start'            => $start,
+                 'imported'         => $imported,
+                 'id'               => $ID,
       ];
 
       Ajax::updateItemOnSelectEvent("massiveaction", "show_massiveaction",
