@@ -85,28 +85,10 @@ function plugin_version_manufacturersimports() {
                  'min' => '10.0',
                  'max' => '11.0',
                  'dev' => false
+              ],
+              'php'  => [
+                 'exts' => ['soap', 'curl', 'json'],
               ]
            ]
    ];
-}
-
-// Optional : check prerequisites before install : may print errors or add to message after redirect
-function plugin_manufacturersimports_check_prerequisites() {
-
-   if (!extension_loaded("soap")) {
-      echo __('Incompatible PHP Installation. Requires module',
-              'manufacturersimports') . " soap";
-      return false;
-
-   } else if (!extension_loaded("curl")) {
-      echo __('Incompatible PHP Installation. Requires module',
-              'manufacturersimports') . " curl";
-      return false;
-
-   } else if (!extension_loaded("json")) {
-      echo __('Incompatible PHP Installation. Requires module',
-              'manufacturersimports') . " json";
-      return false;
-   }
-   return true;
 }
