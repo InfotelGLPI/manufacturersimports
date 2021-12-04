@@ -65,8 +65,7 @@ if (isset($_POST["action"])
             break;
     }
 } else {
-    echo "<div align='center'>";
-    echo "<i class='fas fa-exclamation-triangle fa-4x' style='color:orange'></i><br><br>";
+   echo "<div class='alert alert-important alert-warning d-flex'>";
     echo "<b>" . __('No selected element or badly defined operation') . "</b></div>";
 }
 
