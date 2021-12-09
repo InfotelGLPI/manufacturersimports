@@ -59,7 +59,7 @@ class PluginManufacturersimportsModel extends CommonDBTM {
    function getFromDBbyDevice($items_id, $itemtype) {
       global $DB;
 
-      $query = "SELECT * FROM `".$this->getTable()."` " .
+      $query = "SELECT * FROM `" . $this->getTable() . "` " .
                "WHERE `items_id` = '" . $items_id . "'
                   AND `itemtype` = '" . $itemtype . "' ";
       if ($result = $DB->query($query)) {
@@ -110,31 +110,32 @@ class PluginManufacturersimportsModel extends CommonDBTM {
    }
 
    /**
-   * Prints the model add form (into devices)
-   *
-   * @param $device the device ID
-   * @param $type the device type
-   * @return nothing (print out a table)
-   *
-   */
+    * Prints the model add form (into devices)
+    *
+    * @param $device the device ID
+    * @param $type the device type
+    *
+    * @return nothing (print out a table)
+    *
+    */
    static function showModelForm($itemtype, $items_id) {
       global $DB;
 
       $canedit = Session::haveRight(static::$rightname, UPDATE);
 
-      $query = "SELECT *
+      $query  = "SELECT *
                FROM `glpi_plugin_manufacturersimports_models`
-               WHERE `itemtype` = '".$itemtype."'
-                  AND `items_id` = '".$items_id."'";
+               WHERE `itemtype` = '" . $itemtype . "'
+                  AND `items_id` = '" . $items_id . "'";
       $result = $DB->query($query);
       $number = $DB->numrows($result);
 
       $config_url = PluginManufacturersimportsConfig::getFormUrl(true);
-      echo "<form method='post' action='".$config_url."'>";
+      echo "<form method='post' action='" . $config_url . "'>";
       echo "<div align='center'><table class='tab_cadre_fixe'>";
       echo "<tr>";
-      echo "<th>".PluginManufacturersimportsPreImport::getTypeName(2)."</th>";
-      echo "<th>".__('Model Number', 'manufacturersimports')."</th>";
+      echo "<th>" . PluginManufacturersimportsPreImport::getTypeName(2) . "</th>";
+      echo "<th>" . __('Model Number', 'manufacturersimports') . "</th>";
       echo "</tr>";
 
       if ($number == 1) {
@@ -144,26 +145,29 @@ class PluginManufacturersimportsModel extends CommonDBTM {
             echo "<td class='left'>";
             echo Html::input('model_name', ['value' => $line["model_name"], 'size' => 30]);
             echo "</td>";
-            if ($canedit) {
+//            if ($canedit) {
                echo "<td class='center' class='tab_bg_2'>";
-               Html::showSimpleForm($config_url, 'delete_model',
-                                    _x('button', 'Delete permanently'),
-                                    ['id' => $ID]);
+               if ($ID > 0) {
+                  Html::showSimpleForm($config_url, 'delete_model',
+                                       _x('button', 'Delete permanently'),
+                                       ['id' => $ID]);
+               }
                echo "</td>";
-            } else {
-               echo "<td>";
-               echo "</td>";
-            }
+//            } else {
+//               echo "<td>";
+//               echo "</td>";
+//            }
             echo "</tr>";
          }
-
       } else if ($canedit) {
          echo "<tr class='tab_bg_1'>";
-         echo "<td colspan='2'>";
+         echo "<td class='left'>";
          echo Html::input('model_name', ['size' => 30]);
          echo Html::hidden('items_id', ['value' => $items_id]);
          echo Html::hidden('itemtype', ['value' => $itemtype]);
-         echo Html::submit(_sx('button', 'Save'), ['name' => 'update_model']);
+         echo "</td>";
+         echo "<td class='left'>";
+         echo Html::submit(_sx('button', 'Save'), ['name' => 'update_model', 'class' => 'btn btn-primary']);
          echo "</td></tr>";
       }
 
@@ -174,12 +178,12 @@ class PluginManufacturersimportsModel extends CommonDBTM {
    /**
     * Class-specific method used to show the fields to specify the massive action
     *
-    * @since version 0.85
-    *
     * @param $ma the current massive action object
     *
     * @return false if parameters displayed ?
-    **/
+    **@since version 0.85
+    *
+    */
    static function showMassiveActionsSubForm(MassiveAction $ma) {
 
       switch ($ma->getAction()) {
@@ -196,19 +200,19 @@ class PluginManufacturersimportsModel extends CommonDBTM {
     * @since version 0.85
     *
     * @see CommonDBTM::processMassiveActionsForOneItemtype()
-   **/
+    **/
    static function processMassiveActionsForOneItemtype(MassiveAction $ma, CommonDBTM $item,
-                                                       array $ids) {
+                                                       array         $ids) {
 
       switch ($ma->getAction()) {
          case "add_model":
-            $model=new PluginManufacturersimportsModel();
+            $model = new PluginManufacturersimportsModel();
             $input = $ma->getInput();
             foreach ($ma->items as $itemtype => $myitem) {
                foreach ($myitem as $key => $value) {
                   $input = ['model_name' => $ma->POST['model_name'],
-                                 'items_id'   => $key,
-                                 'itemtype'   => $itemtype];
+                            'items_id'   => $key,
+                            'itemtype'   => $itemtype];
                   if ($model->addModel($input)) {
                      $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_OK);
                   } else {
