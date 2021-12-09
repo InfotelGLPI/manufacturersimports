@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $soft\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-04 18:16+0000\n"
+"POT-Creation-Date: 2021-12-09 16:27+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -116,7 +116,7 @@ msgstr ""
 msgid "Import failed"
 msgstr ""
 
-#: inc/model.class.php:137 inc/preimport.class.php:641
+#: inc/model.class.php:138 inc/preimport.class.php:641
 msgid "Model Number"
 msgstr ""
 
