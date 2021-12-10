@@ -596,9 +596,7 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
     *
     * @return nothing
     */
-   public static function showForInfocom($params) {
-
-      $item = $params['item'];
+   public static function showForInfocom($item) {
 
       if (in_array($item->getType(), self::getTypes(true))) {
 
@@ -641,7 +639,7 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
          echo "</tr>";
          echo "</table>";
       }
-      return $params;
+      return $item;
    }
 
    static function retrieveOneWarranty($itemtype, $items_id) {
