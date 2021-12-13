@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $soft\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-10 12:43+0000\n"
+"POT-Creation-Date: 2021-12-13 07:27+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: hook.php:229 setup.php:76 front/massiveaction.php:40 inc/menu.class.php:45
+#: hook.php:229 setup.php:82 front/massiveaction.php:40 inc/menu.class.php:45
 #: inc/model.class.php:48 inc/preimport.class.php:50 inc/profile.class.php:71
 msgid "Suppliers import"
 msgid_plural "Suppliers imports"
@@ -89,17 +89,17 @@ msgstr ""
 msgid "Section for document records"
 msgstr ""
 
-#: inc/config.class.php:629 inc/preimport.class.php:338
+#: inc/config.class.php:628 inc/preimport.class.php:338
 #: inc/preimport.class.php:349
 msgid "Manufacturer information"
 msgstr ""
 
-#: inc/config.class.php:634 inc/config.class.php:705
+#: inc/config.class.php:633 inc/config.class.php:704
 msgctxt "button"
 msgid "Retrieve warranty from manufacturer"
 msgstr ""
 
-#: inc/config.class.php:701
+#: inc/config.class.php:700
 msgid ""
 "You did not import the warranty for this item. Do you want to get it back?"
 msgstr ""
