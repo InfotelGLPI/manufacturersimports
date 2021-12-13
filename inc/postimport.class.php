@@ -233,7 +233,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
       echo "</td></tr>";
       echo "</table>";
       echo "<br><div align='center'>";
-      echo "<a class='btn btn-primary' href='" . $CFG_GLPI["root_doc"] . "/plugins/manufacturersimports/front/import.php?back=back&amp;itemtype=" .
+      echo "<a class='btn btn-primary' href='" . PLUGIN_MANUFACTURERSIMPORTS_WEBDIR . "/front/import.php?back=back&amp;itemtype=" .
            $values["itemtype"] . "&amp;manufacturers_id=" . $values["manufacturers_id"] . "&amp;start=" . $values["start"] .
            "&amp;imported=" . $values["imported"] . "'>";
       echo __('Back');

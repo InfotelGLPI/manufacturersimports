@@ -29,6 +29,12 @@
 
 define('PLUGIN_MANUFACTURERSIMPORTS_VERSION', '3.0.0');
 
+if (!defined("PLUGIN_MANUFACTURERSIMPORTS_DIR")) {
+   define("PLUGIN_MANUFACTURERSIMPORTS_DIR", Plugin::getPhpDir("manufacturersimports"));
+   define("PLUGIN_MANUFACTURERSIMPORTS_NOTFULL_DIR", Plugin::getPhpDir("manufacturersimports",false));
+   define("PLUGIN_MANUFACTURERSIMPORTS_WEBDIR", Plugin::getWebDir("manufacturersimports"));
+}
+
 // Init the hooks of the plugins -Needed
 function plugin_init_manufacturersimports() {
    global $PLUGIN_HOOKS, $CFG_GLPI;

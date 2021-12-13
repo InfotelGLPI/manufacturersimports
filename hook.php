@@ -30,14 +30,14 @@
 function plugin_manufacturersimports_install() {
    global $DB;
 
-   include_once(GLPI_ROOT . "/plugins/manufacturersimports/inc/profile.class.php");
-   include_once(GLPI_ROOT . "/plugins/manufacturersimports/inc/config.class.php");
+   include_once(PLUGIN_MANUFACTURERSIMPORTS_DIR . "/inc/profile.class.php");
+   include_once(PLUGIN_MANUFACTURERSIMPORTS_DIR . "/inc/config.class.php");
 
    $migration = new Migration("3.0.0");
    $update    = false;
 
    //Root of SQL files for DB installation or upgrade
-   $sql_root = GLPI_ROOT . "/plugins/manufacturersimports/sql/";
+   $sql_root = PLUGIN_MANUFACTURERSIMPORTS_DIR . "/sql/";
 
    if (!$DB->tableExists("glpi_plugin_manufacturersimports_configs")) {
 
@@ -144,8 +144,8 @@ function plugin_manufacturersimports_install() {
 
 function plugin_manufacturersimports_uninstall() {
 
-   include_once(GLPI_ROOT . "/plugins/manufacturersimports/inc/profile.class.php");
-   include_once(GLPI_ROOT . "/plugins/manufacturersimports/inc/menu.class.php");
+   include_once(PLUGIN_MANUFACTURERSIMPORTS_DIR . "/inc/profile.class.php");
+   include_once(PLUGIN_MANUFACTURERSIMPORTS_DIR . "/inc/menu.class.php");
 
    $migration = new Migration("1.9.1");
    $tables    = ["glpi_plugin_manufacturersimports_configs",

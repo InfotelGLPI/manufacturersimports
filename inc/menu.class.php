@@ -56,7 +56,7 @@ class PluginManufacturersimportsMenu extends CommonGLPI {
     * @return array for menu
     **/
    static function getMenuContent() {
-      $plugin_page              = "/plugins/manufacturersimports/front/import.php";
+      $plugin_page              = PluginManufacturersimportsImport::getSearchURL(false);
       $menu                     = [];
       //Menu entry in tools
       $menu['title']            = self::getMenuName();
@@ -83,7 +83,7 @@ class PluginManufacturersimportsMenu extends CommonGLPI {
    }
 
    static function getIcon() {
-      return "fas fa-calendar-check";
+      return "ti ti-satellite";
    }
 
    static function removeRightsFromSession() {

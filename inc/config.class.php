@@ -549,7 +549,6 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
          case "Transfert" :
             Dropdown::show('Entity');
             echo Html::submit(_sx('button', 'Post'), ['name' => 'massiveaction']);
-            //echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value='" . _sx('button', 'Post') . "'>";
             return true;
             break;
 

@@ -401,7 +401,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
 
       $dbu = new DbUtils();
 
-      echo "<form name='form' method='post' action='" . $CFG_GLPI["root_doc"] . "/plugins/manufacturersimports/front/import.php'>";
+      echo "<form name='form' method='post' action='" . PLUGIN_MANUFACTURERSIMPORTS_WEBDIR . "/front/import.php'>";
       echo "<div align='center'><table class='tab_cadre' cellpadding='5'>";
       echo "<tr><th colspan='4'>" . __('Choose inventory type and manufacturer', 'manufacturersimports') . "</th></tr>";
       echo "<tr class='tab_bg_2'>";
@@ -450,7 +450,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
       } else {
          if (Session::haveRight('config', UPDATE)) {
             //Please configure a supplier
-            echo "<a class='btn btn-primary' href='" . $CFG_GLPI["root_doc"] . "/plugins/manufacturersimports/front/config.form.php'>";
+            echo "<a class='btn btn-primary' href='" . PLUGIN_MANUFACTURERSIMPORTS_WEBDIR . "/front/config.form.php'>";
             echo __('No manufacturer available. Please configure at least one manufacturer', 'manufacturersimports');
             echo "</a>";
          } else {
@@ -540,7 +540,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
                       self::getArrayUrlLink("link2", $p['link2']);
 
       $modeltable = "";
-      $target     = $CFG_GLPI["root_doc"] . "/plugins/manufacturersimports/front/import.php";
+      $target     = PLUGIN_MANUFACTURERSIMPORTS_WEBDIR . "/front/import.php";
 
       if ($p['itemtype'] && $p['manufacturers_id']) {
 
@@ -981,13 +981,13 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
       if (!$start == 0) {
          echo "<th class='left'>";
          echo "<a href='$target?$parameters&amp;start=0'>";
-         echo "<img src='" . $CFG_GLPI["root_doc"] . "/pics/first.png' alt=\"" . __s('Start') .
-              "\" title=\"" . __s('Start') . "\">";
+         echo "<i class='fa-2x fas fa-angle-double-left' title=\"".
+              _s('Start')."\"></i>";
          echo "</a></th>";
          echo "<th class='left'>";
          echo "<a href='$target?$parameters&amp;start=$back'>";
-         echo "<img src='" . $CFG_GLPI["root_doc"] . "/pics/left.png' alt=\"" . __s('Previous') .
-              "\" title=\"" . __s('Previous') . "\">";
+         echo "<i class='fa-2x fas fa-angle-left' title=\"".
+              __s('Previous')."\"></i>";
          echo "</a></th>";
       }
 
@@ -1005,14 +1005,14 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
       if ($forward < $numrows) {
          echo "<th class='right'>";
          echo "<a href='$target?$parameters&amp;start=$forward'>";
-         echo "<img src='" . $CFG_GLPI["root_doc"] . "/pics/right.png' alt=\"" . __s('Next') .
-              "\" title=\"" . __s('Next') . "\">";
+         echo "<i class='fa-2x fas fa-angle-right' title=\"".
+              __s('Next')."\"></i>";
          echo "</a></th>\n";
 
          echo "<th class='right'>";
          echo "<a href='$target?$parameters&amp;start=$end'>";
-         echo "<img src='" . $CFG_GLPI["root_doc"] . "/pics/last.png' alt=\"" . __s('End') .
-              "\" title=\"" . __s('End') . "\">";
+         echo "<i class='fa-2x fas fa-double-angle-right' title=\"".
+              __s('End')."\"></i>";
          echo "</a></th>\n";
       }
 
@@ -1051,7 +1051,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
       ];
 
       Ajax::updateItemOnSelectEvent("massiveaction", "show_massiveaction",
-                                    $CFG_GLPI["root_doc"] . "/plugins/manufacturersimports/ajax/dropdownMassiveAction.php", $params);
+                                    PLUGIN_MANUFACTURERSIMPORTS_WEBDIR . "/ajax/dropdownMassiveAction.php", $params);
 
       echo "<span id='show_massiveaction'>&nbsp;</span>\n";
 
