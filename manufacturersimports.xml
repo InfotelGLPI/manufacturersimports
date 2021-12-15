@@ -41,7 +41,12 @@
         <author>Bazile Lebeau</author>
     </authors>
     <versions>
-		<version>
+        <version>
+            <num>3.0.0-rc1</num>
+            <compatibility>~10.0</compatibility>
+            <download_url>https://github.com/InfotelGLPI/manufacturersimports/releases/download/3.0.0-rc1/glpi-manufacturersimports-3.0.0-rc1.tar.gz</download_url>
+        </version>
+        <version>
            <num>2.3.1</num>
             <compatibility>9.5</compatibility>
         </version>
