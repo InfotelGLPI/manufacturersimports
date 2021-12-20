@@ -68,9 +68,9 @@ class PluginManufacturersimportsProfile extends profile {
 
    static function getAllRights() {
       return [['itemtype' => 'PluginManufacturersimportsConfig',
-                         'label'    => _n('Suppliers import', 'Suppliers imports', 1,
-                                          'manufacturersimports'),
-                         'field'    => 'plugin_manufacturersimports']];
+               'label'    => _n('Suppliers import', 'Suppliers imports', 1,
+                                'manufacturersimports'),
+               'field'    => 'plugin_manufacturersimports']];
    }
 
    /**
@@ -96,10 +96,11 @@ class PluginManufacturersimportsProfile extends profile {
    }
 
    /**
+    * @param $profiles_id the profile ID
+    *
     * @since 0.85
     * Migration rights from old system to the new one for one profile
     *
-    * @param $profiles_id the profile ID
     */
    static function migrateOneProfile($profiles_id) {
       global $DB;
@@ -133,7 +134,7 @@ class PluginManufacturersimportsProfile extends profile {
       //Add new rights in glpi_profilerights table
       foreach ($profile->getAllRights(true) as $data) {
          if ($dbu->countElementsInTable("glpi_profilerights",
-                                  ["name" => $data['field']]) == 0) {
+                                        ["name" => $data['field']]) == 0) {
             ProfileRight::addProfileRights([$data['field']]);
          }
       }
@@ -166,11 +167,11 @@ class PluginManufacturersimportsProfile extends profile {
       $profileRight = new ProfileRight();
       foreach ($rights as $right => $value) {
          if ($dbu->countElementsInTable('glpi_profilerights',
-                                  ["profiles_id" => $profiles_id, "name" => $right]) && $drop_existing) {
+                                        ["profiles_id" => $profiles_id, "name" => $right]) && $drop_existing) {
             $profileRight->deleteByCriteria(['profiles_id' => $profiles_id, 'name' => $right]);
          }
          if (!$dbu->countElementsInTable('glpi_profilerights',
-                                   ["profiles_id" => $profiles_id, "name" => $right])) {
+                                         ["profiles_id" => $profiles_id, "name" => $right])) {
             $myright['profiles_id'] = $profiles_id;
             $myright['name']        = $right;
             $myright['rights']      = $value;
@@ -204,15 +205,14 @@ class PluginManufacturersimportsProfile extends profile {
 
       $rights = $this->getAllRights();
       $profile->displayRightsChoiceMatrix($rights, ['canedit'       => $canedit,
-                                                         'default_class' => 'tab_bg_2',
-                                                         'title'         => __('General')]);
+                                                    'default_class' => 'tab_bg_2',
+                                                    'title'         => __('General')]);
 
       if ($canedit
           && $closeform) {
          echo "<div class='center'>";
          echo Html::hidden('id', ['value' => $profiles_id]);
-         echo Html::submit(_sx('button', 'Save'),
-                           ['name' => 'update']);
+         echo Html::submit(_sx('button', 'Save'), ['name' => 'update', 'class' => 'btn btn-primary']);
          echo "</div>\n";
          Html::closeForm();
       }

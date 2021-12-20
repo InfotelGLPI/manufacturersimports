@@ -189,7 +189,7 @@ class PluginManufacturersimportsModel extends CommonDBTM {
       switch ($ma->getAction()) {
          case "add_model" :
             echo "<input type=\"text\" name=\"model_name\">&nbsp;";
-            echo Html::submit(_sx('button', 'Post'), ['name' => 'massiveaction']);
+            echo Html::submit(_sx('button', 'Post'), ['name' => 'massiveaction', 'class' => 'btn btn-primary']);
             return true;
             break;
       }
