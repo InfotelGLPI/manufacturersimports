@@ -157,8 +157,13 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
             curl_setopt($ch, CURLOPT_PROXYUSERPWD, $proxy_ident);
          }
       }
-//      $info = curl_getinfo($ch);
-//            Toolbox::logInfo($info);
+      if (
+         isset($_SESSION['glpi_use_mode'])
+         && ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE)
+      ) {
+         $info = curl_getinfo($ch);
+         Toolbox::logInfo($info);
+      }
       if ($options["download"]) {
          $fp = fopen($options["file"], "w");
          curl_setopt($ch, CURLOPT_FILE, $fp);
@@ -166,10 +171,15 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
       } else {
          $data = curl_exec($ch);
       }
-//      if ($options['suppliername'] == PluginManufacturersimportsConfig::LENOVO) {
-//         $errors = curl_error($ch);
-//         $response = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-//      }
+      if (
+         isset($_SESSION['glpi_use_mode'])
+         && ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE)
+      ) {
+         $errors   = curl_error($ch);
+         $response = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+         Toolbox::logInfo($errors);
+         Toolbox::logInfo($response);
+      }
       if (!$options["download"] && !$data) {
          $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
          curl_close($ch); // make sure we closeany current curl sessions
@@ -184,14 +194,12 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
       if (!$options["download"] && $data) {
          return $data;
       }
-
    }
 
    /**
     * @param $values
     */
    static function massiveimport($values) {
-      global $CFG_GLPI;
 
       $config = new PluginManufacturersimportsConfig();
       $log    = new PluginManufacturersimportsLog();
@@ -521,7 +529,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
           && $supplier_key != null) {
 
          $options["ClientID"] = $supplier_key;
-         $contents       = self::cURLData($options);
+         $contents            = self::cURLData($options);
 
       } else if ($suppliername == PluginManufacturersimportsConfig::HP) {
          $json = json_decode($contents);
@@ -533,7 +541,12 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
       } else {
          $contents = self::cURLData($options);
       }
-
+      if (
+         isset($_SESSION['glpi_use_mode'])
+         && ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE)
+      ) {
+         Toolbox::loginfo($contents);
+      }
       // On extrait la date de garantie de la variable contents.
       $field = self::selectSupplierfield($suppliername);
 

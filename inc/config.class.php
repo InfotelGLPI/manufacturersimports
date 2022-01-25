@@ -680,6 +680,12 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
          if (isset($warranty_url['url'])) {
             $options['url'] = $warranty_url['url'];
          }
+         if (
+            isset($_SESSION['glpi_use_mode'])
+            && ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE)
+         ) {
+            Toolbox::loginfo($options);
+         }
          PluginManufacturersimportsPostImport::saveImport($options);
       }
    }
