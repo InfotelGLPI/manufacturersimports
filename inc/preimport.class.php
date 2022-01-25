@@ -450,7 +450,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
       } else {
          if (Session::haveRight('config', UPDATE)) {
             //Please configure a supplier
-            echo "<a class='btn btn-primary' href='" . PLUGIN_MANUFACTURERSIMPORTS_WEBDIR . "/front/config.form.php'>";
+            echo "<a class='submit btn btn-primary' href='" . PLUGIN_MANUFACTURERSIMPORTS_WEBDIR . "/front/config.form.php'>";
             echo __('No manufacturer available. Please configure at least one manufacturer', 'manufacturersimports');
             echo "</a>";
          } else {
@@ -803,7 +803,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
                if (is_array($confirm) && isset($confirm[$name])) {
                   echo self::addConfirmationOnAction($confirm[$name]);
                }
-               echo "value=\"" . addslashes($label) . "\" class='btn btn-primary'>&nbsp;";
+               echo "value=\"" . addslashes($label) . "\" class='submit btn btn-primary'>&nbsp;";
             }
          }
       }

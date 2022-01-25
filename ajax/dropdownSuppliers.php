@@ -40,5 +40,5 @@ Session::checkLoginUser();
 
 $config = new PluginManufacturersimportsConfig();
 if ($_POST['supplier'] != -1) {
-   echo "&nbsp;<a class='btn btn-primary' href='".$config->getFormURL()."?preconfig=".$_POST['supplier']."'>"._sx('button', 'Update')."</a>";
+   echo "&nbsp;<a class='submit btn btn-primary' href='".$config->getFormURL()."?preconfig=".$_POST['supplier']."'>"._sx('button', 'Update')."</a>";
 }
