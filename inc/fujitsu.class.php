@@ -53,10 +53,22 @@ class PluginManufacturersimportsFujitsu extends PluginManufacturersimportsManufa
    function getSupplierInfo($compSerial = null, $otherSerial = null, $key = null, $apisecret = null,
                             $supplierUrl = null) {
       $info["name"]         = PluginManufacturersimportsConfig::FUJITSU;
-      $info["supplier_url"] = "https://support.ts.fujitsu.com/Adler/Default.aspx?Lng=en&GotoDiv=Warranty/WarrantyStatus&DivID=indexwarranty&GotoUrl=IndexWarranty&Ident=";
+      $info["supplier_url"] = 'https://support.ts.fujitsu.com/ProductCheck/Default.aspx?Lng=en&GotoDiv=Warranty/WarrantyStatus&DivID=indexwarranty&GotoUrl=IndexWarranty&RegionID=1&Token=${$i$M$f$u&Ident=';
       $info["url"]          = $supplierUrl.$compSerial;
-
+      $info["url_web"]      = "https://support.ts.fujitsu.com/IndexWarranty.asp?lng=FR";
       return $info;
+   }
+
+   /**
+    * Summary of getWarrantyUrl
+    *
+    * @param  $config
+    * @param  $compSerial
+    *
+    * @return string[]
+    */
+   static function getWarrantyUrl($config, $compSerial) {
+      return ["url" => 'https://support.ts.fujitsu.com/ProductCheck/Default.aspx?Lng=en&GotoDiv=Warranty/WarrantyStatus&DivID=indexwarranty&GotoUrl=IndexWarranty&RegionID=1&Token=${$i$M$f$u&Ident=' . "$compSerial"];
    }
 
    /**
@@ -67,8 +79,9 @@ class PluginManufacturersimportsFujitsu extends PluginManufacturersimportsManufa
       $matchesarray = [];
       preg_match_all("/value=\"(\d{4}\-\d{2}\-\d{2})\" id=\"Firstuse\"/", $contents, $matchesarray);
 
-      $datetimestamp = date('U');
-      return (isset($matchesarray[1][0])?trim($matchesarray[1][0]):'0000-00-00');
+      $buydate = (isset($matchesarray[1][0])?trim($matchesarray[1][0]):'0000-00-00');
+
+      return $buydate;
    }
 
    /**
@@ -88,7 +101,8 @@ class PluginManufacturersimportsFujitsu extends PluginManufacturersimportsManufa
       $matchesarray = [];
       preg_match_all("/value=\"(\d{4}\-\d{2}\-\d{2})\" id=\"WarrantyEndDate\"/", $contents, $matchesarray);
 
-      $datetimestamp = date('U');
-      return (isset($matchesarray[1][0])?trim($matchesarray[1][0]):'0000-00-00');
+      $expirationdate = (isset($matchesarray[1][0])?trim($matchesarray[1][0]):'0000-00-00');
+
+      return $expirationdate;
    }
 }

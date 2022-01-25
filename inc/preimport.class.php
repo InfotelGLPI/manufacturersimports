@@ -412,9 +412,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
                  FROM `glpi_plugin_manufacturersimports_configs` ";
       $query .= " LEFT JOIN `glpi_entities` ON (`glpi_entities`.`id` = `glpi_plugin_manufacturersimports_configs`.`entities_id`)"
                 . " WHERE `glpi_plugin_manufacturersimports_configs`.`manufacturers_id` != '0'
-                AND `glpi_plugin_manufacturersimports_configs`.`name` != 'HP'
-                AND `glpi_plugin_manufacturersimports_configs`.`name` != 'Fujitsu'
-                 AND `glpi_plugin_manufacturersimports_configs`.`name` != 'Lenovo'";
+                AND `glpi_plugin_manufacturersimports_configs`.`name` != 'HP'";
       $query .= "" . $dbu->getEntitiesRestrictRequest(" AND", "glpi_plugin_manufacturersimports_configs", '', '', true);
       $query .= " ORDER BY `glpi_plugin_manufacturersimports_configs`.`entities_id`, 
                             `glpi_plugin_manufacturersimports_configs`.`name`";

@@ -677,7 +677,7 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
          $warranty_url           = $supplierclass::getWarrantyUrl($config, $item->fields['serial']);
          $options['token']       = $token;
          $options['line']['entities_id'] = $item->fields['entities_id'];
-         if (isset($warranty_url)) {
+         if (isset($warranty_url['url'])) {
             $options['url'] = $warranty_url['url'];
          }
          PluginManufacturersimportsPostImport::saveImport($options);

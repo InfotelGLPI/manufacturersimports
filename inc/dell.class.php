@@ -28,7 +28,7 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-        die("Sorry. You can't access directly to this file");
+   die("Sorry. You can't access directly to this file");
 }
 
 ini_set("max_execution_time", "0");
@@ -91,7 +91,7 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
          return $info;
       }
 
-      $info["url"] = $supplierUrl. "$compSerial";
+      $info["url"] = $supplierUrl . "$compSerial";
       return $info;
    }
 
@@ -122,19 +122,19 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
    function getStartDate($contents) {
       $info = json_decode($contents, true);
       // v5
-       $max_date = false;
-       if (isset($info[0]['entitlements'])) {
-           foreach ($info[0]['entitlements'] as $d) {
-               $date = new \DateTime($d['startDate']);
-               if ($max_date == false || $date > $max_date) {
-                   $max_date = $date;
-               }
-           }
+      $max_date = false;
+      if (isset($info[0]['entitlements'])) {
+         foreach ($info[0]['entitlements'] as $d) {
+            $date = new \DateTime($d['startDate']);
+            if ($max_date == false || $date > $max_date) {
+               $max_date = $date;
+            }
+         }
 
-           if ($max_date) {
-               return $max_date->format('c');
-           }
-       }
+         if ($max_date) {
+            return $max_date->format('c');
+         }
+      }
 
       return false;
    }
@@ -169,11 +169,11 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
     */
    function getWarrantyInfo($contents) {
       $info = json_decode($contents, true);
-      
+
       // v5
       // when several warranties are available, will take the last one
       $max_date = false;
-      $i = false;
+      $i        = false;
       if (isset($info[0]['entitlements'])) {
          foreach ($info[0]['entitlements'] as $k => $d) {
             $date = new \DateTime($d['endDate']);
@@ -223,20 +223,22 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
 
    /**
     * Summary of getToken
+    *
     * @param  $config
+    *
     * @return mixed
     */
-   static function getToken($config){
+   static function getToken($config) {
       $token = false;
       // must manage token
-      $options = ["url"          => $config->fields["token_url"],
-                  "download"     => false,
-                  "file"         => false,
-                  "post"         => ['client_id' => $config->fields["supplier_key"],
-                                     'client_secret' => $config->fields["supplier_secret"],
-                                     'grant_type' => 'client_credentials'],
-                  "suppliername" => $config->fields["name"]];
-      $contents    = PluginManufacturersimportsPostImport::cURLData($options);
+      $options  = ["url"          => $config->fields["token_url"],
+                   "download"     => false,
+                   "file"         => false,
+                   "post"         => ['client_id'     => $config->fields["supplier_key"],
+                                      'client_secret' => $config->fields["supplier_secret"],
+                                      'grant_type'    => 'client_credentials'],
+                   "suppliername" => $config->fields["name"]];
+      $contents = PluginManufacturersimportsPostImport::cURLData($options);
       // must extract from $contents the token bearer
       $response = json_decode($contents, true);
       if (isset($response['access_token'])) {
@@ -248,11 +250,13 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
 
    /**
     * Summary of getWarrantyUrl
-    * @param  $config 
-    * @param  $compSerial 
+    *
+    * @param  $config
+    * @param  $compSerial
+    *
     * @return string[]
     */
    static function getWarrantyUrl($config, $compSerial) {
-      return ["url" => $config->fields['warranty_url']. "$compSerial"];
+      return ["url" => $config->fields['warranty_url'] . "$compSerial"];
    }
 }

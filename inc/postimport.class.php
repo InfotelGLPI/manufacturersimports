@@ -103,14 +103,14 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
          curl_setopt($ch, CURLOPT_HTTPHEADER, [
             "Authorization: Bearer " . $options['token']
          ]);
-
       }
+
       if (!empty($options['ClientID'])) {
          curl_setopt($ch, CURLOPT_HTTPHEADER, [
             "ClientID: " . $options['ClientID']
          ]);
-
       }
+
       //Do we have post field to send?
       if (!empty($options["post"])) {
          //curl_setopt($ch, CURLOPT_POST,true);
@@ -128,16 +128,16 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
          if ($options['suppliername'] == PluginManufacturersimportsConfig::HP) {
 
             if (isset($options['access_token'])) {
-               curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+               curl_setopt($ch, CURLOPT_HTTPHEADER, [
                   'accept: application/json',
                   'Content-Type: application/json',
                   'Authorization: Bearer ' . $options['access_token']
-               ));
+               ]);
 
                curl_setopt($ch, CURLOPT_POSTFIELDS, "[" . json_encode($options['post']) . "]");
 
             } else {
-               curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
+               curl_setopt($ch, CURLOPT_HTTPHEADER, ['Accept: application/json']);
             }
          }
       }
@@ -157,6 +157,8 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
             curl_setopt($ch, CURLOPT_PROXYUSERPWD, $proxy_ident);
          }
       }
+//      $info = curl_getinfo($ch);
+//            Toolbox::logInfo($info);
       if ($options["download"]) {
          $fp = fopen($options["file"], "w");
          curl_setopt($ch, CURLOPT_FILE, $fp);
@@ -164,6 +166,10 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
       } else {
          $data = curl_exec($ch);
       }
+//      if ($options['suppliername'] == PluginManufacturersimportsConfig::LENOVO) {
+//         $errors = curl_error($ch);
+//         $response = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+//      }
       if (!$options["download"] && !$data) {
          $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
          curl_close($ch); // make sure we closeany current curl sessions
@@ -178,6 +184,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
       if (!$options["download"] && $data) {
          return $data;
       }
+
    }
 
    /**
@@ -467,7 +474,6 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
       $default_values['fromsupplier'] = 0;
       $default_values['fromwarranty'] = 0;
       $default_values['line']         = [];
-      $default_values['ClientID']     = null;
       $default_values['config']       = new PluginManufacturersimportsConfig();
       $default_values['token']        = false;
 
@@ -492,6 +498,8 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
       $rubrique     = $config->fields["documentcategories_id"];
       $addcomments  = $config->fields["comment_adding"];
       $url_warranty = $config->fields["supplier_url"];
+      $supplier_key = $config->fields["supplier_key"];
+
       if (isset($params['fromwarranty']) && $params['fromwarranty']) {
          $warranty = $values['fromwarranty'];
       } else {
@@ -508,21 +516,22 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
                   "suppliername" => $suppliername,
                   "token"        => $values['token']
       ];
+
       if ($suppliername == PluginManufacturersimportsConfig::LENOVO
-          && $values["ClientID"] != null) {
-         $options["ClientID"] = $values["ClientID"];
-      }
+          && $supplier_key != null) {
 
-      $contents = self::cURLData($options);
+         $options["ClientID"] = $supplier_key;
+         $contents       = self::cURLData($options);
 
-      if ($suppliername == PluginManufacturersimportsConfig::HP
-          && $contents != null) {
+      } else if ($suppliername == PluginManufacturersimportsConfig::HP) {
          $json = json_decode($contents);
          if (isset($json->access_token)) {
             $options['access_token'] = $json->access_token;
             $options['url']          = $url_warranty;
             $contents                = self::cURLData($options); // Getting Warranty Data
          }
+      } else {
+         $contents = self::cURLData($options);
       }
 
       // On extrait la date de garantie de la variable contents.
