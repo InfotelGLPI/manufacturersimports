@@ -27,7 +27,7 @@
  --------------------------------------------------------------------------
  */
  
-define('PLUGIN_MANUFACTURERSIMPORTS_VERSION', '2.3.1');
+define('PLUGIN_MANUFACTURERSIMPORTS_VERSION', '2.3.2');
 
 // Init the hooks of the plugins -Needed
 function plugin_init_manufacturersimports() {
