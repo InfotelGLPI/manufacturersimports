@@ -32,6 +32,11 @@ if (!defined('GLPI_ROOT')) {
 }
 
 /**
+ * Import Infocom class
+ */
+include('../../../src/Infocom.php');
+
+/**
  * Class PluginManufacturersimportsPostImport
  */
 class PluginManufacturersimportsPostImport extends CommonDBTM {
@@ -668,10 +673,10 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
       if ($options["supplierId"] != 0) {
          $input_infocom["suppliers_id"] = $options["supplierId"];
       }
-      $input_infocom["warranty_date"]     = $options["maDate"];
+      $input_infocom["warranty_date"]     = strtotime($options["maDate"]);
       $input_infocom["warranty_duration"] = $options["warranty"];
       $input_infocom["warranty_info"]     = $options["warranty_info"];
-      $input_infocom["buy_date"]          = $options["buyDate"];
+      $input_infocom["buy_date"]          = strtotime($options["buyDate"]);
       $input_infocom["items_id"]          = $options["ID"];
       $input_infocom["itemtype"]          = $options["itemtype"];
 
