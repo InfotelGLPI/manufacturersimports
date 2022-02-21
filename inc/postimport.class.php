@@ -678,8 +678,8 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
       
       $input_infocom["warranty_duration"] = $options["warranty"];
       $input_infocom["warranty_info"]     = $options["warranty_info"];
-      $input_infocom["buy_date"]          =date("m-d-Y",strtotime($options["buyDate"]));
-      //$input_infocom["buy_date"]          =$options["buyDate"];
+      //$input_infocom["buy_date"]          =date("m-d-Y",strtotime($options["buyDate"]));
+      $input_infocom["buy_date"]          =$options["buyDate"];
       $input_infocom["items_id"]          = $options["ID"];
       $input_infocom["itemtype"]          = $options["itemtype"];      
       //add new infocoms
@@ -699,12 +699,6 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
          $buy_date          = Html::convdate($ic->fields["buy_date"]);
          $suppliers_id      = Dropdown::getDropdownName("glpi_suppliers", $ic->fields["suppliers_id"]);
          $ic_comment        = $ic->fields["comment"];
-         
-         echo "**********";
-         echo "ID " + $ic->fields["id"] ;
-         echo "Warranty date" + $warranty_date ;
-         echo "Buy date" + $buy_date  ;
-         echo "**********";
 
          //New values
          $input_infocom["id"] = $ic->fields["id"];
