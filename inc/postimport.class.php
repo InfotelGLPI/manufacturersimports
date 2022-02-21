@@ -677,7 +677,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
       
       $input_infocom["warranty_duration"] = $options["warranty"];
       $input_infocom["warranty_info"]     = $options["warranty_info"];
-      $input_infocom["buy_date"]          =strtotime($options["buyDate"]);
+      $input_infocom["buy_date"]          =$options["buyDate"];
       $input_infocom["items_id"]          = $options["ID"];
       $input_infocom["itemtype"]          = $options["itemtype"];      
       //add new infocoms
