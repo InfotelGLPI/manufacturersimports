@@ -682,7 +682,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
       $input_infocom["itemtype"]          = $options["itemtype"];      
       //add new infocoms
       echo "<pre>";
-      print_r $input_infocom;
+      print_r ($input_infocom);
       echo "</pre>";
       $ic = new infocom();
       if ($ic->getfromDBforDevice($options["itemtype"], $options["ID"])) {
