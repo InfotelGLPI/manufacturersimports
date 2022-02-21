@@ -673,13 +673,13 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
       if ($options["supplierId"] != 0) {
          $input_infocom["suppliers_id"] = $options["supplierId"];
       }
-      //$input_infocom["warranty_date"]     = date("m-d-Y",strtotime($options["maDate"]));
-      $input_infocom["warranty_date"]     = $options["maDate"];
+      $input_infocom["warranty_date"]     = date("m-d-Y",strtotime($options["maDate"]));
+      //$input_infocom["warranty_date"]     = $options["maDate"];
       
       $input_infocom["warranty_duration"] = $options["warranty"];
       $input_infocom["warranty_info"]     = $options["warranty_info"];
-      //$input_infocom["buy_date"]          =date("m-d-Y",strtotime($options["buyDate"]));
-      $input_infocom["buy_date"]          =$options["buyDate"];
+      $input_infocom["buy_date"]          =date("m-d-Y",strtotime($options["buyDate"]));
+      //$input_infocom["buy_date"]          =$options["buyDate"];
       $input_infocom["items_id"]          = $options["ID"];
       $input_infocom["itemtype"]          = $options["itemtype"];      
       //add new infocoms
