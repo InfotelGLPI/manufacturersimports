@@ -34,7 +34,7 @@ if (!defined('GLPI_ROOT')) {
 /**
  * Import Infocom class
  */
-//include_once('../../../src/Infocom.php');
+include_once('../../../src/Infocom.php');
 
 /**
  * Class PluginManufacturersimportsPostImport
@@ -689,7 +689,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
       echo "<pre>";
       print_r ($options);
       echo "</pre>";
-      $ic = new Computer();
+      $ic = new infocom();
       if ($ic->getfromDBforDevice($options["itemtype"], $options["ID"])) {
 
          //Original values
