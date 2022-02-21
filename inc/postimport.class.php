@@ -700,6 +700,10 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
          $suppliers_id      = Dropdown::getDropdownName("glpi_suppliers", $ic->fields["suppliers_id"]);
          $ic_comment        = $ic->fields["comment"];
          
+         echo "**********";
+         echo "Warranty date" + $warranty_date ;
+         echo "Buy date" + $buy_date  ;
+         echo "**********";
 
          //New values
          $input_infocom["id"] = $ic->fields["id"];
