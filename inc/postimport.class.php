@@ -34,7 +34,7 @@ if (!defined('GLPI_ROOT')) {
 /**
  * Import Infocom class
  */
-#include('../../../src/Infocom.php');
+include_once('../../../src/Infocom.php');
 
 /**
  * Class PluginManufacturersimportsPostImport
