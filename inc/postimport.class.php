@@ -34,8 +34,8 @@ if (!defined('GLPI_ROOT')) {
 /**
  * Import Infocom class
  */
-//include_once('../../../src/Infocom.php');
-include('../../../inc/includes.php');
+include_once('../../../src/Infocom.php');
+//include('../../../inc/includes.php');
 
 /**
  * Class PluginManufacturersimportsPostImport
@@ -711,6 +711,14 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
          }
          $infocom = new infocom();
          $infocom->update($input_infocom);
+         Event::log(
+            $_POST["id"],
+            "infocom",
+            4,
+            "financial",
+            //TRANS: %s is the user login
+            sprintf(__('%s updates an item'), $_SESSION["glpiname"])
+        );
 
       } else {
 
