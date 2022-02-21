@@ -692,8 +692,8 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
       $input_infocom["items_id"]          = $options["ID"];
       $input_infocom["itemtype"]          = $options["itemtype"];
 
-      console_log($input_infocom["warranty_date"] );
-      console_log($input_infocom["buy_date"] );
+       echo $input_infocom["warranty_date"];
+      echo $input_infocom["buy_date"];      
       //add new infocoms
       $ic = new infocom();
       if ($ic->getfromDBforDevice($options["itemtype"], $options["ID"])) {
