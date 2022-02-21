@@ -27,6 +27,17 @@
  --------------------------------------------------------------------------
  */
 
+
+function console_log($output, $with_script_tags = true) {
+   $js_code = 'console.log(' . json_encode($output, JSON_HEX_TAG) . 
+');';
+   if ($with_script_tags) {
+       $js_code = '<script>' . $js_code . '</script>';
+   }
+   echo $js_code;
+}
+
+
 if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access directly to this file");
 }
@@ -674,12 +685,15 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
          $input_infocom["suppliers_id"] = $options["supplierId"];
       }
       $input_infocom["warranty_date"]     = strtotime($options["maDate"]);
+      
       $input_infocom["warranty_duration"] = $options["warranty"];
       $input_infocom["warranty_info"]     = $options["warranty_info"];
       $input_infocom["buy_date"]          = strtotime($options["buyDate"]);
       $input_infocom["items_id"]          = $options["ID"];
       $input_infocom["itemtype"]          = $options["itemtype"];
 
+      <?= console_log($input_infocom["warranty_date"] ); ?>
+      <?= console_log($input_infocom["buy_date"] ); ?>
       //add new infocoms
       $ic = new infocom();
       if ($ic->getfromDBforDevice($options["itemtype"], $options["ID"])) {
@@ -688,9 +702,10 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
          $warranty_date     = Html::convdate($ic->fields["warranty_date"]);
          $warranty_duration = $ic->fields["warranty_duration"];
          $warranty_info     = $ic->fields["warranty_info"];
-         $buy_date          = $ic->fields["buy_date"];
+         $buy_date          = Html::convdate($ic->fields["buy_date"]);
          $suppliers_id      = Dropdown::getDropdownName("glpi_suppliers", $ic->fields["suppliers_id"]);
          $ic_comment        = $ic->fields["comment"];
+         
 
          //New values
          $input_infocom["id"] = $ic->fields["id"];
