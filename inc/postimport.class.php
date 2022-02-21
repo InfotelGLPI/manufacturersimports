@@ -658,7 +658,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
     * @param      $options
     * @param bool $display
     */
-   static function saveInfocoms($options, $display = false) {
+   static function saveInfocoms($options, $display = true) {
 
       //Original values
       $warranty_date     = "";
