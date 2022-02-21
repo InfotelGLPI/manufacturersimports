@@ -701,6 +701,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
          $ic_comment        = $ic->fields["comment"];
          
          echo "**********";
+         echo "ID " + $ic->fields["id"] ;
          echo "Warranty date" + $warranty_date ;
          echo "Buy date" + $buy_date  ;
          echo "**********";
