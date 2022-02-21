@@ -34,7 +34,7 @@ if (!defined('GLPI_ROOT')) {
 /**
  * Import Infocom class
  */
-include_once('../../../src/Infocom.php');
+//include_once('../../../src/Infocom.php');
 
 /**
  * Class PluginManufacturersimportsPostImport
@@ -689,7 +689,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
       echo "<pre>";
       print_r ($options);
       echo "</pre>";
-      $ic = new infocom();
+      $ic = new Computer();
       if ($ic->getfromDBforDevice($options["itemtype"], $options["ID"])) {
 
          //Original values
@@ -708,7 +708,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
                                         __('Imported from web site', 'manufacturersimports') . " " . $options["suppliername"] . " " .
                                         __('With the manufacturersimports plugin', 'manufacturersimports') . " (" . Html::convdate($options["date"]) . ")";
          }
-         $infocom = new Infocom();
+         $infocom = new Computer();;
          $infocom->update($input_infocom);
 
       } else {
@@ -718,7 +718,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
                                         " " . $options["suppliername"] . " " . __('With the manufacturersimports plugin', 'manufacturersimports') .
                                         " (" . Html::convdate($options["date"]) . ")";
          }
-         $infocom = new Infocom();
+         $infocom = new Computer();;
          $infocom->add($input_infocom);
 
       }
