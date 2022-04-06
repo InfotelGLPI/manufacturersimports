@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $soft\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-01-25 15:35+0000\n"
+"POT-Creation-Date: 2022-01-25 15:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -94,12 +94,12 @@ msgstr ""
 msgid "Manufacturer information"
 msgstr ""
 
-#: inc/config.class.php:633 inc/config.class.php:704
+#: inc/config.class.php:633 inc/config.class.php:710
 msgctxt "button"
 msgid "Retrieve warranty from manufacturer"
 msgstr ""
 
-#: inc/config.class.php:700
+#: inc/config.class.php:706
 msgid ""
 "You did not import the warranty for this item. Do you want to get it back?"
 msgstr ""
@@ -108,11 +108,11 @@ msgstr ""
 msgid "Data recovery DELL for computer"
 msgstr ""
 
-#: inc/import.class.php:130 inc/postimport.class.php:703
+#: inc/import.class.php:130 inc/postimport.class.php:716
 msgid "Import OK"
 msgstr ""
 
-#: inc/import.class.php:133 inc/postimport.class.php:807
+#: inc/import.class.php:133 inc/postimport.class.php:820
 msgid "Import failed"
 msgstr ""
 
@@ -124,40 +124,40 @@ msgstr ""
 msgid "Curl PHP package not installed"
 msgstr ""
 
-#: inc/postimport.class.php:201
+#: inc/postimport.class.php:209
 msgid "Launching of imports"
 msgstr ""
 
-#: inc/postimport.class.php:204
+#: inc/postimport.class.php:212
 msgid "Post import"
 msgstr ""
 
-#: inc/postimport.class.php:212
+#: inc/postimport.class.php:220
 msgid "Result"
 msgstr ""
 
-#: inc/postimport.class.php:213
+#: inc/postimport.class.php:221
 msgid "Details"
 msgstr ""
 
-#: inc/postimport.class.php:231
+#: inc/postimport.class.php:239
 msgid "Import in progress"
 msgstr ""
 
-#: inc/postimport.class.php:239
+#: inc/postimport.class.php:247
 #, php-format
 msgid "Total number of devices imported %s"
 msgstr ""
 
-#: inc/postimport.class.php:682 inc/postimport.class.php:691
+#: inc/postimport.class.php:695 inc/postimport.class.php:704
 msgid "Imported from web site"
 msgstr ""
 
-#: inc/postimport.class.php:683 inc/postimport.class.php:692
+#: inc/postimport.class.php:696 inc/postimport.class.php:705
 msgid "With the manufacturersimports plugin"
 msgstr ""
 
-#: inc/postimport.class.php:831
+#: inc/postimport.class.php:844
 msgid "Connection failed/data download from manufacturer web site"
 msgstr ""
 
