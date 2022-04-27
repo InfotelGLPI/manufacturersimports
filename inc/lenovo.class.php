@@ -125,7 +125,7 @@ class PluginManufacturersimportsLenovo extends PluginManufacturersimportsManufac
          $myDate = date("Y-m-d", strtotime($myDate));
 
 
-         return PluginManufacturersimportsPostImport::checkDate($myDate);;
+         return PluginManufacturersimportsPostImport::checkDate($myDate);
       }
    }
 
