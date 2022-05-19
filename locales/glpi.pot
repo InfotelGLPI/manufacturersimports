@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $soft\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-27 08:32+0000\n"
+"POT-Creation-Date: 2022-05-19 06:31+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,69 +37,69 @@ msgstr ""
 msgid "Please activate the plugin"
 msgstr ""
 
-#: inc/config.class.php:209 inc/config.class.php:336
+#: inc/config.class.php:213 inc/config.class.php:340
 msgid "Manufacturer web address"
 msgstr ""
 
-#: inc/config.class.php:218 inc/config.class.php:358
+#: inc/config.class.php:222 inc/config.class.php:362
 msgid "Default supplier attached"
 msgstr ""
 
-#: inc/config.class.php:226 inc/preimport.class.php:647
+#: inc/config.class.php:230 inc/preimport.class.php:647
 msgid "New warranty attached"
 msgstr ""
 
-#: inc/config.class.php:235 inc/config.class.php:417
+#: inc/config.class.php:239 inc/config.class.php:421
 msgid "Auto add of document"
 msgstr ""
 
-#: inc/config.class.php:252 inc/config.class.php:432
+#: inc/config.class.php:256 inc/config.class.php:436
 msgid "Add a comment line"
 msgstr ""
 
-#: inc/config.class.php:344
+#: inc/config.class.php:348
 msgid "Access token API address"
 msgstr ""
 
-#: inc/config.class.php:350
+#: inc/config.class.php:354
 msgid "Warranty API address"
 msgstr ""
 
-#: inc/config.class.php:368
+#: inc/config.class.php:372
 msgid "New warranty affected by default (Replace if 0)"
 msgstr ""
 
-#: inc/config.class.php:382
+#: inc/config.class.php:386
 msgid "Manufacturer API key"
 msgstr ""
 
-#: inc/config.class.php:389
+#: inc/config.class.php:393
 msgid "Manufacturer API Secret"
 msgstr ""
 
-#: inc/config.class.php:397 inc/config.class.php:410
+#: inc/config.class.php:401 inc/config.class.php:414
 msgid "Client id"
 msgstr ""
 
-#: inc/config.class.php:403
+#: inc/config.class.php:407
 msgid "Client secret"
 msgstr ""
 
-#: inc/config.class.php:424
+#: inc/config.class.php:428
 msgid "Section for document records"
 msgstr ""
 
-#: inc/config.class.php:628 inc/preimport.class.php:338
+#: inc/config.class.php:632 inc/preimport.class.php:338
 #: inc/preimport.class.php:349
 msgid "Manufacturer information"
 msgstr ""
 
-#: inc/config.class.php:633 inc/config.class.php:710
+#: inc/config.class.php:637 inc/config.class.php:714
 msgctxt "button"
 msgid "Retrieve warranty from manufacturer"
 msgstr ""
 
-#: inc/config.class.php:706
+#: inc/config.class.php:710
 msgid ""
 "You did not import the warranty for this item. Do you want to get it back?"
 msgstr ""
