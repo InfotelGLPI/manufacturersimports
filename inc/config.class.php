@@ -54,6 +54,10 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
       return _n('Manufacturer', 'Manufacturers', $nb);
    }
 
+   static function getIcon() {
+      return PluginManufacturersimportsMenu::getIcon();
+   }
+
    public function defineTabs($options = []) {
       $ong = [];
       $this->addDefaultFormTab($ong);
