@@ -76,7 +76,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM {
       $timeout     = 30;
       $proxy_host  = !empty($CFG_GLPI["proxy_name"]) ? ($CFG_GLPI["proxy_name"] . ":" . $CFG_GLPI["proxy_port"]) : false; // host:port
       $proxy_ident = !empty($CFG_GLPI["proxy_user"]) ? ($CFG_GLPI["proxy_user"] . ":" .
-                                                        Toolbox::decrypt($CFG_GLPI["proxy_passwd"], GLPIKEY)) : false; // username:password
+                                                        (new GLPIKey())->decrypt($CFG_GLPI["proxy_passwd"])) : false; // username:password
 
       $url = $options["url"];
 
