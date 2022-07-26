@@ -31,8 +31,7 @@ include ('../../../inc/includes.php');
 
 Session::checkRight("config", UPDATE);
 
-$plugin = new Plugin();
-if ($plugin->isActivated("manufacturersimports")) {
+if (Plugin::isPluginActive("manufacturersimports")) {
    Html::header(__('Setup'), '', "tools", "pluginmanufacturersimportsmenu", "config");
    Search::show("PluginManufacturersimportsConfig");
 } else {

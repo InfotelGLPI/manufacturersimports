@@ -41,8 +41,7 @@ function plugin_init_manufacturersimports() {
 
    $PLUGIN_HOOKS['csrf_compliant']['manufacturersimports'] = true;
 
-   $plugin = new Plugin();
-   if ($plugin->isActivated('manufacturersimports')
+   if (Plugin::isPluginActive('manufacturersimports')
        && Session::getLoginUserID()) {
       Plugin::registerClass('PluginManufacturersimportsProfile',
                             ['addtabon' => 'Profile']);

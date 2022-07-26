@@ -191,8 +191,8 @@ function plugin_manufacturersimports_postinit() {
 
 // Define dropdown relations
 function plugin_manufacturersimports_getDatabaseRelations() {
-   $plugin = new Plugin();
-   if ($plugin->isActivated("manufacturersimports")) {
+
+   if (Plugin::isPluginActive("manufacturersimports")) {
       return ["glpi_entities"
                    => ["glpi_plugin_manufacturersimports_configs"
                             => "entities_id"],
@@ -254,8 +254,8 @@ function plugin_manufacturersimports_forceGroupBy($type) {
 
 ////// SPECIFIC MODIF MASSIVE FUNCTIONS ///////
 function plugin_manufacturersimports_MassiveActions($type) {
-   $plugin = new Plugin();
-   if ($plugin->isActivated('manufacturersimports')) {
+
+   if (Plugin::isPluginActive('manufacturersimports')) {
       if (in_array($type, PluginManufacturersimportsConfig::getTypes(true))) {
          return ['PluginManufacturersimportsModel' . MassiveAction::CLASS_ACTION_SEPARATOR . "add_model"
                  => __('Add new material brand number', 'manufacturersimports')];
