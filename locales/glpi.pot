@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $soft\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-25 08:24+0000\n"
+"POT-Creation-Date: 2022-07-26 13:56+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: hook.php:229 setup.php:82 front/massiveaction.php:40 inc/menu.class.php:45
+#: hook.php:229 setup.php:81 front/massiveaction.php:40 inc/menu.class.php:45
 #: inc/model.class.php:48 inc/preimport.class.php:50 inc/profile.class.php:71
 msgid "Suppliers import"
 msgid_plural "Suppliers imports"
@@ -33,7 +33,7 @@ msgstr ""
 msgid "Add new material brand number"
 msgstr ""
 
-#: front/config.php:41
+#: front/config.php:40
 msgid "Please activate the plugin"
 msgstr ""
 
