@@ -697,7 +697,7 @@ class PluginManufacturersimportsConfig extends CommonDBTM {
    public static function showItemImport($params) {
       $item = $params['item'];
 
-      if (in_array($item->getType(), self::getTypes(true))) {
+      if ($item && in_array($item->getType(), self::getTypes(true))) {
 
          $config = new self();
          $log    = new PluginManufacturersimportsLog();
