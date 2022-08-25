@@ -980,7 +980,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
          echo "<th class='left'>";
          echo "<a href='$target?$parameters&amp;start=0'>";
          echo "<i class='fa-2x fas fa-angle-double-left' title=\"".
-              _s('Start')."\"></i>";
+              __s('Start')."\"></i>";
          echo "</a></th>";
          echo "<th class='left'>";
          echo "<a href='$target?$parameters&amp;start=$back'>";
