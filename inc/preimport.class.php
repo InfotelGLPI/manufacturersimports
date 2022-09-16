@@ -527,17 +527,6 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
          $p[$key] = $val;
       }
 
-      $globallinkto = self::getArrayUrlLink("field", $p['field']) .
-                      self::getArrayUrlLink("link", $p['link']) .
-                      self::getArrayUrlLink("contains", $p['contains']) .
-                      self::getArrayUrlLink("searchtype", $p['searchtype']) .
-                      self::getArrayUrlLink("field2", $p['field2']) .
-                      self::getArrayUrlLink("contains2", $p['contains2']) .
-                      self::getArrayUrlLink("searchtype2", $p['searchtype2']) .
-                      self::getArrayUrlLink("itemtype2", $p['itemtype2']) .
-                      self::getArrayUrlLink("link2", $p['link2']);
-
-      $modeltable = "";
       $target     = PLUGIN_MANUFACTURERSIMPORTS_WEBDIR . "/front/import.php";
 
       if ($p['itemtype'] && $p['manufacturers_id']) {
@@ -575,24 +564,10 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
             $total      = 0;
 
             if ($output_type == Search::HTML_OUTPUT) {
-               //               if ($suppliername == PluginManufacturersimportsConfig::HP){
-               //                  echo "<div class='center'>";
-               //                  echo "<span class='red'>".__('Warning')." : ".__('It is recommended that you specify the model number for HP imports', 'manufacturersimports') . "</span>";
-               //                  echo "</div>";
-               //               }
                self::printPager($p['start'], $numrows,
                                 $target, $parameters, $p['itemtype']);
             }
-            // Define begin and end var for loop
-            // Search case
-            $begin_display = $p['start'];
-            $end_display   = $p['start'] + $_SESSION["glpilist_limit"];
 
-            // Export All case
-            if (isset($_GET['export_all'])) {
-               $begin_display = 0;
-               $end_display   = $numrows;
-            }
 
             if (Session::isMultiEntitiesMode()) {
                $colsup = 1;
@@ -614,24 +589,13 @@ class PluginManufacturersimportsPreImport extends CommonDBTM {
             $begin_display = $p['start'];
             $end_display   = $p['start'] + $LIST_LIMIT;
 
-            foreach ($toview as $key => $val) {
-               $linkto = '';
-               if (!isset($searchopt["PluginManufacturersimportsPreImport"][$val]['nosort'])
-                   || !$searchopt["PluginManufacturersimportsPreImport"][$val]['nosort']) {
-                  $linkto = "$target?itemtype=" . $p['itemtype'] . "&amp;manufacturers_id=" .
-                            $p['manufacturers_id'] . "&amp;imported=" .
-                            $p['imported'] . "&amp;sort=" .
-                            $val . "&amp;order=" . ($p['order'] == "ASC" ? "DESC" : "ASC") .
-                            "&amp;start=" . $p['start'] . $globallinkto;
-               }
-            }
             echo Search::showHeader($output_type, $end_display - $begin_display + 1, $nbcols);
             echo Search::showNewLine($output_type);
             $header_num = 1;
 
             echo Search::showHeaderItem($output_type, "", $header_num);
             echo Search::showHeaderItem($output_type, __('Name'),
-                                        $header_num, $linkto, $p['sort'] == $val, $p['order']);
+                                        $header_num, '', $p['sort'] == $val, $p['order']);
             if (Session::isMultiEntitiesMode()) {
                echo Search::showHeaderItem($output_type, __('Entity'), $header_num);
             }
