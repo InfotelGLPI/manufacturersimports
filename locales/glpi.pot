@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $soft\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-08-25 10:02+0000\n"
+"POT-Creation-Date: 2022-09-16 10:04+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -45,7 +45,7 @@ msgstr ""
 msgid "Default supplier attached"
 msgstr ""
 
-#: inc/config.class.php:230 inc/preimport.class.php:647
+#: inc/config.class.php:230 inc/preimport.class.php:611
 msgid "New warranty attached"
 msgstr ""
 
@@ -116,7 +116,7 @@ msgstr ""
 msgid "Import failed"
 msgstr ""
 
-#: inc/model.class.php:138 inc/preimport.class.php:639
+#: inc/model.class.php:138 inc/preimport.class.php:603
 msgid "Model Number"
 msgstr ""
 
@@ -193,19 +193,19 @@ msgstr ""
 msgid "No manufacturer available. Please configure at least one manufacturer"
 msgstr ""
 
-#: inc/preimport.class.php:644
+#: inc/preimport.class.php:608
 msgid "Supplier attached"
 msgstr ""
 
-#: inc/preimport.class.php:694
+#: inc/preimport.class.php:658
 #, php-format
 msgid "Total number of devices to import %s"
 msgstr ""
 
-#: inc/preimport.class.php:741
+#: inc/preimport.class.php:705
 msgid "No device finded"
 msgstr ""
 
-#: inc/preimport.class.php:1039
+#: inc/preimport.class.php:1003
 msgid "Reset the import"
 msgstr ""
