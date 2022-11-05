@@ -39,7 +39,8 @@ Url du fabricant : http://aps2.toshiba-tro.de/unit-details-php/unitdetails.aspx?
 URL dans le plugin :
 Url du fabricant : https://support.ts.fujitsu.com/ProductCheck/Default.aspx?Lng=en&GotoDiv=Warranty/WarrantyStatus&DivID=indexwarranty&GotoUrl=IndexWarranty&RegionID=1&Token=${$i$M$f$u&Ident=
 
-> * Pour HP, plus d'accès à lAPI - KO
+> * Pour HP
+Url du fabricant : https://warrantyapiproxy.azurewebsites.net/api/HP?serial=
 
 This plugin allows you to inject financials informations from manufacturers web site files in GLPI.
 > * You select your type of equipment in advance and if you provided serial number and model number (different from manufacturers) you can import the warranty, the date of purchase and save the page HMTL manufacturers.
