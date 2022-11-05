@@ -28,7 +28,7 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access directly to this file");
+    die("Sorry. You can't access directly to this file");
 }
 
 ini_set("max_execution_time", "0");
@@ -38,179 +38,207 @@ ini_set("max_execution_time", "0");
  */
 class PluginManufacturersimportsLenovo extends PluginManufacturersimportsManufacturer {
 
-   /**
-    * @see PluginManufacturersimportsManufacturer::showCheckbox()
-    */
-   function showCheckbox($ID, $sel, $otherSerial = false) {
-      $name = "item[" . $ID . "]";
-      return Html::getCheckbox(["name" => $name, "value" => 1, "selected" => $sel]);
+    /**
+     * @see PluginManufacturersimportsManufacturer::showCheckbox()
+     */
+    function showCheckbox($ID, $sel, $otherSerial = false) {
+        $name = "item[" . $ID . "]";
+        return Html::getCheckbox(["name" => $name, "value" => 1, "selected" => $sel]);
 
-   }
+    }
 
-   /**
-    * @see PluginManufacturersimportsManufacturer::showItemTitle()
-    */
-   function showItemTitle($output_type, $header_num) {
-      return Search::showHeaderItem($output_type, __('Model number', 'manufacturersimports'), $header_num);
-   }
+    /**
+     * @see PluginManufacturersimportsManufacturer::showItemTitle()
+     */
+    function showItemTitle($output_type, $header_num) {
+        return Search::showHeaderItem($output_type, __('Model number', 'manufacturersimports'), $header_num);
+    }
 
-   /**
-    * @see PluginManufacturersimportsManufacturer::showDocTitle()
-    */
-   function showDocTitle($output_type, $header_num) {
-      return Search::showHeaderItem($output_type, __('File'), $header_num);
-   }
+    /**
+     * @see PluginManufacturersimportsManufacturer::showDocTitle()
+     */
+    function showDocTitle($output_type, $header_num) {
+        return Search::showHeaderItem($output_type, __('File'), $header_num);
+    }
 
-   /**
-    * @see PluginManufacturersimportsManufacturer::showItem()
-    */
-   function showItem($output_type, $item_num, $row_num, $otherSerial = false) {
-      return false;
-   }
+    /**
+     * @see PluginManufacturersimportsManufacturer::showItem()
+     */
+    function showItem($output_type, $item_num, $row_num, $otherSerial = false) {
+        return false;
+    }
 
-   function getSearchField() {
-      return false;
-   }
+    function getSearchField() {
+        return false;
+    }
 
-   /**
-    * @see PluginManufacturersimportsManufacturer::getSupplierInfo()
-    */
-   function getSupplierInfo($compSerial = null, $otherSerial = null, $key = null, $apisecret = null,
-                            $supplierUrl = null) {
+    /**
+     * @see PluginManufacturersimportsManufacturer::getSupplierInfo()
+     */
+    function getSupplierInfo($compSerial = null, $otherSerial = null, $key = null, $apisecret = null,
+                             $supplierUrl = null) {
 
-      $info["name"]         = PluginManufacturersimportsConfig::LENOVO;
-      $info["supplier_url"] = "https://SupportAPI.lenovo.com/v2.5/Warranty";
-      //      $info["url"]          = $supplierUrl . $compSerial."?machineType=&btnSubmit";
-      $info["url"]          = $supplierUrl . "?Serial=".$compSerial;
-      $info["url_web"]      = "https://pcsupport.lenovo.com/products/$compSerial/warranty";
-      return $info;
-   }
+        $info["name"]         = PluginManufacturersimportsConfig::LENOVO;
+        $info["supplier_url"] = "https://pcsupport.lenovo.com/products/$compSerial/warranty";
+        //      $info["url"]          = $supplierUrl . $compSerial."?machineType=&btnSubmit";
+        $info["url"]     = "https://pcsupport.lenovo.com/products/$compSerial/warranty";
+        $info["url_web"] = "https://pcsupport.lenovo.com/products/$compSerial/warranty";
+        return $info;
+    }
 
-   /**
-    * @see PluginManufacturersimportsManufacturer::getBuyDate()
-    */
-   function getBuyDate($contents) {
+    /**
+     * @see PluginManufacturersimportsManufacturer::getBuyDate()
+     */
+    function getBuyDate($contents) {
 
-      $contents = json_decode($contents, true);
+//        $contents = json_decode($contents, true);
+        $field  = "POPDate";
+        $search = stristr($contents, $field);
+        $myDate = substr($search, 10, 10);
+        $myDate = trim($myDate);
+        $myDate = PluginManufacturersimportsPostImport::checkDate($myDate);
 
-      if (isset($contents['Purchased'])) {
+        return $myDate;
 
-         if(strpos($contents['Purchased'], '0001-01-01') !== false){
-            if(strpos($contents['Shipped'], '0001-01-01') !== false) {
-               if(isset($contents['Warranty']) && !empty($contents['Warranty'])){
-                  $minStart = 0;
-                  $start = 0;
-                  $n = 0;
-                  foreach ($contents['Warranty'] as $id => $warranty){
-                     $myDate= trim($warranty['start']);
-                     $dateStart = strtotime($myDate);
-                     if($n === 0){
-                        $minStart = $dateStart;
-                        $myDate = strtotime(trim($warranty['Start']));
-                     }
-                     if($dateStart > $minStart){
-                        $minStart = $dateStart;
-                        $myDate = strtotime(trim($warranty['Start']));
-                     }
-                     $n++;
-                  }
-               }
-            }else{
-               $myDate = trim($contents['Shipped']);
-            }
-         }else{
-            $myDate = trim($contents['Purchased']);
-         }
-         //         $myDate = date("Y-m-d", mktime(0, 0, 0, $month, $day, $year));
-         $myDate = date("Y-m-d", strtotime($myDate));
+//        if (isset($contents['POPDate'])) {
+//
+//            Toolbox::loginfo($contents['POPDate']);
+//
+//            if (strpos($contents['POPDate'], '0001-01-01') !== false) {
+//                if (strpos($contents['Shipped'], '0001-01-01') !== false) {
+//                    if (isset($contents['Warranty']) && !empty($contents['Warranty'])) {
+//                        $minStart = 0;
+//                        $start    = 0;
+//                        $n        = 0;
+//                        foreach ($contents['Warranty'] as $id => $warranty) {
+//                            $myDate    = trim($warranty['start']);
+//                            $dateStart = strtotime($myDate);
+//                            if ($n === 0) {
+//                                $minStart = $dateStart;
+//                                $myDate   = strtotime(trim($warranty['Start']));
+//                            }
+//                            if ($dateStart > $minStart) {
+//                                $minStart = $dateStart;
+//                                $myDate   = strtotime(trim($warranty['Start']));
+//                            }
+//                            $n++;
+//                        }
+//                    }
+//                } else {
+//                    $myDate = trim($contents['POPDate']);
+//                }
+//            } else {
+//                $myDate = trim($contents['POPDate']);
+//            }
+//            Toolbox::loginfo($myDate);
+//            //         $myDate = date("Y-m-d", mktime(0, 0, 0, $month, $day, $year));
+//            $myDate = date("Y-m-d", strtotime($myDate));
+//
+//
+//            return PluginManufacturersimportsPostImport::checkDate($myDate);
+//        }
+    }
 
+    /**
+     * @see PluginManufacturersimportsManufacturer::getStartDate()
+     */
+    function getStartDate($contents) {
 
-         return PluginManufacturersimportsPostImport::checkDate($myDate);
-      }
-   }
+        $field  = "POPDate";
+        $search = stristr($contents, $field);
+        $myDate = substr($search, 10, 10);
+        $myDate = trim($myDate);
+        $myDate = PluginManufacturersimportsPostImport::checkDate($myDate);
 
-   /**
-    * @see PluginManufacturersimportsManufacturer::getStartDate()
-    */
-   function getStartDate($contents) {
-      //TODO change to have good start date with new json
-      $contents = json_decode($contents, true);
-      if(isset($contents['Warranty']) && !empty($contents['Warranty'])){
-         $maxEnd = 0;
-         $start = 0;
-         foreach ($contents['Warranty'] as $id => $warranty){
-            $myDate = trim($warranty['End']);
-            $dateEnd = strtotime($myDate);
-            if($dateEnd > $maxEnd){
-               $maxEnd = $dateEnd;
-               $start = strtotime(trim($warranty['Start']));
-            }
-         }
+        return $myDate;
 
-      }
+//        //TODO change to have good start date with new json
+//        $contents = json_decode($contents, true);
+//        if (isset($contents['Warranty']) && !empty($contents['Warranty'])) {
+//            $maxEnd = 0;
+//            $start  = 0;
+//            foreach ($contents['Warranty'] as $id => $warranty) {
+//                $myDate  = trim($warranty['End']);
+//                $dateEnd = strtotime($myDate);
+//                if ($dateEnd > $maxEnd) {
+//                    $maxEnd = $dateEnd;
+//                    $start  = strtotime(trim($warranty['Start']));
+//                }
+//            }
+//
+//        }
+//
+//        if (isset($start)) {
+//            $myDate = date("Y-m-d", $start);
+//
+//            return PluginManufacturersimportsPostImport::checkDate($myDate);
+//        }
 
-      if(isset($start)) {
-         $myDate = date("Y-m-d", $start);
+    }
 
-         return PluginManufacturersimportsPostImport::checkDate($myDate);
-      }
+    /**
+     * @see PluginManufacturersimportsManufacturer::getExpirationDate()
+     */
+    function getExpirationDate($contents) {
+//        $contents = json_decode($contents, true);
+//        //TODO change to have good expiration date with new json
+//        if (isset($contents['Warranty']) && !empty($contents['Warranty'])) {
+//            $maxEnd = 0;
+//
+//            foreach ($contents['Warranty'] as $id => $warranty) {
+//                $myDate  = trim($warranty['End']);
+//                $dateEnd = strtotime($myDate);
+//                if ($dateEnd > $maxEnd) {
+//                    $maxEnd = $dateEnd;
+//                }
+//            }
+//
+//        }
+//
+//        if (isset($maxEnd)) {
+//            $myDate = date("Y-m-d", $maxEnd);
+//
+//            return PluginManufacturersimportsPostImport::checkDate($myDate);
+//        }
 
-   }
+        $field     = "BaseUpmaWarranties";
+        $search    = stristr($contents, $field);
 
-   /**
-    * @see PluginManufacturersimportsManufacturer::getExpirationDate()
-    */
-   function getExpirationDate($contents) {
-      $contents = json_decode($contents, true);
-      //TODO change to have good expiration date with new json
-      if(isset($contents['Warranty']) && !empty($contents['Warranty'])){
-         $maxEnd = 0;
+        $myEndDate = substr($search, 29, 10);
 
-         foreach ($contents['Warranty'] as $id => $warranty){
-            $myDate = trim($warranty['End']);
-            $dateEnd = strtotime($myDate);
-            if($dateEnd > $maxEnd){
-               $maxEnd = $dateEnd;
-            }
-         }
+        $myEndDate = trim($myEndDate);
+        $myEndDate = PluginManufacturersimportsPostImport::checkDate($myEndDate);
+        return $myEndDate;
+    }
 
-      }
-
-      if(isset($maxEnd)) {
-         $myDate = date("Y-m-d", $maxEnd);
-
-         return PluginManufacturersimportsPostImport::checkDate($myDate);
-      }
-   }
-
-   /**
-    * @see PluginManufacturersimportsManufacturer::getWarrantyInfo()
-    */
-   function getWarrantyInfo($contents) {
-      $contents = json_decode($contents, true);
-
-      //TODO change to have good information with new json
-      $warranty_info = false;
-      if(isset($contents['Warranty']) && !empty($contents['Warranty'])){
-         $maxEnd = 0;
-
-         foreach ($contents['Warranty'] as $id => $warranty){
-            $myDate = trim($warranty['End']);
-            $dateEnd = strtotime($myDate);
-            if($dateEnd > $maxEnd){
-               $maxEnd = $dateEnd;
-               if(isset($warranty["Description"])){
-                  $warranty_info = $warranty["Description"];
-               }else{
-                  $warranty_info = $warranty["Type"]." - ".$warranty["Name"];
-               }
-            }
-         }
-
-      }
-      if (strlen($warranty_info) > 255) {
-         $warranty_info = substr($warranty_info, 0, 254);
-      }
-      return $warranty_info;
-   }
+    /**
+     * @see PluginManufacturersimportsManufacturer::getWarrantyInfo()
+     */
+    function getWarrantyInfo($contents) {
+//        $contents = json_decode($contents, true);
+//
+//        //TODO change to have good information with new json
+//        $warranty_info = false;
+//        if (isset($contents['Warranty']) && !empty($contents['Warranty'])) {
+//            $maxEnd = 0;
+//
+//            foreach ($contents['Warranty'] as $id => $warranty) {
+//                $myDate  = trim($warranty['End']);
+//                $dateEnd = strtotime($myDate);
+//                if ($dateEnd > $maxEnd) {
+//                    $maxEnd = $dateEnd;
+//                    if (isset($warranty["Description"])) {
+//                        $warranty_info = $warranty["Description"];
+//                    } else {
+//                        $warranty_info = $warranty["Type"] . " - " . $warranty["Name"];
+//                    }
+//                }
+//            }
+//
+//        }
+//        if (strlen($warranty_info) > 255) {
+//            $warranty_info = substr($warranty_info, 0, 254);
+//        }
+//        return $warranty_info;
+    }
 }

@@ -28,82 +28,92 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access directly to this file");
+    die("Sorry. You can't access directly to this file");
 }
 
 /**
  * Class PluginManufacturersimportsWortmann_ag
  */
-class PluginManufacturersimportsWortmann_ag extends PluginManufacturersimportsManufacturer {
+class PluginManufacturersimportsWortmann_ag extends PluginManufacturersimportsManufacturer
+{
+    /**
+     * @see PluginManufacturersimportsManufacturer::showDocTitle()
+     */
+    public function showDocTitle($output_type, $header_num)
+    {
+        return false;
+    }
 
-   /**
-    * @see PluginManufacturersimportsManufacturer::showDocTitle()
-    */
-   function showDocTitle($output_type, $header_num) {
-      return false;
-   }
+    public function getSearchField()
+    {
+        return "search";
+    }
 
-   function getSearchField() {
-      return "search";
-   }
+    /**
+     * @see PluginManufacturersimportsManufacturer::getSupplierInfo()
+     */
+    public function getSupplierInfo(
+        $compSerial = null,
+        $otherSerial = null,
+        $key = null,
+        $apisecret = null,
+        $supplierUrl = null
+    )
+    {
+        $info["name"]         = PluginManufacturersimportsConfig::WORTMANN_AG;
+        $info["supplier_url"] = "https://www.wortmann.de/fr-fr/profile/snsearch.aspx?SN=";
+        $info["url"]          = $supplierUrl.$compSerial;
+        return $info;
+    }
 
-   /**
-    * @see PluginManufacturersimportsManufacturer::getSupplierInfo()
-    */
-   function getSupplierInfo($compSerial = null, $otherSerial = null, $key = null, $apisecret = null,
-                            $supplierUrl = null) {
-      $info["name"]         = PluginManufacturersimportsConfig::WORTMANN_AG;
-      $info["supplier_url"] = "https://www.wortmann.de/fr-fr/profile/snsearch.aspx?SN=";
-      $info["url"]          = $supplierUrl.$compSerial;
-      return $info;
-   }
+    /**
+     * @see PluginManufacturersimportsManufacturer::getBuyDate()
+     */
+    public function getBuyDate($contents)
+    {
+        $field     = "but de la garantie";
+        $searchstart = stristr($contents, $field);
+        $myDate = substr($searchstart, 27, 10);
 
-   /**
-    * @see PluginManufacturersimportsManufacturer::getBuyDate()
-    */
-   function getBuyDate($contents) {
-      $field     = "but de la garantie";
-      $searchstart = stristr($contents, $field);
-      $myDate = substr($searchstart, 27, 10);
+        $myDate = trim($myDate);
+        $myDate = str_replace('/', '-', $myDate);
 
-      $myDate = trim($myDate);
-      $myDate = str_replace('/', '-', $myDate);
+        $myDate = PluginManufacturersimportsPostImport::checkDate($myDate, true);
 
-      $myDate = PluginManufacturersimportsPostImport::checkDate($myDate, true);
+        if ($myDate != "0000-00-00") {
+            list($day, $month, $year) = explode('-', $myDate);
+            $myDate = date("Y-m-d", mktime(0, 0, 0, $month, $day, $year));
+        }
 
-      if ($myDate != "0000-00-00") {
-         list($day, $month, $year) = explode('-', $myDate);
-         $myDate = date("Y-m-d", mktime(0, 0, 0, $month, $day, $year));
-      }
+        return $myDate;
+    }
 
-      return $myDate;
-   }
+    /**
+     * @see PluginManufacturersimportsManufacturer::getStartDate()
+     */
+    public function getStartDate($contents)
+    {
+        return self::getBuyDate($contents);
+    }
 
-   /**
-    * @see PluginManufacturersimportsManufacturer::getStartDate()
-    */
-   function getStartDate($contents) {
+    /**
+     * @see PluginManufacturersimportsManufacturer::getExpirationDate()
+     */
+    public function getExpirationDate($contents)
+    {
+        $field     = "Fin de garantie";
+        $searchstart = stristr($contents, $field);
+        $myDate = substr($searchstart, 24, 10);
 
-      return self::getBuyDate($contents);
-   }
+        $myDate = trim($myDate);
+        $myDate = str_replace('/', '-', $myDate);
 
-   /**
-    * @see PluginManufacturersimportsManufacturer::getExpirationDate()
-    */
-   function getExpirationDate($contents) {
-      $field     = "Fin de garantie";
-      $searchstart = stristr($contents, $field);
-      $myDate = substr($searchstart, 24, 10);
+        $myDate = PluginManufacturersimportsPostImport::checkDate($myDate, true);
 
-      $myDate = trim($myDate);
-      $myDate = str_replace('/', '-', $myDate);
-
-      $myDate = PluginManufacturersimportsPostImport::checkDate($myDate, true);
-
-      if ($myDate != "0000-00-00") {
-         list($day, $month, $year) = explode('-', $myDate);
-         $myDate = date("Y-m-d", mktime(0, 0, 0, $month, $day, $year));
-      }
-      return $myDate;
-   }
+        if ($myDate != "0000-00-00") {
+            list($day, $month, $year) = explode('-', $myDate);
+            $myDate = date("Y-m-d", mktime(0, 0, 0, $month, $day, $year));
+        }
+        return $myDate;
+    }
 }

@@ -28,111 +28,121 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access directly to this file");
+    die("Sorry. You can't access directly to this file");
 }
 
 /**
  * Class PluginManufacturersimportsImport
  */
-class PluginManufacturersimportsImport extends CommonDBTM {
+class PluginManufacturersimportsImport extends CommonDBTM
+{
+    /**
+     * Import via le cron
+     *
+     * @param type  $supplier
+     *
+     * @return int
+     * @global type $DB
+     *
+     */
+    public static function importCron($task, $supplier)
+    {
+        global $DB;
 
-   /**
-    * Import via le cron
-    *
-    * @param type  $supplier
-    *
-    * @return int
-    * @global type $DB
-    *
-    */
-   static function importCron($task, $supplier) {
-      global $DB;
+        $config = new PluginManufacturersimportsConfig();
+        $config->getFromDBByCrit(['name' => $supplier]);
 
-      $config = new PluginManufacturersimportsConfig();
-      $config->getFromDBByCrit(['name' => $supplier]);
+        $log = new PluginManufacturersimportsLog();
 
-      $log = new PluginManufacturersimportsLog();
+        $suppliername = $config->fields["name"];
+        $supplierUrl  = $config->fields["supplier_url"];
+        $supplierkey  = $config->fields["supplier_key"];
+        $supplierId   = $config->fields["suppliers_id"];
 
-      $suppliername = $config->fields["name"];
-      $supplierUrl  = $config->fields["supplier_url"];
-      $supplierkey  = $config->fields["supplier_key"];
-      $supplierId   = $config->fields["suppliers_id"];
+        $toview = ["name" => 1];
 
-      $toview = ["name" => 1];
-
-      $params                     = [];
-      $params['manufacturers_id'] = $config->getID();
-      $params['imported']         = 1;
-      $params['sort']             = 1;
-      $params['order']            = "ASC";
-      $params['start']            = 0;
+        $params                     = [];
+        $params['manufacturers_id'] = $config->getID();
+        $params['imported']         = 1;
+        $params['sort']             = 1;
+        $params['order']            = "ASC";
+        $params['start']            = 0;
 
       //      $types = PluginManufacturersimportsConfig::getTypes();
 
-      $nb_import_error = 0;
-      $msg             = "";
+        $nb_import_error = 0;
+        $msg             = "";
 
       //      foreach ($types as $type) {
-      $type               = "Computer";
-      $params['itemtype'] = $type;
-      $query              = PluginManufacturersimportsPreImport::queryImport($params, $config, $toview, true);
+        $type               = "Computer";
+        $params['itemtype'] = $type;
+        $query              = PluginManufacturersimportsPreImport::queryImport($params, $config, $toview, true);
 
-      $result = $DB->query($query);
+        $result = $DB->query($query);
 
-      if ($DB->numrows($result) > 0) {
-         while ($data = $DB->fetchArray($result)) {
+        if ($DB->numrows($result) > 0) {
+            while ($data = $DB->fetchArray($result)) {
+                $log->reinitializeImport($type, $data['id']);
 
-            $log->reinitializeImport($type, $data['id']);
+                $compSerial = $data['serial'];
+                $ID         = $data['id'];
 
-            $compSerial = $data['serial'];
-            $ID         = $data['id'];
+                $model       = new PluginManufacturersimportsModel();
+                $otherSerial = $model->checkIfModelNeeds($type, $ID);
 
-            $model       = new PluginManufacturersimportsModel();
-            $otherSerial = $model->checkIfModelNeeds($type, $ID);
+                $url  = PluginManufacturersimportsPreImport::selectSupplier(
+                    $suppliername,
+                    $supplierUrl,
+                    $compSerial,
+                    $otherSerial,
+                    $supplierkey
+                );
+                $post = PluginManufacturersimportsPreImport::getSupplierPost(
+                    $suppliername,
+                    $compSerial,
+                    $otherSerial
+                );
 
-            $url  = PluginManufacturersimportsPreImport::selectSupplier($suppliername, $supplierUrl,
-                                                                        $compSerial, $otherSerial, $supplierkey);
-            $post = PluginManufacturersimportsPreImport::getSupplierPost($suppliername, $compSerial,
-                                                                         $otherSerial);
+                $options = ["url"     => $url,
+                            "post"    => $post,
+                            "type"    => $type,
+                            "ID"      => $ID,
+                            "config"  => $config,
+                            "line"    => $data,
+                            "display" => false];
+                
+                if ($suppliername == PluginManufacturersimportsConfig::DELL) {
+                    $supplierclass    = "PluginManufacturersimports" . $suppliername;
+                    $token            = $supplierclass::getToken($config);
+                    $warranty_url     = $supplierclass::getWarrantyUrl($config, $compSerial);
+                    $options['token'] = $token;
+                    if (isset($warranty_url)) {
+                        $options['url'] = $warranty_url['url'];
+                    }
+                }
+                if ($suppliername == PluginManufacturersimportsConfig::HP) {
+                    $supplierclass    = "PluginManufacturersimports" . $suppliername;
+                    $warranty_url     = $supplierclass::getWarrantyUrl($config, $compSerial);
+                    if (isset($warranty_url)) {
+                        $options['url'] = $warranty_url['url'];
+                    }
+                }
 
-            $options = ["url"     => $url,
-                        "post"    => $post,
-                        "type"    => $type,
-                        "ID"      => $ID,
-                        "config"  => $config,
-                        "line"    => $data,
-                        "display" => false];
-
-            if ($suppliername == PluginManufacturersimportsConfig::LENOVO) {
-               $options['ClientID'] = $supplierkey;
+                if (PluginManufacturersimportsPostImport::saveImport($options)) {
+                    $task->addVolume(1);
+                } else {
+                    $nb_import_error += 1;
+                }
             }
-
-            if ($suppliername == PluginManufacturersimportsConfig::DELL) {
-               $supplierclass    = "PluginManufacturersimports" . $suppliername;
-               $token            = $supplierclass::getToken($config);
-               $warranty_url     = $supplierclass::getWarrantyUrl($config, $compSerial);
-               $options['token'] = $token;
-               if (isset($warranty_url)) {
-                  $options['url'] = $warranty_url['url'];
-               }
-            }
-
-            if (PluginManufacturersimportsPostImport::saveImport($options)) {
-               $task->addVolume(1);
-            } else {
-               $nb_import_error += 1;
-            }
-         }
-      }
+        }
 
       //      }
-      if ($task) {
-         $task->log(__('Import OK', 'manufacturersimports'));
+        if ($task) {
+            $task->log(__('Import OK', 'manufacturersimports'));
 
-         $task->addVolume($nb_import_error);
-         $task->log(__('Import failed', 'manufacturersimports'));
-      }
-      return true;
-
-   }
+            $task->addVolume($nb_import_error);
+            $task->log(__('Import failed', 'manufacturersimports'));
+        }
+        return true;
+    }
 }

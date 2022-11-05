@@ -28,84 +28,96 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access directly to this file");
+    die("Sorry. You can't access directly to this file");
 }
 
 /**
  * Class PluginManufacturersimportsToshiba
  */
-class PluginManufacturersimportsToshiba extends PluginManufacturersimportsManufacturer {
+class PluginManufacturersimportsToshiba extends PluginManufacturersimportsManufacturer
+{
+    /**
+     * @see PluginManufacturersimportsManufacturer::showDocTitle()
+     */
+    public function showDocTitle($output_type, $header_num)
+    {
+        return Search::showHeaderItem($output_type, __('File'), $header_num);
+    }
 
-   /**
-    * @see PluginManufacturersimportsManufacturer::showDocTitle()
-    */
-   function showDocTitle($output_type, $header_num) {
-      return Search::showHeaderItem($output_type, __('File'), $header_num);
-   }
+    public function getSearchField()
+    {
+        return false;
+    }
 
-   function getSearchField() {
-      return false;
-   }
+    /**
+     * @see PluginManufacturersimportsManufacturer::getSupplierInfo()
+     */
+    public function getSupplierInfo(
+        $compSerial = null,
+        $otherSerial = null,
+        $key = null,
+        $apisecret = null,
+        $supplierUrl = null
+    )
+    {
+        $info["name"]         = PluginManufacturersimportsConfig::TOSHIBA;
+        $info["supplier_url"] = "https://support.dynabook.com/support/warrantyResults?";
+        $info["url"]          = $supplierUrl .
+                                "sno=" . $compSerial;
+        return $info;
+    }
 
-   /**
-    * @see PluginManufacturersimportsManufacturer::getSupplierInfo()
-    */
-   function getSupplierInfo($compSerial = null, $otherSerial = null, $key = null, $apisecret = null,
-                            $supplierUrl = null) {
-      $info["name"]         = PluginManufacturersimportsConfig::TOSHIBA;
-      $info["supplier_url"] = "https://support.dynabook.com/support/warrantyResults?";
-      $info["url"]          = $supplierUrl .
-                              "sno=" . $compSerial;
-      return $info;
-   }
+    /**
+     * Summary of getWarrantyUrl
+     *
+     * @param  $config
+     * @param  $compSerial
+     *
+     * @return string[]
+     */
+    public static function getWarrantyUrl($config, $compSerial)
+    {
+        return ["url" => "https://support.dynabook.com/support/warrantyResults?sno=" . "$compSerial"];
+    }
 
-   /**
-    * Summary of getWarrantyUrl
-    *
-    * @param  $config
-    * @param  $compSerial
-    *
-    * @return string[]
-    */
-   static function getWarrantyUrl($config, $compSerial) {
-      return ["url" => "https://support.dynabook.com/support/warrantyResults?sno=" . "$compSerial"];
-   }
+    /**
+     * @see PluginManufacturersimportsManufacturer::getBuyDate()
+     */
+    public function getBuyDate($contents)
+    {
+        $field  = "shipDate";
+        $search = stristr($contents, $field);
+        $myDate = substr($search, 11, 21);
+        $myDate = trim($myDate);
+        $myDate = PluginManufacturersimportsPostImport::checkDate($myDate);
 
-   /**
-    * @see PluginManufacturersimportsManufacturer::getBuyDate()
-    */
-   function getBuyDate($contents) {
-      $field  = "shipDate";
-      $search = stristr($contents, $field);
-      $myDate = substr($search, 11, 21);
-      $myDate = trim($myDate);
-      $myDate = PluginManufacturersimportsPostImport::checkDate($myDate);
+        return $myDate;
+    }
 
-      return $myDate;
-   }
+    /**
+     * @see PluginManufacturersimportsManufacturer::getStartDate()
+     */
+    public function getStartDate($contents)
+    {
+        $field  = "customerPurchaseDate";
+        $search = stristr($contents, $field);
+        $myDate = substr($search, 23, 21);
+        $myDate = trim($myDate);
+        $myDate = PluginManufacturersimportsPostImport::checkDate($myDate);
 
-   /**
-    * @see PluginManufacturersimportsManufacturer::getStartDate()
-    */
-   function getStartDate($contents) {
-      $field  = "customerPurchaseDate";
-      $search = stristr($contents, $field);
-      $myDate = substr($search, 23, 21);
-      $myDate = trim($myDate);
-      $myDate = PluginManufacturersimportsPostImport::checkDate($myDate);
+        return $myDate;
+    }
 
-      return $myDate;
-   }
-
-   /**
-    * @see PluginManufacturersimportsManufacturer::getExpirationDate()
-    */
-   function getExpirationDate($contents) {
-      $field     = "warrantyExpiryDate";
-      $search    = stristr($contents, $field);
-      $myEndDate = substr($search, 21, 21);
-      $myEndDate = trim($myEndDate);
-      $myEndDate = PluginManufacturersimportsPostImport::checkDate($myEndDate);
-      return $myEndDate;
-   }
+    /**
+     * @see PluginManufacturersimportsManufacturer::getExpirationDate()
+     */
+    public function getExpirationDate($contents)
+    {
+        $field     = "warrantyExpiryDate";
+        $search    = stristr($contents, $field);
+        $myEndDate = substr($search, 21, 21);
+        $myEndDate = trim($myEndDate);
+        $myEndDate = PluginManufacturersimportsPostImport::checkDate($myEndDate);
+        return $myEndDate;
+    }
 }

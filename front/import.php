@@ -27,21 +27,25 @@
  --------------------------------------------------------------------------
  */
 
-include ('../../../inc/includes.php');
+include('../../../inc/includes.php');
 
 
-Html::header(PluginManufacturersimportsPreImport::getTypeName(), '',
-             "tools", "pluginmanufacturersimportsmenu");
+Html::header(
+    PluginManufacturersimportsPreImport::getTypeName(),
+    '',
+    "tools",
+    "pluginmanufacturersimportsmenu"
+);
 
 $preimport = new PluginManufacturersimportsPreImport();
 if ($preimport->canView() || Session::haveRight("config", UPDATE)) {
-   $values = $_GET;
-   if (isset($_POST["typechoice"])) {
-      $values = $_POST;
-   }
-   PluginManufacturersimportsPreImport::searchForm($values);
-   PluginManufacturersimportsPreImport::seePreImport($values);
+    $values = $_GET;
+    if (isset($_POST["typechoice"])) {
+        $values = $_POST;
+    }
+    PluginManufacturersimportsPreImport::searchForm($values);
+    PluginManufacturersimportsPreImport::seePreImport($values);
 } else {
-   Html::displayRightError();
+    Html::displayRightError();
 }
 Html::footer();

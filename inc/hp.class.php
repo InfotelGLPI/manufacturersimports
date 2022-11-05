@@ -28,96 +28,85 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access directly to this file");
+    die("Sorry. You can't access directly to this file");
 }
 
 /**
  * Class PluginManufacturersimportsHP
  */
-class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacturer {
+class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacturer
+{
+    /**
+     * @see PluginManufacturersimportsManufacturer::showDocTitle()
+     */
+    public function showDocTitle($output_type, $header_num)
+    {
+        return Search::showHeaderItem($output_type, __('File'), $header_num);
+    }
 
-   /**
-    * @see PluginManufacturersimportsManufacturer::showDocTitle()
-    */
-   function showDocTitle($output_type, $header_num) {
-      return Search::showHeaderItem($output_type, __('File'), $header_num);
-   }
+    public function getSearchField()
+    {
+        return false;
+    }
 
-   function getSearchField() {
-      return false;
-   }
+    /**
+     * @see PluginManufacturersimportsManufacturer::getSupplierInfo()
+     */
+    public function getSupplierInfo(
+        $compSerial = null,
+        $otherSerial = null,
+        $key = null,
+        $apisecret = null,
+        $supplierUrl = null
+    ) {
+        $info["name"]         = PluginManufacturersimportsConfig::HP;
+        $info["supplier_url"] = "https://warrantyapiproxy.azurewebsites.net/api/HP?serial=";
 
-   /**
-    * @see PluginManufacturersimportsManufacturer::getSupplierInfo()
-    */
-   function getSupplierInfo($compSerial = null, $otherSerial = null, $key = null, $apisecret = null,
-                            $supplierUrl = null) {
-      $info["name"]         = PluginManufacturersimportsConfig::HP;
-      $info["supplier_url"] = "https://css.api.hp.com/oauth/v1/token";
+        $info['url_warranty'] = "https://warrantyapiproxy.azurewebsites.net/api/HP?serial=";
+        $info["url"]          = $supplierUrl.$compSerial;
 
-      $info["url"] = $supplierUrl;
-      $info['url_warranty'] = 'https://css.api.hp.com/productWarranty/v1/queries';
+        return $info;
+    }
 
-      $info['post'] = ['apiKey'    => $key,
-                       'apiSecret' => $apisecret,
-                       'grantType' => 'client_credentials',
-                       'scope'     => 'warranty',
-                       'sn'        => rtrim($compSerial),
-      ];
+    /**
+     * @see PluginManufacturersimportsManufacturer::getBuyDate()
+     */
+    public function getBuyDate($contents)
+    {
+        $info = json_decode($contents, true);
 
-      if (!empty($otherSerial)) {
-         $info['post']['pn'] = $otherSerial;
-      }
+        if (isset($info['StartDate'])) {
+            return $info['StartDate'];
+        }
+    }
 
-      return $info;
-   }
+    /**
+     * @see PluginManufacturersimportsManufacturer::getStartDate()
+     */
+    public function getStartDate($contents)
+    {
+        return self::getBuyDate($contents);
+    }
 
-   /**
-    * @see PluginManufacturersimportsManufacturer::getBuyDate()
-    */
-   function getBuyDate($contents) {
-      $contents = json_decode($contents, true);
-      $contents = reset($contents);
-      if (isset($contents['startDate'])) {
-         return $contents['startDate'];
-      }
-      return false;
-   }
+    /**
+     * @see PluginManufacturersimportsManufacturer::getExpirationDate()
+     */
+    public function getExpirationDate($contents)
+    {
+        $info = json_decode($contents, true);
+        if (isset($info['EndDate'])) {
+            return $info['EndDate'];
+        }
+        return false;
+    }
 
-   /**
-    * @see PluginManufacturersimportsManufacturer::getStartDate()
-    */
-   function getStartDate($contents) {
-      return self::getBuyDate($contents);
-   }
+    /**
+     * @see PluginManufacturersimportsManufacturer::getWarrantyInfo()
+     */
+    public function getWarrantyInfo($contents)
+    {
+        $warrantyInfo = "";
 
-   /**
-    * @see PluginManufacturersimportsManufacturer::getExpirationDate()
-    */
-   function getExpirationDate($contents) {
-
-      $contents = json_decode($contents, true);
-      $contents = reset($contents);
-      if (isset($contents['endDate'])) {
-         return $contents['endDate'];
-      }
-      return false;
-   }
-
-   /**
-    * @see PluginManufacturersimportsManufacturer::getWarrantyInfo()
-    */
-   function getWarrantyInfo($contents) {
-      $contents = json_decode($contents, true);
-      $contents = reset($contents);
-
-      $warrantyInfo = "";
-      if (isset($contents['status'])) {
-         $warrantyInfo .= $contents['status'] . " ";
-      }
-      if (isset($contents['type'])) {
-         $warrantyInfo .= $contents['type'] . " ";
-      }
-      return $warrantyInfo;
-   }
+        return $warrantyInfo;
+    }
 }

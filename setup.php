@@ -27,73 +27,80 @@
  --------------------------------------------------------------------------
  */
 
-define('PLUGIN_MANUFACTURERSIMPORTS_VERSION', '3.0.2');
+define('PLUGIN_MANUFACTURERSIMPORTS_VERSION', '3.0.3');
 
 if (!defined("PLUGIN_MANUFACTURERSIMPORTS_DIR")) {
-   define("PLUGIN_MANUFACTURERSIMPORTS_DIR", Plugin::getPhpDir("manufacturersimports"));
-   define("PLUGIN_MANUFACTURERSIMPORTS_NOTFULL_DIR", Plugin::getPhpDir("manufacturersimports",false));
-   define("PLUGIN_MANUFACTURERSIMPORTS_WEBDIR", Plugin::getWebDir("manufacturersimports"));
+    define("PLUGIN_MANUFACTURERSIMPORTS_DIR", Plugin::getPhpDir("manufacturersimports"));
+    define("PLUGIN_MANUFACTURERSIMPORTS_NOTFULL_DIR", Plugin::getPhpDir("manufacturersimports", false));
+    define("PLUGIN_MANUFACTURERSIMPORTS_WEBDIR", Plugin::getWebDir("manufacturersimports"));
 }
 
 // Init the hooks of the plugins -Needed
-function plugin_init_manufacturersimports() {
-   global $PLUGIN_HOOKS, $CFG_GLPI;
+function plugin_init_manufacturersimports()
+{
+    global $PLUGIN_HOOKS, $CFG_GLPI;
 
-   $PLUGIN_HOOKS['csrf_compliant']['manufacturersimports'] = true;
+    $PLUGIN_HOOKS['csrf_compliant']['manufacturersimports'] = true;
 
-   if (Plugin::isPluginActive('manufacturersimports')
-       && Session::getLoginUserID()) {
-      Plugin::registerClass('PluginManufacturersimportsProfile',
-                            ['addtabon' => 'Profile']);
+    if (Plugin::isPluginActive('manufacturersimports')
+        && Session::getLoginUserID()) {
+        Plugin::registerClass(
+            'PluginManufacturersimportsProfile',
+            ['addtabon' => 'Profile']
+        );
 
-      //Display menu entry only if user has right to see it !
-      if (Session::haveRight('plugin_manufacturersimports', READ)) {
-         $PLUGIN_HOOKS["menu_toadd"]['manufacturersimports']
-            = ['tools' => 'PluginManufacturersimportsMenu'];
-      }
+        //Display menu entry only if user has right to see it !
+        if (Session::haveRight('plugin_manufacturersimports', READ)) {
+            $PLUGIN_HOOKS["menu_toadd"]['manufacturersimports']
+               = ['tools' => 'PluginManufacturersimportsMenu'];
+        }
 
-      if (Session::haveRight('config', UPDATE)) {
-         $PLUGIN_HOOKS['config_page']['manufacturersimports']
-                                                                     = 'front/config.php';
-         $PLUGIN_HOOKS['use_massive_action']['manufacturersimports'] = 1;
-      }
+        if (Session::haveRight('config', UPDATE)) {
+            $PLUGIN_HOOKS['config_page']['manufacturersimports']
+                                                                        = 'front/config.php';
+            $PLUGIN_HOOKS['use_massive_action']['manufacturersimports'] = 1;
+        }
 
-      // End init, when all types are registered
-      $PLUGIN_HOOKS['post_init']['manufacturersimports']
-         = 'plugin_manufacturersimports_postinit';
+        // End init, when all types are registered
+        $PLUGIN_HOOKS['post_init']['manufacturersimports']
+           = 'plugin_manufacturersimports_postinit';
 
-      $PLUGIN_HOOKS['infocom']['manufacturersimports']       = ['PluginManufacturersimportsConfig', 'showForInfocom'];
-      $PLUGIN_HOOKS['pre_show_item']['manufacturersimports'] = ['PluginManufacturersimportsConfig', 'showItemImport'];
-   }
+        $PLUGIN_HOOKS['infocom']['manufacturersimports']       = ['PluginManufacturersimportsConfig', 'showForInfocom'];
+        $PLUGIN_HOOKS['pre_show_item']['manufacturersimports'] = ['PluginManufacturersimportsConfig', 'showItemImport'];
+    }
 
-   if (isset($_SESSION['glpiactiveprofile']['interface'])
-       && $_SESSION['glpiactiveprofile']['interface'] == 'central') {
-      // Add specific files to add to the header : javascript or css
-      $PLUGIN_HOOKS['add_css']['manufacturersimports'] = [
-         "manufacturersimports.css",
-      ];
-   }
-
+    if (isset($_SESSION['glpiactiveprofile']['interface'])
+        && $_SESSION['glpiactiveprofile']['interface'] == 'central') {
+        // Add specific files to add to the header : javascript or css
+        $PLUGIN_HOOKS['add_css']['manufacturersimports'] = [
+           "manufacturersimports.css",
+        ];
+    }
 }
 
 // Get the name and the version of the plugin - Needed
-function plugin_version_manufacturersimports() {
-   return ['name'         => _n('Suppliers import', 'Suppliers imports', 2,
-                                'manufacturersimports'),
-           'oldname'      => 'suppliertag',
-           'version'      => PLUGIN_MANUFACTURERSIMPORTS_VERSION,
-           'license'      => 'GPLv2+',
-           'author'       => "<a href='http://infotel.com/services/expertise-technique/glpi/'>Infotel</a>",
-           'homepage'     => 'https://github.com/InfotelGLPI/manufacturersimports/',
-           'requirements' => [
-              'glpi' => [
-                 'min' => '10.0',
-                 'max' => '11.0',
-                 'dev' => false
-              ],
-              'php'  => [
-                 'exts' => ['soap', 'curl', 'json'],
-              ]
-           ]
-   ];
+function plugin_version_manufacturersimports()
+{
+    return ['name'         => _n(
+        'Suppliers import',
+        'Suppliers imports',
+        2,
+        'manufacturersimports'
+    ),
+            'oldname'      => 'suppliertag',
+            'version'      => PLUGIN_MANUFACTURERSIMPORTS_VERSION,
+            'license'      => 'GPLv2+',
+            'author'       => "<a href='http://infotel.com/services/expertise-technique/glpi/'>Infotel</a>",
+            'homepage'     => 'https://github.com/InfotelGLPI/manufacturersimports/',
+            'requirements' => [
+               'glpi' => [
+                  'min' => '10.0',
+                  'max' => '11.0',
+                  'dev' => false
+               ],
+               'php'  => [
+                  'exts' => ['soap', 'curl', 'json'],
+               ]
+            ]
+    ];
 }

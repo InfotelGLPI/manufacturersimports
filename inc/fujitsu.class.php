@@ -28,81 +28,90 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access directly to this file");
+    die("Sorry. You can't access directly to this file");
 }
 
 /**
  * Class PluginManufacturersimportsFujitsu
  */
-class PluginManufacturersimportsFujitsu extends PluginManufacturersimportsManufacturer {
+class PluginManufacturersimportsFujitsu extends PluginManufacturersimportsManufacturer
+{
+    /**
+     * @see PluginManufacturersimportsManufacturer::showDocTitle()
+     */
+    public function showDocTitle($output_type, $header_num)
+    {
+        return Search::showHeaderItem($output_type, __('File'), $header_num);
+    }
 
-   /**
-    * @see PluginManufacturersimportsManufacturer::showDocTitle()
-    */
-   function showDocTitle($output_type, $header_num) {
-      return Search::showHeaderItem($output_type, __('File'), $header_num);
-   }
+    public function getSearchField()
+    {
+        return false;
+    }
 
-   function getSearchField() {
-      return false;
-   }
+    /**
+     * @see PluginManufacturersimportsManufacturer::getSupplierInfo()
+     */
+    public function getSupplierInfo(
+        $compSerial = null,
+        $otherSerial = null,
+        $key = null,
+        $apisecret = null,
+        $supplierUrl = null
+    )
+    {
+        $info["name"]         = PluginManufacturersimportsConfig::FUJITSU;
+        $info["supplier_url"] = 'https://support.ts.fujitsu.com/ProductCheck/Default.aspx?Lng=en&GotoDiv=Warranty/WarrantyStatus&DivID=indexwarranty&GotoUrl=IndexWarranty&RegionID=1&Token=${$i$M$f$u&Ident=';
+        $info["url"]          = $supplierUrl.$compSerial;
+        $info["url_web"]      = "https://support.ts.fujitsu.com/IndexWarranty.asp?lng=FR";
+        return $info;
+    }
 
-   /**
-    * @see PluginManufacturersimportsManufacturer::getSupplierInfo()
-    */
-   function getSupplierInfo($compSerial = null, $otherSerial = null, $key = null, $apisecret = null,
-                            $supplierUrl = null) {
-      $info["name"]         = PluginManufacturersimportsConfig::FUJITSU;
-      $info["supplier_url"] = 'https://support.ts.fujitsu.com/ProductCheck/Default.aspx?Lng=en&GotoDiv=Warranty/WarrantyStatus&DivID=indexwarranty&GotoUrl=IndexWarranty&RegionID=1&Token=${$i$M$f$u&Ident=';
-      $info["url"]          = $supplierUrl.$compSerial;
-      $info["url_web"]      = "https://support.ts.fujitsu.com/IndexWarranty.asp?lng=FR";
-      return $info;
-   }
+    /**
+     * Summary of getWarrantyUrl
+     *
+     * @param  $config
+     * @param  $compSerial
+     *
+     * @return string[]
+     */
+    public static function getWarrantyUrl($config, $compSerial)
+    {
+        return ["url" => 'https://support.ts.fujitsu.com/ProductCheck/Default.aspx?Lng=en&GotoDiv=Warranty/WarrantyStatus&DivID=indexwarranty&GotoUrl=IndexWarranty&RegionID=1&Token=${$i$M$f$u&Ident=' . "$compSerial"];
+    }
 
-   /**
-    * Summary of getWarrantyUrl
-    *
-    * @param  $config
-    * @param  $compSerial
-    *
-    * @return string[]
-    */
-   static function getWarrantyUrl($config, $compSerial) {
-      return ["url" => 'https://support.ts.fujitsu.com/ProductCheck/Default.aspx?Lng=en&GotoDiv=Warranty/WarrantyStatus&DivID=indexwarranty&GotoUrl=IndexWarranty&RegionID=1&Token=${$i$M$f$u&Ident=' . "$compSerial"];
-   }
+    /**
+     * @see PluginManufacturersimportsManufacturer::getBuyDate()
+     */
+    public function getBuyDate($contents)
+    {
+        $matchesarray = [];
+        preg_match_all("/value=\"(\d{4}\-\d{2}\-\d{2})\" id=\"Firstuse\"/", $contents, $matchesarray);
 
-   /**
-    * @see PluginManufacturersimportsManufacturer::getBuyDate()
-    */
-   function getBuyDate($contents) {
+        $buydate = (isset($matchesarray[1][0])?trim($matchesarray[1][0]):'0000-00-00');
 
-      $matchesarray = [];
-      preg_match_all("/value=\"(\d{4}\-\d{2}\-\d{2})\" id=\"Firstuse\"/", $contents, $matchesarray);
+        return $buydate;
+    }
 
-      $buydate = (isset($matchesarray[1][0])?trim($matchesarray[1][0]):'0000-00-00');
-
-      return $buydate;
-   }
-
-   /**
-    * @see PluginManufacturersimportsManufacturer::getStartDate()
-    */
-   function getStartDate($contents) {
-
-      return self::getBuyDate($contents);
-   }
+    /**
+     * @see PluginManufacturersimportsManufacturer::getStartDate()
+     */
+    public function getStartDate($contents)
+    {
+        return self::getBuyDate($contents);
+    }
 
 
-   /**
-    * @see PluginManufacturersimportsManufacturer::getExpirationDate()
-    */
-   function getExpirationDate($contents) {
+    /**
+     * @see PluginManufacturersimportsManufacturer::getExpirationDate()
+     */
+    public function getExpirationDate($contents)
+    {
+        $matchesarray = [];
+        preg_match_all("/value=\"(\d{4}\-\d{2}\-\d{2})\" id=\"WarrantyEndDate\"/", $contents, $matchesarray);
 
-      $matchesarray = [];
-      preg_match_all("/value=\"(\d{4}\-\d{2}\-\d{2})\" id=\"WarrantyEndDate\"/", $contents, $matchesarray);
+        $expirationdate = (isset($matchesarray[1][0])?trim($matchesarray[1][0]):'0000-00-00');
 
-      $expirationdate = (isset($matchesarray[1][0])?trim($matchesarray[1][0]):'0000-00-00');
-
-      return $expirationdate;
-   }
+        return $expirationdate;
+    }
 }
