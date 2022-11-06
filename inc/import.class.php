@@ -36,6 +36,38 @@ if (!defined('GLPI_ROOT')) {
  */
 class PluginManufacturersimportsImport extends CommonDBTM
 {
+
+    /**
+     * @param $name
+     *
+     * @return array
+     */
+    public static function cronInfo($name)
+    {
+        switch ($name) {
+            case "DataWarrantyImport":
+                return ['description' => PluginManufacturersimportsModel::getTypeName(1) . " - " . __('Warranty import (Dell, HP)', 'manufacturersimports')];
+        }
+        return [];
+    }
+
+
+    /**
+     * Run for data recovery warranties
+     *
+     * @param $task : object of crontask
+     *
+     * @return integer : 0 (nothing to do)
+     *                   >0 (endded)
+     **/
+    public static function cronDataWarrantyImport($task)
+    {
+        $cron_status = PluginManufacturersimportsImport::importCron($task, PluginManufacturersimportsConfig::DELL);
+
+        $cron_status = PluginManufacturersimportsImport::importCron($task, PluginManufacturersimportsConfig::HP);
+
+        return $cron_status;
+    }
     /**
      * Import via le cron
      *
@@ -63,7 +95,7 @@ class PluginManufacturersimportsImport extends CommonDBTM
 
         $params                     = [];
         $params['manufacturers_id'] = $config->getID();
-        $params['imported']         = 1;
+        $params['imported']         = PluginManufacturersimportsPreImport::NOT_IMPORTED;
         $params['sort']             = 1;
         $params['order']            = "ASC";
         $params['start']            = 0;
@@ -110,7 +142,7 @@ class PluginManufacturersimportsImport extends CommonDBTM
                             "config"  => $config,
                             "line"    => $data,
                             "display" => false];
-                
+
                 if ($suppliername == PluginManufacturersimportsConfig::DELL) {
                     $supplierclass    = "PluginManufacturersimports" . $suppliername;
                     $token            = $supplierclass::getToken($config);
@@ -119,6 +151,11 @@ class PluginManufacturersimportsImport extends CommonDBTM
                     if (isset($warranty_url)) {
                         $options['url'] = $warranty_url['url'];
                     }
+                    if (PluginManufacturersimportsPostImport::saveImport($options)) {
+                        $task->addVolume(1);
+                    } else {
+                        $nb_import_error += 1;
+                    }
                 }
                 if ($suppliername == PluginManufacturersimportsConfig::HP) {
                     $supplierclass    = "PluginManufacturersimports" . $suppliername;
@@ -126,12 +163,11 @@ class PluginManufacturersimportsImport extends CommonDBTM
                     if (isset($warranty_url)) {
                         $options['url'] = $warranty_url['url'];
                     }
-                }
-
-                if (PluginManufacturersimportsPostImport::saveImport($options)) {
-                    $task->addVolume(1);
-                } else {
-                    $nb_import_error += 1;
+                    if (PluginManufacturersimportsPostImport::saveImport($options)) {
+                        $task->addVolume(1);
+                    } else {
+                        $nb_import_error += 1;
+                    }
                 }
             }
         }

@@ -34,7 +34,7 @@ function plugin_manufacturersimports_install()
     include_once(PLUGIN_MANUFACTURERSIMPORTS_DIR . "/inc/profile.class.php");
     include_once(PLUGIN_MANUFACTURERSIMPORTS_DIR . "/inc/config.class.php");
 
-    $migration = new Migration("3.0.0");
+    $migration = new Migration("3.0.5");
     $update    = false;
 
     //Root of SQL files for DB installation or upgrade
@@ -102,11 +102,17 @@ function plugin_manufacturersimports_install()
              WHERE `name` ='" . PluginManufacturersimportsConfig::HP . "'";
     $DB->query($query);
 
-    /* Version 1.9.1 */
-    $cron = new CronTask();
-    if (!$cron->getFromDBbyName('PluginManufacturersimportsDell', 'DataRecoveryDELL')) {
-        CronTask::Register('PluginManufacturersimportsDell', 'DataRecoveryDELL', WEEK_TIMESTAMP, ['state' => CronTask::STATE_DISABLE]);
+
+    $cron = new CronTask;
+    if ($cron->getFromDBbyName('PluginManufacturersimportsDell', 'DataRecoveryDELL')) {
+        CronTask::Unregister('ManufacturersimportsDell');
     }
+
+    $cron = new CronTask();
+    if (!$cron->getFromDBbyName('PluginManufacturersimportsImport', 'DataWarrantyImport')) {
+        CronTask::Register('PluginManufacturersimportsImport', 'DataWarrantyImport', WEEK_TIMESTAMP, ['state' => CronTask::STATE_DISABLE]);
+    }
+
 
     if ($update) {
         foreach ($DB->request('glpi_plugin_manufacturersimports_profiles') as $data) {
@@ -160,7 +166,10 @@ function plugin_manufacturersimports_uninstall()
 
     $cron = new CronTask;
     if ($cron->getFromDBbyName('PluginManufacturersimportsDell', 'DataRecoveryDELL')) {
-        CronTask::Unregister('DataRecoveryDELL');
+        CronTask::Unregister('ManufacturersimportsDell');
+    }
+    if ($cron->getFromDBbyName('PluginManufacturersimportsImport', 'DataWarrantyImport')) {
+        CronTask::Unregister('ManufacturersimportsImport');
     }
 
     $profileRight = new ProfileRight();

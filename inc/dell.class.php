@@ -207,36 +207,6 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
     }
 
     /**
-     * @param $name
-     *
-     * @return array
-     */
-    public static function cronInfo($name)
-    {
-        switch ($name) {
-            case "DataRecoveryDELL":
-                return ['description' => PluginManufacturersimportsModel::getTypeName(1) . " - " . __('Warranty import for computer (dell, HP)', 'manufacturersimports')];
-        }
-        return [];
-    }
-
-
-    /**
-     * Run for data recovery DELL
-     *
-     * @param $task : object of crontask
-     *
-     * @return integer : 0 (nothing to do)
-     *                   >0 (endded)
-     **/
-    public static function cronDataRecoveryDELL($task)
-    {
-        $cron_status = PluginManufacturersimportsImport::importCron($task, PluginManufacturersimportsConfig::DELL);
-
-        return $cron_status;
-    }
-
-    /**
      * Summary of getToken
      *
      * @param  $config
