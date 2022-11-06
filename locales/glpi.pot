@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $soft\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-05 14:21+0000\n"
+"POT-Creation-Date: 2022-11-06 10:23+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,18 +18,18 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: hook.php:225 setup.php:85 front/massiveaction.php:40 inc/menu.class.php:45
-#: inc/model.class.php:50 inc/preimport.class.php:51 inc/profile.class.php:71
+#: hook.php:234 setup.php:85 front/massiveaction.php:40 inc/menu.class.php:45
+#: inc/model.class.php:50 inc/preimport.class.php:51 inc/profile.class.php:80
 msgid "Suppliers import"
 msgid_plural "Suppliers imports"
 msgstr[0] ""
 msgstr[1] ""
 
-#: hook.php:230 inc/lenovo.class.php:54
+#: hook.php:239 inc/lenovo.class.php:54
 msgid "Model number"
 msgstr ""
 
-#: hook.php:258
+#: hook.php:267
 msgid "Add new material brand number"
 msgstr ""
 
@@ -104,15 +104,15 @@ msgid ""
 "You did not import the warranty for this item. Do you want to get it back?"
 msgstr ""
 
-#: inc/dell.class.php:218
-msgid "Warranty import for computer (dell, HP)"
+#: inc/import.class.php:49
+msgid "Warranty import (Dell, HP)"
 msgstr ""
 
-#: inc/import.class.php:141 inc/postimport.class.php:729
+#: inc/import.class.php:177 inc/postimport.class.php:729
 msgid "Import OK"
 msgstr ""
 
-#: inc/import.class.php:144 inc/postimport.class.php:835
+#: inc/import.class.php:180 inc/postimport.class.php:835
 msgid "Import failed"
 msgstr ""
 
