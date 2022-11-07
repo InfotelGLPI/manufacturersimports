@@ -120,6 +120,6 @@ class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacture
      */
     public static function getWarrantyUrl($config, $compSerial)
     {
-        return ["url" => $config->fields['warranty_url'] . "$compSerial"];
+        return ["url" => $config->fields['supplier_url'] . "$compSerial"];
     }
 }
