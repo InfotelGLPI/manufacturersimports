@@ -105,9 +105,12 @@ class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacture
      */
     public function getWarrantyInfo($contents)
     {
-        $warrantyInfo = "";
+        $info = json_decode($contents, true);
+        if (isset($info['WarProduct'])) {
+            return $info['WarProduct'];
+        }
 
-        return $warrantyInfo;
+        return false;
     }
 
     /**
