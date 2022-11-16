@@ -680,50 +680,51 @@ class PluginManufacturersimportsConfig extends CommonDBTM
 
             $config       = new PluginManufacturersimportsConfig();
             $suppliername = PluginManufacturersimportsConfig::checkManufacturerName($itemtype, $items_id);
-            $config->getFromDBByCrit(['name' => $suppliername]);
-            $suppliername = $config->fields["name"];
-            $supplierUrl  = $config->fields["supplier_url"];
-            $supplierkey  = $config->fields["supplier_key"];
+            if($config->getFromDBByCrit(['name' => $suppliername])) {
+                $suppliername = $config->fields["name"];
+                $supplierUrl  = $config->fields["supplier_url"];
+                $supplierkey  = $config->fields["supplier_key"];
 
-            $url = PluginManufacturersimportsPreImport::selectSupplier(
-                $suppliername,
-                $supplierUrl,
-                $item->fields['serial'],
-                $item->fields['otherserial'],
-                $supplierkey
-            );
+                $url = PluginManufacturersimportsPreImport::selectSupplier(
+                    $suppliername,
+                    $supplierUrl,
+                    $item->fields['serial'],
+                    $item->fields['otherserial'],
+                    $supplierkey
+                );
 
-            $post = PluginManufacturersimportsPreImport::getSupplierPost(
-                $suppliername,
-                $item->fields['serial'],
-                $item->fields['otherserial']
-            );
+                $post = PluginManufacturersimportsPreImport::getSupplierPost(
+                    $suppliername,
+                    $item->fields['serial'],
+                    $item->fields['otherserial']
+                );
 
-            $data    = [];
-            $options = ["url"     => $url,
-                        "post"    => $post,
-                        "type"    => $itemtype,
-                        "ID"      => $items_id,
-                        "config"  => $config,
-                        "line"    => $data,
-                        "display" => false];
+                $data    = [];
+                $options = ["url"     => $url,
+                            "post"    => $post,
+                            "type"    => $itemtype,
+                            "ID"      => $items_id,
+                            "config"  => $config,
+                            "line"    => $data,
+                            "display" => false];
 
 
-            $supplierclass          = "PluginManufacturersimports" . $suppliername;
-            $token                  = $supplierclass::getToken($config);
-            $warranty_url           = $supplierclass::getWarrantyUrl($config, $item->fields['serial']);
-            $options['token']       = $token;
-            $options['line']['entities_id'] = $item->fields['entities_id'];
-            if (isset($warranty_url['url'])) {
-                $options['url'] = $warranty_url['url'];
+                $supplierclass                  = "PluginManufacturersimports" . $suppliername;
+                $token                          = $supplierclass::getToken($config);
+                $warranty_url                   = $supplierclass::getWarrantyUrl($config, $item->fields['serial']);
+                $options['token']               = $token;
+                $options['line']['entities_id'] = $item->fields['entities_id'];
+                if (isset($warranty_url['url'])) {
+                    $options['url'] = $warranty_url['url'];
+                }
+                if (
+                    isset($_SESSION['glpi_use_mode'])
+                    && ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE)
+                ) {
+                    Toolbox::loginfo($options);
+                }
+                PluginManufacturersimportsPostImport::saveImport($options);
             }
-            if (
-                isset($_SESSION['glpi_use_mode'])
-                && ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE)
-            ) {
-                Toolbox::loginfo($options);
-            }
-            PluginManufacturersimportsPostImport::saveImport($options);
         }
     }
 
