@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $soft\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-07 17:34+0000\n"
+"POT-Creation-Date: 2022-11-16 10:59+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -94,12 +94,12 @@ msgstr ""
 msgid "Manufacturer information"
 msgstr ""
 
-#: inc/config.class.php:663 inc/config.class.php:749
+#: inc/config.class.php:663 inc/config.class.php:750
 msgctxt "button"
 msgid "Retrieve warranty from manufacturer"
 msgstr ""
 
-#: inc/config.class.php:743
+#: inc/config.class.php:744
 msgid ""
 "You did not import the warranty for this item. Do you want to get it back?"
 msgstr ""
