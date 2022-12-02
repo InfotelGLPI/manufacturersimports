@@ -21,7 +21,7 @@ https://techdirect.dell.com
 URL dans le plugin :
 Url du fabricant : https://www.dell.com/support/home/product-support/servicetag/
 Adresse API du token d’accès : https://apigtwb2c.us.dell.com/auth/oauth/v2/token
-Adresse API des garanties : https://apigtwb2c.us.dell.com/auth/oauth/v2/token
+Adresse API des garanties : https://apigtwb2c.us.dell.com/PROD/sbil/eapi/v5/asset-entitlements?servicetags=
 
 > * Pour Lenovo, il faut maintenant s'enregistrer chez Lenovo afin d'avoir une clé API:
 
