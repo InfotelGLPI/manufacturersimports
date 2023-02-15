@@ -95,7 +95,14 @@ class PluginManufacturersimportsLenovo extends PluginManufacturersimportsManufac
             $json = strtok($json, ";");
             $data = json_decode($json,true);
             $myDate = '';
-            if (!empty($data['Shiped'])) {
+            if (isset($data['BaseWarranties']) && !empty($data['BaseWarranties'])) {
+                    foreach ($data['BaseWarranties'] as $warranty) {
+                            if (!empty($warranty['Category']) && $warranty['Category'] == 'MACHINE') {
+                                    $myDate = $warranty["Start"];
+                            }
+                    }
+            }
+            if (empty($myDate) && !empty($data['Shiped'])) {
                     $myDate = $data['Shiped'];
             }
             $myDate = PluginManufacturersimportsPostImport::checkDate($myDate);
@@ -111,18 +118,32 @@ class PluginManufacturersimportsLenovo extends PluginManufacturersimportsManufac
             $json = strtok($json, ";");
             $data = json_decode($json,true);
             $myDate = "";
-            if (isset($data['BaseUpmaWarranties']) && !empty($data['BaseUpmaWarranties'])) {
-                    $maxEnd = 0;
-                    $start  = '';
-                    foreach ($data['BaseUpmaWarranties'] as $warranty) {
-                            $myDate  = trim($warranty['End']);
-                            $dateEnd = strtotime($myDate);
-                            if ($dateEnd > $maxEnd) {
-                                    $maxEnd = $dateEnd;
-                                    $start  = strtotime(trim($warranty['Start']));
+            $maxEnd = 0;
+            $start  = '';
+            if (isset($data['BaseWarranties']) && !empty($data['BaseWarranties'])) {
+                    foreach ($data['BaseWarranties'] as $warranty) {
+                            if (!empty($warranty['Category']) && $warranty['Category'] == 'MACHINE') {
+                                    $myDate  = trim($warranty['End']);
+                                    $dateEnd = strtotime($myDate);
+                                    if ($dateEnd > $maxEnd) {
+                                            $maxEnd = $dateEnd;
+                                            $start  = strtotime(trim($warranty['Start']));
+                                    }
                             }
                     }
 
+            }
+            if (isset($data['UpmaWarranties']) && !empty($data['UpmaWarranties'])) {
+                    foreach ($data['UpmaWarranties'] as $warranty) {
+                            if (!empty($warranty['Category']) && $warranty['Category'] == 'MACHINE') {
+                                    $myDate  = trim($warranty['End']);
+                                    $dateEnd = strtotime($myDate);
+                                    if ($dateEnd > $maxEnd) {
+                                            $maxEnd = $dateEnd;
+                                            $start  = strtotime(trim($warranty['Start']));
+                                    }
+                            }
+                    }
             }
 
             if (!empty($start)) {
@@ -140,18 +161,34 @@ class PluginManufacturersimportsLenovo extends PluginManufacturersimportsManufac
             $json = strtok($json, ";");
             $data = json_decode($json,true);
             $myDate = "";
-            if (isset($data['BaseUpmaWarranties']) && !empty($data['BaseUpmaWarranties'])) {
-                    $maxEnd = 0;
-                    foreach ($data['BaseUpmaWarranties'] as $warranty) {
-                            $myDate  = trim($warranty['End']);
-                            $dateEnd = strtotime($myDate);
-                            if ($dateEnd > $maxEnd) {
-                                    $maxEnd = $dateEnd;
+            $maxEnd = 0;
+            $start  = '';
+            if (isset($data['BaseWarranties']) && !empty($data['BaseWarranties'])) {
+                    foreach ($data['BaseWarranties'] as $warranty) {
+                            if (!empty($warranty['Category']) && $warranty['Category'] == 'MACHINE') {
+                                    $myDate  = trim($warranty['End']);
+                                    $dateEnd = strtotime($myDate);
+                                    if ($dateEnd > $maxEnd) {
+                                            $maxEnd = $dateEnd;
+                                            $start  = strtotime(trim($warranty['Start']));
+                                    }
                             }
                     }
 
             }
+            if (isset($data['UpmaWarranties']) && !empty($data['UpmaWarranties'])) {
+                    foreach ($data['UpmaWarranties'] as $warranty) {
+                            if (!empty($warranty['Category']) && $warranty['Category'] == 'MACHINE') {
+                                    $myDate  = trim($warranty['End']);
+                                    $dateEnd = strtotime($myDate);
+                                    if ($dateEnd > $maxEnd) {
+                                            $maxEnd = $dateEnd;
+                                            $start  = strtotime(trim($warranty['Start']));
+                                    }
+                            }
+                    }
 
+            }
             if (!empty($maxEnd)) {
                     $myDate = date("Y-m-d", $maxEnd);
             }
@@ -171,11 +208,11 @@ class PluginManufacturersimportsLenovo extends PluginManufacturersimportsManufac
             if (isset($data['BaseWarranties']) && !empty($data['BaseWarranties'])) {
                     foreach ($data['BaseWarranties'] as $warranty) {
                             if (!empty($warranty['Category']) && $warranty['Category'] == 'MACHINE') {
-                                    if (!empty($warranty['Description'])) {
-                                            $warranty_desc = $warranty['Description'];
-                                    } else {
+                                    #if (!empty($warranty['Description'])) {
+                                    #        $warranty_desc = $warranty['Description'];
+                                    #} else {
                                             $warranty_desc = $warranty["Type"] . " - " . $warranty["Name"];
-                                    }
+                                    #}
                             }
                     }
 
@@ -183,11 +220,11 @@ class PluginManufacturersimportsLenovo extends PluginManufacturersimportsManufac
             if (isset($data['UpmaWarranties']) && !empty($data['UpmaWarranties'])) {
                     foreach ($data['UpmaWarranties'] as $warranty) {
                             if (!empty($warranty['Category']) && $warranty['Category'] == 'MACHINE') {
-                                    if (!empty($warranty['Description'])) {
-                                            $warranty_desc = $warranty['Description'];
-                                    } else {
+                                    #if (!empty($warranty['Description'])) {
+                                    #        $warranty_desc = $warranty['Description'];
+                                    #} else {
                                             $warranty_desc = $warranty["Type"] . " - " . $warranty["Name"];
-                                    }
+                                    #}
                             }
                     }
 
