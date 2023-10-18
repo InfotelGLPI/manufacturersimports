@@ -732,7 +732,10 @@ class PluginManufacturersimportsConfig extends CommonDBTM
     {
         $item = $params['item'];
 
-        if ($item && in_array($item->getType(), self::getTypes(true))) {
+        if ($item
+            && in_array($item->getType(), self::getTypes(true))
+            && $item->fields['is_template'] == 0) {
+
             $config = new self();
             $log    = new PluginManufacturersimportsLog();
 

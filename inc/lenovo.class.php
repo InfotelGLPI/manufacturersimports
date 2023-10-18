@@ -92,9 +92,13 @@ class PluginManufacturersimportsLenovo extends PluginManufacturersimportsManufac
     function getBuyDate($contents) {
 
 //        $contents = json_decode($contents, true);
-        $field  = "POPDate";
+
+
+        $field  = "BaseWarranties";
         $search = stristr($contents, $field);
-        $myDate = substr($search, 10, 10);
+
+        $myDate = substr($search, 27, 10);
+
         $myDate = trim($myDate);
         $myDate = PluginManufacturersimportsPostImport::checkDate($myDate);
 
@@ -144,9 +148,9 @@ class PluginManufacturersimportsLenovo extends PluginManufacturersimportsManufac
      */
     function getStartDate($contents) {
 
-        $field  = "POPDate";
+        $field  = "BaseWarranties";
         $search = stristr($contents, $field);
-        $myDate = substr($search, 10, 10);
+        $myDate = substr($search, 27, 10);
         $myDate = trim($myDate);
         $myDate = PluginManufacturersimportsPostImport::checkDate($myDate);
 
@@ -201,10 +205,10 @@ class PluginManufacturersimportsLenovo extends PluginManufacturersimportsManufac
 //            return PluginManufacturersimportsPostImport::checkDate($myDate);
 //        }
 
-        $field     = "BaseUpmaWarranties";
+        $field     = "BaseWarranties";
         $search    = stristr($contents, $field);
 
-        $myEndDate = substr($search, 29, 10);
+        $myEndDate = substr($search, 46, 10);
 
         $myEndDate = trim($myEndDate);
         $myEndDate = PluginManufacturersimportsPostImport::checkDate($myEndDate);
