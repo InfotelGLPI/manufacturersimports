@@ -363,7 +363,7 @@ class PluginManufacturersimportsConfig extends CommonDBTM
         echo "<tr>";
         echo "<td class='tab_bg_2 center' colspan='2'>" . __('Manufacturer web address', 'manufacturersimports') . "</td>";
         echo "<td class='tab_bg_2 left' colspan='2'>";
-        echo Html::input('supplier_url', ['value' => $this->fields["supplier_url"], 'size' => 100]);
+        echo Html::input('supplier_url', ['value' => $this->fields["supplier_url"], 'size' => 75]);
         echo "</td>";
         echo "</tr>";
 
@@ -371,13 +371,13 @@ class PluginManufacturersimportsConfig extends CommonDBTM
             echo "<tr>";
             echo "<td class='tab_bg_2 center' colspan='2'>" . __('Access token API address', 'manufacturersimports') . "</td>";
             echo "<td class='tab_bg_2 left' colspan='2'>";
-            echo Html::input('token_url', ['value' => $this->fields["token_url"], 'size' => 100]);
+            echo Html::input('token_url', ['value' => $this->fields["token_url"], 'size' => 75]);
             echo "</td>";
             echo "</tr>";
             echo "<tr>";
             echo "<td class='tab_bg_2 center' colspan='2'>" . __('Warranty API address', 'manufacturersimports') . "</td>";
             echo "<td class='tab_bg_2 left' colspan='2'>";
-            echo Html::input('warranty_url', ['value' => $this->fields["warranty_url"], 'size' => 100]);
+            echo Html::input('warranty_url', ['value' => $this->fields["warranty_url"], 'size' => 75]);
             echo "</td>";
             echo "</tr>";
         }
@@ -406,38 +406,24 @@ class PluginManufacturersimportsConfig extends CommonDBTM
         } else {
             echo Html::hidden('warranty_duration', ['value' => 0]);
         }
-        if ($this->fields["name"] == self::HP) {
-            echo "<tr>";
-            echo "<td class='tab_bg_2 center' colspan='2'>" . __('Manufacturer API key', 'manufacturersimports') . "</td>";
-            echo "<td class='tab_bg_2 left' colspan='2'>";
-            echo Html::input('supplier_key', ['value' => $this->fields["supplier_key"], 'size' => 100]);
-            echo "</td>";
-            echo "</tr>";
-
-            echo "<tr>";
-            echo "<td class='tab_bg_2 center' colspan='2'>" . __('Manufacturer API Secret', 'manufacturersimports') . "</td>";
-            echo "<td class='tab_bg_2 left' colspan='2'>";
-            echo Html::input('supplier_secret', ['value' => $this->fields["supplier_secret"], 'size' => 100]);
-            echo "</td>";
-            echo "</tr>";
-        } elseif ($this->fields["name"] == self::DELL) {
+        if ($this->fields["name"] == self::DELL || $this->fields["name"] == self::HP) {
             echo "<tr>";
             echo "<td class='tab_bg_2 center' colspan='2'>" . __('Client id', 'manufacturersimports') . "</td>";
             echo "<td class='tab_bg_2 left' colspan='2'>";
-            echo Html::input('supplier_key', ['value' => $this->fields["supplier_key"], 'size' => 100]);
+            echo Html::input('supplier_key', ['value' => $this->fields["supplier_key"], 'size' => 75]);
             echo "</td>";
             echo "</tr>";
             echo "<tr>";
             echo "<td class='tab_bg_2 center' colspan='2'>" . __('Client secret', 'manufacturersimports') . "</td>";
             echo "<td class='tab_bg_2 left' colspan='2'>";
-            echo Html::input('supplier_secret', ['value' => $this->fields["supplier_secret"], 'size' => 100]);
+            echo Html::input('supplier_secret', ['value' => $this->fields["supplier_secret"], 'size' => 75]);
             echo "</td>";
             echo "</tr>";
         } elseif ($this->fields["name"] == self::LENOVO) {
             echo "<tr>";
             echo "<td class='tab_bg_2 center' colspan='2'>" . __('Client id', 'manufacturersimports') . "</td>";
             echo "<td class='tab_bg_2 left' colspan='2'>";
-            echo Html::input('supplier_key', ['value' => $this->fields["supplier_key"], 'size' => 100]);
+            echo Html::input('supplier_key', ['value' => $this->fields["supplier_key"], 'size' => 75]);
             echo "</td>";
             echo "</tr>";
         } else {
@@ -716,6 +702,9 @@ class PluginManufacturersimportsConfig extends CommonDBTM
                 $options['line']['entities_id'] = $item->fields['entities_id'];
                 if (isset($warranty_url['url'])) {
                     $options['url'] = $warranty_url['url'];
+                }
+                if (isset($item->fields['serial'])) {
+                    $options['sn'] = $item->fields['serial'];
                 }
                 if (
                     isset($_SESSION['glpi_use_mode'])

@@ -49,23 +49,53 @@ class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacture
         return false;
     }
 
-    /**
-     * @see PluginManufacturersimportsManufacturer::getSupplierInfo()
-     */
+
     public function getSupplierInfo(
         $compSerial = null,
         $otherSerial = null,
         $key = null,
         $apisecret = null,
         $supplierUrl = null
-    ) {
-        $info["name"]         = PluginManufacturersimportsConfig::HP;
-        $info["supplier_url"] = "https://warrantyapiproxy.azurewebsites.net/api/HP?serial=";
+    )
+    {
+        if (!$compSerial) {
+            // by default
+            $info["name"] = PluginManufacturersimportsConfig::HP;
+            $info['supplier_url'] = "https://support.hp.com/fr-fr/check-warranty/";
+            $info['token_url'] = "https://warranty.api.hp.com/oauth/v1/token";
+            $info['warranty_url'] = "https://warranty.api.hp.com/productwarranty/v2/queries";
+            $info["supplier_key"]    = "123456789";
+            $info["supplier_secret"] = "987654321";
+            return $info;
+        }
 
-        $info['url_warranty'] = "https://warrantyapiproxy.azurewebsites.net/api/HP?serial=";
-        $info["url"]          = $supplierUrl.$compSerial;
-
+        $info["url"] = $supplierUrl . "$compSerial";
         return $info;
+    }
+
+    public static function getToken($config)
+    {
+        $token = false;
+        $info['token_url'] = "https://warranty.api.hp.com/oauth/v1/token";
+        // must manage token
+        $options = [
+            "url" => $info["token_url"],
+            "download" => false,
+            "file" => false,
+            "post" => [
+                'client_id' => $config->fields["supplier_key"],
+                'client_secret' => $config->fields["supplier_secret"],
+                'grant_type' => 'client_credentials'
+            ],
+            "suppliername" => $config->fields["name"]
+        ];
+        $contents = PluginManufacturersimportsPostImport::cURLData($options);
+        // must extract from $contents the token bearer
+        $response = json_decode($contents, true);
+        if (isset($response['access_token'])) {
+            $token = $response['access_token'];
+        }
+        return $token;
     }
 
     /**
@@ -73,10 +103,21 @@ class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacture
      */
     public function getBuyDate($contents)
     {
+
         $info = json_decode($contents, true);
 
-        if (isset($info['StartDate'])) {
-            return $info['StartDate'];
+        $max_date = false;
+        if (isset($info[0]['offers'])) {
+            foreach ($info[0]['offers'] as $d) {
+                $date = new \DateTime($d['serviceObligationLineItemStartDate']);
+                if ($max_date == false || $date > $max_date) {
+                    $max_date = $date;
+                }
+            }
+
+            if ($max_date) {
+                return $max_date->format('c');
+            }
         }
     }
 
@@ -94,8 +135,20 @@ class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacture
     public function getExpirationDate($contents)
     {
         $info = json_decode($contents, true);
-        if (isset($info['EndDate'])) {
-            return $info['EndDate'];
+
+        // when several dates are available, will take the last one
+        $max_date = false;
+        if (isset($info[0]['offers'])) {
+            foreach ($info[0]['offers'] as $d) {
+                $date = new \DateTime($d['serviceObligationLineItemEndDate']);
+                if ($max_date == false || $date > $max_date) {
+                    $max_date = $date;
+                }
+            }
+
+            if ($max_date) {
+                return $max_date->format('c');
+            }
         }
         return false;
     }
@@ -106,8 +159,21 @@ class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacture
     public function getWarrantyInfo($contents)
     {
         $info = json_decode($contents, true);
-        if (isset($info['WarProduct'])) {
-            return $info['WarProduct'];
+
+        $max_date = false;
+        $i        = false;
+        if (isset($info[0]['offers'])) {
+            foreach ($info[0]['offers'] as $k => $d) {
+                $date = new \DateTime($d['serviceObligationLineItemEndDate']);
+                if ($max_date == false || $date > $max_date) {
+                    $max_date = $date;
+                    $i        = $k;
+                }
+            }
+        }
+
+        if ($i !== false) {
+            return $info[0]['offers'][$i]['offerDescription'];
         }
 
         return false;
@@ -123,6 +189,7 @@ class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacture
      */
     public static function getWarrantyUrl($config, $compSerial)
     {
-        return ["url" => $config->fields['supplier_url'] . "$compSerial"];
+        $info['warranty_url'] = "https://warranty.api.hp.com/productwarranty/v2/queries";
+        return ["url" => $info['warranty_url']];
     }
 }

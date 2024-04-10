@@ -143,23 +143,12 @@ class PluginManufacturersimportsImport extends CommonDBTM
                             "line"    => $data,
                             "display" => false];
 
-                if ($suppliername == PluginManufacturersimportsConfig::DELL) {
+                if ($suppliername == PluginManufacturersimportsConfig::DELL
+                    || $suppliername == PluginManufacturersimportsConfig::HP) {
                     $supplierclass    = "PluginManufacturersimports" . $suppliername;
                     $token            = $supplierclass::getToken($config);
                     $warranty_url     = $supplierclass::getWarrantyUrl($config, $compSerial);
                     $options['token'] = $token;
-                    if (isset($warranty_url)) {
-                        $options['url'] = $warranty_url['url'];
-                    }
-                    if (PluginManufacturersimportsPostImport::saveImport($options)) {
-                        $task->addVolume(1);
-                    } else {
-                        $nb_import_error += 1;
-                    }
-                }
-                if ($suppliername == PluginManufacturersimportsConfig::HP) {
-                    $supplierclass    = "PluginManufacturersimports" . $suppliername;
-                    $warranty_url     = $supplierclass::getWarrantyUrl($config, $compSerial);
                     if (isset($warranty_url)) {
                         $options['url'] = $warranty_url['url'];
                     }

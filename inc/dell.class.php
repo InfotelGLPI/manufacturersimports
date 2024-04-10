@@ -199,7 +199,7 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
             }
         }
 
-        if ($max_date && $i) {
+        if ($i !== false) {
             return $info[0]['entitlements'][$i]['serviceLevelDescription'];
         }
 

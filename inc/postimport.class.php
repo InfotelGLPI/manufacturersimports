@@ -80,9 +80,20 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
                                                           (new GLPIKey())->decrypt($CFG_GLPI["proxy_passwd"])) : false; // username:password
 
         $url = $options["url"];
+        $sn = null;
+        if (isset($options["sn"])) {
+            $sn = $options["sn"];
+        }
 
         $ch = curl_init();
-
+        if (
+            isset($_SESSION['glpi_use_mode'])
+            && ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE)
+        ) {
+            curl_setopt($ch, CURLOPT_VERBOSE, 1);
+            $fp = fopen(dirname(__FILE__) . '/errorlog.txt', 'w');
+            curl_setopt($ch, CURLOPT_STDERR, $fp);
+        }
         curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
         curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
@@ -114,32 +125,44 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
         }
 
         //Do we have post field to send?
-        if (!empty($options["post"])) {
+        if (!empty($options["post"])
+            && (empty($options['token']) && $options['suppliername'] == PluginManufacturersimportsConfig::HP)) {
+
             //curl_setopt($ch, CURLOPT_POST,true);
             $post = '';
             foreach ($options['post'] as $key => $value) {
                 $post .= $key . '=' . $value . '&';
             }
             $post = rtrim($post, '&');
-            curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type:application/x-www-form-urlencoded"]);
-            curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_POSTREDIR, 2);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
 
-            // ADDED FOR HP curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
-//            if ($options['suppliername'] == PluginManufacturersimportsConfig::HP) {
-//                if (isset($options['access_token'])) {
-//                    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-//                       'accept: application/json',
-//                       'Content-Type: application/json',
-//                       'Authorization: Bearer ' . $options['access_token']
-//                    ]);
-//
-//                    curl_setopt($ch, CURLOPT_POSTFIELDS, "[" . json_encode($options['post']) . "]");
-//                } else {
-//                    curl_setopt($ch, CURLOPT_HTTPHEADER, ['Accept: application/json']);
-//                }
-//            }
+            if (empty($options['token'])) {
+                curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type:application/x-www-form-urlencoded"]);
+                curl_setopt($ch, CURLOPT_POST, true);
+                curl_setopt($ch, CURLOPT_POSTREDIR, 2);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+            }
+            // ADDED FOR HP
+            if ($options['suppliername'] == PluginManufacturersimportsConfig::HP) {
+                if (empty($options['token'])) {
+                    $client_id = $options['post']['client_id'];
+                    $client_secret = $options['post']['client_secret'];
+                    curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+                    curl_setopt($ch, CURLOPT_USERPWD, "$client_id:$client_secret");
+                }
+            }
+        }
+
+        if ($options['suppliername'] == PluginManufacturersimportsConfig::HP) {
+            if (!empty($options['token'])) {
+
+                $authorization = "Authorization: Bearer ".$options['token']; // Prepare the authorisation token
+                curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json' , $authorization ));
+                curl_setopt($ch, CURLOPT_POST, true);
+                $table_serial["sn"] = $sn;
+                $postdata = "[".json_encode($table_serial)."]";
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
+                curl_setopt($ch, CURLOPT_POSTREDIR, 2);
+            }
         }
 
         if (!$options["download"]) {
@@ -455,6 +478,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
             echo "</td>";
 
             $options = ["url"          => isset($warranty_url['url']) ? $warranty_url['url'] : $url,
+                         "sn"          => $line['serial'],
                         "post"         => $post,
                         "type"         => $type,
                         "ID"           => $ID,
@@ -494,6 +518,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
     {
         $default_values                 = [];
         $default_values['url']          = "";
+        $default_values['sn']           = "";
         $default_values['url_warranty'] = "";
         $default_values['post']         = "";
         $default_values['display']      = false;
@@ -538,6 +563,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
         //$msgerr   = "";
 
         $options = ["url"          => $values['url'],
+                    "sn"          => $values['sn'],
                     "download"     => false,
                     "file"         => false,
                     "post"         => $values['post'],
@@ -620,7 +646,8 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
 
             // on cree un doc dans GLPI qu'on va lier au materiel
             if ($adddoc != 0
-                && $suppliername != PluginManufacturersimportsConfig::DELL) {
+                && $suppliername != PluginManufacturersimportsConfig::DELL
+                && $suppliername != PluginManufacturersimportsConfig::HP) {
                 $options                = ["itemtype"     => $values['type'],
                                            "ID"           => $values['ID'],
                                            "url"          => $values['url'],
