@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $soft\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-11 12:16+0000\n"
+"POT-Creation-Date: 2024-04-10 17:34+0000\n"
 "PO-Revision-Date: 2020-11-02 16:09+0000\n"
 "Last-Translator: Kaya Zeren <kayazeren@gmail.com>, 2023\n"
 "Language-Team: Turkish (Turkey) (https://app.transifex.com/infotelGLPI/teams/12364/tr_TR/)\n"
@@ -53,11 +53,11 @@ msgstr "Atanmış varsayılan sağlayıcı "
 msgid "New warranty attached"
 msgstr "Yeni garanti eklendi"
 
-#: inc/config.class.php:259 inc/config.class.php:445
+#: inc/config.class.php:259 inc/config.class.php:431
 msgid "Auto add of document"
 msgstr "Kendiliğinden belge ekleme"
 
-#: inc/config.class.php:276 inc/config.class.php:460
+#: inc/config.class.php:276 inc/config.class.php:446
 msgid "Add a comment line"
 msgstr "Açıklama satırı ekle"
 
@@ -73,37 +73,29 @@ msgstr "Garanti API adresi"
 msgid "New warranty affected by default (Replace if 0)"
 msgstr "Varsayılan olarak yeni garanti kullanılsın (0 ise değiştirin)"
 
-#: inc/config.class.php:411
-msgid "Manufacturer API key"
-msgstr "Üretici API anahtarı"
-
-#: inc/config.class.php:418
-msgid "Manufacturer API Secret"
-msgstr "Üretici API parolası"
-
-#: inc/config.class.php:425 inc/config.class.php:438
+#: inc/config.class.php:411 inc/config.class.php:424
 msgid "Client id"
 msgstr "Müşteri kimliği"
 
-#: inc/config.class.php:431
+#: inc/config.class.php:417
 msgid "Client secret"
 msgstr "Müşteri parolası"
 
-#: inc/config.class.php:452
+#: inc/config.class.php:438
 msgid "Section for document records"
 msgstr "Belge kayıtları bölümü"
 
-#: inc/config.class.php:656 inc/preimport.class.php:384
+#: inc/config.class.php:642 inc/preimport.class.php:384
 #: inc/preimport.class.php:402
 msgid "Manufacturer information"
 msgstr "Üretici bilgileri"
 
-#: inc/config.class.php:663 inc/config.class.php:750
+#: inc/config.class.php:649 inc/config.class.php:742
 msgctxt "button"
 msgid "Retrieve warranty from manufacturer"
 msgstr "Üreticiden garanti bilgilerini al"
 
-#: inc/config.class.php:744
+#: inc/config.class.php:736
 msgid ""
 "You did not import the warranty for this item. Do you want to get it back?"
 msgstr "Bu ögenin garantisini içe aktarmadınız. Geri almak ister misiniz?"
@@ -112,11 +104,11 @@ msgstr "Bu ögenin garantisini içe aktarmadınız. Geri almak ister misiniz?"
 msgid "Warranty import (Dell, HP)"
 msgstr "Garanti içe aktarma (Dell, HP)"
 
-#: inc/import.class.php:177 inc/postimport.class.php:729
+#: inc/import.class.php:166 inc/postimport.class.php:756
 msgid "Import OK"
 msgstr "İçe aktarıldı"
 
-#: inc/import.class.php:180 inc/postimport.class.php:835
+#: inc/import.class.php:169 inc/postimport.class.php:862
 msgid "Import failed"
 msgstr "İçe aktarılamadı"
 
@@ -128,40 +120,40 @@ msgstr "Model numarası"
 msgid "Curl PHP package not installed"
 msgstr "Curl PHP paketi yüklü değil"
 
-#: inc/postimport.class.php:209
+#: inc/postimport.class.php:232
 msgid "Launching of imports"
 msgstr "İçe aktarma başlatılıyor"
 
-#: inc/postimport.class.php:212
+#: inc/postimport.class.php:235
 msgid "Post import"
 msgstr "İçe aktarma sonrası"
 
-#: inc/postimport.class.php:220
+#: inc/postimport.class.php:243
 msgid "Result"
 msgstr "Sonuçlar"
 
-#: inc/postimport.class.php:221
+#: inc/postimport.class.php:244
 msgid "Details"
 msgstr "Ayrıntılar"
 
-#: inc/postimport.class.php:242
+#: inc/postimport.class.php:265
 msgid "Import in progress"
 msgstr "İçe aktarma sürüyor"
 
-#: inc/postimport.class.php:253
+#: inc/postimport.class.php:276
 #, php-format
 msgid "Total number of devices imported %s"
 msgstr "Toplam %s aygıt içe aktarıldı"
 
-#: inc/postimport.class.php:711 inc/postimport.class.php:718
+#: inc/postimport.class.php:738 inc/postimport.class.php:745
 msgid "Imported from web site"
 msgstr "Web sitesinden içe aktarılan"
 
-#: inc/postimport.class.php:712 inc/postimport.class.php:719
+#: inc/postimport.class.php:739 inc/postimport.class.php:746
 msgid "With the manufacturersimports plugin"
 msgstr "manufacturersimports uygulama eki ile"
 
-#: inc/postimport.class.php:858
+#: inc/postimport.class.php:885
 msgid "Connection failed/data download from manufacturer web site"
 msgstr "Bağlantı kesildi / üreticinin sitesinden veri indirilemedi"
 
