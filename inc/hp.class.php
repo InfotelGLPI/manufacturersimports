@@ -76,10 +76,10 @@ class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacture
     public static function getToken($config)
     {
         $token = false;
-        $info['token_url'] = "https://warranty.api.hp.com/oauth/v1/token";
+//        $info['token_url'] = "https://warranty.api.hp.com/oauth/v1/token";
         // must manage token
         $options = [
-            "url" => $info["token_url"],
+            "url" => $config->fields["token_url"],
             "download" => false,
             "file" => false,
             "post" => [
@@ -189,7 +189,6 @@ class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacture
      */
     public static function getWarrantyUrl($config, $compSerial)
     {
-        $info['warranty_url'] = "https://warranty.api.hp.com/productwarranty/v2/queries";
-        return ["url" => $info['warranty_url']];
+        return ["url" => $config->fields['warranty_url']];
     }
 }

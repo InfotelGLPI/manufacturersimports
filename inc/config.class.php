@@ -113,9 +113,18 @@ class PluginManufacturersimportsConfig extends CommonDBTM
                 $infos                        = $supplier->getSupplierInfo();
                 $this->fields["name"]         = $infos["name"];
                 $this->fields["supplier_url"] = $infos["supplier_url"];
-
                 if ($type == self::HP) {
-                    $this->fields["supplier_secret"] = 'abcdefabcdefAaBBBBB';
+                    $this->fields["token_url"] = $infos["token_url"];
+                    $this->fields["warranty_url"] = $infos["warranty_url"];
+                }
+                if ($type == self::DELL) {
+                    $this->fields["token_url"] = $infos["token_url"];
+                    $this->fields["warranty_url"] = $infos["warranty_url"];
+                }
+
+                if ($type == self::HP || $type == self::DELL) {
+                    $this->fields["supplier_key"] = '123456789';
+                    $this->fields["supplier_secret"] = '987654321';
                 }
                 break;
             default:
@@ -367,7 +376,7 @@ class PluginManufacturersimportsConfig extends CommonDBTM
         echo "</td>";
         echo "</tr>";
 
-        if ($this->fields["name"] == self::DELL) {
+        if ($this->fields["name"] == self::DELL || $this->fields["name"] == self::HP) {
             echo "<tr>";
             echo "<td class='tab_bg_2 center' colspan='2'>" . __('Access token API address', 'manufacturersimports') . "</td>";
             echo "<td class='tab_bg_2 left' colspan='2'>";
