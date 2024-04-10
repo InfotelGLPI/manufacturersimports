@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $soft\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-11 12:16+0000\n"
+"POT-Creation-Date: 2024-04-10 17:34+0000\n"
 "PO-Revision-Date: 2020-11-02 16:09+0000\n"
 "Last-Translator: Matheus Rafael, 2023\n"
 "Language-Team: Portuguese (Brazil) (https://app.transifex.com/infotelGLPI/teams/12364/pt_BR/)\n"
@@ -54,11 +54,11 @@ msgstr "Fornecedor padrão anexado"
 msgid "New warranty attached"
 msgstr "Nova garantia anexada"
 
-#: inc/config.class.php:259 inc/config.class.php:445
+#: inc/config.class.php:259 inc/config.class.php:431
 msgid "Auto add of document"
 msgstr "Adição automática de documento"
 
-#: inc/config.class.php:276 inc/config.class.php:460
+#: inc/config.class.php:276 inc/config.class.php:446
 msgid "Add a comment line"
 msgstr "Adicionar uma linha de comentário"
 
@@ -74,37 +74,29 @@ msgstr "Endereço da API de garantia"
 msgid "New warranty affected by default (Replace if 0)"
 msgstr "Nova garantia afetada por padrão (substituir se 0)"
 
-#: inc/config.class.php:411
-msgid "Manufacturer API key"
-msgstr "Chave API do Fabricante"
-
-#: inc/config.class.php:418
-msgid "Manufacturer API Secret"
-msgstr "API Secret do fabricante"
-
-#: inc/config.class.php:425 inc/config.class.php:438
+#: inc/config.class.php:411 inc/config.class.php:424
 msgid "Client id"
 msgstr "ID do Cliente"
 
-#: inc/config.class.php:431
+#: inc/config.class.php:417
 msgid "Client secret"
 msgstr "Secret do Cliente"
 
-#: inc/config.class.php:452
+#: inc/config.class.php:438
 msgid "Section for document records"
 msgstr "Seção para armazenamento de documentos"
 
-#: inc/config.class.php:656 inc/preimport.class.php:384
+#: inc/config.class.php:642 inc/preimport.class.php:384
 #: inc/preimport.class.php:402
 msgid "Manufacturer information"
 msgstr "Informações do fabricante"
 
-#: inc/config.class.php:663 inc/config.class.php:750
+#: inc/config.class.php:649 inc/config.class.php:742
 msgctxt "button"
 msgid "Retrieve warranty from manufacturer"
 msgstr "Recupere a garantia do fabricante"
 
-#: inc/config.class.php:744
+#: inc/config.class.php:736
 msgid ""
 "You did not import the warranty for this item. Do you want to get it back?"
 msgstr "Você não importou a garantia para este item. Você quer recuperá-lo?"
@@ -113,11 +105,11 @@ msgstr "Você não importou a garantia para este item. Você quer recuperá-lo?"
 msgid "Warranty import (Dell, HP)"
 msgstr "Importação de garantia (Dell, HP)"
 
-#: inc/import.class.php:177 inc/postimport.class.php:729
+#: inc/import.class.php:166 inc/postimport.class.php:756
 msgid "Import OK"
 msgstr "Importação OK"
 
-#: inc/import.class.php:180 inc/postimport.class.php:835
+#: inc/import.class.php:169 inc/postimport.class.php:862
 msgid "Import failed"
 msgstr "Importação falhou"
 
@@ -129,40 +121,40 @@ msgstr "Número do modelo"
 msgid "Curl PHP package not installed"
 msgstr "Pacote Curl PHP não está instalado"
 
-#: inc/postimport.class.php:209
+#: inc/postimport.class.php:232
 msgid "Launching of imports"
 msgstr "Lançar importação"
 
-#: inc/postimport.class.php:212
+#: inc/postimport.class.php:235
 msgid "Post import"
 msgstr "Pós-importação"
 
-#: inc/postimport.class.php:220
+#: inc/postimport.class.php:243
 msgid "Result"
 msgstr "Resultado"
 
-#: inc/postimport.class.php:221
+#: inc/postimport.class.php:244
 msgid "Details"
 msgstr "Detalhes"
 
-#: inc/postimport.class.php:242
+#: inc/postimport.class.php:265
 msgid "Import in progress"
 msgstr "Importação em progresso"
 
-#: inc/postimport.class.php:253
+#: inc/postimport.class.php:276
 #, php-format
 msgid "Total number of devices imported %s"
 msgstr "Número total de dispositivos importados %s"
 
-#: inc/postimport.class.php:711 inc/postimport.class.php:718
+#: inc/postimport.class.php:738 inc/postimport.class.php:745
 msgid "Imported from web site"
 msgstr "Importado de site"
 
-#: inc/postimport.class.php:712 inc/postimport.class.php:719
+#: inc/postimport.class.php:739 inc/postimport.class.php:746
 msgid "With the manufacturersimports plugin"
 msgstr "Com o plugin manufacturersimports"
 
-#: inc/postimport.class.php:858
+#: inc/postimport.class.php:885
 msgid "Connection failed/data download from manufacturer web site"
 msgstr "Falha de conexão/download de dados do site do fabricante"
 
