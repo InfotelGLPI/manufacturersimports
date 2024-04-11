@@ -4,11 +4,11 @@
  Manufacturersimports plugin for GLPI
  Copyright (C) 2009-2022 by the Manufacturersimports Development Team.
 
- https://forge.indepnet.net/projects/manufacturersimports
+ https://github.com/InfotelGLPI/manufacturersimports
  -------------------------------------------------------------------------
 
  LICENSE
-		
+
  This file is part of Manufacturersimports.
 
  Manufacturersimports is free software; you can redistribute it and/or modify
@@ -32,7 +32,7 @@ Le matériel doit avoir le bon fabricant (Dell - voir config)
 
 HP
 Le matériel doit avoir le champ numéro de serie rempli avec le TAG HP
-Le matériel doit avoir le champ Numéro de modèle du matériel rempli avec le TAG HP (onglet plugins - Import fabricant)
+Le matériel doit avoir le champ Numéro de modèle du matériel rempli avec le TAG HP (dans le modèle - Numéro du produit)
 Le matériel doit avoir le bon fabricant (HP - voir config)
 
 fujitsu-siemens
@@ -41,7 +41,7 @@ Le matériel doit avoir le bon fabricant (fujitsu-siemens - voir config)
 
 Toshiba
 Le matériel doit avoir le champ numéro de serie rempli avec le TAG Toshiba
-Le matériel doit avoir le champ Numéro de modèle du matériel rempli avec le TAG Toshiba (onglet plugins - Import fabricant)
+Le matériel doit avoir le champ Numéro de modèle du matériel rempli avec le TAG Toshiba (dans le modèle - Numéro du produit)
 Le matériel doit avoir le bon fabricant (Toshiba - voir config)
 
 Wortmann AG
