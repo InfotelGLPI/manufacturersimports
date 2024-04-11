@@ -91,56 +91,23 @@ class PluginManufacturersimportsLenovo extends PluginManufacturersimportsManufac
      */
     function getBuyDate($contents) {
 
-//        $contents = json_decode($contents, true);
-
-
-        $field  = "BaseWarranties";
-        $search = stristr($contents, $field);
-
-        $myDate = substr($search, 27, 10);
-
-        $myDate = trim($myDate);
+        $json=stristr($contents,'window.ds_warranties');
+        $json = substr($json,strlen('window.ds_warranties || '));
+        $json = strtok($json, ";");
+        $data = json_decode($json,true);
+        $myDate = '';
+        if (isset($data['BaseWarranties']) && !empty($data['BaseWarranties'])) {
+            foreach ($data['BaseWarranties'] as $warranty) {
+                if (!empty($warranty['Category']) && $warranty['Category'] == 'MACHINE') {
+                    $myDate = $warranty["Start"];
+                }
+            }
+        }
+        if (empty($myDate) && !empty($data['Shiped'])) {
+            $myDate = $data['Shiped'];
+        }
         $myDate = PluginManufacturersimportsPostImport::checkDate($myDate);
-
         return $myDate;
-
-//        if (isset($contents['POPDate'])) {
-//
-//            Toolbox::loginfo($contents['POPDate']);
-//
-//            if (strpos($contents['POPDate'], '0001-01-01') !== false) {
-//                if (strpos($contents['Shipped'], '0001-01-01') !== false) {
-//                    if (isset($contents['Warranty']) && !empty($contents['Warranty'])) {
-//                        $minStart = 0;
-//                        $start    = 0;
-//                        $n        = 0;
-//                        foreach ($contents['Warranty'] as $id => $warranty) {
-//                            $myDate    = trim($warranty['start']);
-//                            $dateStart = strtotime($myDate);
-//                            if ($n === 0) {
-//                                $minStart = $dateStart;
-//                                $myDate   = strtotime(trim($warranty['Start']));
-//                            }
-//                            if ($dateStart > $minStart) {
-//                                $minStart = $dateStart;
-//                                $myDate   = strtotime(trim($warranty['Start']));
-//                            }
-//                            $n++;
-//                        }
-//                    }
-//                } else {
-//                    $myDate = trim($contents['POPDate']);
-//                }
-//            } else {
-//                $myDate = trim($contents['POPDate']);
-//            }
-//            Toolbox::loginfo($myDate);
-//            //         $myDate = date("Y-m-d", mktime(0, 0, 0, $month, $day, $year));
-//            $myDate = date("Y-m-d", strtotime($myDate));
-//
-//
-//            return PluginManufacturersimportsPostImport::checkDate($myDate);
-//        }
     }
 
     /**
@@ -148,101 +115,127 @@ class PluginManufacturersimportsLenovo extends PluginManufacturersimportsManufac
      */
     function getStartDate($contents) {
 
-        $field  = "BaseWarranties";
-        $search = stristr($contents, $field);
-        $myDate = substr($search, 27, 10);
-        $myDate = trim($myDate);
-        $myDate = PluginManufacturersimportsPostImport::checkDate($myDate);
+        $json=stristr($contents,'window.ds_warranties');
+        $json = substr($json,strlen('window.ds_warranties || '));
+        $json = strtok($json, ";");
+        $data = json_decode($json,true);
+        $myDate = "";
+        $maxEnd = 0;
+        $start  = '';
+        if (isset($data['BaseWarranties']) && !empty($data['BaseWarranties'])) {
+            foreach ($data['BaseWarranties'] as $warranty) {
+                if (!empty($warranty['Category']) && $warranty['Category'] == 'MACHINE') {
+                    $myDate  = trim($warranty['End']);
+                    $dateEnd = strtotime($myDate);
+                    if ($dateEnd > $maxEnd) {
+                        $maxEnd = $dateEnd;
+                        $start  = strtotime(trim($warranty['Start']));
+                    }
+                }
+            }
 
-        return $myDate;
+        }
+        if (isset($data['UpmaWarranties']) && !empty($data['UpmaWarranties'])) {
+            foreach ($data['UpmaWarranties'] as $warranty) {
+                if (!empty($warranty['Category']) && $warranty['Category'] == 'MACHINE') {
+                    $myDate  = trim($warranty['End']);
+                    $dateEnd = strtotime($myDate);
+                    if ($dateEnd > $maxEnd) {
+                        $maxEnd = $dateEnd;
+                        $start  = strtotime(trim($warranty['Start']));
+                    }
+                }
+            }
+        }
 
-//        //TODO change to have good start date with new json
-//        $contents = json_decode($contents, true);
-//        if (isset($contents['Warranty']) && !empty($contents['Warranty'])) {
-//            $maxEnd = 0;
-//            $start  = 0;
-//            foreach ($contents['Warranty'] as $id => $warranty) {
-//                $myDate  = trim($warranty['End']);
-//                $dateEnd = strtotime($myDate);
-//                if ($dateEnd > $maxEnd) {
-//                    $maxEnd = $dateEnd;
-//                    $start  = strtotime(trim($warranty['Start']));
-//                }
-//            }
-//
-//        }
-//
-//        if (isset($start)) {
-//            $myDate = date("Y-m-d", $start);
-//
-//            return PluginManufacturersimportsPostImport::checkDate($myDate);
-//        }
-
+        if (!empty($start)) {
+            $myDate = date("Y-m-d", $start);
+        }
+        return PluginManufacturersimportsPostImport::checkDate($myDate);
     }
 
     /**
      * @see PluginManufacturersimportsManufacturer::getExpirationDate()
      */
     function getExpirationDate($contents) {
-//        $contents = json_decode($contents, true);
-//        //TODO change to have good expiration date with new json
-//        if (isset($contents['Warranty']) && !empty($contents['Warranty'])) {
-//            $maxEnd = 0;
-//
-//            foreach ($contents['Warranty'] as $id => $warranty) {
-//                $myDate  = trim($warranty['End']);
-//                $dateEnd = strtotime($myDate);
-//                if ($dateEnd > $maxEnd) {
-//                    $maxEnd = $dateEnd;
-//                }
-//            }
-//
-//        }
-//
-//        if (isset($maxEnd)) {
-//            $myDate = date("Y-m-d", $maxEnd);
-//
-//            return PluginManufacturersimportsPostImport::checkDate($myDate);
-//        }
 
-        $field     = "BaseWarranties";
-        $search    = stristr($contents, $field);
+        $json=stristr($contents,'window.ds_warranties');
+        $json = substr($json,strlen('window.ds_warranties || '));
+        $json = strtok($json, ";");
+        $data = json_decode($json,true);
+        $myDate = "";
+        $maxEnd = 0;
+        $start  = '';
+        if (isset($data['BaseWarranties']) && !empty($data['BaseWarranties'])) {
+            foreach ($data['BaseWarranties'] as $warranty) {
+                if (!empty($warranty['Category']) && $warranty['Category'] == 'MACHINE') {
+                    $myDate  = trim($warranty['End']);
+                    $dateEnd = strtotime($myDate);
+                    if ($dateEnd > $maxEnd) {
+                        $maxEnd = $dateEnd;
+                        $start  = strtotime(trim($warranty['Start']));
+                    }
+                }
+            }
 
-        $myEndDate = substr($search, 46, 10);
+        }
+        if (isset($data['UpmaWarranties']) && !empty($data['UpmaWarranties'])) {
+            foreach ($data['UpmaWarranties'] as $warranty) {
+                if (!empty($warranty['Category']) && $warranty['Category'] == 'MACHINE') {
+                    $myDate  = trim($warranty['End']);
+                    $dateEnd = strtotime($myDate);
+                    if ($dateEnd > $maxEnd) {
+                        $maxEnd = $dateEnd;
+                        $start  = strtotime(trim($warranty['Start']));
+                    }
+                }
+            }
 
-        $myEndDate = trim($myEndDate);
-        $myEndDate = PluginManufacturersimportsPostImport::checkDate($myEndDate);
-        return $myEndDate;
+        }
+        if (!empty($maxEnd)) {
+            $myDate = date("Y-m-d", $maxEnd);
+        }
+        return PluginManufacturersimportsPostImport::checkDate($myDate);
     }
 
     /**
      * @see PluginManufacturersimportsManufacturer::getWarrantyInfo()
      */
     function getWarrantyInfo($contents) {
-//        $contents = json_decode($contents, true);
-//
-//        //TODO change to have good information with new json
-//        $warranty_info = false;
-//        if (isset($contents['Warranty']) && !empty($contents['Warranty'])) {
-//            $maxEnd = 0;
-//
-//            foreach ($contents['Warranty'] as $id => $warranty) {
-//                $myDate  = trim($warranty['End']);
-//                $dateEnd = strtotime($myDate);
-//                if ($dateEnd > $maxEnd) {
-//                    $maxEnd = $dateEnd;
-//                    if (isset($warranty["Description"])) {
-//                        $warranty_info = $warranty["Description"];
-//                    } else {
-//                        $warranty_info = $warranty["Type"] . " - " . $warranty["Name"];
-//                    }
-//                }
-//            }
-//
-//        }
-//        if (strlen($warranty_info) > 255) {
-//            $warranty_info = substr($warranty_info, 0, 254);
-//        }
-//        return $warranty_info;
+
+        $json=stristr($contents,'window.ds_warranties');
+        $json = substr($json,strlen('window.ds_warranties || '));
+        $json = strtok($json, ";");
+        $data = json_decode($json,true);
+        $myDate = "";
+        $warranty_desc = "";
+        if (isset($data['BaseWarranties']) && !empty($data['BaseWarranties'])) {
+            foreach ($data['BaseWarranties'] as $warranty) {
+                if (!empty($warranty['Category']) && $warranty['Category'] == 'MACHINE') {
+                    #if (!empty($warranty['Description'])) {
+                    #        $warranty_desc = $warranty['Description'];
+                    #} else {
+                    $warranty_desc = $warranty["Type"] . " - " . $warranty["Name"];
+                    #}
+                }
+            }
+
+        }
+        if (isset($data['UpmaWarranties']) && !empty($data['UpmaWarranties'])) {
+            foreach ($data['UpmaWarranties'] as $warranty) {
+                if (!empty($warranty['Category']) && $warranty['Category'] == 'MACHINE') {
+                    #if (!empty($warranty['Description'])) {
+                    #        $warranty_desc = $warranty['Description'];
+                    #} else {
+                    $warranty_desc = $warranty["Type"] . " - " . $warranty["Name"];
+                    #}
+                }
+            }
+
+        }
+        if (strlen($warranty_desc) > 255) {
+            $warranty_desc = substr($warranty_desc, 0, 254);
+        }
+        return $warranty_desc;
     }
 }
