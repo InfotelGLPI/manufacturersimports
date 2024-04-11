@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $soft\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-11 10:04+0000\n"
+"POT-Creation-Date: 2024-04-11 10:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -92,11 +92,11 @@ msgstr ""
 msgid "Warranty import (Dell, HP)"
 msgstr ""
 
-#: inc/import.class.php:172 inc/postimport.class.php:770
+#: inc/import.class.php:179 inc/postimport.class.php:770
 msgid "Import OK"
 msgstr ""
 
-#: inc/import.class.php:175 inc/postimport.class.php:876
+#: inc/import.class.php:182 inc/postimport.class.php:876
 msgid "Import failed"
 msgstr ""
 
