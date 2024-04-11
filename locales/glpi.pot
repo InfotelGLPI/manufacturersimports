@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $soft\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-10 17:42+0000\n"
+"POT-Creation-Date: 2024-04-11 08:14+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,80 +18,72 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: hook.php:234 setup.php:85 front/massiveaction.php:40 inc/menu.class.php:45
-#: inc/model.class.php:50 inc/preimport.class.php:51 inc/profile.class.php:80
+#: setup.php:85 front/massiveaction.php:40 inc/menu.class.php:45
+#: inc/preimport.class.php:51 inc/profile.class.php:80
 msgid "Suppliers import"
 msgid_plural "Suppliers imports"
 msgstr[0] ""
 msgstr[1] ""
 
-#: hook.php:239 inc/lenovo.class.php:54
-msgid "Model number"
-msgstr ""
-
-#: hook.php:267
-msgid "Add new material brand number"
-msgstr ""
-
 #: front/config.php:40
 msgid "Please activate the plugin"
 msgstr ""
 
-#: inc/config.class.php:242 inc/config.class.php:373
+#: inc/config.class.php:218 inc/config.class.php:349
 msgid "Manufacturer web address"
 msgstr ""
 
-#: inc/config.class.php:251 inc/config.class.php:395
+#: inc/config.class.php:227 inc/config.class.php:371
 msgid "Default supplier attached"
 msgstr ""
 
-#: inc/config.class.php:259 inc/preimport.class.php:680
+#: inc/config.class.php:235 inc/preimport.class.php:688
 msgid "New warranty attached"
 msgstr ""
 
-#: inc/config.class.php:268 inc/config.class.php:440
+#: inc/config.class.php:244 inc/config.class.php:416
 msgid "Auto add of document"
 msgstr ""
 
-#: inc/config.class.php:285 inc/config.class.php:455
+#: inc/config.class.php:261 inc/config.class.php:431
 msgid "Add a comment line"
 msgstr ""
 
-#: inc/config.class.php:381
+#: inc/config.class.php:357
 msgid "Access token API address"
 msgstr ""
 
-#: inc/config.class.php:387
+#: inc/config.class.php:363
 msgid "Warranty API address"
 msgstr ""
 
-#: inc/config.class.php:406
+#: inc/config.class.php:382
 msgid "New warranty affected by default (Replace if 0)"
 msgstr ""
 
-#: inc/config.class.php:420 inc/config.class.php:433
+#: inc/config.class.php:396 inc/config.class.php:409
 msgid "Client id"
 msgstr ""
 
-#: inc/config.class.php:426
+#: inc/config.class.php:402
 msgid "Client secret"
 msgstr ""
 
-#: inc/config.class.php:447
+#: inc/config.class.php:423
 msgid "Section for document records"
 msgstr ""
 
-#: inc/config.class.php:651 inc/preimport.class.php:384
-#: inc/preimport.class.php:402
+#: inc/config.class.php:633 inc/preimport.class.php:392
+#: inc/preimport.class.php:410
 msgid "Manufacturer information"
 msgstr ""
 
-#: inc/config.class.php:658 inc/config.class.php:751
+#: inc/config.class.php:640 inc/config.class.php:744
 msgctxt "button"
 msgid "Retrieve warranty from manufacturer"
 msgstr ""
 
-#: inc/config.class.php:745
+#: inc/config.class.php:738
 msgid ""
 "You did not import the warranty for this item. Do you want to get it back?"
 msgstr ""
@@ -100,16 +92,16 @@ msgstr ""
 msgid "Warranty import (Dell, HP)"
 msgstr ""
 
-#: inc/import.class.php:166 inc/postimport.class.php:756
+#: inc/import.class.php:172 inc/postimport.class.php:770
 msgid "Import OK"
 msgstr ""
 
-#: inc/import.class.php:169 inc/postimport.class.php:862
+#: inc/import.class.php:175 inc/postimport.class.php:876
 msgid "Import failed"
 msgstr ""
 
-#: inc/model.class.php:149 inc/preimport.class.php:667
-msgid "Model Number"
+#: inc/lenovo.class.php:54
+msgid "Model number"
 msgstr ""
 
 #: inc/postimport.class.php:74
@@ -141,63 +133,67 @@ msgstr ""
 msgid "Total number of devices imported %s"
 msgstr ""
 
-#: inc/postimport.class.php:738 inc/postimport.class.php:745
+#: inc/postimport.class.php:752 inc/postimport.class.php:759
 msgid "Imported from web site"
 msgstr ""
 
-#: inc/postimport.class.php:739 inc/postimport.class.php:746
+#: inc/postimport.class.php:753 inc/postimport.class.php:760
 msgid "With the manufacturersimports plugin"
 msgstr ""
 
-#: inc/postimport.class.php:885
+#: inc/postimport.class.php:899
 msgid "Connection failed/data download from manufacturer web site"
 msgstr ""
 
-#: inc/preimport.class.php:355
+#: inc/preimport.class.php:363
 msgid "The choosen supplier is not recursive"
 msgstr ""
 
-#: inc/preimport.class.php:409
+#: inc/preimport.class.php:417
 msgid "Not yet imported"
 msgstr ""
 
-#: inc/preimport.class.php:412
+#: inc/preimport.class.php:420
 msgid "Problem during the importation"
 msgstr ""
 
-#: inc/preimport.class.php:420
+#: inc/preimport.class.php:428
 msgid "Already imported"
 msgstr ""
 
-#: inc/preimport.class.php:458
+#: inc/preimport.class.php:466
 msgid "Choose inventory type and manufacturer"
 msgstr ""
 
-#: inc/preimport.class.php:499
+#: inc/preimport.class.php:507
 msgid "Devices not imported"
 msgstr ""
 
-#: inc/preimport.class.php:500
+#: inc/preimport.class.php:508
 msgid "Devices already imported"
 msgstr ""
 
-#: inc/preimport.class.php:506 inc/preimport.class.php:510
+#: inc/preimport.class.php:514 inc/preimport.class.php:518
 msgid "No manufacturer available. Please configure at least one manufacturer"
 msgstr ""
 
 #: inc/preimport.class.php:675
+msgid "Model Number"
+msgstr ""
+
+#: inc/preimport.class.php:683
 msgid "Supplier attached"
 msgstr ""
 
-#: inc/preimport.class.php:737
+#: inc/preimport.class.php:744
 #, php-format
 msgid "Total number of devices to import %s"
 msgstr ""
 
-#: inc/preimport.class.php:793
+#: inc/preimport.class.php:800
 msgid "No device finded"
 msgstr ""
 
-#: inc/preimport.class.php:1090
+#: inc/preimport.class.php:1094
 msgid "Reset the import"
 msgstr ""
