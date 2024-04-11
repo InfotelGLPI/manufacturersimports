@@ -268,8 +268,16 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
         $row_num++;
 
         if ($suppliername) {
-            $model       = new PluginManufacturersimportsModel();
-            $otherSerial = $model->checkIfModelNeeds($line["itemtype"], $line["id"]);
+
+            $computermodels_id = $line['computermodels_id'];
+            $otherSerial = "";
+            if (class_exists($line["itemtype"]."Model", false) && $computermodels_id != 0) {
+                $modelitemtype =$line["itemtype"]."Model";
+                $modelclass = new $modelitemtype();
+                $modelclass->getfromDB($computermodels_id);
+                $otherSerial = $modelclass->fields["product_number"];
+            }
+
 
             echo Search::showNewLine($output_type, $row_num % 2);
             $ic           = new Infocom;
@@ -710,9 +718,8 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
 
                     $item_num   = 1;
                     $line       = $DB->fetchArray($result);
-                    $compSerial = $line['serial'];
                     $compId     = $line['id'];
-                    $model      = $line["model_name"];
+
                     if (!$line["itemtype"]) {
                         $line["itemtype"] = $p['itemtype'];
                     }
@@ -881,13 +888,13 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
         $query = "SELECT `" . $itemtable . "`.`id`,
                         `" . $itemtable . "`.`name`, 
                         `" . $itemtable . "`.`serial`,
+                        `" . $itemtable . "`.`computermodels_id`,
                         `" . $itemtable . "`.`entities_id`,
                         `glpi_plugin_manufacturersimports_logs`.`import_status`,
                         `glpi_plugin_manufacturersimports_logs`.`items_id`,
                         `glpi_plugin_manufacturersimports_logs`.`itemtype`, 
                         `glpi_plugin_manufacturersimports_logs`.`documents_id`,
                         `glpi_plugin_manufacturersimports_logs`.`date_import`,
-                        `glpi_plugin_manufacturersimports_models`.`model_name` AS product_number,
                         '" . $p['itemtype'] . "' AS type,
                         `$modeltable`.`name` AS model_name
                   FROM `" . $itemtable . "` ";
@@ -900,9 +907,6 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
         $query .= " LEFT JOIN `glpi_plugin_manufacturersimports_logs` 
          ON (`glpi_plugin_manufacturersimports_logs`.`items_id` = `" . $itemtable . "`.`id` 
          AND `glpi_plugin_manufacturersimports_logs`.`itemtype` = '" . $p['itemtype'] . "')";
-        $query .= " LEFT JOIN `glpi_plugin_manufacturersimports_models` 
-         ON (`glpi_plugin_manufacturersimports_models`.`items_id` = `" . $itemtable . "`.`id` 
-         AND `glpi_plugin_manufacturersimports_models`.`itemtype` = '" . $p['itemtype'] . "')";
 
         //serial must be not empty
         $query .= " WHERE `" . $itemtable . "`.`is_deleted` = '0'

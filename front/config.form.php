@@ -37,7 +37,6 @@ if (!isset($_GET["preconfig"])) {
 }
 
 $config = new PluginManufacturersimportsConfig();
-$model = new PluginManufacturersimportsModel();
 
 if (isset($_POST["add"])) {
     Session::checkRight("plugin_manufacturersimports", CREATE);
@@ -55,16 +54,6 @@ if (isset($_POST["add"])) {
     Session::checkRight("plugin_manufacturersimports", PURGE);
     $config->delete($_POST, true);
     Html::redirect("./config.form.php");
-
-} else if (isset($_POST["update_model"])) {
-    Session::checkRight("plugin_manufacturersimports", UPDATE);
-    $model->addModel($_POST);
-    Html::back();
-
-} else if (isset($_POST["delete_model"])) {
-    Session::checkRight("plugin_manufacturersimports", UPDATE);
-    $model->delete($_POST);
-    Html::back();
 
 } else if (isset($_POST["retrieve_warranty"])) {
     Session::checkRight("plugin_manufacturersimports", UPDATE);

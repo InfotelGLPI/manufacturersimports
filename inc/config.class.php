@@ -68,30 +68,6 @@ class PluginManufacturersimportsConfig extends CommonDBTM
         return $ong;
     }
 
-    public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
-    {
-        if (in_array($item->getType(), self::getTypes(true))
-            && Session::haveRight(static::$rightname, READ)
-            && !isset($withtemplate) || empty($withtemplate)) {
-            $suppliername = self::checkManufacturerName(
-                $item->getType(),
-                $item->getID()
-            );
-            if ($suppliername) {
-                return PluginManufacturersimportsPreImport::getTypeName(2);
-            }
-        }
-        return '';
-    }
-
-    public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
-    {
-        if (in_array($item->getType(), self::getTypes(true))) {
-            PluginManufacturersimportsModel::showModelForm(get_class($item), $item->getID());
-        }
-        return true;
-    }
-
     /**
      * Preconfig datas for standard system
      *
@@ -624,8 +600,14 @@ class PluginManufacturersimportsConfig extends CommonDBTM
         if (in_array($item->getType(), self::getTypes(true))) {
             $suppliername = PluginManufacturersimportsConfig::checkManufacturerName($item->getType(), $item->getID());
 
-            $model       = new PluginManufacturersimportsModel();
-            $otherserial = $model->checkIfModelNeeds($item->getType(), $item->getID());
+            $computermodels_id = $item->fields['computermodels_id'];
+            $otherserial = "";
+            if (class_exists($item->getType()."Model", false) && $computermodels_id != 0) {
+                $modelitemtype =$item->getType()."Model";
+                $modelclass = new $modelitemtype();
+                $modelclass->getfromDB($computermodels_id);
+                $otherserial = $modelclass->fields["product_number"];
+            }
 
             $configID = PluginManufacturersimportsConfig::checkManufacturerID($item->getType(), $item->getID());
             $config   = new PluginManufacturersimportsConfig();
@@ -714,6 +696,17 @@ class PluginManufacturersimportsConfig extends CommonDBTM
                 }
                 if (isset($item->fields['serial'])) {
                     $options['sn'] = $item->fields['serial'];
+                }
+                $computermodels_id = $item->fields['computermodels_id'];
+                $otherserial = "";
+                if (class_exists($item->getType()."Model", false) && $computermodels_id != 0) {
+                    $modelitemtype =$item->getType()."Model";
+                    $modelclass = new $modelitemtype();
+                    $modelclass->getfromDB($computermodels_id);
+                    $otherserial = $modelclass->fields["product_number"];
+                }
+                if (empty($otherserial)) {
+                    $options['pn'] = $otherserial;
                 }
                 if (
                     isset($_SESSION['glpi_use_mode'])

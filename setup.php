@@ -27,7 +27,7 @@
  --------------------------------------------------------------------------
  */
 
-define('PLUGIN_MANUFACTURERSIMPORTS_VERSION', '3.0.5');
+define('PLUGIN_MANUFACTURERSIMPORTS_VERSION', '3.0.6');
 
 if (!defined("PLUGIN_MANUFACTURERSIMPORTS_DIR")) {
     define("PLUGIN_MANUFACTURERSIMPORTS_DIR", Plugin::getPhpDir("manufacturersimports"));

@@ -69,7 +69,7 @@ class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacture
             return $info;
         }
 
-        $info["url"] = $supplierUrl . "$compSerial";
+        $info["url"] = $supplierUrl;
         return $info;
     }
 
@@ -109,9 +109,11 @@ class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacture
         $max_date = false;
         if (isset($info[0]['offers'])) {
             foreach ($info[0]['offers'] as $d) {
-                $date = new \DateTime($d['serviceObligationLineItemStartDate']);
-                if ($max_date == false || $date > $max_date) {
-                    $max_date = $date;
+                if ($d['serviceObligationLineItemStartDate']) {
+                    $date = new \DateTime($d['serviceObligationLineItemStartDate']);
+                    if ($max_date == false || $date > $max_date) {
+                        $max_date = $date;
+                    }
                 }
             }
 
@@ -139,10 +141,12 @@ class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacture
         // when several dates are available, will take the last one
         $max_date = false;
         if (isset($info[0]['offers'])) {
-            foreach ($info[0]['offers'] as $d) {
-                $date = new \DateTime($d['serviceObligationLineItemEndDate']);
-                if ($max_date == false || $date > $max_date) {
-                    $max_date = $date;
+            foreach ($info[0]['offers'] as $k => $d) {
+                if ($d['serviceObligationLineItemEndDate']) {
+                    $date = new \DateTime($d['serviceObligationLineItemEndDate']);
+                    if ($max_date == false || $date > $max_date) {
+                        $max_date = $date;
+                    }
                 }
             }
 
@@ -164,10 +168,12 @@ class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacture
         $i        = false;
         if (isset($info[0]['offers'])) {
             foreach ($info[0]['offers'] as $k => $d) {
-                $date = new \DateTime($d['serviceObligationLineItemEndDate']);
-                if ($max_date == false || $date > $max_date) {
-                    $max_date = $date;
-                    $i        = $k;
+                if ($d['serviceObligationLineItemEndDate']) {
+                    $date = new \DateTime($d['serviceObligationLineItemEndDate']);
+                    if ($max_date == false || $date > $max_date) {
+                        $max_date = $date;
+                        $i = $k;
+                    }
                 }
             }
         }

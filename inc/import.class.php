@@ -46,7 +46,7 @@ class PluginManufacturersimportsImport extends CommonDBTM
     {
         switch ($name) {
             case "DataWarrantyImport":
-                return ['description' => PluginManufacturersimportsModel::getTypeName(1) . " - " . __('Warranty import (Dell, HP)', 'manufacturersimports')];
+                return ['description' => PluginManufacturersimportsPreImport::getTypeName(1) . " - " . __('Warranty import (Dell, HP)', 'manufacturersimports')];
         }
         return [];
     }
@@ -119,8 +119,14 @@ class PluginManufacturersimportsImport extends CommonDBTM
                 $compSerial = $data['serial'];
                 $ID         = $data['id'];
 
-                $model       = new PluginManufacturersimportsModel();
-                $otherSerial = $model->checkIfModelNeeds($type, $ID);
+                $computermodels_id = $data['computermodels_id'];
+                $otherSerial = "";
+                if (class_exists($type."Model", false) && $computermodels_id != 0) {
+                    $modelitemtype =$type."Model";
+                    $modelclass = new $modelitemtype();
+                    $modelclass->getfromDB($computermodels_id);
+                    $otherSerial = $modelclass->fields["product_number"];
+                }
 
                 $url  = PluginManufacturersimportsPreImport::selectSupplier(
                     $suppliername,

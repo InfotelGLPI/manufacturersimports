@@ -84,6 +84,10 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
         if (isset($options["sn"])) {
             $sn = $options["sn"];
         }
+        $pn = null;
+        if (isset($options["pn"])) {
+            $pn = $options["pn"];
+        }
 
         $ch = curl_init();
         if (
@@ -126,7 +130,8 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
 
         //Do we have post field to send?
         if (!empty($options["post"])
-            && (empty($options['token']) && $options['suppliername'] == PluginManufacturersimportsConfig::HP)) {
+            && (empty($options['token']) && ($options['suppliername'] == PluginManufacturersimportsConfig::HP
+                    || $options['suppliername'] == PluginManufacturersimportsConfig::DELL))) {
 
             //curl_setopt($ch, CURLOPT_POST,true);
             $post = '';
@@ -134,15 +139,14 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
                 $post .= $key . '=' . $value . '&';
             }
             $post = rtrim($post, '&');
+            curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type:application/x-www-form-urlencoded"]);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTREDIR, 2);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
 
-            if (empty($options['token'])) {
-                curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type:application/x-www-form-urlencoded"]);
-                curl_setopt($ch, CURLOPT_POST, true);
-                curl_setopt($ch, CURLOPT_POSTREDIR, 2);
-                curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
-            }
             // ADDED FOR HP
-            if ($options['suppliername'] == PluginManufacturersimportsConfig::HP) {
+            if ($options['suppliername'] == PluginManufacturersimportsConfig::HP
+            || $options['suppliername'] == PluginManufacturersimportsConfig::DELL) {
                 if (empty($options['token'])) {
                     $client_id = $options['post']['client_id'];
                     $client_secret = $options['post']['client_secret'];
@@ -159,6 +163,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
                 curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json' , $authorization ));
                 curl_setopt($ch, CURLOPT_POST, true);
                 $table_serial["sn"] = $sn;
+                $table_serial["pn"] = $pn;
                 $postdata = "[".json_encode($table_serial)."]";
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
                 curl_setopt($ch, CURLOPT_POSTREDIR, 2);
@@ -180,13 +185,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
                 curl_setopt($ch, CURLOPT_PROXYUSERPWD, $proxy_ident);
             }
         }
-        if (
-            isset($_SESSION['glpi_use_mode'])
-            && ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE)
-        ) {
-            $info = curl_getinfo($ch);
-            Toolbox::logInfo($info);
-        }
+
         if ($options["download"]) {
             $fp = fopen($options["file"], "w");
             curl_setopt($ch, CURLOPT_FILE, $fp);
@@ -194,6 +193,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
         } else {
             $data = curl_exec($ch);
         }
+
         if (
             isset($_SESSION['glpi_use_mode'])
             && ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE)
@@ -426,7 +426,8 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
         $query  = "SELECT `" . $itemtable . "`.`id`,
                         `" . $itemtable . "`.`name`,
                         `" . $itemtable . "`.`entities_id`,
-                        `" . $itemtable . "`.`serial`
+                        `" . $itemtable . "`.`serial`,
+                         `" . $itemtable . "`.`computermodels_id`
           FROM `" . $itemtable . "`, `glpi_manufacturers`
           WHERE `" . $itemtable . "`.`manufacturers_id` = `glpi_manufacturers`.`id`
           AND `" . $itemtable . "`.`is_deleted` = '0'
@@ -446,8 +447,15 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
             echo "<tr class='tab_bg_1' ><td>";
             $link        = Toolbox::getItemTypeFormURL($type);
             $dID         = "";
-            $model       = new PluginManufacturersimportsModel();
-            $otherSerial = $model->checkIfModelNeeds($type, $ID);
+
+            $computermodels_id = $line['computermodels_id'];
+            $otherSerial = "";
+            if (class_exists($type."Model", false) && $computermodels_id != 0) {
+                $modelitemtype =$type."Model";
+                $modelclass = new $modelitemtype();
+                $modelclass->getfromDB($computermodels_id);
+                $otherSerial = $modelclass->fields["product_number"];
+            }
 
             if ($_SESSION["glpiis_ids_visible"] || empty($line["name"])) {
                 $dID .= " (" . $line["id"] . ")";
@@ -477,17 +485,20 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
             echo "<a href='" . $url . "' target='_blank'>" . _n('Manufacturer', 'Manufacturers', 1) . "</a>";
             echo "</td>";
 
-            $options = ["url"          => isset($warranty_url['url']) ? $warranty_url['url'] : $url,
-                         "sn"          => $line['serial'],
-                        "post"         => $post,
-                        "type"         => $type,
-                        "ID"           => $ID,
-                        "config"       => $config,
-                        "line"         => $line,
-                        "fromsupplier" => $fromsupplier,
-                        "fromwarranty" => $fromwarranty,
-                        "display"      => true,
-                        "token"        => $token];
+            $options = [
+                "url" => isset($warranty_url['url']) ? $warranty_url['url'] : $url,
+                "sn" => $line['serial'],
+                "pn" => $otherSerial,
+                "post" => $post,
+                "type" => $type,
+                "ID" => $ID,
+                "config" => $config,
+                "line" => $line,
+                "fromsupplier" => $fromsupplier,
+                "fromwarranty" => $fromwarranty,
+                "display" => true,
+                "token" => $token
+            ];
 
 //            if ($suppliername == PluginManufacturersimportsConfig::HP) {
 //                $options['url_warranty'] = PluginManufacturersimportsPreImport::selectSupplierWarranty(
@@ -519,6 +530,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
         $default_values                 = [];
         $default_values['url']          = "";
         $default_values['sn']           = "";
+        $default_values['pn']           = "";
         $default_values['url_warranty'] = "";
         $default_values['post']         = "";
         $default_values['display']      = false;
@@ -562,13 +574,15 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
         $contents = "";
         //$msgerr   = "";
 
-        $options = ["url"          => $values['url'],
-                    "sn"          => $values['sn'],
-                    "download"     => false,
-                    "file"         => false,
-                    "post"         => $values['post'],
-                    "suppliername" => $suppliername,
-                    "token"        => $values['token']
+        $options = [
+            "url" => $values['url'],
+            "sn" => $values['sn'],
+            "pn" => $values['pn'],
+            "download" => false,
+            "file" => false,
+            "post" => $values['post'],
+            "suppliername" => $suppliername,
+            "token" => $values['token']
         ];
 
         if ($suppliername == PluginManufacturersimportsConfig::LENOVO
