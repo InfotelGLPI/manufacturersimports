@@ -705,7 +705,7 @@ class PluginManufacturersimportsConfig extends CommonDBTM
                     $modelclass->getfromDB($computermodels_id);
                     $otherserial = $modelclass->fields["product_number"];
                 }
-                if (empty($otherserial)) {
+                if (!empty($otherserial)) {
                     $options['pn'] = $otherserial;
                 }
                 if (
