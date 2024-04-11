@@ -149,6 +149,13 @@ class PluginManufacturersimportsImport extends CommonDBTM
                             "line"    => $data,
                             "display" => false];
 
+                if (!empty($compSerial)) {
+                    $options['sn'] = $compSerial;
+                }
+                if (!empty($otherserial)) {
+                    $options['pn'] = $otherserial;
+                }
+
                 if ($suppliername == PluginManufacturersimportsConfig::DELL
                     || $suppliername == PluginManufacturersimportsConfig::HP) {
                     $supplierclass    = "PluginManufacturersimports" . $suppliername;
