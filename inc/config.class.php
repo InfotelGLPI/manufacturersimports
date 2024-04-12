@@ -600,13 +600,16 @@ class PluginManufacturersimportsConfig extends CommonDBTM
         if (in_array($item->getType(), self::getTypes(true))) {
             $suppliername = PluginManufacturersimportsConfig::checkManufacturerName($item->getType(), $item->getID());
 
-            $computermodels_id = $item->fields['computermodels_id'];
             $otherserial = "";
-            if (class_exists($item->getType()."Model", false) && $computermodels_id != 0) {
-                $modelitemtype =$item->getType()."Model";
-                $modelclass = new $modelitemtype();
-                $modelclass->getfromDB($computermodels_id);
-                $otherserial = $modelclass->fields["product_number"];
+            if (class_exists($item->getType()."Model")) {
+                $modelfield = getForeignKeyFieldForTable(getTableForItemType($item->getType()."Model"));
+                $models_id = $item->fields[$modelfield];
+                if ($models_id != 0) {
+                    $modelitemtype =$item->getType()."Model";
+                    $modelclass = new $modelitemtype();
+                    $modelclass->getfromDB($models_id);
+                    $otherserial = $modelclass->fields["product_number"];
+                }
             }
 
             $configID = PluginManufacturersimportsConfig::checkManufacturerID($item->getType(), $item->getID());
@@ -697,14 +700,19 @@ class PluginManufacturersimportsConfig extends CommonDBTM
                 if (isset($item->fields['serial'])) {
                     $options['sn'] = $item->fields['serial'];
                 }
-                $computermodels_id = $item->fields['computermodels_id'];
+
                 $otherserial = "";
-                if (class_exists($item->getType()."Model", false) && $computermodels_id != 0) {
-                    $modelitemtype =$item->getType()."Model";
-                    $modelclass = new $modelitemtype();
-                    $modelclass->getfromDB($computermodels_id);
-                    $otherserial = $modelclass->fields["product_number"];
+                if (class_exists($item->getType()."Model")) {
+                    $modelfield = getForeignKeyFieldForTable(getTableForItemType($item->getType()."Model"));
+                    $models_id = $item->fields[$modelfield];
+                    if ($models_id != 0) {
+                        $modelitemtype =$item->getType()."Model";
+                        $modelclass = new $modelitemtype();
+                        $modelclass->getfromDB($models_id);
+                        $otherserial = $modelclass->fields["product_number"];
+                    }
                 }
+
                 if (!empty($otherserial)) {
                     $options['pn'] = $otherserial;
                 }

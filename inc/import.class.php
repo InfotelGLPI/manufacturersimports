@@ -118,13 +118,15 @@ class PluginManufacturersimportsImport extends CommonDBTM
 
                 $compSerial = $data['serial'];
                 $ID         = $data['id'];
+                $dbu = new DbUtils();
+                $modelfield = $dbu->getForeignKeyFieldForTable($dbu->getTableForItemType($type . "Model"));
 
-                $computermodels_id = $data['computermodels_id'];
+                $models_id = $data[$modelfield];
                 $otherSerial = "";
-                if (class_exists($type."Model", false) && $computermodels_id != 0) {
+                if (class_exists($type."Model") && $models_id != 0) {
                     $modelitemtype =$type."Model";
                     $modelclass = new $modelitemtype();
-                    $modelclass->getfromDB($computermodels_id);
+                    $modelclass->getfromDB($models_id);
                     $otherSerial = $modelclass->fields["product_number"];
                 }
 

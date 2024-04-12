@@ -237,7 +237,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
      * @param $item_num
      * @param $line
      * @param $output_type
-     * @param $configID
+     * @param $manufacturers_id
      * @param $status
      * @param $imported
      */
@@ -246,15 +246,17 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
         $item_num,
         $line,
         $output_type,
-        $configID,
+        $manufacturers_id,
+        $itemtype,
         $status,
         $imported
     )
     {
+
         $infocom = new Infocom();
         $canedit = Session::haveRight(static::$rightname, UPDATE) && $infocom->canUpdate();
         $config  = new PluginManufacturersimportsConfig();
-        $config->getFromDB($configID);
+        $config->getFromDB($manufacturers_id);
 
         $suppliername      = $config->fields["name"];
         $supplierUrl       = $config->fields["supplier_url"];
@@ -269,15 +271,18 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
 
         if ($suppliername) {
 
-            $computermodels_id = $line['computermodels_id'];
             $otherSerial = "";
-            if (class_exists($line["itemtype"]."Model", false) && $computermodels_id != 0) {
-                $modelitemtype =$line["itemtype"]."Model";
-                $modelclass = new $modelitemtype();
-                $modelclass->getfromDB($computermodels_id);
-                $otherSerial = $modelclass->fields["product_number"];
+            $modelitemtype = $itemtype."Model";
+            if (class_exists($modelitemtype)) {
+                $dbu = new DbUtils();
+                $modelfield = $dbu->getForeignKeyFieldForTable($dbu->getTableForItemType($itemtype . "Model"));
+                $models_id = $line[$modelfield];
+                if ($models_id != 0) {
+                    $modelclass = new $modelitemtype();
+                    $modelclass->getfromDB($models_id);
+                    $otherSerial = $modelclass->fields["product_number"];
+                }
             }
-
 
             echo Search::showNewLine($output_type, $row_num % 2);
             $ic           = new Infocom;
@@ -393,7 +398,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
          //         if ($suppliername == PluginManufacturersimportsConfig::HP) {
          //            $output_url = "";
          //            $output_url = "<a href='" . Toolbox::getItemTypeFormURL("PluginManufacturersimportsHP") .
-         //                          "?sn=".$line["serial"]."&manufacturers_id=$configID' target='_blank'>" .
+         //                          "?sn=".$line["serial"]."&manufacturers_id=$manufacturers_id' target='_blank'>" .
          //                         __('Manufacturer information', 'manufacturersimports') . "</a>";
          //         }
             if ($suppliername == PluginManufacturersimportsConfig::LENOVO) {
@@ -568,6 +573,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
     {
         global $DB, $CFG_GLPI;
 
+
         // Default values of parameters
         $p['link']             = [];
         $p['field']            = [];
@@ -595,7 +601,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
         if ($p['itemtype'] && $p['manufacturers_id']) {
             $config = new PluginManufacturersimportsConfig();
             $config->getFromDB($p['manufacturers_id']);
-            $suppliername  = $config->fields["name"];
+            $suppliername  = $config->fields["name"] ?? "";
             $supplierclass = "PluginManufacturersimports" . $suppliername;
             $supplier      = new $supplierclass();
 
@@ -720,9 +726,9 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
                     $line       = $DB->fetchArray($result);
                     $compId     = $line['id'];
 
-                    if (!$line["itemtype"]) {
+//                    if (!$line["itemtype"]) {
                         $line["itemtype"] = $p['itemtype'];
-                    }
+//                    }
 
                     self::showImport(
                         $row_num,
@@ -730,6 +736,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
                         $line,
                         $output_type,
                         $p['manufacturers_id'],
+                        $p['itemtype'],
                         $line["import_status"],
                         $p['imported']
                     );
@@ -888,7 +895,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
         $query = "SELECT `" . $itemtable . "`.`id`,
                         `" . $itemtable . "`.`name`, 
                         `" . $itemtable . "`.`serial`,
-                        `" . $itemtable . "`.`computermodels_id`,
+                        `" . $itemtable . "`.`$modelfield`,
                         `" . $itemtable . "`.`entities_id`,
                         `glpi_plugin_manufacturersimports_logs`.`import_status`,
                         `glpi_plugin_manufacturersimports_logs`.`items_id`,

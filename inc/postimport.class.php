@@ -423,11 +423,13 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
         $dbu       = new DbUtils();
         $itemtable = $dbu->getTableForItemType($type);
 
+        $modelfield = $dbu->getForeignKeyFieldForTable($dbu->getTableForItemType($type . "Model"));
+
         $query  = "SELECT `" . $itemtable . "`.`id`,
                         `" . $itemtable . "`.`name`,
                         `" . $itemtable . "`.`entities_id`,
                         `" . $itemtable . "`.`serial`,
-                         `" . $itemtable . "`.`computermodels_id`
+                         `" . $itemtable . "`.`$modelfield`
           FROM `" . $itemtable . "`, `glpi_manufacturers`
           WHERE `" . $itemtable . "`.`manufacturers_id` = `glpi_manufacturers`.`id`
           AND `" . $itemtable . "`.`is_deleted` = '0'
@@ -448,12 +450,13 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
             $link        = Toolbox::getItemTypeFormURL($type);
             $dID         = "";
 
-            $computermodels_id = $line['computermodels_id'];
+            $models_id = $line[$modelfield];
+
             $otherSerial = "";
-            if (class_exists($type."Model", false) && $computermodels_id != 0) {
+            if (class_exists($type."Model") && $models_id != 0) {
                 $modelitemtype =$type."Model";
                 $modelclass = new $modelitemtype();
-                $modelclass->getfromDB($computermodels_id);
+                $modelclass->getfromDB($models_id);
                 $otherSerial = $modelclass->fields["product_number"];
             }
 
@@ -500,16 +503,6 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
                 "token" => $token
             ];
 
-//            if ($suppliername == PluginManufacturersimportsConfig::HP) {
-//                $options['url_warranty'] = PluginManufacturersimportsPreImport::selectSupplierWarranty(
-//                    $suppliername,
-//                    $supplierUrl,
-//                    $compSerial,
-//                    $otherSerial,
-//                    $supplierkey,
-//                    $supplierSecret
-//                );
-//            }
             if ($suppliername == PluginManufacturersimportsConfig::LENOVO) {
                 $options['ClientID'] = $supplierkey;
             }
