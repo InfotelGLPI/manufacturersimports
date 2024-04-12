@@ -31,7 +31,7 @@ URL dans le plugin :
 
 > * Pour HP, il faut maintenant s'enregistrer afin d'avoir une clé API :
 
-Send email to apigarantie.matinfo@hp.com
+Send email to warrantyapi.customers@hp.com
 
 URL dans le plugin :
 - Url du fabricant : https://support.hp.com/fr-fr/check-warranty/
