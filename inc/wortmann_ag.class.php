@@ -71,9 +71,9 @@ class PluginManufacturersimportsWortmann_ag extends PluginManufacturersimportsMa
      */
     public function getBuyDate($contents)
     {
-        $field     = "but de la garantie";
+        $field     = "but de la service";
         $searchstart = stristr($contents, $field);
-        $myDate = substr($searchstart, 27, 10);
+        $myDate = substr($searchstart, 26, 10);
 
         $myDate = trim($myDate);
         $myDate = str_replace('/', '-', $myDate);
@@ -101,9 +101,9 @@ class PluginManufacturersimportsWortmann_ag extends PluginManufacturersimportsMa
      */
     public function getExpirationDate($contents)
     {
-        $field     = "Fin de garantie";
+        $field     = "Fin de service";
         $searchstart = stristr($contents, $field);
-        $myDate = substr($searchstart, 24, 10);
+        $myDate = substr($searchstart, 23, 10);
 
         $myDate = trim($myDate);
         $myDate = str_replace('/', '-', $myDate);
