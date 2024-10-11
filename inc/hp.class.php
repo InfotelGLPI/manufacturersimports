@@ -109,10 +109,19 @@ class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacture
         $max_date = false;
         if (isset($info[0]['offers'])) {
             foreach ($info[0]['offers'] as $d) {
-                if ($d['serviceObligationLineItemStartDate']) {
-                    $date = new \DateTime($d['serviceObligationLineItemStartDate']);
-                    if ($max_date == false || $date > $max_date) {
+                //by default try to use HP Hardware Maintenance Onsite Support
+                if ($d['serviceObligationTypeCode'] && $d['serviceObligationTypeCode'] == "C") {
+                    if ($d['serviceObligationLineItemStartDate']) {
+                        $date = new \DateTime($d['serviceObligationLineItemStartDate']);
                         $max_date = $date;
+                    }
+                } else {
+                    // when several dates are available, will take the last one
+                    if ($d['serviceObligationLineItemStartDate']) {
+                        $date = new \DateTime($d['serviceObligationLineItemStartDate']);
+                        if ($max_date == false || $date > $max_date) {
+                            $max_date = $date;
+                        }
                     }
                 }
             }
@@ -138,16 +147,26 @@ class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacture
     {
         $info = json_decode($contents, true);
 
-        // when several dates are available, will take the last one
         $max_date = false;
         if (isset($info[0]['offers'])) {
             foreach ($info[0]['offers'] as $k => $d) {
-                if ($d['serviceObligationLineItemEndDate']) {
-                    $date = new \DateTime($d['serviceObligationLineItemEndDate']);
-                    if ($max_date == false || $date > $max_date) {
+
+                //by default try to use HP Hardware Maintenance Onsite Support
+                if ($d['serviceObligationTypeCode'] && $d['serviceObligationTypeCode'] == "C") {
+                    if ($d['serviceObligationLineItemEndDate']) {
+                        $date = new \DateTime($d['serviceObligationLineItemEndDate']);
                         $max_date = $date;
                     }
+                } else {
+                    // when several dates are available, will take the last one
+                    if ($d['serviceObligationLineItemEndDate']) {
+                        $date = new \DateTime($d['serviceObligationLineItemEndDate']);
+                        if ($max_date == false || $date > $max_date) {
+                            $max_date = $date;
+                        }
+                    }
                 }
+
             }
 
             if ($max_date) {
@@ -168,11 +187,22 @@ class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacture
         $i        = false;
         if (isset($info[0]['offers'])) {
             foreach ($info[0]['offers'] as $k => $d) {
-                if ($d['serviceObligationLineItemEndDate']) {
-                    $date = new \DateTime($d['serviceObligationLineItemEndDate']);
-                    if ($max_date == false || $date > $max_date) {
+
+                //by default try to use HP Hardware Maintenance Onsite Support
+                if ($d['serviceObligationTypeCode'] && $d['serviceObligationTypeCode'] == "C") {
+                    if ($d['serviceObligationLineItemEndDate']) {
+                        $date = new \DateTime($d['serviceObligationLineItemEndDate']);
                         $max_date = $date;
                         $i = $k;
+                    }
+                } else {
+                    // when several dates are available, will take the last one
+                    if ($d['serviceObligationLineItemEndDate']) {
+                        $date = new \DateTime($d['serviceObligationLineItemEndDate']);
+                        if ($max_date == false || $date > $max_date) {
+                            $max_date = $date;
+                            $i = $k;
+                        }
                     }
                 }
             }
