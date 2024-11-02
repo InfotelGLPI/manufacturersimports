@@ -31,7 +31,11 @@ URL dans le plugin :
 
 > * Pour HP, il faut maintenant s'enregistrer afin d'avoir une clé API :
 
-Send email to warrantyapi.customers@hp.com
+Faire une demande d'accès à l'API via son HP account manager / commercial HP
+L'account manager va rentrer la demande dans le système HP et donner quelques informations sur son client
+Le client recevra un email de la part de l'adresse warrantyapi.customers@hp.com avec les étapes à effectuer pour finaliser sa demande et avoir l'accès
+La clé est valable 90 jours
+Un email sera envoyé à l'utilisateur quand il faudra renouveler cette clé ; l'email contient un lien sur lequel cliquer pour générer de nouvelles clés. C'est une démarche rapide. 
 
 URL dans le plugin :
 - Url du fabricant : https://support.hp.com/fr-fr/check-warranty/
