@@ -131,7 +131,7 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
     /**
      * @see PluginManufacturersimportsManufacturer::getStartDate()
      */
-    public function getStartDate($contents)
+    public function getStartDateDell($contents, $warrantyinfo)
     {
         $info = json_decode($contents, true);
         // v5
@@ -139,10 +139,13 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
         if (isset($info[0]['entitlements'])) {
             foreach ($info[0]['entitlements'] as $d) {
                 if ($d['startDate']) {
-                    $date = new \DateTime($d['startDate']);
-                    if ($max_date == false || $date > $max_date) {
-                        $max_date = $date;
+                    if($d['serviceLevelDescription'] == $warrantyinfo){
+                        $date = new \DateTime($d['startDate']);
+                        if ($max_date == false || $date < $max_date) {
+                            $max_date = $date;
+                        }
                     }
+
                 }
             }
 
@@ -157,7 +160,7 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
     /**
      * @see PluginManufacturersimportsManufacturer::getExpirationDate()
      */
-    public function getExpirationDate($contents)
+    public function getExpirationDateDell($contents, $warrantyinfo)
     {
         $info = json_decode($contents, true);
         // v5
@@ -166,9 +169,11 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
         if (isset($info[0]['entitlements'])) {
             foreach ($info[0]['entitlements'] as $d) {
                 if ($d['endDate']) {
-                    $date = new \DateTime($d['endDate']);
-                    if ($max_date == false || $date > $max_date) {
-                        $max_date = $date;
+                    if($d['serviceLevelDescription'] == $warrantyinfo){
+                        $date = new \DateTime($d['endDate']);
+                        if ($max_date == false || $date > $max_date) {
+                            $max_date = $date;
+                        }
                     }
                 }
             }
