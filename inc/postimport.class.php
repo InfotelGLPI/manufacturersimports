@@ -326,11 +326,16 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
      *
      * @return mixed
      */
-    public static function importStartDate($suppliername, $contents)
+    public static function importStartDate($suppliername, $contents, $warrantyinfo = '')
     {
         $supplierclass   = "PluginManufacturersimports" . $suppliername;
         $supplier        = new $supplierclass();
-        $importStartDate = $supplier->getStartDate($contents);
+        if($suppliername == PluginManufacturersimportsConfig::DELL) {
+            $importStartDate = $supplier->getStartDateDell($contents, $warrantyinfo);
+        }
+        else{
+            $importStartDate = $supplier->getStartDate($contents);
+        }
 
         return $importStartDate;
     }
@@ -381,11 +386,18 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
      *
      * @return mixed
      */
-    public static function importDateFin($suppliername, $contents)
+    public static function importDateFin($suppliername, $contents, $warrantyinfo = '')
     {
         $supplierclass = "PluginManufacturersimports" . $suppliername;
         $supplier      = new $supplierclass();
-        $maDateFin     = $supplier->getExpirationDate($contents);
+
+        if($suppliername == PluginManufacturersimportsConfig::DELL) {
+            $maDateFin     = $supplier->getExpirationDateDell($contents, $warrantyinfo);
+        }
+        else{
+            $maDateFin     = $supplier->getExpirationDate($contents);
+        }
+
 
         return $maDateFin;
     }
@@ -438,7 +450,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
           AND `" . $itemtable . "`.`serial` != ''
           AND `" . $itemtable . "`.`id` = '" . $ID . "' ";
         $query  .= " ORDER BY `" . $itemtable . "`.`name`";
-        $result = $DB->query($query);
+        $result = $DB->doQuery($query);
 
         $supplierclass = "PluginManufacturersimports" . $suppliername;
         $token         = $supplierclass::getToken($config);
@@ -609,9 +621,15 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
 
         if (!$contents === false) {
             $maBuyDate    = self::importDate($suppliername, $contents);
-            $maDate       = self::importStartDate($suppliername, $contents);
-            $maDateFin    = self::importDateFin($suppliername, $contents);
             $warrantyinfo = self::importWarrantyInfo($suppliername, $contents);
+            if($suppliername == PluginManufacturersimportsConfig::DELL){
+                $maDate       = self::importStartDate($suppliername, $contents, $warrantyinfo);
+                $maDateFin    = self::importDateFin($suppliername, $contents, $warrantyinfo);
+            }else{
+                $maDate       = self::importStartDate($suppliername, $contents);
+                $maDateFin    = self::importDateFin($suppliername, $contents);
+            }
+
         }
 
         if (isset($maDate)
