@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps: 
     - name: Checkout repo
-      uses: actions/checkout@4.2.2
+      uses: actions/checkout@4.0.0
       
     - name: Setup Perl environment
       # You may pin to the exact commit or the version.
