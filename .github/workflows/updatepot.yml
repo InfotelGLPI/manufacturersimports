@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps: 
     - name: Checkout repo
-      uses: actions/checkout@4.0.0
+      uses: actions/checkout@v4
 
     - name: install xgettext
     
