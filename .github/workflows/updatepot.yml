@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps: 
     - name: Checkout repo
-      uses: actions/checkout@v4
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
     - name: install xgettext
     
@@ -26,10 +26,10 @@ jobs:
 
 
     - name: Commit changes
-      uses: EndBug/add-and-commit@v9
+      uses: EndBug/add-and-commit@a94899bca583c204427a224a7af87c02f9b325d5
       with:
         message: "Update POT"
     - name: Push changes
  
-      uses: actions-go/push@master
+      uses: actions-go/push@7ad7ce209f2a038e7bca929b7a4c92026363f856
   
