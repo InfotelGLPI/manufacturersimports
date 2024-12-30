@@ -4,7 +4,8 @@ on:
     branches: [ master ]
     paths-ignore:
       - 'locales/**'
-
+permissions:
+  contents: write
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 jobs: 
@@ -15,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps: 
     - name: Checkout repo
-      uses: actions/checkout@v2 
+      uses: actions/checkout@v4
 
     - name: install xgettext
     
@@ -25,10 +26,10 @@ jobs:
 
 
     - name: Commit changes
-      uses: EndBug/add-and-commit@v5.1.0
+      uses: EndBug/add-and-commit@v9
       with:
         message: "Update POT"
     - name: Push changes
  
-      uses: actions-go/push@v1
+      uses: actions-go/push@master
   
