@@ -42,9 +42,17 @@ class PluginManufacturersimportsProfile extends profile
     {
         if ($item->getType() == 'Profile'
             && $item->getField('interface') != 'helpdesk') {
-            return PluginManufacturersimportsPreImport::getTypeName(2);
+            return self::createTabEntry(PluginManufacturersimportsPreImport::getTypeName(2));
         }
         return '';
+    }
+
+    /**
+     * @return string
+     */
+    public static function getIcon()
+    {
+        return "ti ti-satellite";
     }
 
 
@@ -135,7 +143,7 @@ class PluginManufacturersimportsProfile extends profile
                       SET `rights`='" . self::translateARight($profile_data['plugin_manufacturersimports']) . "' 
                       WHERE `name`='plugin_manufacturersimports' 
                         AND `profiles_id`='$profiles_id'";
-                $DB->query($query);
+                $DB->doQuery($query);
             }
         }
     }

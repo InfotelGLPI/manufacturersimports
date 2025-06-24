@@ -229,7 +229,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
 
         $_SESSION["glpi_plugin_manufacturersimports_total"] = 0;
 
-        Html::createProgressBar(__('Launching of imports', 'manufacturersimports'));
+        Html::progressBar('import', ['create'  => true, 'message' =>__('Launching of imports', 'manufacturersimports')]);
 
         echo "<table class='tab_cadre' width='70%' cellpadding='2'>";
         echo "<tr><th colspan='6'>" . __('Post import', 'manufacturersimports') . "</th></tr>";
@@ -438,7 +438,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
           AND `" . $itemtable . "`.`serial` != ''
           AND `" . $itemtable . "`.`id` = '" . $ID . "' ";
         $query  .= " ORDER BY `" . $itemtable . "`.`name`";
-        $result = $DB->query($query);
+        $result = $DB->doQuery($query);
 
         $supplierclass = "PluginManufacturersimports" . $suppliername;
         $token         = $supplierclass::getToken($config);

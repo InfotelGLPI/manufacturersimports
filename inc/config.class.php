@@ -127,7 +127,7 @@ class PluginManufacturersimportsConfig extends CommonDBTM
                              $this->fields["entities_id"]
                          )
                      );
-            $DB->query($query);
+            $DB->doQuery($query);
         }
     }
 
@@ -149,7 +149,7 @@ class PluginManufacturersimportsConfig extends CommonDBTM
                              $this->fields["entities_id"]
                          )
                      );
-            $DB->query($query);
+            $DB->doQuery($query);
         }
     }
 
@@ -752,7 +752,7 @@ class PluginManufacturersimportsConfig extends CommonDBTM
                         _sx('button', 'Retrieve warranty from manufacturer', 'manufacturersimports'),
                         ['itemtype' => $item->getType(),
                          'items_id' => $item->getID()],
-                        'fa-2x fa-cloud-download-alt'
+                        'ti ti-cloud-download'
                     );
                     echo "</div>";
                 }

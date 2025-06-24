@@ -29,10 +29,15 @@
 
 define('PLUGIN_MANUFACTURERSIMPORTS_VERSION', '3.0.9');
 
+global $CFG_GLPI;
+
+use Glpi\Plugin\Hooks;
+
 if (!defined("PLUGIN_MANUFACTURERSIMPORTS_DIR")) {
     define("PLUGIN_MANUFACTURERSIMPORTS_DIR", Plugin::getPhpDir("manufacturersimports"));
     define("PLUGIN_MANUFACTURERSIMPORTS_NOTFULL_DIR", Plugin::getPhpDir("manufacturersimports", false));
-    define("PLUGIN_MANUFACTURERSIMPORTS_WEBDIR", Plugin::getWebDir("manufacturersimports"));
+    $root = $CFG_GLPI['root_doc'] . '/plugins/manufacturersimports';
+    define("PLUGIN_MANUFACTURERSIMPORTS_WEBDIR", $root);
 }
 
 // Init the hooks of the plugins -Needed
@@ -72,7 +77,7 @@ function plugin_init_manufacturersimports()
     if (isset($_SESSION['glpiactiveprofile']['interface'])
         && $_SESSION['glpiactiveprofile']['interface'] == 'central') {
         // Add specific files to add to the header : javascript or css
-        $PLUGIN_HOOKS['add_css']['manufacturersimports'] = [
+        $PLUGIN_HOOKS[Hooks::ADD_CSS]['manufacturersimports'] = [
            "manufacturersimports.css",
         ];
     }
@@ -94,8 +99,8 @@ function plugin_version_manufacturersimports()
             'homepage'     => 'https://github.com/InfotelGLPI/manufacturersimports/',
             'requirements' => [
                'glpi' => [
-                  'min' => '10.0',
-                  'max' => '11.0',
+                  'min' => '11.0',
+                  'max' => '12.0',
                   'dev' => false
                ],
                'php'  => [

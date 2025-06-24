@@ -51,6 +51,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
         return _n('Suppliers import', 'Suppliers imports', $nb, 'manufacturersimports');
     }
 
+
     /**
      * @param        $myname
      * @param int    $value_type
@@ -472,19 +473,22 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
         echo "<tr class='tab_bg_2'>";
         echo "<td class='center'>";
 
-        //Manufacturer choice
-        $query = "SELECT `glpi_plugin_manufacturersimports_configs`.*
-                 FROM `glpi_plugin_manufacturersimports_configs` ";
-        $query .= " LEFT JOIN `glpi_entities` ON (`glpi_entities`.`id` = `glpi_plugin_manufacturersimports_configs`.`entities_id`)"
-                  . " WHERE `glpi_plugin_manufacturersimports_configs`.`manufacturers_id` != '0'";
-        $query .= "" . $dbu->getEntitiesRestrictRequest(" AND", "glpi_plugin_manufacturersimports_configs", '', '', true);
-        $query .= " ORDER BY `glpi_plugin_manufacturersimports_configs`.`entities_id`, 
-                            `glpi_plugin_manufacturersimports_configs`.`name`";
+        $criteria = [
+            'SELECT' => '*',
+            'FROM' => 'glpi_plugin_manufacturersimports_configs',
+            'WHERE' => [
+                'glpi_plugin_manufacturersimports_configs.manufacturers_id' => ['>', 0]
+            ],
+            'ORDERBY'   => ['glpi_plugin_manufacturersimports_configs.entities_id',
+                'glpi_plugin_manufacturersimports_configs.name'],
+        ];
+        $criteria['WHERE'] = $criteria['WHERE'] + getEntitiesRestrictCriteria(
+                'glpi_plugin_manufacturersimports_configs'
+            );
 
-        $iterator = $DB->request($query);
-        $number   = $iterator->numrows();
+        $iterator = $DB->request($criteria);
 
-        if ($number > 0) {
+        if (count($iterator) > 0) {
             self::showAllItems(
                 "itemtype",
                 0,
@@ -525,7 +529,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
             }
         }
         echo "</td><td>";
-        if ($number > 0) {
+        if (count($iterator) > 0) {
             echo Html::submit(_sx('button', 'Post'), ['name' => 'typechoice', 'class' => 'btn btn-primary']);
         }
         echo "</td>";
@@ -616,7 +620,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
 
             $query = self::queryImport($p, $config, $toview);
 
-            $result  = $DB->query($query);
+            $result  = $DB->doQuery($query);
             $numrows = $DB->numrows($result);
 
             if ($p['start'] < $numrows) {
@@ -830,7 +834,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
 
         echo "<tr>";
         if (!$onright) {
-            echo "<td><i class='fas fa-level-up-alt fa-flip-horizontal fa-lg mx-2'></i></td>";
+            echo "<td><i class='ti ti-corner-right-up mx-2'></i></td>";
         } else {
             echo "<td class='left' width='80%'></td>";
         }
@@ -843,7 +847,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
              href='#'>" . __('Uncheck all') . "</a></td>";
 
         if ($onright) {
-            echo "<td><i class='fas fa-level-up-alt fa-lg mx-2'></i>";
+            echo "<td><i class='ti ti-corner-right-up mx-2'></i>";
         } else {
             echo "<td class='left' width='80%'>";
         }
@@ -969,7 +973,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
         if ($order != "ASC") {
             $order = "DESC";
         }
-        $searchopt = &Search::getOptions($itemtype);
+        $searchopt = Search::getOptions($itemtype);
 
         $table = $searchopt[$ID]["table"];
         $field = $searchopt[$ID]["field"];
@@ -1041,12 +1045,12 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
         if (!$start == 0) {
             echo "<th class='left'>";
             echo "<a href='$target?$parameters&amp;start=0'>";
-            echo "<i class='fa-2x fas fa-angle-double-left' title=\"".
+            echo "<i style='font-size: 2em;' class='ti ti-chevrons-left' title=\"".
                  __s('Start')."\"></i>";
             echo "</a></th>";
             echo "<th class='left'>";
             echo "<a href='$target?$parameters&amp;start=$back'>";
-            echo "<i class='fa-2x fas fa-angle-left' title=\"".
+            echo "<i style='font-size: 2em;' class='ti ti-chevron-left' title=\"".
                  __s('Previous')."\"></i>";
             echo "</a></th>";
         }
@@ -1065,13 +1069,13 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
         if ($forward < $numrows) {
             echo "<th class='right'>";
             echo "<a href='$target?$parameters&amp;start=$forward'>";
-            echo "<i class='fa-2x fas fa-angle-right' title=\"".
+            echo "<i style='font-size: 2em;' class='ti ti-chevron-right' title=\"".
                  __s('Next')."\"></i>";
             echo "</a></th>\n";
 
             echo "<th class='right'>";
             echo "<a href='$target?$parameters&amp;start=$end'>";
-            echo "<i class='fa-2x fas fa-double-angle-right' title=\"".
+            echo "<i style='font-size: 2em;' class='ti ti-chevrons-right' title=\"".
                  __s('End')."\"></i>";
             echo "</a></th>\n";
         }

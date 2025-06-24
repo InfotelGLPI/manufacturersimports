@@ -110,7 +110,7 @@ class PluginManufacturersimportsImport extends CommonDBTM
         $params['itemtype'] = $type;
         $query              = PluginManufacturersimportsPreImport::queryImport($params, $config, $toview, true);
 
-        $result = $DB->query($query);
+        $result = $DB->doQuery($query);
 
         if ($DB->numrows($result) > 0) {
             while ($data = $DB->fetchArray($result)) {

@@ -48,7 +48,7 @@ class PluginManufacturersimportsLog extends CommonDBTM {
       $query = "SELECT * FROM `".$this->getTable()."` " .
          "WHERE `items_id` = '" . $items_id . "'
          AND `itemtype` = '" . $itemtype . "' ";
-      if ($result = $DB->query($query)) {
+      if ($result = $DB->doQuery($query)) {
          if ($DB->numrows($result) != 1) {
             return false;
          }
@@ -92,7 +92,7 @@ class PluginManufacturersimportsLog extends CommonDBTM {
             $query ="DELETE
               FROM `glpi_documents_items`
               WHERE `documents_id` = '".$this->fields["documents_id"]."';";
-            $DB->query($query);
+            $DB->doQuery($query);
 
             if (is_file(GLPI_DOC_DIR."/".$doc->fields["filename"])
                   && !is_dir(GLPI_DOC_DIR."/".$doc->fields["filename"])) {

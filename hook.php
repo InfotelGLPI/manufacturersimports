@@ -83,29 +83,29 @@ function plugin_manufacturersimports_install()
                  `warranty_url` ='https://apigtwb2c.us.dell.com/PROD/sbil/eapi/v5/asset-entitlements?servicetags=', 
                  `token_url`    = 'https://apigtwb2c.us.dell.com/auth/oauth/v2/token'
              WHERE `name` ='" . PluginManufacturersimportsConfig::DELL . "'";
-    $DB->query($query);
+    $DB->doQuery($query);
 
     $query = "UPDATE `glpi_plugin_manufacturersimports_configs` 
              SET `Supplier_url` = 'https://www.lenovo.com/us/en/warrantyApos?serialNumber=' 
              WHERE `name` ='" . PluginManufacturersimportsConfig::LENOVO . "'";
-    $DB->query($query);
+    $DB->doQuery($query);
 
     $query = "UPDATE `glpi_plugin_manufacturersimports_configs`
              SET `Supplier_url` = 'http://support.ts.fujitsu.com/Warranty/WarrantyStatus.asp?lng=com&IDNR'
              WHERE `name` ='" . PluginManufacturersimportsConfig::FUJITSU . "'";
-    $DB->query($query);
+    $DB->doQuery($query);
 
     $query = "UPDATE `glpi_plugin_manufacturersimports_configs` 
              SET `Supplier_url` = 'https://www.wortmann.de/fr-fr/profile/snsearch.aspx?SN=' 
              WHERE `name` ='" . PluginManufacturersimportsConfig::WORTMANN_AG . "'";
-    $DB->query($query);
+    $DB->doQuery($query);
 
     $query = "UPDATE `glpi_plugin_manufacturersimports_configs` 
              SET `Supplier_url` = 'https://support.hp.com/fr-fr/check-warranty/',
                  `warranty_url` ='https://warranty.api.hp.com/productwarranty/v2/queries', 
                  `token_url`    = 'https://warranty.api.hp.com/oauth/v1/token'
              WHERE `name` ='" . PluginManufacturersimportsConfig::HP . "'";
-    $DB->query($query);
+    $DB->doQuery($query);
 
 
     $cron = new CronTask;
@@ -124,7 +124,7 @@ function plugin_manufacturersimports_install()
             $query = "UPDATE `glpi_plugin_manufacturersimports_profiles`
                    SET `profiles_id` = '" . $data["id"] . "'
                    WHERE `id` = '" . $data["id"] . "';";
-            $DB->query($query);
+            $DB->doQuery($query);
         }
 
         $migration->dropField('glpi_plugin_manufacturersimports_profiles', 'name');
