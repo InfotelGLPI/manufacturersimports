@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $soft\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-30 14:39+0000\n"
+"POT-Creation-Date: 2025-06-24 13:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,8 +18,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: setup.php:85 front/massiveaction.php:40 inc/menu.class.php:45
-#: inc/preimport.class.php:51 inc/profile.class.php:80
+#: setup.php:90 front/massiveaction.php:40 inc/menu.class.php:45
+#: inc/preimport.class.php:51 inc/profile.class.php:88
 msgid "Suppliers import"
 msgid_plural "Suppliers imports"
 msgstr[0] ""
@@ -37,7 +37,7 @@ msgstr ""
 msgid "Default supplier attached"
 msgstr ""
 
-#: inc/config.class.php:235 inc/preimport.class.php:694
+#: inc/config.class.php:235 inc/preimport.class.php:698
 msgid "New warranty attached"
 msgstr ""
 
@@ -73,8 +73,8 @@ msgstr ""
 msgid "Section for document records"
 msgstr ""
 
-#: inc/config.class.php:636 inc/preimport.class.php:397
-#: inc/preimport.class.php:415
+#: inc/config.class.php:636 inc/preimport.class.php:398
+#: inc/preimport.class.php:416
 msgid "Manufacturer information"
 msgstr ""
 
@@ -145,55 +145,55 @@ msgstr ""
 msgid "Connection failed/data download from manufacturer web site"
 msgstr ""
 
-#: inc/preimport.class.php:368
+#: inc/preimport.class.php:369
 msgid "The choosen supplier is not recursive"
 msgstr ""
 
-#: inc/preimport.class.php:422
+#: inc/preimport.class.php:423
 msgid "Not yet imported"
 msgstr ""
 
-#: inc/preimport.class.php:425
+#: inc/preimport.class.php:426
 msgid "Problem during the importation"
 msgstr ""
 
-#: inc/preimport.class.php:433
+#: inc/preimport.class.php:434
 msgid "Already imported"
 msgstr ""
 
-#: inc/preimport.class.php:471
+#: inc/preimport.class.php:472
 msgid "Choose inventory type and manufacturer"
 msgstr ""
 
-#: inc/preimport.class.php:512
+#: inc/preimport.class.php:516
 msgid "Devices not imported"
 msgstr ""
 
-#: inc/preimport.class.php:513
+#: inc/preimport.class.php:517
 msgid "Devices already imported"
 msgstr ""
 
-#: inc/preimport.class.php:519 inc/preimport.class.php:523
+#: inc/preimport.class.php:523 inc/preimport.class.php:527
 msgid "No manufacturer available. Please configure at least one manufacturer"
 msgstr ""
 
-#: inc/preimport.class.php:681
+#: inc/preimport.class.php:685
 msgid "Model Number"
 msgstr ""
 
-#: inc/preimport.class.php:689
+#: inc/preimport.class.php:693
 msgid "Supplier attached"
 msgstr ""
 
-#: inc/preimport.class.php:751
+#: inc/preimport.class.php:755
 #, php-format
 msgid "Total number of devices to import %s"
 msgstr ""
 
-#: inc/preimport.class.php:807
+#: inc/preimport.class.php:811
 msgid "No device finded"
 msgstr ""
 
-#: inc/preimport.class.php:1101
+#: inc/preimport.class.php:1105
 msgid "Reset the import"
 msgstr ""
