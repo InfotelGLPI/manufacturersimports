@@ -752,7 +752,7 @@ class PluginManufacturersimportsConfig extends CommonDBTM
                         _sx('button', 'Retrieve warranty from manufacturer', 'manufacturersimports'),
                         ['itemtype' => $item->getType(),
                          'items_id' => $item->getID()],
-                        'ti ti-cloud-download'
+                        'ti-cloud-download'
                     );
                     echo "</div>";
                 }
