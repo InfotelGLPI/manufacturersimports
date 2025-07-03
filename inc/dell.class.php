@@ -140,7 +140,7 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
             foreach ($info[0]['entitlements'] as $d) {
                 if ($d['startDate']) {
                     $date = new \DateTime($d['startDate']);
-                    if ($max_date == false || $date > $max_date) {
+                    if ($max_date == false || $date < $max_date) {
                         $max_date = $date;
                     }
                 }
