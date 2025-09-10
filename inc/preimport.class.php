@@ -555,7 +555,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
 //            if ($fixed) {
 //               $out = "<div class='center'><table border='0' class='tab_cadre_fixehov'>\n";
 //            } else {
-//               $out = "<div class='center'><table border='0' class='tab_cadrehov'>\n";
+//               $out = "<div class='center'><table border='0' class='tab_cadre_fixe'>\n";
 //            }
 //            break;
 //      }
@@ -897,13 +897,13 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
         $itemtable  = $dbu->getTableForItemType($p['itemtype']);
 
         $query = "SELECT `" . $itemtable . "`.`id`,
-                        `" . $itemtable . "`.`name`, 
+                        `" . $itemtable . "`.`name`,
                         `" . $itemtable . "`.`serial`,
                         `" . $itemtable . "`.`$modelfield`,
                         `" . $itemtable . "`.`entities_id`,
                         `glpi_plugin_manufacturersimports_logs`.`import_status`,
                         `glpi_plugin_manufacturersimports_logs`.`items_id`,
-                        `glpi_plugin_manufacturersimports_logs`.`itemtype`, 
+                        `glpi_plugin_manufacturersimports_logs`.`itemtype`,
                         `glpi_plugin_manufacturersimports_logs`.`documents_id`,
                         `glpi_plugin_manufacturersimports_logs`.`date_import`,
                         '" . $p['itemtype'] . "' AS type,
@@ -913,10 +913,10 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
         //model device left join
         $query .= "LEFT JOIN `$modeltable` ON (`$modeltable`.`id` = `" . $itemtable . "`.`" . $modelfield . "`) ";
         $query .= " LEFT JOIN `glpi_entities` ON (`glpi_entities`.`id` = `" . $itemtable . "`.`entities_id`)";
-        $query .= " LEFT JOIN `glpi_plugin_manufacturersimports_configs` 
+        $query .= " LEFT JOIN `glpi_plugin_manufacturersimports_configs`
          ON (`glpi_plugin_manufacturersimports_configs`.`manufacturers_id` = `" . $itemtable . "`.`manufacturers_id`)";
-        $query .= " LEFT JOIN `glpi_plugin_manufacturersimports_logs` 
-         ON (`glpi_plugin_manufacturersimports_logs`.`items_id` = `" . $itemtable . "`.`id` 
+        $query .= " LEFT JOIN `glpi_plugin_manufacturersimports_logs`
+         ON (`glpi_plugin_manufacturersimports_logs`.`items_id` = `" . $itemtable . "`.`id`
          AND `glpi_plugin_manufacturersimports_logs`.`itemtype` = '" . $p['itemtype'] . "')";
 
         //serial must be not empty

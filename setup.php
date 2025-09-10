@@ -35,7 +35,7 @@ use Glpi\Plugin\Hooks;
 
 if (!defined("PLUGIN_MANUFACTURERSIMPORTS_DIR")) {
     define("PLUGIN_MANUFACTURERSIMPORTS_DIR", Plugin::getPhpDir("manufacturersimports"));
-    define("PLUGIN_MANUFACTURERSIMPORTS_NOTFULL_DIR", Plugin::getPhpDir("manufacturersimports", false));
+//    define("PLUGIN_MANUFACTURERSIMPORTS_NOTFULL_DIR", Plugin::getPhpDir("manufacturersimports", false));
     $root = $CFG_GLPI['root_doc'] . '/plugins/manufacturersimports';
     define("PLUGIN_MANUFACTURERSIMPORTS_WEBDIR", $root);
 }
