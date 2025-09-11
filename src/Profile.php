@@ -27,14 +27,22 @@
  --------------------------------------------------------------------------
  */
 
+namespace GlpiPlugin\Manufacturersimports;
+
+use GlpiPlugin\Manufacturersimports\Config;
+use CommonGLPI;
+use DbUtils;
+use ProfileRight;
+use Session;
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access directly to this file");
 }
 
 /**
- * Class PluginManufacturersimportsProfile
+ * Class Profile
  */
-class PluginManufacturersimportsProfile extends profile
+class Profile extends \Profile
 {
     public static $rightname = "profile";
 
@@ -42,7 +50,7 @@ class PluginManufacturersimportsProfile extends profile
     {
         if ($item->getType() == 'Profile'
             && $item->getField('interface') != 'helpdesk') {
-            return self::createTabEntry(PluginManufacturersimportsPreImport::getTypeName(2));
+            return self::createTabEntry(PreImport::getTypeName(2));
         }
         return '';
     }
@@ -83,7 +91,7 @@ class PluginManufacturersimportsProfile extends profile
 
     public static function getAllRights()
     {
-        return [['itemtype' => 'PluginManufacturersimportsConfig',
+        return [['itemtype' => Config::class,
                  'label'    => _n(
                      'Suppliers import',
                      'Suppliers imports',
@@ -139,9 +147,9 @@ class PluginManufacturersimportsProfile extends profile
             $matching       = ['manufacturersimports' => 'plugin_manufacturersimports'];
             $current_rights = ProfileRight::getProfileRights($profiles_id, array_values($matching));
             if (!isset($current_rights['plugin_manufacturersimports'])) {
-                $query = "UPDATE `glpi_profilerights` 
-                      SET `rights`='" . self::translateARight($profile_data['plugin_manufacturersimports']) . "' 
-                      WHERE `name`='plugin_manufacturersimports' 
+                $query = "UPDATE `glpi_profilerights`
+                      SET `rights`='" . self::translateARight($profile_data['plugin_manufacturersimports']) . "'
+                      WHERE `name`='plugin_manufacturersimports'
                         AND `profiles_id`='$profiles_id'";
                 $DB->doQuery($query);
             }
@@ -239,11 +247,11 @@ class PluginManufacturersimportsProfile extends profile
         echo "<div class='firstbloc'>";
         if (($canedit = Session::haveRightsOr(self::$rightname, [CREATE, UPDATE, PURGE]))
             && $openform) {
-            $profile = new Profile();
+            $profile = new \Profile();
             echo "<form method='post' action='" . $profile->getFormURL() . "'>";
         }
 
-        $profile = new Profile();
+        $profile = new \Profile();
         $profile->getFromDB($profiles_id);
 
         $rights = $this->getAllRights();

@@ -27,8 +27,9 @@
  --------------------------------------------------------------------------
  */
 
+use GlpiPlugin\Manufacturersimports\Config;
+
 if (strpos($_SERVER['PHP_SELF'], "dropdownSuppliers.php")) {
-   include ('../../../inc/includes.php');
    header("Content-Type: text/html; charset=UTF-8");
    Html::header_nocache();
 }
@@ -38,7 +39,7 @@ if (!defined('GLPI_ROOT')) {
 
 Session::checkLoginUser();
 
-$config = new PluginManufacturersimportsConfig();
+$config = new Config();
 if ($_POST['supplier'] != -1) {
    echo "&nbsp;<a class='submit btn btn-primary' href='".$config->getFormURL()."?preconfig=".$_POST['supplier']."'>"._sx('button', 'Update')."</a>";
 }

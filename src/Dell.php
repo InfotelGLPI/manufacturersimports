@@ -27,6 +27,11 @@
  --------------------------------------------------------------------------
  */
 
+namespace GlpiPlugin\Manufacturersimports;
+
+use Html;
+use Search;
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access directly to this file");
 }
@@ -34,12 +39,12 @@ if (!defined('GLPI_ROOT')) {
 ini_set("max_execution_time", "0");
 
 /**
- * Class PluginManufacturersimportsDell
+ * Class Dell
  */
-class PluginManufacturersimportsDell extends PluginManufacturersimportsManufacturer
+class Dell extends Manufacturer
 {
     /**
-     * @see PluginManufacturersimportsManufacturer::showCheckbox()
+     * @see Manufacturer::showCheckbox()
      */
     public function showCheckbox($ID, $sel, $otherSerial = false)
     {
@@ -48,7 +53,7 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
     }
 
     /**
-     * @see PluginManufacturersimportsManufacturer::showItem()
+     * @see Manufacturer::showItem()
      */
     public function showItem($output_type, $item_num, $row_num, $otherSerial = false)
     {
@@ -56,7 +61,7 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
     }
 
     /**
-     * @see PluginManufacturersimportsManufacturer::showItemTitle()
+     * @see Manufacturer::showItemTitle()
      */
     public function showItemTitle($output_type, $header_num)
     {
@@ -64,7 +69,7 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
     }
 
     /**
-     * @see PluginManufacturersimportsManufacturer::showDocTitle()
+     * @see Manufacturer::showDocTitle()
      */
     public function showDocTitle($output_type, $header_num)
     {
@@ -72,7 +77,7 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
     }
 
     /**
-     * @see PluginManufacturersimportsManufacturer::showDocItem()
+     * @see Manufacturer::showDocItem()
      */
     public function showDocItem($output_type, $item_num, $row_num, $doc = null)
     {
@@ -80,7 +85,7 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
     }
 
     /**
-     * @see PluginManufacturersimportsManufacturer::getSupplierInfo()
+     * @see Manufacturer::getSupplierInfo()
      */
     public function getSupplierInfo(
         $compSerial = null,
@@ -92,7 +97,7 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
     {
         if (!$compSerial) {
             // by default
-            $info["name"]            = PluginManufacturersimportsConfig::DELL;
+            $info["name"]            = Config::DELL;
             $info['supplier_url']    = "https://www.dell.com/support/home/product-support/servicetag/";
             $info['token_url']       = "https://apigtwb2c.us.dell.com/auth/oauth/v2/token";
             $info['warranty_url']    = "https://apigtwb2c.us.dell.com/PROD/sbil/eapi/v5/asset-entitlements?servicetags=";
@@ -114,7 +119,7 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
     }
 
     /**
-     * @see PluginManufacturersimportsManufacturer::getBuyDate()
+     * @see Manufacturer::getBuyDate()
      */
     public function getBuyDate($contents)
     {
@@ -129,7 +134,7 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
     }
 
     /**
-     * @see PluginManufacturersimportsManufacturer::getStartDate()
+     * @see Manufacturer::getStartDate()
      */
     public function getStartDate($contents)
     {
@@ -155,7 +160,7 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
     }
 
     /**
-     * @see PluginManufacturersimportsManufacturer::getExpirationDate()
+     * @see Manufacturer::getExpirationDate()
      */
     public function getExpirationDate($contents)
     {
@@ -183,7 +188,7 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
     }
 
     /**
-     * @see PluginManufacturersimportsManufacturer::getWarrantyInfo()
+     * @see Manufacturer::getWarrantyInfo()
      */
     public function getWarrantyInfo($contents)
     {
@@ -230,7 +235,7 @@ class PluginManufacturersimportsDell extends PluginManufacturersimportsManufactu
                                         'client_secret' => $config->fields["supplier_secret"],
                                         'grant_type'    => 'client_credentials'],
                      "suppliername" => $config->fields["name"]];
-        $contents = PluginManufacturersimportsPostImport::cURLData($options);
+        $contents = PostImport::cURLData($options);
         // must extract from $contents the token bearer
         $response = json_decode($contents, true);
         if (isset($response['access_token'])) {

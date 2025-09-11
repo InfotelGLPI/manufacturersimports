@@ -27,17 +27,19 @@
  --------------------------------------------------------------------------
  */
 
+namespace GlpiPlugin\Manufacturersimports;
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access directly to this file");
 }
 
 /**
- * Class PluginManufacturersimportsWortmann_ag
+ * Class Wortmann_ag
  */
-class PluginManufacturersimportsWortmann_ag extends PluginManufacturersimportsManufacturer
+class Wortmann_ag extends Manufacturer
 {
     /**
-     * @see PluginManufacturersimportsManufacturer::showDocTitle()
+     * @see Manufacturer::showDocTitle()
      */
     public function showDocTitle($output_type, $header_num)
     {
@@ -50,7 +52,7 @@ class PluginManufacturersimportsWortmann_ag extends PluginManufacturersimportsMa
     }
 
     /**
-     * @see PluginManufacturersimportsManufacturer::getSupplierInfo()
+     * @see Manufacturer::getSupplierInfo()
      */
     public function getSupplierInfo(
         $compSerial = null,
@@ -60,14 +62,14 @@ class PluginManufacturersimportsWortmann_ag extends PluginManufacturersimportsMa
         $supplierUrl = null
     )
     {
-        $info["name"]         = PluginManufacturersimportsConfig::WORTMANN_AG;
+        $info["name"]         = Config::WORTMANN_AG;
         $info["supplier_url"] = "https://www.wortmann.de/fr-fr/profile/snsearch.aspx?SN=";
         $info["url"]          = $supplierUrl.$compSerial;
         return $info;
     }
 
     /**
-     * @see PluginManufacturersimportsManufacturer::getBuyDate()
+     * @see Manufacturer::getBuyDate()
      */
     public function getBuyDate($contents)
     {
@@ -78,7 +80,7 @@ class PluginManufacturersimportsWortmann_ag extends PluginManufacturersimportsMa
         $myDate = trim($myDate);
         $myDate = str_replace('/', '-', $myDate);
 
-        $myDate = PluginManufacturersimportsPostImport::checkDate($myDate, true);
+        $myDate = PostImport::checkDate($myDate, true);
 
         if ($myDate != "0000-00-00") {
             list($day, $month, $year) = explode('-', $myDate);
@@ -89,7 +91,7 @@ class PluginManufacturersimportsWortmann_ag extends PluginManufacturersimportsMa
     }
 
     /**
-     * @see PluginManufacturersimportsManufacturer::getStartDate()
+     * @see Manufacturer::getStartDate()
      */
     public function getStartDate($contents)
     {
@@ -97,7 +99,7 @@ class PluginManufacturersimportsWortmann_ag extends PluginManufacturersimportsMa
     }
 
     /**
-     * @see PluginManufacturersimportsManufacturer::getExpirationDate()
+     * @see Manufacturer::getExpirationDate()
      */
     public function getExpirationDate($contents)
     {
@@ -108,7 +110,7 @@ class PluginManufacturersimportsWortmann_ag extends PluginManufacturersimportsMa
         $myDate = trim($myDate);
         $myDate = str_replace('/', '-', $myDate);
 
-        $myDate = PluginManufacturersimportsPostImport::checkDate($myDate, true);
+        $myDate = PostImport::checkDate($myDate, true);
 
         if ($myDate != "0000-00-00") {
             list($day, $month, $year) = explode('-', $myDate);

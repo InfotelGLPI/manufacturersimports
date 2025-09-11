@@ -1,4 +1,5 @@
 <?php
+
 /*
  * @version $Id: HEADER 15930 2011-10-30 15:47:55Z tsmr $
  -------------------------------------------------------------------------
@@ -27,16 +28,20 @@
  --------------------------------------------------------------------------
  */
 
+namespace GlpiPlugin\Manufacturersimports;
+
+use CommonDBTM;
+use DbUtils;
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access directly to this file");
 }
 
 /**
- * Class PluginManufacturersimportsImport
+ * Class Import
  */
-class PluginManufacturersimportsImport extends CommonDBTM
+class Import extends CommonDBTM
 {
-
     /**
      * @param $name
      *
@@ -46,7 +51,7 @@ class PluginManufacturersimportsImport extends CommonDBTM
     {
         switch ($name) {
             case "DataWarrantyImport":
-                return ['description' => PluginManufacturersimportsPreImport::getTypeName(1) . " - " . __('Warranty import (Dell, HP)', 'manufacturersimports')];
+                return ['description' => PreImport::getTypeName(1) . " - " . __('Warranty import (Dell, HP)', 'manufacturersimports')];
         }
         return [];
     }
@@ -62,9 +67,9 @@ class PluginManufacturersimportsImport extends CommonDBTM
      **/
     public static function cronDataWarrantyImport($task)
     {
-        $cron_status = PluginManufacturersimportsImport::importCron($task, PluginManufacturersimportsConfig::DELL);
+        $cron_status = Import::importCron($task, Config::DELL);
 
-        $cron_status = PluginManufacturersimportsImport::importCron($task, PluginManufacturersimportsConfig::HP);
+        $cron_status = Import::importCron($task, Config::HP);
 
         return $cron_status;
     }
@@ -81,10 +86,10 @@ class PluginManufacturersimportsImport extends CommonDBTM
     {
         global $DB;
 
-        $config = new PluginManufacturersimportsConfig();
+        $config = new Config();
         $config->getFromDBByCrit(['name' => $supplier]);
 
-        $log = new PluginManufacturersimportsLog();
+        $log = new Log();
 
         $suppliername = $config->fields["name"];
         $supplierUrl  = $config->fields["supplier_url"];
@@ -95,20 +100,18 @@ class PluginManufacturersimportsImport extends CommonDBTM
 
         $params                     = [];
         $params['manufacturers_id'] = $config->getID();
-        $params['imported']         = PluginManufacturersimportsPreImport::NOT_IMPORTED;
+        $params['imported']         = PreImport::NOT_IMPORTED;
         $params['sort']             = 1;
         $params['order']            = "ASC";
         $params['start']            = 0;
 
-      //      $types = PluginManufacturersimportsConfig::getTypes();
-
         $nb_import_error = 0;
         $msg             = "";
 
-      //      foreach ($types as $type) {
+        //      foreach ($types as $type) {
         $type               = "Computer";
         $params['itemtype'] = $type;
-        $query              = PluginManufacturersimportsPreImport::queryImport($params, $config, $toview, true);
+        $query              = PreImport::queryImport($params, $config, $toview, true);
 
         $result = $DB->doQuery($query);
 
@@ -123,33 +126,33 @@ class PluginManufacturersimportsImport extends CommonDBTM
 
                 $models_id = $data[$modelfield];
                 $otherSerial = "";
-                if (class_exists($type."Model") && $models_id != 0) {
-                    $modelitemtype =$type."Model";
+                if (class_exists($type . "Model") && $models_id != 0) {
+                    $modelitemtype = $type . "Model";
                     $modelclass = new $modelitemtype();
                     $modelclass->getfromDB($models_id);
                     $otherSerial = $modelclass->fields["product_number"];
                 }
 
-                $url  = PluginManufacturersimportsPreImport::selectSupplier(
+                $url  = PreImport::selectSupplier(
                     $suppliername,
                     $supplierUrl,
                     $compSerial,
                     $otherSerial,
                     $supplierkey
                 );
-                $post = PluginManufacturersimportsPreImport::getSupplierPost(
+                $post = PreImport::getSupplierPost(
                     $suppliername,
                     $compSerial,
                     $otherSerial
                 );
 
                 $options = ["url"     => $url,
-                            "post"    => $post,
-                            "type"    => $type,
-                            "ID"      => $ID,
-                            "config"  => $config,
-                            "line"    => $data,
-                            "display" => false];
+                    "post"    => $post,
+                    "type"    => $type,
+                    "ID"      => $ID,
+                    "config"  => $config,
+                    "line"    => $data,
+                    "display" => false];
 
                 if (!empty($compSerial)) {
                     $options['sn'] = $compSerial;
@@ -158,16 +161,16 @@ class PluginManufacturersimportsImport extends CommonDBTM
                     $options['pn'] = $otherserial;
                 }
 
-                if ($suppliername == PluginManufacturersimportsConfig::DELL
-                    || $suppliername == PluginManufacturersimportsConfig::HP) {
-                    $supplierclass    = "PluginManufacturersimports" . $suppliername;
+                if ($suppliername == Config::DELL
+                    || $suppliername == Config::HP) {
+                    $supplierclass    = "GlpiPlugin\Manufacturersimports\\".$suppliername;
                     $token            = $supplierclass::getToken($config);
                     $warranty_url     = $supplierclass::getWarrantyUrl($config, $compSerial);
                     $options['token'] = $token;
                     if (isset($warranty_url)) {
                         $options['url'] = $warranty_url['url'];
                     }
-                    if (PluginManufacturersimportsPostImport::saveImport($options)) {
+                    if (PostImport::saveImport($options)) {
                         $task->addVolume(1);
                     } else {
                         $nb_import_error += 1;
@@ -176,7 +179,7 @@ class PluginManufacturersimportsImport extends CommonDBTM
             }
         }
 
-      //      }
+        //      }
         if ($task) {
             $task->log(__('Import OK', 'manufacturersimports'));
 

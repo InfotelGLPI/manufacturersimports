@@ -33,9 +33,12 @@ global $CFG_GLPI;
 
 use Glpi\Plugin\Hooks;
 
+use GlpiPlugin\Manufacturersimports\Config;
+use GlpiPlugin\Manufacturersimports\Menu;
+
+
 if (!defined("PLUGIN_MANUFACTURERSIMPORTS_DIR")) {
     define("PLUGIN_MANUFACTURERSIMPORTS_DIR", Plugin::getPhpDir("manufacturersimports"));
-//    define("PLUGIN_MANUFACTURERSIMPORTS_NOTFULL_DIR", Plugin::getPhpDir("manufacturersimports", false));
     $root = $CFG_GLPI['root_doc'] . '/plugins/manufacturersimports';
     define("PLUGIN_MANUFACTURERSIMPORTS_WEBDIR", $root);
 }
@@ -50,19 +53,18 @@ function plugin_init_manufacturersimports()
     if (Plugin::isPluginActive('manufacturersimports')
         && Session::getLoginUserID()) {
         Plugin::registerClass(
-            'PluginManufacturersimportsProfile',
+            Profile::class,
             ['addtabon' => 'Profile']
         );
 
         //Display menu entry only if user has right to see it !
         if (Session::haveRight('plugin_manufacturersimports', READ)) {
             $PLUGIN_HOOKS["menu_toadd"]['manufacturersimports']
-               = ['tools' => 'PluginManufacturersimportsMenu'];
+               = ['tools' => Menu::class];
         }
 
         if (Session::haveRight('config', UPDATE)) {
-            $PLUGIN_HOOKS['config_page']['manufacturersimports']
-                                                                        = 'front/config.php';
+            $PLUGIN_HOOKS['config_page']['manufacturersimports'] = 'front/config.php';
             $PLUGIN_HOOKS['use_massive_action']['manufacturersimports'] = 1;
         }
 
@@ -70,8 +72,8 @@ function plugin_init_manufacturersimports()
         $PLUGIN_HOOKS['post_init']['manufacturersimports']
            = 'plugin_manufacturersimports_postinit';
 
-        $PLUGIN_HOOKS['infocom']['manufacturersimports']       = ['PluginManufacturersimportsConfig', 'showForInfocom'];
-        $PLUGIN_HOOKS['pre_show_item']['manufacturersimports'] = ['PluginManufacturersimportsConfig', 'showItemImport'];
+        $PLUGIN_HOOKS['infocom']['manufacturersimports']       = [Config::class, 'showForInfocom'];
+        $PLUGIN_HOOKS['pre_show_item']['manufacturersimports'] = [Config::class, 'showItemImport'];
     }
 
     if (isset($_SESSION['glpiactiveprofile']['interface'])

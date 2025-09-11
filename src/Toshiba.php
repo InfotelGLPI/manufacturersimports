@@ -27,17 +27,21 @@
  --------------------------------------------------------------------------
  */
 
+namespace GlpiPlugin\Manufacturersimports;
+
+use Search;
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access directly to this file");
 }
 
 /**
- * Class PluginManufacturersimportsToshiba
+ * Class Toshiba
  */
-class PluginManufacturersimportsToshiba extends PluginManufacturersimportsManufacturer
+class Toshiba extends Manufacturer
 {
     /**
-     * @see PluginManufacturersimportsManufacturer::showDocTitle()
+     * @see Manufacturer::showDocTitle()
      */
     public function showDocTitle($output_type, $header_num)
     {
@@ -50,7 +54,7 @@ class PluginManufacturersimportsToshiba extends PluginManufacturersimportsManufa
     }
 
     /**
-     * @see PluginManufacturersimportsManufacturer::getSupplierInfo()
+     * @see Manufacturer::getSupplierInfo()
      */
     public function getSupplierInfo(
         $compSerial = null,
@@ -60,7 +64,7 @@ class PluginManufacturersimportsToshiba extends PluginManufacturersimportsManufa
         $supplierUrl = null
     )
     {
-        $info["name"]         = PluginManufacturersimportsConfig::TOSHIBA;
+        $info["name"]         = Config::TOSHIBA;
         $info["supplier_url"] = "https://support.dynabook.com/support/warrantyResults?";
         $info["url"]          = $supplierUrl .
                                 "sno=" . $compSerial;
@@ -81,7 +85,7 @@ class PluginManufacturersimportsToshiba extends PluginManufacturersimportsManufa
     }
 
     /**
-     * @see PluginManufacturersimportsManufacturer::getBuyDate()
+     * @see Manufacturer::getBuyDate()
      */
     public function getBuyDate($contents)
     {
@@ -89,13 +93,13 @@ class PluginManufacturersimportsToshiba extends PluginManufacturersimportsManufa
         $search = stristr($contents, $field);
         $myDate = substr($search, 11, 21);
         $myDate = trim($myDate);
-        $myDate = PluginManufacturersimportsPostImport::checkDate($myDate);
+        $myDate = PostImport::checkDate($myDate);
 
         return $myDate;
     }
 
     /**
-     * @see PluginManufacturersimportsManufacturer::getStartDate()
+     * @see Manufacturer::getStartDate()
      */
     public function getStartDate($contents)
     {
@@ -103,13 +107,13 @@ class PluginManufacturersimportsToshiba extends PluginManufacturersimportsManufa
         $search = stristr($contents, $field);
         $myDate = substr($search, 23, 21);
         $myDate = trim($myDate);
-        $myDate = PluginManufacturersimportsPostImport::checkDate($myDate);
+        $myDate = PostImport::checkDate($myDate);
 
         return $myDate;
     }
 
     /**
-     * @see PluginManufacturersimportsManufacturer::getExpirationDate()
+     * @see Manufacturer::getExpirationDate()
      */
     public function getExpirationDate($contents)
     {
@@ -117,7 +121,7 @@ class PluginManufacturersimportsToshiba extends PluginManufacturersimportsManufa
         $search    = stristr($contents, $field);
         $myEndDate = substr($search, 21, 21);
         $myEndDate = trim($myEndDate);
-        $myEndDate = PluginManufacturersimportsPostImport::checkDate($myEndDate);
+        $myEndDate = PostImport::checkDate($myEndDate);
         return $myEndDate;
     }
 }

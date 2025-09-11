@@ -1,4 +1,5 @@
 <?php
+
 /*
  * @version $Id: HEADER 15930 2011-10-30 15:47:55Z tsmr $
  -------------------------------------------------------------------------
@@ -26,19 +27,33 @@
  along with Manufacturersimports. If not, see <http://www.gnu.org/licenses/>.
  --------------------------------------------------------------------------
  */
+
+namespace GlpiPlugin\Manufacturersimports;
+
+use Ajax;
+use CommonDBTM;
+use DbUtils;
+use Dropdown;
+use Html;
+use Infocom;
+use Search;
+use Session;
+use Supplier;
+use Toolbox;
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access directly to this file");
 }
 
 /**
- * Class PluginManufacturersimportsPreImport
+ * Class PreImport
  */
-class PluginManufacturersimportsPreImport extends CommonDBTM
+class PreImport extends CommonDBTM
 {
     public static $rightname = "plugin_manufacturersimports";
 
-    const IMPORTED     = 2;
-    const NOT_IMPORTED = 1;
+    public const IMPORTED     = 2;
+    public const NOT_IMPORTED = 1;
 
     /**
      * Return the localized name of the current Type
@@ -62,7 +77,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
     public static function showAllItems($myname, $value_type = 0, $value = 0, $entity_restrict = -1, $types = '')
     {
         if (!is_array($types)) {
-            $types = PluginManufacturersimportsConfig::getTypes();
+            $types = Config::getTypes();
         }
 
         $rand    = mt_rand();
@@ -76,8 +91,8 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
         if (count($options)) {
             $id = "item_type$rand";
             Dropdown::showFromArray($myname, $options, ['value'               => $value,
-                                                        'id'                  => $id,
-                                                        'display_emptychoice' => true]);
+                'id'                  => $id,
+                'display_emptychoice' => true]);
         }
     }
 
@@ -102,11 +117,10 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
         $supplierkey = null,
         $supplierSecret = null,
         $second_url = false
-    )
-    {
+    ) {
         $url = "";
         if (!empty($suppliername)) {
-            $supplierclass = "PluginManufacturersimports" . $suppliername;
+            $supplierclass = "GlpiPlugin\Manufacturersimports\\" . $suppliername;
             $supplier      = new $supplierclass();
             $infos         = $supplier->getSupplierInfo(
                 $compSerial,
@@ -144,11 +158,10 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
         $otherserial = null,
         $supplierkey = null,
         $supplierSecret = null
-    )
-    {
+    ) {
         $url_warranty = "";
         if (!empty($suppliername)) {
-            $supplierclass = "PluginManufacturersimports" . $suppliername;
+            $supplierclass = "GlpiPlugin\Manufacturersimports\\" . $suppliername;
             $supplier      = new $supplierclass();
             $infos         = $supplier->getSupplierInfo(
                 $compSerial,
@@ -175,7 +188,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
     {
         $url = "";
         if (!empty($suppliername)) {
-            $supplierclass = "PluginManufacturersimports" . $suppliername;
+            $supplierclass = "GlpiPlugin\Manufacturersimports\\" . $suppliername;
             $supplier      = new $supplierclass();
             if (method_exists($supplier, "getSupplierMoreInfo")) {
                 $url = $supplier->getSupplierMoreInfo($compSerial, $otherserial, $supplierkey, $supplierUrl);
@@ -197,7 +210,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
     {
         $js = "";
         if (!empty($suppliername)) {
-            $supplierclass = "PluginManufacturersimports" . $suppliername;
+            $supplierclass = "GlpiPlugin\Manufacturersimports\\" . $suppliername;
             $supplier      = new $supplierclass();
             if (method_exists($supplier, "getJSSupplier")) {
                 $js = $supplier->getJSSupplier($compSerial, $otherserial, $supplierkey, $supplierUrl);
@@ -219,11 +232,10 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
         $otherserial = null,
         $supplierkey = null,
         $supplierSecret = null
-    )
-    {
+    ) {
         $post = "";
         if (!empty($suppliername)) {
-            $supplierclass = "PluginManufacturersimports" . $suppliername;
+            $supplierclass = "GlpiPlugin\Manufacturersimports\\" . $suppliername;
             $supplier      = new $supplierclass();
             $infos         = $supplier->getSupplierInfo($compSerial, $otherserial, $supplierkey, $supplierSecret);
             if (isset($infos['post'])) {
@@ -251,12 +263,11 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
         $itemtype,
         $status,
         $imported
-    )
-    {
+    ) {
 
         $infocom = new Infocom();
         $canedit = Session::haveRight(static::$rightname, UPDATE) && $infocom->canUpdate();
-        $config  = new PluginManufacturersimportsConfig();
+        $config  = new Config();
         $config->getFromDB($manufacturers_id);
 
         $suppliername      = $config->fields["name"];
@@ -265,7 +276,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
         $supplierWarranty  = $config->fields["warranty_duration"];
         $supplierkey       = $config->fields["supplier_key"];
         $supplierkeysecret = $config->fields["supplier_secret"];
-        $supplierclass     = "PluginManufacturersimports" . $suppliername;
+        $supplierclass     = "GlpiPlugin\Manufacturersimports\\" . $suppliername;
         $supplier          = new $supplierclass();
 
         $row_num++;
@@ -273,7 +284,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
         if ($suppliername) {
 
             $otherSerial = "";
-            $modelitemtype = $itemtype."Model";
+            $modelitemtype = $itemtype . "Model";
             if (class_exists($modelitemtype)) {
                 $dbu = new DbUtils();
                 $modelfield = $dbu->getForeignKeyFieldForTable($dbu->getTableForItemType($itemtype . "Model"));
@@ -286,7 +297,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
             }
 
             echo Search::showNewLine($output_type, $row_num % 2);
-            $ic           = new Infocom;
+            $ic           = new Infocom();
             $output_check = "";
             if ($canedit
                 && $output_type == Search::HTML_OUTPUT) {
@@ -305,8 +316,8 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
                 || empty($line["name"])) {
                 $ID .= " (" . $line["id"] . ")";
             }
-            $output_link = "<a href='" . $link . "?id=" . $line["id"] . "'>" .
-                           $line["name"] . $ID . "</a><br>" . $line["model_name"];
+            $output_link = "<a href='" . $link . "?id=" . $line["id"] . "'>"
+                           . $line["name"] . $ID . "</a><br>" . $line["model_name"];
             echo Search::showItem($output_type, $output_link, $item_num, $row_num);
             if (Session::isMultiEntitiesMode()) {
                 echo Search::showItem(
@@ -336,8 +347,8 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
             //display infocoms
             $output_ic = "";
             if ($ic->getfromDBforDevice($line["itemtype"], $line["id"])) {
-                $output_ic .= _n('Supplier', 'Suppliers', 1) . ":" .
-                              Dropdown::getDropdownName("glpi_suppliers", $ic->fields["suppliers_id"]) . "<br>";
+                $output_ic .= _n('Supplier', 'Suppliers', 1) . ":"
+                              . Dropdown::getDropdownName("glpi_suppliers", $ic->fields["suppliers_id"]) . "<br>";
                 $output_ic .= __('Date of purchase') . " : " . Html::convdate($ic->fields["buy_date"]) . "<br>";
                 $output_ic .= __('Start date of warranty') . " : " . Html::convdate($ic->fields["warranty_date"]) . "<br>";
                 if ($ic->fields["warranty_duration"] == -1) {
@@ -361,9 +372,9 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
                     if ($item->fields["is_recursive"]
                         || $item->fields["entities_id"] == $line['entities_id']) {
                         Dropdown::show('Supplier', ['name'     => "to_suppliers_id" . $line["id"],
-                                                    'value'    => $supplierId,
-                                                    'comments' => 0,
-                                                    'entity'   => $line['entities_id']]);
+                            'value'    => $supplierId,
+                            'comments' => 0,
+                            'entity'   => $line['entities_id']]);
                     } else {
                         echo "<span class='plugin_manufacturersimports_import_KO'>";
                         echo __('The choosen supplier is not recursive', 'manufacturersimports') . "</span>";
@@ -372,9 +383,9 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
                     }
                 } else {
                     Dropdown::show('Supplier', ['name'     => "to_suppliers_id" . $line["id"],
-                                                'value'    => $supplierId,
-                                                'comments' => 0,
-                                                'entity'   => $line['entities_id']]);
+                        'value'    => $supplierId,
+                        'comments' => 0,
+                        'entity'   => $line['entities_id']]);
                 }
                 echo "</td>";
 
@@ -394,15 +405,10 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
 
             //supplier url
             //url to supplier
-            $output_url = "<a href='" . $url . "' target='_blank'>" .
-                          __('Manufacturer information', 'manufacturersimports') . "</a>";
-         //         if ($suppliername == PluginManufacturersimportsConfig::HP) {
-         //            $output_url = "";
-         //            $output_url = "<a href='" . Toolbox::getItemTypeFormURL("PluginManufacturersimportsHP") .
-         //                          "?sn=".$line["serial"]."&manufacturers_id=$manufacturers_id' target='_blank'>" .
-         //                         __('Manufacturer information', 'manufacturersimports') . "</a>";
-         //         }
-            if ($suppliername == PluginManufacturersimportsConfig::LENOVO) {
+            $output_url = "<a href='" . $url . "' target='_blank'>"
+                          . __('Manufacturer information', 'manufacturersimports') . "</a>";
+
+            if ($suppliername == Config::LENOVO) {
                 $url        = self::selectSupplier(
                     $suppliername,
                     $supplierUrl,
@@ -412,8 +418,8 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
                     $supplierkeysecret,
                     true
                 );
-                $output_url = "<a href='" . $url . "' target='_blank'>" .
-                              __('Manufacturer information', 'manufacturersimports') . "</a>";
+                $output_url = "<a href='" . $url . "' target='_blank'>"
+                              . __('Manufacturer information', 'manufacturersimports') . "</a>";
             }
             echo Search::showItem($output_type, $output_url, $item_num, $row_num);
 
@@ -422,16 +428,16 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
                 if ($status != 2) {
                     $output_doc = __('Not yet imported', 'manufacturersimports');
                 } else {
-                    $output_doc = "<span class='plugin_manufacturersimports_import_KO'>" .
-                                  __('Problem during the importation', 'manufacturersimports');
+                    $output_doc = "<span class='plugin_manufacturersimports_import_KO'>"
+                                  . __('Problem during the importation', 'manufacturersimports');
                     if (!empty($data["date_import"])) {
                         $output_doc .= " (" . Html::convdate($data["date_import"]) . ")";
                     }
                     $output_doc .= "</span>";
                 }
             } else {
-                $output_doc = "<span class='plugin_manufacturersimports_import_OK'>" .
-                              __('Already imported', 'manufacturersimports');
+                $output_doc = "<span class='plugin_manufacturersimports_import_OK'>"
+                              . __('Already imported', 'manufacturersimports');
                 if (!empty($line["date_import"])) {
                     $output_doc .= " (" . Html::convdate($line["date_import"]) . ")";
                 }
@@ -477,14 +483,14 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
             'SELECT' => '*',
             'FROM' => 'glpi_plugin_manufacturersimports_configs',
             'WHERE' => [
-                'glpi_plugin_manufacturersimports_configs.manufacturers_id' => ['>', 0]
+                'glpi_plugin_manufacturersimports_configs.manufacturers_id' => ['>', 0],
             ],
             'ORDERBY'   => ['glpi_plugin_manufacturersimports_configs.entities_id',
                 'glpi_plugin_manufacturersimports_configs.name'],
         ];
         $criteria['WHERE'] = $criteria['WHERE'] + getEntitiesRestrictCriteria(
-                'glpi_plugin_manufacturersimports_configs'
-            );
+            'glpi_plugin_manufacturersimports_configs'
+        );
 
         $iterator = $DB->request($criteria);
 
@@ -494,13 +500,13 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
                 0,
                 $p['itemtype'],
                 -1,
-                PluginManufacturersimportsConfig::getTypes()
+                Config::getTypes()
             );
             echo "</td><td>";
             foreach ($iterator as $data) {
-//            if (Session::isMultiEntitiesMode()) {
-//               $name = Dropdown::getDropdownName("glpi_entities", $data["entities_id"]) . " > ";
-//            }
+                //            if (Session::isMultiEntitiesMode()) {
+                //               $name = Dropdown::getDropdownName("glpi_entities", $data["entities_id"]) . " > ";
+                //            }
                 $name = $data["name"];
                 if (empty($data["name"]) || $_SESSION["glpiis_ids_visible"]) {
                     $name .= " (";
@@ -548,19 +554,19 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
      * @return nothing (print out a table)
      *
      */
-//   static function displaySearchHeader($output_type, $fixed = 0) {
-//      $out = "";
-//      switch ($output_type) {
-//         default :
-//            if ($fixed) {
-//               $out = "<div class='center'><table border='0' class='tab_cadre_fixehov'>\n";
-//            } else {
-//               $out = "<div class='center'><table border='0' class='tab_cadre_fixe'>\n";
-//            }
-//            break;
-//      }
-//      return $out;
-//   }
+    //   static function displaySearchHeader($output_type, $fixed = 0) {
+    //      $out = "";
+    //      switch ($output_type) {
+    //         default :
+    //            if ($fixed) {
+    //               $out = "<div class='center'><table border='0' class='tab_cadre_fixehov'>\n";
+    //            } else {
+    //               $out = "<div class='center'><table border='0' class='tab_cadre_fixe'>\n";
+    //            }
+    //            break;
+    //      }
+    //      return $out;
+    //   }
 
     /**
      * Prints display pre import
@@ -603,10 +609,10 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
         $target     = PLUGIN_MANUFACTURERSIMPORTS_WEBDIR . "/front/import.php";
 
         if ($p['itemtype'] && $p['manufacturers_id']) {
-            $config = new PluginManufacturersimportsConfig();
+            $config = new Config();
             $config->getFromDB($p['manufacturers_id']);
             $suppliername  = $config->fields["name"] ?? "";
-            $supplierclass = "PluginManufacturersimports" . $suppliername;
+            $supplierclass = "GlpiPlugin\Manufacturersimports\\" . $suppliername;
             $supplier      = new $supplierclass();
 
             $infocom = new Infocom();
@@ -629,9 +635,9 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
                 if (isset($_GET["display_type"])) {
                     $output_type = $_GET["display_type"];
                 }
-                $parameters = "itemtype=" . $p['itemtype'] .
-                              "&amp;manufacturers_id=" . $p['manufacturers_id'] .
-                              "&amp;imported=" . $p['imported'];
+                $parameters = "itemtype=" . $p['itemtype']
+                              . "&amp;manufacturers_id=" . $p['manufacturers_id']
+                              . "&amp;imported=" . $p['imported'];
                 $total      = 0;
 
                 if ($output_type == Search::HTML_OUTPUT) {
@@ -730,9 +736,9 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
                     $line       = $DB->fetchArray($result);
                     $compId     = $line['id'];
 
-//                    if (!$line["itemtype"]) {
-                        $line["itemtype"] = $p['itemtype'];
-//                    }
+                    //                    if (!$line["itemtype"]) {
+                    $line["itemtype"] = $p['itemtype'];
+                    //                    }
 
                     self::showImport(
                         $row_num,
@@ -749,8 +755,8 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
                         $total += 1;
                     }
                 }
-                echo "<tr class='tab_bg_1'><td colspan='" .
-                     ($canedit ? (11 + $colsup) : (10 + $colsup)) . "'>";
+                echo "<tr class='tab_bg_1'><td colspan='"
+                     . ($canedit ? (11 + $colsup) : (10 + $colsup)) . "'>";
                 echo sprintf(__(
                     'Total number of devices to import %s',
                     'manufacturersimports'
@@ -762,8 +768,8 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
                 // Create title
                 if ($output_type == Search::PDF_OUTPUT_PORTRAIT
                     || $output_type == Search::PDF_OUTPUT_LANDSCAPE) {
-                    $title .=
-                       PluginManufacturersimportsPreImport::getTypeName(2)
+                    $title
+                       .= PreImport::getTypeName(2)
                        . " " . $suppliername;
                 }
 
@@ -782,8 +788,8 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
                         );
                         self::closeArrowMassives([]);
                     } else {
-                        echo "<table class='tab_cadre' width='80%'><tr class='tab_bg_1'>" .
-                             "<td><span class='b'>";
+                        echo "<table class='tab_cadre' width='80%'><tr class='tab_bg_1'>"
+                             . "<td><span class='b'>";
                         echo __('Selection too large, massive action disabled.') . "</span>";
                         if ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE) {
                             echo "<br>" . __('To increase the limit: change max_input_vars or suhosin.post.max_vars in php configuration.');
@@ -807,8 +813,8 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
                     );
                 }
             } else {
-                echo "<div align='center'><b>" .
-                     __('No device finded', 'manufacturersimports') . "</b></div>";
+                echo "<div align='center'><b>"
+                     . __('No device finded', 'manufacturersimports') . "</b></div>";
             }
         }
     }
@@ -834,7 +840,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
 
         echo "<tr>";
         if (!$onright) {
-            echo "<td><i class='ti ti-corner-right-up mx-2'></i></td>";
+            echo "<td><i class='ti ti-corner-left-up mx-2'></i></td>";
         } else {
             echo "<td class='left' width='80%'></td>";
         }
@@ -847,7 +853,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
              href='#'>" . __('Uncheck all') . "</a></td>";
 
         if ($onright) {
-            echo "<td><i class='ti ti-corner-right-up mx-2'></i>";
+            echo "<td><i class='ti ti-corner-left-up mx-2'></i>";
         } else {
             echo "<td class='left' width='80%'>";
         }
@@ -927,7 +933,7 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
         //already imported
         if ($p['imported'] == self::IMPORTED) {
             $query .= " AND `import_status` != " . self::IMPORTED . "";
-        //not imported
+            //not imported
         } elseif ($p['imported'] == self::NOT_IMPORTED) {
             $query .= " AND (`date_import` IS NULL OR `import_status` = " . self::IMPORTED . " ";
             $query .= ") ";
@@ -1045,13 +1051,13 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
         if (!$start == 0) {
             echo "<th class='left'>";
             echo "<a href='$target?$parameters&amp;start=0'>";
-            echo "<i style='font-size: 2em;' class='ti ti-chevrons-left' title=\"".
-                 __s('Start')."\"></i>";
+            echo "<i style='font-size: 2em;' class='ti ti-chevrons-left' title=\""
+                 . __s('Start') . "\"></i>";
             echo "</a></th>";
             echo "<th class='left'>";
             echo "<a href='$target?$parameters&amp;start=$back'>";
-            echo "<i style='font-size: 2em;' class='ti ti-chevron-left' title=\"".
-                 __s('Previous')."\"></i>";
+            echo "<i style='font-size: 2em;' class='ti ti-chevron-left' title=\""
+                 . __s('Previous') . "\"></i>";
             echo "</a></th>";
         }
 
@@ -1069,14 +1075,14 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
         if ($forward < $numrows) {
             echo "<th class='right'>";
             echo "<a href='$target?$parameters&amp;start=$forward'>";
-            echo "<i style='font-size: 2em;' class='ti ti-chevron-right' title=\"".
-                 __s('Next')."\"></i>";
+            echo "<i style='font-size: 2em;' class='ti ti-chevron-right' title=\""
+                 . __s('Next') . "\"></i>";
             echo "</a></th>\n";
 
             echo "<th class='right'>";
             echo "<a href='$target?$parameters&amp;start=$end'>";
-            echo "<i style='font-size: 2em;' class='ti ti-chevrons-right' title=\"".
-                 __s('End')."\"></i>";
+            echo "<i style='font-size: 2em;' class='ti ti-chevrons-right' title=\""
+                 . __s('End') . "\"></i>";
             echo "</a></th>\n";
         }
 
@@ -1107,11 +1113,11 @@ class PluginManufacturersimportsPreImport extends CommonDBTM
         echo "</select>&nbsp;";
 
         $params = ['action'           => '__VALUE__',
-                   'manufacturers_id' => $manufacturer,
-                   'itemtype'         => $type,
-                   'start'            => $start,
-                   'imported'         => $imported,
-                   'id'               => $ID,
+            'manufacturers_id' => $manufacturer,
+            'itemtype'         => $type,
+            'start'            => $start,
+            'imported'         => $imported,
+            'id'               => $ID,
         ];
 
         Ajax::updateItemOnSelectEvent(

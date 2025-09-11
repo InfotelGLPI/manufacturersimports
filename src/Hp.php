@@ -27,17 +27,21 @@
  --------------------------------------------------------------------------
  */
 
+namespace GlpiPlugin\Manufacturersimports;
+
+use Search;
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access directly to this file");
 }
 
 /**
- * Class PluginManufacturersimportsHP
+ * Class HP
  */
-class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacturer
+class HP extends Manufacturer
 {
     /**
-     * @see PluginManufacturersimportsManufacturer::showDocTitle()
+     * @see Manufacturer::showDocTitle()
      */
     public function showDocTitle($output_type, $header_num)
     {
@@ -60,7 +64,7 @@ class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacture
     {
         if (!$compSerial) {
             // by default
-            $info["name"] = PluginManufacturersimportsConfig::HP;
+            $info["name"] = Config::HP;
             $info['supplier_url'] = "https://support.hp.com/fr-fr/check-warranty/";
             $info['token_url'] = "https://warranty.api.hp.com/oauth/v1/token";
             $info['warranty_url'] = "https://warranty.api.hp.com/productwarranty/v2/queries";
@@ -89,7 +93,7 @@ class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacture
             ],
             "suppliername" => $config->fields["name"]
         ];
-        $contents = PluginManufacturersimportsPostImport::cURLData($options);
+        $contents = PostImport::cURLData($options);
         // must extract from $contents the token bearer
         $response = json_decode($contents, true);
         if (isset($response['access_token'])) {
@@ -99,7 +103,7 @@ class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacture
     }
 
     /**
-     * @see PluginManufacturersimportsManufacturer::getBuyDate()
+     * @see Manufacturer::getBuyDate()
      */
     public function getBuyDate($contents)
     {
@@ -133,7 +137,7 @@ class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacture
     }
 
     /**
-     * @see PluginManufacturersimportsManufacturer::getStartDate()
+     * @see Manufacturer::getStartDate()
      */
     public function getStartDate($contents)
     {
@@ -141,7 +145,7 @@ class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacture
     }
 
     /**
-     * @see PluginManufacturersimportsManufacturer::getExpirationDate()
+     * @see Manufacturer::getExpirationDate()
      */
     public function getExpirationDate($contents)
     {
@@ -177,7 +181,7 @@ class PluginManufacturersimportsHP extends PluginManufacturersimportsManufacture
     }
 
     /**
-     * @see PluginManufacturersimportsManufacturer::getWarrantyInfo()
+     * @see Manufacturer::getWarrantyInfo()
      */
     public function getWarrantyInfo($contents)
     {

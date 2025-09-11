@@ -27,14 +27,21 @@
  --------------------------------------------------------------------------
  */
 
+namespace GlpiPlugin\Manufacturersimports;
+
+use CommonDBTM;
+use Document;
+use Html;
+use Search;
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access directly to this file");
 }
 
 /**
- * Class PluginManufacturersimportsManufacturer
+ * Class Manufacturer
  */
-class PluginManufacturersimportsManufacturer extends CommonDBTM
+class Manufacturer extends CommonDBTM
 {
     /**
      * @param $ID
@@ -89,7 +96,7 @@ class PluginManufacturersimportsManufacturer extends CommonDBTM
      */
     public function showDocItem($output_type, $item_num, $row_num, $documents_id = null)
     {
-        $doc = new document();
+        $doc = new Document();
         if ($doc->getFromDB($documents_id)) {
             return  Search::showItem(
                 $output_type,

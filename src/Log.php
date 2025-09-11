@@ -27,14 +27,20 @@
  --------------------------------------------------------------------------
  */
 
+namespace GlpiPlugin\Manufacturersimports;
+
+use CommonDBTM;
+use Document;
+
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access directly to this file");
+    die("Sorry. You can't access directly to this file");
 }
 
 /**
- * Class PluginManufacturersimportsLog
+ * Class Log
  */
-class PluginManufacturersimportsLog extends CommonDBTM {
+class Log extends CommonDBTM
+{
 
    /**
     * @param $items_id
@@ -42,25 +48,26 @@ class PluginManufacturersimportsLog extends CommonDBTM {
     *
     * @return bool
     */
-   function getFromDBbyDevice($items_id, $itemtype) {
-      global $DB;
+    function getFromDBbyDevice($items_id, $itemtype)
+    {
+        global $DB;
 
-      $query = "SELECT * FROM `".$this->getTable()."` " .
+        $query = "SELECT * FROM `".$this->getTable()."` " .
          "WHERE `items_id` = '" . $items_id . "'
          AND `itemtype` = '" . $itemtype . "' ";
-      if ($result = $DB->doQuery($query)) {
-         if ($DB->numrows($result) != 1) {
-            return false;
-         }
-         $this->fields = $DB->fetchAssoc($result);
-         if (is_array($this->fields) && count($this->fields)) {
-            return true;
-         } else {
-            return false;
-         }
-      }
-      return false;
-   }
+        if ($result = $DB->doQuery($query)) {
+            if ($DB->numrows($result) != 1) {
+                return false;
+            }
+            $this->fields = $DB->fetchAssoc($result);
+            if (is_array($this->fields) && count($this->fields)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
+    }
 
    /**
     * @param $itemtype
@@ -68,42 +75,42 @@ class PluginManufacturersimportsLog extends CommonDBTM {
     *
     * @return bool
     */
-   function checkIfAlreadyImported($itemtype, $items_id) {
+    function checkIfAlreadyImported($itemtype, $items_id)
+    {
 
-      if ($this->getFromDBbyDevice($items_id, $itemtype)) {
-         return $this->fields["id"];
-      } else {
-         return false;
-      }
-   }
+        if ($this->getFromDBbyDevice($items_id, $itemtype)) {
+            return $this->fields["id"];
+        } else {
+            return false;
+        }
+    }
 
    /**
     * @param $itemtype
     * @param $items_id
     */
-   function reinitializeImport($itemtype, $items_id) {
-      global $DB;
+    function reinitializeImport($itemtype, $items_id)
+    {
+        global $DB;
 
-      if ($this->getFromDBbyDevice($items_id, $itemtype)) {
-
-         $doc= new Document();
-         if ($doc->GetfromDB($this->fields["documents_id"])) {
-
-            $query ="DELETE
+        if ($this->getFromDBbyDevice($items_id, $itemtype)) {
+            $doc= new Document();
+            if ($doc->GetfromDB($this->fields["documents_id"])) {
+                $query ="DELETE
               FROM `glpi_documents_items`
               WHERE `documents_id` = '".$this->fields["documents_id"]."';";
-            $DB->doQuery($query);
+                $DB->doQuery($query);
 
-            if (is_file(GLPI_DOC_DIR."/".$doc->fields["filename"])
+                if (is_file(GLPI_DOC_DIR."/".$doc->fields["filename"])
                   && !is_dir(GLPI_DOC_DIR."/".$doc->fields["filename"])) {
-               unlink(GLPI_DOC_DIR."/".$doc->fields["filename"]);
-            }
+                    unlink(GLPI_DOC_DIR."/".$doc->fields["filename"]);
+                }
 
-            $doc->delete(['id'=>$this->fields["documents_id"]], true);
-         }
-      }
-      if (isset($this->fields["id"])) {
-         $this->delete(['id'=>$this->fields["id"]]);
-      }
-   }
+                $doc->delete(['id'=>$this->fields["documents_id"]], true);
+            }
+        }
+        if (isset($this->fields["id"])) {
+            $this->delete(['id'=>$this->fields["id"]]);
+        }
+    }
 }

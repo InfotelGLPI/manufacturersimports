@@ -27,14 +27,26 @@
  --------------------------------------------------------------------------
  */
 
+namespace GlpiPlugin\Manufacturersimports;
+
+use CommonDBTM;
+use DbUtils;
+use Document_Item;
+use Dropdown;
+use Html;
+use Infocom;
+use Session;
+use Toolbox;
+use Glpi\Progress\AbstractProgressIndicator;
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access directly to this file");
 }
 
 /**
- * Class PluginManufacturersimportsPostImport
+ * Class PostImport
  */
-class PluginManufacturersimportsPostImport extends CommonDBTM
+class PostImport extends CommonDBTM
 {
     /**
      * @param      $field
@@ -130,8 +142,8 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
 
         //Do we have post field to send?
         if (!empty($options["post"])
-            && (empty($options['token']) && ($options['suppliername'] == PluginManufacturersimportsConfig::HP
-                    || $options['suppliername'] == PluginManufacturersimportsConfig::DELL))) {
+            && (empty($options['token']) && ($options['suppliername'] == Config::HP
+                    || $options['suppliername'] == Config::DELL))) {
 
             //curl_setopt($ch, CURLOPT_POST,true);
             $post = '';
@@ -145,8 +157,8 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
             curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
 
             // ADDED FOR HP
-            if ($options['suppliername'] == PluginManufacturersimportsConfig::HP
-            || $options['suppliername'] == PluginManufacturersimportsConfig::DELL) {
+            if ($options['suppliername'] == Config::HP
+            || $options['suppliername'] == Config::DELL) {
                 if (empty($options['token'])) {
                     $client_id = $options['post']['client_id'];
                     $client_secret = $options['post']['client_secret'];
@@ -156,7 +168,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
             }
         }
 
-        if ($options['suppliername'] == PluginManufacturersimportsConfig::HP) {
+        if ($options['suppliername'] == Config::HP) {
             if (!empty($options['token'])) {
 
                 $authorization = "Authorization: Bearer ".$options['token']; // Prepare the authorisation token
@@ -224,12 +236,12 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
      */
     public static function massiveimport($values)
     {
-        $config = new PluginManufacturersimportsConfig();
-        $log    = new PluginManufacturersimportsLog();
+        $config = new Config();
+        $log    = new Log();
 
         $_SESSION["glpi_plugin_manufacturersimports_total"] = 0;
 
-        Html::progressBar('import', ['create'  => true, 'message' =>__('Launching of imports', 'manufacturersimports')]);
+//        Html::progressBar('import', ['create'  => true, 'message' =>__('Launching of imports', 'manufacturersimports')]);
 
         echo "<table class='tab_cadre' width='70%' cellpadding='2'>";
         echo "<tr><th colspan='6'>" . __('Post import', 'manufacturersimports') . "</th></tr>";
@@ -259,24 +271,24 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
                 }
             }
             $pos += 1;
-            Html::changeProgressBarPosition(
-                $pos,
-                count($values["item"]),
-                __('Import in progress', 'manufacturersimports') . " (" . $values['itemtype']::getTypeName(2) . " : " . $suppliername . ")"
-            );
+//            Html::changeProgressBarPosition(
+//                $pos,
+//                count($values["item"]),
+//                __('Import in progress', 'manufacturersimports') . " (" . $values['itemtype']::getTypeName(2) . " : " . $suppliername . ")"
+//            );
         }
-        Html::changeProgressBarPosition(
-            $pos,
-            count($values["item"]),
-            __('Done')
-        );
+//        Html::changeProgressBarPosition(
+//            $pos,
+//            count($values["item"]),
+//            __('Done')
+//        );
 
         echo "<tr class='tab_bg_1'><td colspan='6'>";
         $total = $_SESSION["glpi_plugin_manufacturersimports_total"];
         echo sprintf(__('Total number of devices imported %s', 'manufacturersimports'), $total);
         echo "</td></tr>";
         echo "</table>";
-        echo "<br><div align='center'>";
+        echo "<br><div class='center'>";
         echo "<a class='submit btn btn-primary' href='" . PLUGIN_MANUFACTURERSIMPORTS_WEBDIR . "/front/import.php?back=back&amp;itemtype=" .
              $values["itemtype"] . "&amp;manufacturers_id=" . $values["manufacturers_id"] . "&amp;start=" . $values["start"] .
              "&amp;imported=" . $values["imported"] . "'>";
@@ -297,7 +309,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
     {
         $field = '';
         if (!empty($suppliername)) {
-            $supplierclass = "PluginManufacturersimports" . $suppliername;
+            $supplierclass = "GlpiPlugin\Manufacturersimports\\".$suppliername;
             $supplier      = new $supplierclass();
             $field         = $supplier->getSearchField();
         }
@@ -313,7 +325,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
      */
     public static function importDate($suppliername, $contents)
     {
-        $supplierclass = "PluginManufacturersimports" . $suppliername;
+        $supplierclass = "GlpiPlugin\Manufacturersimports\\".$suppliername;
         $supplier      = new $supplierclass();
         $importDate    = $supplier->getBuyDate($contents);
 
@@ -328,7 +340,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
      */
     public static function importStartDate($suppliername, $contents)
     {
-        $supplierclass   = "PluginManufacturersimports" . $suppliername;
+        $supplierclass   = "GlpiPlugin\Manufacturersimports\\".$suppliername;
         $supplier        = new $supplierclass();
         $importStartDate = $supplier->getStartDate($contents);
 
@@ -343,7 +355,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
      */
     public static function importWarrantyInfo($suppliername, $contents)
     {
-        $supplierclass      = "PluginManufacturersimports" . $suppliername;
+        $supplierclass      = "GlpiPlugin\Manufacturersimports\\".$suppliername;
         $supplier           = new $supplierclass();
         $importWarrantyInfo = $supplier->getWarrantyInfo($contents);
 
@@ -352,10 +364,10 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
 
     //static function importWarranty($suppliername, $maDate, $contents, $warranty) {
     //   if ($warranty==0) {
-   //      if ($suppliername == PluginManufacturersimportsConfig::DELL) {
-   //         $maDateFin = PluginManufacturersimportsDellSoap::getDates($contents, "EndDate");
+   //      if ($suppliername == Config::DELL) {
+   //         $maDateFin = DellSoap::getDates($contents, "EndDate");
    //      } else {
-   //         $supplierclass = "PluginManufacturersimports".$suppliername;
+   //         $supplierclass = "GlpiPlugin\Manufacturersimports\\".$suppliername;
    //         $supplier      = new $supplierclass();
    //         $maDateFin     = $supplier->getExpirationDate($contents);
    //      }
@@ -383,7 +395,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
      */
     public static function importDateFin($suppliername, $contents)
     {
-        $supplierclass = "PluginManufacturersimports" . $suppliername;
+        $supplierclass = "GlpiPlugin\Manufacturersimports\\".$suppliername;
         $supplier      = new $supplierclass();
         $maDateFin     = $supplier->getExpirationDate($contents);
 
@@ -406,7 +418,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
     {
         global $DB;
 
-        $config = new PluginManufacturersimportsConfig();
+        $config = new Config();
         $config->getFromDB($configID);
         $manufacturerId = $config->fields["manufacturers_id"];
 
@@ -440,7 +452,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
         $query  .= " ORDER BY `" . $itemtable . "`.`name`";
         $result = $DB->doQuery($query);
 
-        $supplierclass = "PluginManufacturersimports" . $suppliername;
+        $supplierclass = "GlpiPlugin\Manufacturersimports\\".$suppliername;
         $token         = $supplierclass::getToken($config);
 
         while ($line = $DB->fetchArray($result)) {
@@ -465,7 +477,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
             }
             echo "<a href='" . $link . "?id=" . $ID . "'>" . $line["name"] . $dID . "</a><br>" . $otherSerial . "</td>";
 
-            $url          = PluginManufacturersimportsPreImport::selectSupplier(
+            $url          = PreImport::selectSupplier(
                 $suppliername,
                 $supplierUrl,
                 $compSerial,
@@ -473,7 +485,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
                 $supplierkey,
                 $supplierSecret
             );
-            $post         = PluginManufacturersimportsPreImport::getSupplierPost(
+            $post         = PreImport::getSupplierPost(
                 $suppliername,
                 $compSerial,
                 $otherSerial,
@@ -503,7 +515,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
                 "token" => $token
             ];
 
-            if ($suppliername == PluginManufacturersimportsConfig::LENOVO) {
+            if ($suppliername == Config::LENOVO) {
                 $options['ClientID'] = $supplierkey;
             }
 
@@ -532,7 +544,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
         $default_values['fromsupplier'] = 0;
         $default_values['fromwarranty'] = 0;
         $default_values['line']         = [];
-        $default_values['config']       = new PluginManufacturersimportsConfig();
+        $default_values['config']       = new Config();
         $default_values['token']        = false;
 
         $values = [];
@@ -578,12 +590,12 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
             "token" => $values['token']
         ];
 
-        if ($suppliername == PluginManufacturersimportsConfig::LENOVO
+        if ($suppliername == Config::LENOVO
             && $supplier_key != null) {
             $options["ClientID"] = $supplier_key;
             $contents            = self::cURLData($options);
         }
-//        elseif ($suppliername == PluginManufacturersimportsConfig::HP) {
+//        elseif ($suppliername == Config::HP) {
 //            $json = json_decode($contents);
 //            if (isset($json->access_token)) {
 //                $options['access_token'] = $json->access_token;
@@ -653,8 +665,8 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
 
             // on cree un doc dans GLPI qu'on va lier au materiel
             if ($adddoc != 0
-                && $suppliername != PluginManufacturersimportsConfig::DELL
-                && $suppliername != PluginManufacturersimportsConfig::HP) {
+                && $suppliername != Config::DELL
+                && $suppliername != Config::HP) {
                 $options                = ["itemtype"     => $values['type'],
                                            "ID"           => $values['ID'],
                                            "url"          => $values['url'],
@@ -669,11 +681,11 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
             $values["items_id"]      = $values['ID'];
             $values["itemtype"]      = $values['type'];
             $values["date_import"]   = $date;
-            $log                     = new PluginManufacturersimportsLog();
+            $log                     = new Log();
             $log->add($values);
 
             // cleanup Log
-            $log_clean = new PluginManufacturersimportsLog();
+            $log_clean = new Log();
             $log_clean->deleteByCriteria(
                 [
                                             'items_id'      => $values['ID'],
@@ -846,7 +858,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
                        'items_id'     => $options["ID"],
                        'entities_id'  => $input["entities_id"]]);
 
-        $temp = new PluginManufacturersimportsLog();
+        $temp = new Log();
         $temp->deleteByCriteria(['itemtype' => $options["itemtype"],
                                  'items_id' => $options["ID"]]);
 
@@ -870,7 +882,7 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
             echo Html::convdate($date) . ")</span></td>";
         }
 
-        $temp = new PluginManufacturersimportsLog();
+        $temp = new Log();
         $temp->deleteByCriteria(['itemtype' => $type,
                                  'items_id' => $ID]);
 
@@ -879,13 +891,13 @@ class PluginManufacturersimportsPostImport extends CommonDBTM
         $values["items_id"]      = $ID;
         $values["itemtype"]      = $type;
         $values["date_import"]   = $date;
-        $log                     = new PluginManufacturersimportsLog();
+        $log                     = new Log();
         $log->add($values);
 
         if ($display) {
             if (!empty($contents)) {
                 switch ($suppliername) {
-                    case PluginManufacturersimportsConfig::LENOVO :
+                    case Config::LENOVO :
                         $msgerr = self::importWarrantyInfo($suppliername, $contents);
                         break;
                     default:

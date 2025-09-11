@@ -28,25 +28,24 @@
  */
 
 use Glpi\Exception\Http\AccessDeniedHttpException;
-
-include('../../../inc/includes.php');
-
+use GlpiPlugin\Manufacturersimports\PreImport;
+use GlpiPlugin\Manufacturersimports\Menu;
 
 Html::header(
-    PluginManufacturersimportsPreImport::getTypeName(),
+    PreImport::getTypeName(),
     '',
     "tools",
-    "pluginmanufacturersimportsmenu"
+    Menu::class
 );
 
-$preimport = new PluginManufacturersimportsPreImport();
+$preimport = new PreImport();
 if ($preimport->canView() || Session::haveRight("config", UPDATE)) {
     $values = $_GET;
     if (isset($_POST["typechoice"])) {
         $values = $_POST;
     }
-    PluginManufacturersimportsPreImport::searchForm($values);
-    PluginManufacturersimportsPreImport::seePreImport($values);
+    PreImport::searchForm($values);
+    PreImport::seePreImport($values);
 } else {
     throw new AccessDeniedHttpException();
 }

@@ -27,6 +27,11 @@
  --------------------------------------------------------------------------
  */
 
+namespace GlpiPlugin\Manufacturersimports;
+
+use Html;
+use Search;
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access directly to this file");
 }
@@ -34,12 +39,12 @@ if (!defined('GLPI_ROOT')) {
 ini_set("max_execution_time", "0");
 
 /**
- * Class PluginManufacturersimportsLenovo
+ * Class Lenovo
  */
-class PluginManufacturersimportsLenovo extends PluginManufacturersimportsManufacturer {
+class Lenovo extends Manufacturer {
 
     /**
-     * @see PluginManufacturersimportsManufacturer::showCheckbox()
+     * @see Manufacturer::showCheckbox()
      */
     function showCheckbox($ID, $sel, $otherSerial = false) {
         $name = "item[" . $ID . "]";
@@ -48,21 +53,21 @@ class PluginManufacturersimportsLenovo extends PluginManufacturersimportsManufac
     }
 
     /**
-     * @see PluginManufacturersimportsManufacturer::showItemTitle()
+     * @see Manufacturer::showItemTitle()
      */
     function showItemTitle($output_type, $header_num) {
         return Search::showHeaderItem($output_type, __('Model number', 'manufacturersimports'), $header_num);
     }
 
     /**
-     * @see PluginManufacturersimportsManufacturer::showDocTitle()
+     * @see Manufacturer::showDocTitle()
      */
     function showDocTitle($output_type, $header_num) {
         return Search::showHeaderItem($output_type, __('File'), $header_num);
     }
 
     /**
-     * @see PluginManufacturersimportsManufacturer::showItem()
+     * @see Manufacturer::showItem()
      */
     function showItem($output_type, $item_num, $row_num, $otherSerial = false) {
         return false;
@@ -73,12 +78,12 @@ class PluginManufacturersimportsLenovo extends PluginManufacturersimportsManufac
     }
 
     /**
-     * @see PluginManufacturersimportsManufacturer::getSupplierInfo()
+     * @see Manufacturer::getSupplierInfo()
      */
     function getSupplierInfo($compSerial = null, $otherSerial = null, $key = null, $apisecret = null,
                              $supplierUrl = null) {
 
-        $info["name"]         = PluginManufacturersimportsConfig::LENOVO;
+        $info["name"]         = Config::LENOVO;
         $info["supplier_url"] = "https://pcsupport.lenovo.com/products/$compSerial/warranty";
         //      $info["url"]          = $supplierUrl . $compSerial."?machineType=&btnSubmit";
         $info["url"]     = "https://pcsupport.lenovo.com/products/$compSerial/warranty";
@@ -87,7 +92,7 @@ class PluginManufacturersimportsLenovo extends PluginManufacturersimportsManufac
     }
 
     /**
-     * @see PluginManufacturersimportsManufacturer::getBuyDate()
+     * @see Manufacturer::getBuyDate()
      */
     function getBuyDate($contents) {
 
@@ -106,12 +111,12 @@ class PluginManufacturersimportsLenovo extends PluginManufacturersimportsManufac
         if (empty($myDate) && !empty($data['Shiped'])) {
             $myDate = $data['Shiped'];
         }
-        $myDate = PluginManufacturersimportsPostImport::checkDate($myDate);
+        $myDate = PostImport::checkDate($myDate);
         return $myDate;
     }
 
     /**
-     * @see PluginManufacturersimportsManufacturer::getStartDate()
+     * @see Manufacturer::getStartDate()
      */
     function getStartDate($contents) {
 
@@ -151,11 +156,11 @@ class PluginManufacturersimportsLenovo extends PluginManufacturersimportsManufac
         if (!empty($start)) {
             $myDate = date("Y-m-d", $start);
         }
-        return PluginManufacturersimportsPostImport::checkDate($myDate);
+        return PostImport::checkDate($myDate);
     }
 
     /**
-     * @see PluginManufacturersimportsManufacturer::getExpirationDate()
+     * @see Manufacturer::getExpirationDate()
      */
     function getExpirationDate($contents) {
 
@@ -195,11 +200,11 @@ class PluginManufacturersimportsLenovo extends PluginManufacturersimportsManufac
         if (!empty($maxEnd)) {
             $myDate = date("Y-m-d", $maxEnd);
         }
-        return PluginManufacturersimportsPostImport::checkDate($myDate);
+        return PostImport::checkDate($myDate);
     }
 
     /**
-     * @see PluginManufacturersimportsManufacturer::getWarrantyInfo()
+     * @see Manufacturer::getWarrantyInfo()
      */
     function getWarrantyInfo($contents) {
 

@@ -3,7 +3,7 @@
  * @version $Id: HEADER 15930 2011-10-30 15:47:55Z tsmr $
  -------------------------------------------------------------------------
  Manufacturersimports plugin for GLPI
- Copyright (C) 2009-2022 by the Manufacturersimports Development Team.
+ Copyright (C) 2003-2016 by the Manufacturersimports Development Team.
 
  https://github.com/InfotelGLPI/manufacturersimports
  -------------------------------------------------------------------------
@@ -27,3 +27,31 @@
  --------------------------------------------------------------------------
  */
 
+namespace GlpiPlugin\Manufacturersimports;
+
+if (!defined('GLPI_ROOT')) {
+    die("Sorry. You can't access directly to this file");
+}
+
+/**
+ * Class Ibm
+ */
+class Ibm extends Manufacturer
+{
+    /**
+     * @see Manufacturer::getSupplierInfo()
+     */
+    public function getSupplierInfo(
+        $compSerial = null,
+        $otherSerial = null,
+        $key = null,
+        $apisecret = null,
+        $supplierUrl = null
+    )
+    {
+        $info["name"]="IBM";
+        $info["supplier_url"] = "http://www-304.ibm.com/jct01004c/systems/support/supportsite.wss/warranty?";
+        $info["url"] = $supplierUrl."type=".$otherSerial."&serial=".$compSerial."&brandind=5000008&Submit=Submit&action=warranty";
+        return $info;
+    }
+}

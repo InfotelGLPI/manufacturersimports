@@ -27,13 +27,14 @@
  --------------------------------------------------------------------------
  */
 
-include ('../../../inc/includes.php');
+use GlpiPlugin\Manufacturersimports\Config;
+use GlpiPlugin\Manufacturersimports\Menu;
 
 Session::checkRight("config", UPDATE);
 
 if (Plugin::isPluginActive("manufacturersimports")) {
-   Html::header(__('Setup'), '', "tools", "pluginmanufacturersimportsmenu", "config");
-   Search::show("PluginManufacturersimportsConfig");
+   Html::header(__('Setup'), '', "tools", Menu::class, "config");
+   Search::show(Config::class);
 } else {
    Html::header(__('Setup'), '', "config", "plugin");
    echo "<div class='alert alert-important alert-warning d-flex'>";
