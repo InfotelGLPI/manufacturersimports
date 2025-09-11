@@ -78,15 +78,15 @@ function plugin_manufacturersimports_install()
         $DB->runFile($sql_root . "/update-3.0.6.sql");
     }
 
-    $query = "UPDATE `glpi_plugin_manufacturersimports_configs` 
+    $query = "UPDATE `glpi_plugin_manufacturersimports_configs`
              SET `Supplier_url` = 'https://www.dell.com/support/home/product-support/servicetag/',
-                 `warranty_url` ='https://apigtwb2c.us.dell.com/PROD/sbil/eapi/v5/asset-entitlements?servicetags=', 
+                 `warranty_url` ='https://apigtwb2c.us.dell.com/PROD/sbil/eapi/v5/asset-entitlements?servicetags=',
                  `token_url`    = 'https://apigtwb2c.us.dell.com/auth/oauth/v2/token'
              WHERE `name` ='" . PluginManufacturersimportsConfig::DELL . "'";
     $DB->doQuery($query);
 
-    $query = "UPDATE `glpi_plugin_manufacturersimports_configs` 
-             SET `Supplier_url` = 'https://www.lenovo.com/us/en/warrantyApos?serialNumber=' 
+    $query = "UPDATE `glpi_plugin_manufacturersimports_configs`
+             SET `Supplier_url` = 'https://www.lenovo.com/us/en/warrantyApos?serialNumber='
              WHERE `name` ='" . PluginManufacturersimportsConfig::LENOVO . "'";
     $DB->doQuery($query);
 
@@ -95,14 +95,14 @@ function plugin_manufacturersimports_install()
              WHERE `name` ='" . PluginManufacturersimportsConfig::FUJITSU . "'";
     $DB->doQuery($query);
 
-    $query = "UPDATE `glpi_plugin_manufacturersimports_configs` 
-             SET `Supplier_url` = 'https://www.wortmann.de/fr-fr/profile/snsearch.aspx?SN=' 
+    $query = "UPDATE `glpi_plugin_manufacturersimports_configs`
+             SET `Supplier_url` = 'https://www.wortmann.de/fr-fr/profile/snsearch.aspx?SN='
              WHERE `name` ='" . PluginManufacturersimportsConfig::WORTMANN_AG . "'";
     $DB->doQuery($query);
 
-    $query = "UPDATE `glpi_plugin_manufacturersimports_configs` 
+    $query = "UPDATE `glpi_plugin_manufacturersimports_configs`
              SET `Supplier_url` = 'https://support.hp.com/fr-fr/check-warranty/',
-                 `warranty_url` ='https://warranty.api.hp.com/productwarranty/v2/queries', 
+                 `warranty_url` ='https://warranty.api.hp.com/productwarranty/v2/queries',
                  `token_url`    = 'https://warranty.api.hp.com/oauth/v1/token'
              WHERE `name` ='" . PluginManufacturersimportsConfig::HP . "'";
     $DB->doQuery($query);
@@ -129,12 +129,12 @@ function plugin_manufacturersimports_install()
 
         $migration->dropField('glpi_plugin_manufacturersimports_profiles', 'name');
 
-        Plugin::migrateItemType(
-            [2151 => 'PluginManufacturersimportsConfig'],
-            ["glpi_savedsearches", "glpi_savedsearches_users", "glpi_displaypreferences",
-                  "glpi_documents_items", "glpi_infocoms", "glpi_logs", "glpi_items_tickets"],
-            ["glpi_plugin_manufacturersimports_logs"]
-        );
+//        Plugin::migrateItemType(
+//            [2151 => 'PluginManufacturersimportsConfig'],
+//            ["glpi_savedsearches", "glpi_savedsearches_users", "glpi_displaypreferences",
+//                  "glpi_documents_items", "glpi_infocoms", "glpi_logs", "glpi_items_tickets"],
+//            ["glpi_plugin_manufacturersimports_logs"]
+//        );
     }
 
     //Migrate profiles to the system introduced in 0.85
