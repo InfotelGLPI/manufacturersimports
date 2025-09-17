@@ -1,0 +1,195 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR $copyright
+# This file is distributed under the same license as the $soft package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+# Translators:
+# Davide <spam@habilitas.it>, 2025
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: $soft\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-09-11 11:33+0000\n"
+"PO-Revision-Date: 2020-11-02 16:09+0000\n"
+"Last-Translator: Davide <spam@habilitas.it>, 2025\n"
+"Language-Team: Italian (Italy) (https://app.transifex.com/infotelGLPI/teams/12364/it_IT/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: it_IT\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
+
+#: setup.php:92 front/massiveaction.php:44 src/Menu.php:53
+#: src/Preimport.php:66 src/Profile.php:96
+msgid "Suppliers import"
+msgid_plural "Suppliers imports"
+msgstr[0] "Importa fornitore"
+msgstr[1] "Importa fornitori"
+msgstr[2] "Importa fornitori"
+
+#: front/config.php:41
+msgid "Please activate the plugin"
+msgstr "Attivare il plugin"
+
+#: src/Config.php:229 src/Config.php:360
+msgid "Manufacturer web address"
+msgstr "Indirizzo web del produttore"
+
+#: src/Config.php:238 src/Config.php:382
+msgid "Default supplier attached"
+msgstr "Fornitore predefinito collegato"
+
+#: src/Config.php:246 src/Preimport.php:704
+msgid "New warranty attached"
+msgstr "Nuova garanzia collegata"
+
+#: src/Config.php:255 src/Config.php:427
+msgid "Auto add of document"
+msgstr "Aggiunta automatica di documenti"
+
+#: src/Config.php:272 src/Config.php:442
+msgid "Add a comment line"
+msgstr "Aggiungi una linea di commento"
+
+#: src/Config.php:368
+msgid "Access token API address"
+msgstr "Token di accesso API"
+
+#: src/Config.php:374
+msgid "Warranty API address"
+msgstr "Indirizzo API della garanzia"
+
+#: src/Config.php:393
+msgid "New warranty affected by default (Replace if 0)"
+msgstr "Nuova garanzia interessata dal default (Sostituire se 0)"
+
+#: src/Config.php:407 src/Config.php:420
+msgid "Client id"
+msgstr "Client Id"
+
+#: src/Config.php:413
+msgid "Client secret"
+msgstr "Client secret"
+
+#: src/Config.php:434
+msgid "Section for document records"
+msgstr "Sezione per i documenti archiviati"
+
+#: src/Config.php:647 src/Preimport.php:409 src/Preimport.php:422
+msgid "Manufacturer information"
+msgstr "Informazioni sul produttore"
+
+#: src/Config.php:654 src/Config.php:763
+msgctxt "button"
+msgid "Retrieve warranty from manufacturer"
+msgstr "Recuperare la garanzia dal produttore"
+
+#: src/Config.php:757
+msgid ""
+"You did not import the warranty for this item. Do you want to get it back?"
+msgstr ""
+"Non avete importato la garanzia per questo articolo. Volete recuperarlo?"
+
+#: src/Import.php:54
+msgid "Warranty import (Dell, HP)"
+msgstr "Importazione della garanzia (Dell, HP)"
+
+#: src/Import.php:184 src/Postimport.php:775
+msgid "Import OK"
+msgstr "Importazione avvenuta con successo"
+
+#: src/Import.php:187 src/Postimport.php:881
+msgid "Import failed"
+msgstr "Importazione fallita"
+
+#: src/Lenovo.php:59
+msgid "Model number"
+msgstr "Modello"
+
+#: src/Postimport.php:86
+msgid "Curl PHP package not installed"
+msgstr "Pacchetto PHP-curl non installato"
+
+#: src/Postimport.php:247
+msgid "Post import"
+msgstr "Post importazione"
+
+#: src/Postimport.php:255
+msgid "Result"
+msgstr "Risultato"
+
+#: src/Postimport.php:256
+msgid "Details"
+msgstr "Dettagli"
+
+#: src/Postimport.php:288
+#, php-format
+msgid "Total number of devices imported %s"
+msgstr "Numero totale di apparati importati: %s"
+
+#: src/Postimport.php:757 src/Postimport.php:764
+msgid "Imported from web site"
+msgstr "Importato dal sito web"
+
+#: src/Postimport.php:758 src/Postimport.php:765
+msgid "With the manufacturersimports plugin"
+msgstr "Con il plugin manufacturersimports"
+
+#: src/Postimport.php:904
+msgid "Connection failed/data download from manufacturer web site"
+msgstr "Connessione fallita/scarico dati dal sito web del produttore"
+
+#: src/Preimport.php:380
+msgid "The choosen supplier is not recursive"
+msgstr "Il fornitore scelto non è ricorsivo"
+
+#: src/Preimport.php:429
+msgid "Not yet imported"
+msgstr "Non ancora importato"
+
+#: src/Preimport.php:432
+msgid "Problem during the importation"
+msgstr "Problema durante l'importazione"
+
+#: src/Preimport.php:440
+msgid "Already imported"
+msgstr "Già importato"
+
+#: src/Preimport.php:478
+msgid "Choose inventory type and manufacturer"
+msgstr "Scegliere il tipo di inventario e il produttore"
+
+#: src/Preimport.php:522
+msgid "Devices not imported"
+msgstr " Apparato non importato"
+
+#: src/Preimport.php:523
+msgid "Devices already imported"
+msgstr "Apparato gìà importato"
+
+#: src/Preimport.php:529 src/Preimport.php:533
+msgid "No manufacturer available. Please configure at least one manufacturer"
+msgstr "Nessun produttore disponibile. Configurare almeno un produttore"
+
+#: src/Preimport.php:691
+msgid "Model Number"
+msgstr "Modello"
+
+#: src/Preimport.php:699
+msgid "Supplier attached"
+msgstr "Fornitore allegato"
+
+#: src/Preimport.php:761
+#, php-format
+msgid "Total number of devices to import %s"
+msgstr "Numero totale di dispositivi da importare %s"
+
+#: src/Preimport.php:817
+msgid "No device finded"
+msgstr "Nessun apparato trovato"
+
+#: src/Preimport.php:1111
+msgid "Reset the import"
+msgstr "Resettare l'importazione"
