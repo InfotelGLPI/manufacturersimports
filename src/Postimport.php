@@ -33,6 +33,7 @@ use CommonDBTM;
 use DbUtils;
 use Document_Item;
 use Dropdown;
+use GLPIKey;
 use Html;
 use Infocom;
 use Session;

@@ -97,7 +97,7 @@ function plugin_version_manufacturersimports()
             'oldname'      => 'suppliertag',
             'version'      => PLUGIN_MANUFACTURERSIMPORTS_VERSION,
             'license'      => 'GPLv2+',
-            'author'       => "<a href='https://blogglpi.infotel.com'>Infotel</a>",
+            'author'       => "<a href='https://blogglpi.infotel.com'>Infotel</a>, Xavier CAILLAUD",
             'homepage'     => 'https://github.com/InfotelGLPI/manufacturersimports/',
             'requirements' => [
                'glpi' => [

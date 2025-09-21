@@ -32,6 +32,7 @@ namespace GlpiPlugin\Manufacturersimports;
 use GlpiPlugin\Manufacturersimports\Config;
 use CommonGLPI;
 use DbUtils;
+use Html;
 use ProfileRight;
 use Session;
 
