@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $soft\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-21 14:53+0000\n"
+"POT-Creation-Date: 2025-09-22 17:31+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -91,11 +91,11 @@ msgstr ""
 msgid "Warranty import (Dell, HP)"
 msgstr ""
 
-#: src/Import.php:184 src/Postimport.php:776
+#: src/Import.php:184 src/Postimport.php:777
 msgid "Import OK"
 msgstr ""
 
-#: src/Import.php:187 src/Postimport.php:882
+#: src/Import.php:187 src/Postimport.php:883
 msgid "Import failed"
 msgstr ""
 
@@ -103,36 +103,36 @@ msgstr ""
 msgid "Model number"
 msgstr ""
 
-#: src/Postimport.php:87
+#: src/Postimport.php:88
 msgid "Curl PHP package not installed"
 msgstr ""
 
-#: src/Postimport.php:248
+#: src/Postimport.php:249
 msgid "Post import"
 msgstr ""
 
-#: src/Postimport.php:256
+#: src/Postimport.php:257
 msgid "Result"
 msgstr ""
 
-#: src/Postimport.php:257
+#: src/Postimport.php:258
 msgid "Details"
 msgstr ""
 
-#: src/Postimport.php:289
+#: src/Postimport.php:290
 #, php-format
 msgid "Total number of devices imported %s"
 msgstr ""
 
-#: src/Postimport.php:758 src/Postimport.php:765
+#: src/Postimport.php:759 src/Postimport.php:766
 msgid "Imported from web site"
 msgstr ""
 
-#: src/Postimport.php:759 src/Postimport.php:766
+#: src/Postimport.php:760 src/Postimport.php:767
 msgid "With the manufacturersimports plugin"
 msgstr ""
 
-#: src/Postimport.php:905
+#: src/Postimport.php:906
 msgid "Connection failed/data download from manufacturer web site"
 msgstr ""
 
