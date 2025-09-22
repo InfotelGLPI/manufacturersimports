@@ -31,6 +31,7 @@ namespace GlpiPlugin\Manufacturersimports;
 
 use CommonDBTM;
 use DbUtils;
+use Document;
 use Document_Item;
 use Dropdown;
 use GLPIKey;
@@ -840,7 +841,7 @@ class PostImport extends CommonDBTM
                      "suppliername" => $options["suppliername"]];
         self::cURLData($datas);
 
-        $doc = new document();
+        $doc = new Document();
 
         $input                          = [];
         $input["entities_id"]           = $options["entities_id"];
