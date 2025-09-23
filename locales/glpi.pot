@@ -1,14 +1,14 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR $copyright
-# This file is distributed under the same license as the $soft package.
+# Copyright (C) YEAR ManufacturersImports Development Team
+# This file is distributed under the same license as the ManufacturersImports - Accounts plugin package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: $soft\n"
+"Project-Id-Version: ManufacturersImports - Accounts plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-22 17:31+0000\n"
+"POT-Creation-Date: 2025-09-23 12:14+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,126 +18,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: setup.php:92 front/massiveaction.php:44 src/Menu.php:53 src/Preimport.php:66
-#: src/Profile.php:97
+#: setup.php:92 src/Preimport.php:66 src/Menu.php:53 src/Profile.php:97
+#: front/massiveaction.php:44
 msgid "Suppliers import"
 msgid_plural "Suppliers imports"
 msgstr[0] ""
 msgstr[1] ""
 
-#: front/config.php:41
-msgid "Please activate the plugin"
-msgstr ""
-
-#: src/Config.php:229 src/Config.php:360
-msgid "Manufacturer web address"
-msgstr ""
-
-#: src/Config.php:238 src/Config.php:382
-msgid "Default supplier attached"
-msgstr ""
-
-#: src/Config.php:246 src/Preimport.php:704
-msgid "New warranty attached"
-msgstr ""
-
-#: src/Config.php:255 src/Config.php:427
-msgid "Auto add of document"
-msgstr ""
-
-#: src/Config.php:272 src/Config.php:442
-msgid "Add a comment line"
-msgstr ""
-
-#: src/Config.php:368
-msgid "Access token API address"
-msgstr ""
-
-#: src/Config.php:374
-msgid "Warranty API address"
-msgstr ""
-
-#: src/Config.php:393
-msgid "New warranty affected by default (Replace if 0)"
-msgstr ""
-
-#: src/Config.php:407 src/Config.php:420
-msgid "Client id"
-msgstr ""
-
-#: src/Config.php:413
-msgid "Client secret"
-msgstr ""
-
-#: src/Config.php:434
-msgid "Section for document records"
-msgstr ""
-
-#: src/Config.php:647 src/Preimport.php:409 src/Preimport.php:422
-msgid "Manufacturer information"
-msgstr ""
-
-#: src/Config.php:654 src/Config.php:763
-msgctxt "button"
-msgid "Retrieve warranty from manufacturer"
-msgstr ""
-
-#: src/Config.php:757
-msgid ""
-"You did not import the warranty for this item. Do you want to get it back?"
-msgstr ""
-
-#: src/Import.php:54
-msgid "Warranty import (Dell, HP)"
-msgstr ""
-
-#: src/Import.php:184 src/Postimport.php:777
-msgid "Import OK"
-msgstr ""
-
-#: src/Import.php:187 src/Postimport.php:883
-msgid "Import failed"
-msgstr ""
-
-#: src/Lenovo.php:59
-msgid "Model number"
-msgstr ""
-
-#: src/Postimport.php:88
-msgid "Curl PHP package not installed"
-msgstr ""
-
-#: src/Postimport.php:249
-msgid "Post import"
-msgstr ""
-
-#: src/Postimport.php:257
-msgid "Result"
-msgstr ""
-
-#: src/Postimport.php:258
-msgid "Details"
-msgstr ""
-
-#: src/Postimport.php:290
-#, php-format
-msgid "Total number of devices imported %s"
-msgstr ""
-
-#: src/Postimport.php:759 src/Postimport.php:766
-msgid "Imported from web site"
-msgstr ""
-
-#: src/Postimport.php:760 src/Postimport.php:767
-msgid "With the manufacturersimports plugin"
-msgstr ""
-
-#: src/Postimport.php:906
-msgid "Connection failed/data download from manufacturer web site"
-msgstr ""
-
 #: src/Preimport.php:380
 msgid "The choosen supplier is not recursive"
+msgstr ""
+
+#: src/Preimport.php:409 src/Preimport.php:422 src/Config.php:647
+msgid "Manufacturer information"
 msgstr ""
 
 #: src/Preimport.php:429
@@ -176,6 +69,10 @@ msgstr ""
 msgid "Supplier attached"
 msgstr ""
 
+#: src/Preimport.php:704 src/Config.php:246
+msgid "New warranty attached"
+msgstr ""
+
 #: src/Preimport.php:761
 #, php-format
 msgid "Total number of devices to import %s"
@@ -187,4 +84,107 @@ msgstr ""
 
 #: src/Preimport.php:1111
 msgid "Reset the import"
+msgstr ""
+
+#: src/Postimport.php:88
+msgid "Curl PHP package not installed"
+msgstr ""
+
+#: src/Postimport.php:249
+msgid "Post import"
+msgstr ""
+
+#: src/Postimport.php:257
+msgid "Result"
+msgstr ""
+
+#: src/Postimport.php:258
+msgid "Details"
+msgstr ""
+
+#: src/Postimport.php:290
+#, php-format
+msgid "Total number of devices imported %s"
+msgstr ""
+
+#: src/Postimport.php:759 src/Postimport.php:766
+msgid "Imported from web site"
+msgstr ""
+
+#: src/Postimport.php:760 src/Postimport.php:767
+msgid "With the manufacturersimports plugin"
+msgstr ""
+
+#: src/Postimport.php:777 src/Import.php:184
+msgid "Import OK"
+msgstr ""
+
+#: src/Postimport.php:883 src/Import.php:187
+msgid "Import failed"
+msgstr ""
+
+#: src/Postimport.php:906
+msgid "Connection failed/data download from manufacturer web site"
+msgstr ""
+
+#: src/Config.php:229 src/Config.php:360
+msgid "Manufacturer web address"
+msgstr ""
+
+#: src/Config.php:238 src/Config.php:382
+msgid "Default supplier attached"
+msgstr ""
+
+#: src/Config.php:255 src/Config.php:427
+msgid "Auto add of document"
+msgstr ""
+
+#: src/Config.php:272 src/Config.php:442
+msgid "Add a comment line"
+msgstr ""
+
+#: src/Config.php:368
+msgid "Access token API address"
+msgstr ""
+
+#: src/Config.php:374
+msgid "Warranty API address"
+msgstr ""
+
+#: src/Config.php:393
+msgid "New warranty affected by default (Replace if 0)"
+msgstr ""
+
+#: src/Config.php:407 src/Config.php:420
+msgid "Client id"
+msgstr ""
+
+#: src/Config.php:413
+msgid "Client secret"
+msgstr ""
+
+#: src/Config.php:434
+msgid "Section for document records"
+msgstr ""
+
+#: src/Config.php:654 src/Config.php:763
+msgctxt "button"
+msgid "Retrieve warranty from manufacturer"
+msgstr ""
+
+#: src/Config.php:757
+msgid ""
+"You did not import the warranty for this item. Do you want to get it back?"
+msgstr ""
+
+#: src/Import.php:54
+msgid "Warranty import (Dell, HP)"
+msgstr ""
+
+#: src/Lenovo.php:59
+msgid "Model number"
+msgstr ""
+
+#: front/config.php:41
+msgid "Please activate the plugin"
 msgstr ""
