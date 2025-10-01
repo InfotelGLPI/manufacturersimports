@@ -474,7 +474,7 @@ class PreImport extends CommonDBTM
         $dbu = new DbUtils();
 
         echo "<form name='form' method='post' action='" . PLUGIN_MANUFACTURERSIMPORTS_WEBDIR . "/front/import.php'>";
-        echo "<div align='center'><table class='tab_cadre' cellpadding='5'>";
+        echo "<div class='center'><table class='tab_cadre' cellpadding='5'>";
         echo "<tr><th colspan='4'>" . __('Choose inventory type and manufacturer', 'manufacturersimports') . "</th></tr>";
         echo "<tr class='tab_bg_2'>";
         echo "<td class='center'>";
@@ -813,7 +813,7 @@ class PreImport extends CommonDBTM
                     );
                 }
             } else {
-                echo "<div align='center'><b>"
+                echo "<div class='center'><b>"
                      . __('No device finded', 'manufacturersimports') . "</b></div>";
             }
         }
