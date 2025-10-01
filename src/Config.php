@@ -96,7 +96,7 @@ class Config extends CommonDBTM
             case self::TOSHIBA:
             case self::WORTMANN_AG:
                 $supplierclass = "GlpiPlugin\Manufacturersimports\\".$suppliername;
-                $supplier                     = $supplierclass();
+                $supplier                     = new $supplierclass();
                 $infos                        = $supplier->getSupplierInfo();
                 $this->fields["name"]         = $infos["name"];
                 $this->fields["supplier_url"] = $infos["supplier_url"];
