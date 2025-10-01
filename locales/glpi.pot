@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ManufacturersImports - Accounts plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-23 12:14+0000\n"
+"POT-Creation-Date: 2025-10-01 08:59+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,72 +18,77 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: setup.php:92 src/Preimport.php:66 src/Menu.php:53 src/Profile.php:97
-#: front/massiveaction.php:44
+#: setup.php:92 front/massiveaction.php:44 src/Profile.php:97 src/Menu.php:53
+#: src/Preimport.php:66
 msgid "Suppliers import"
 msgid_plural "Suppliers imports"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Preimport.php:380
-msgid "The choosen supplier is not recursive"
+#: front/config.php:41
+msgid "Please activate the plugin"
 msgstr ""
 
-#: src/Preimport.php:409 src/Preimport.php:422 src/Config.php:647
-msgid "Manufacturer information"
+#: src/Config.php:229 src/Config.php:360
+msgid "Manufacturer web address"
 msgstr ""
 
-#: src/Preimport.php:429
-msgid "Not yet imported"
+#: src/Config.php:238 src/Config.php:382
+msgid "Default supplier attached"
 msgstr ""
 
-#: src/Preimport.php:432
-msgid "Problem during the importation"
-msgstr ""
-
-#: src/Preimport.php:440
-msgid "Already imported"
-msgstr ""
-
-#: src/Preimport.php:478
-msgid "Choose inventory type and manufacturer"
-msgstr ""
-
-#: src/Preimport.php:522
-msgid "Devices not imported"
-msgstr ""
-
-#: src/Preimport.php:523
-msgid "Devices already imported"
-msgstr ""
-
-#: src/Preimport.php:529 src/Preimport.php:533
-msgid "No manufacturer available. Please configure at least one manufacturer"
-msgstr ""
-
-#: src/Preimport.php:691
-msgid "Model Number"
-msgstr ""
-
-#: src/Preimport.php:699
-msgid "Supplier attached"
-msgstr ""
-
-#: src/Preimport.php:704 src/Config.php:246
+#: src/Config.php:246 src/Preimport.php:704
 msgid "New warranty attached"
 msgstr ""
 
-#: src/Preimport.php:761
-#, php-format
-msgid "Total number of devices to import %s"
+#: src/Config.php:255 src/Config.php:427
+msgid "Auto add of document"
 msgstr ""
 
-#: src/Preimport.php:817
-msgid "No device finded"
+#: src/Config.php:272 src/Config.php:442
+msgid "Add a comment line"
 msgstr ""
 
-#: src/Preimport.php:1111
-msgid "Reset the import"
+#: src/Config.php:368
+msgid "Access token API address"
+msgstr ""
+
+#: src/Config.php:374
+msgid "Warranty API address"
+msgstr ""
+
+#: src/Config.php:393
+msgid "New warranty affected by default (Replace if 0)"
+msgstr ""
+
+#: src/Config.php:407 src/Config.php:420
+msgid "Client id"
+msgstr ""
+
+#: src/Config.php:413
+msgid "Client secret"
+msgstr ""
+
+#: src/Config.php:434
+msgid "Section for document records"
+msgstr ""
+
+#: src/Config.php:647 src/Preimport.php:409 src/Preimport.php:422
+msgid "Manufacturer information"
+msgstr ""
+
+#: src/Config.php:654 src/Config.php:763
+msgctxt "button"
+msgid "Retrieve warranty from manufacturer"
+msgstr ""
+
+#: src/Config.php:757
+msgid ""
+"You did not import the warranty for this item. Do you want to get it back?"
+msgstr ""
+
+#: src/Lenovo.php:59
+msgid "Model number"
 msgstr ""
 
 #: src/Postimport.php:88
@@ -127,64 +132,59 @@ msgstr ""
 msgid "Connection failed/data download from manufacturer web site"
 msgstr ""
 
-#: src/Config.php:229 src/Config.php:360
-msgid "Manufacturer web address"
+#: src/Preimport.php:380
+msgid "The choosen supplier is not recursive"
 msgstr ""
 
-#: src/Config.php:238 src/Config.php:382
-msgid "Default supplier attached"
+#: src/Preimport.php:429
+msgid "Not yet imported"
 msgstr ""
 
-#: src/Config.php:255 src/Config.php:427
-msgid "Auto add of document"
+#: src/Preimport.php:432
+msgid "Problem during the importation"
 msgstr ""
 
-#: src/Config.php:272 src/Config.php:442
-msgid "Add a comment line"
+#: src/Preimport.php:440
+msgid "Already imported"
 msgstr ""
 
-#: src/Config.php:368
-msgid "Access token API address"
+#: src/Preimport.php:478
+msgid "Choose inventory type and manufacturer"
 msgstr ""
 
-#: src/Config.php:374
-msgid "Warranty API address"
+#: src/Preimport.php:522
+msgid "Devices not imported"
 msgstr ""
 
-#: src/Config.php:393
-msgid "New warranty affected by default (Replace if 0)"
+#: src/Preimport.php:523
+msgid "Devices already imported"
 msgstr ""
 
-#: src/Config.php:407 src/Config.php:420
-msgid "Client id"
+#: src/Preimport.php:529 src/Preimport.php:533
+msgid "No manufacturer available. Please configure at least one manufacturer"
 msgstr ""
 
-#: src/Config.php:413
-msgid "Client secret"
+#: src/Preimport.php:691
+msgid "Model Number"
 msgstr ""
 
-#: src/Config.php:434
-msgid "Section for document records"
+#: src/Preimport.php:699
+msgid "Supplier attached"
 msgstr ""
 
-#: src/Config.php:654 src/Config.php:763
-msgctxt "button"
-msgid "Retrieve warranty from manufacturer"
+#: src/Preimport.php:761
+#, php-format
+msgid "Total number of devices to import %s"
 msgstr ""
 
-#: src/Config.php:757
-msgid ""
-"You did not import the warranty for this item. Do you want to get it back?"
+#: src/Preimport.php:817
+msgid "No device finded"
+msgstr ""
+
+#: src/Preimport.php:1111
+msgid "Reset the import"
 msgstr ""
 
 #: src/Import.php:54
 msgid "Warranty import (Dell, HP)"
-msgstr ""
-
-#: src/Lenovo.php:59
-msgid "Model number"
-msgstr ""
-
-#: front/config.php:41
-msgid "Please activate the plugin"
 msgstr ""
