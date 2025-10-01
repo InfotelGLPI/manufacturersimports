@@ -28,8 +28,8 @@
  */
 
 use Glpi\Exception\Http\AccessDeniedHttpException;
-use GlpiPlugin\Manufacturersimports\PreImport;
 use GlpiPlugin\Manufacturersimports\Menu;
+use GlpiPlugin\Manufacturersimports\PreImport;
 
 Html::header(
     PreImport::getTypeName(),

@@ -54,7 +54,13 @@ if (isset($_POST["add"])) {
 
     Session::checkRight("plugin_manufacturersimports", PURGE);
     $config->delete($_POST, true);
-    Html::redirect("./config.form.php");
+    Html::redirect("./config.php");
+
+} else if (isset($_POST["purge"])) {
+
+    Session::checkRight("plugin_manufacturersimports", PURGE);
+    $config->delete($_POST, true);
+    Html::redirect("./config.php");
 
 } else if (isset($_POST["retrieve_warranty"])) {
     Session::checkRight("plugin_manufacturersimports", UPDATE);
