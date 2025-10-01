@@ -115,7 +115,7 @@ class Manufacturer extends CommonDBTM
      */
     public function showWarrantyItem($ID, $supplierWarranty)
     {
-        echo "<td>".__('Automatic');
+        echo "<td>".__('Automatic', 'manufacturersimports');
         $name = "to_warranty_duration".$ID;
         echo Html::hidden($name, ['value' => 0]);
         echo "</td>";

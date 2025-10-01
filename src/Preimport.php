@@ -98,14 +98,6 @@ class PreImport extends CommonDBTM
 
     /**
      * Fonction to use the supplier url
-     *
-     * @param      $suppliername the suppliername
-     * @param      $supplierUrl the supplierUrl (in plugin config)
-     * @param      $compSerial the serial of the device
-     * @param      $otherSerial the otherSerial (model) of the device
-     * @param null $supplierkey the supplierkey
-     * @param null $supplierSecret the supplierSecret
-     *
      * @return $url of the supplier
      *
      */
@@ -140,13 +132,6 @@ class PreImport extends CommonDBTM
 
     /**
      * Fonction to use the supplier url
-     *
-     * @param      $suppliername the suppliername
-     * @param      $supplierUrl the supplierUrl (in plugin config)
-     * @param      $compSerial the serial of the device
-     * @param      $otherSerial the otherSerial (model) of the device
-     * @param null $supplierkey the supplierkey
-     * @param null $supplierSecret the supplierSecret
      *
      * @return $url of the supplier
      *
@@ -452,10 +437,10 @@ class PreImport extends CommonDBTM
     /**
      * Prints search form
      *
-     * @param $manufacturer the supplier choice
-     * @param $type the device type
+     * @param $manufacturer
+     * @param $type
      *
-     * @return nothing (print out a table)
+     * @return
      *
      */
     public static function searchForm($params)
@@ -543,40 +528,12 @@ class PreImport extends CommonDBTM
 
         echo "</table></div>";
         Html::closeForm();
+
+        return true;
     }
 
     /**
-     * Prints display Search Header
-     *
-     * @param $fixed if fixed cells
-     * @param $output_type the output_type
-     *
-     * @return nothing (print out a table)
-     *
-     */
-    //   static function displaySearchHeader($output_type, $fixed = 0) {
-    //      $out = "";
-    //      switch ($output_type) {
-    //         default :
-    //            if ($fixed) {
-    //               $out = "<div class='center'><table border='0' class='tab_cadre_fixehov'>\n";
-    //            } else {
-    //               $out = "<div class='center'><table border='0' class='tab_cadre_fixe'>\n";
-    //            }
-    //            break;
-    //      }
-    //      return $out;
-    //   }
-
-    /**
      * Prints display pre import
-     *
-     * @param $type the type of device
-     * @param $configID the ID of the supplier config
-     * @param $start for pager display
-     * @param $complete to see all device (already imported and not)
-     *
-     * @return nothing (print out a table)
      *
      */
     public static function seePreImport($params)
@@ -822,11 +779,6 @@ class PreImport extends CommonDBTM
     /**
      * show arrow for massives actions : opening
      *
-     * @param $formname  string
-     * @param $fixed     boolean  used tab_cadre_fixe in both tables (false by default)
-     * @param $ontop              display on top of the list (false by default)
-     * @param $onright            display on right of the list (false by default)
-     *
      **/
     public static function openArrowMassives($formname, $fixed = false, $ontop = false, $onright = false)
     {
@@ -873,9 +825,6 @@ class PreImport extends CommonDBTM
             foreach ($actions as $name => $label) {
                 if (!empty($name)) {
                     echo "<input type='submit' name='$name' ";
-                    if (is_array($confirm) && isset($confirm[$name])) {
-                        echo self::addConfirmationOnAction($confirm[$name]);
-                    }
                     echo "value=\"" . addslashes($label) . "\" class='submit btn btn-primary'>&nbsp;";
                 }
             }
@@ -963,15 +912,15 @@ class PreImport extends CommonDBTM
     /**
      * Generic Function to add ORDER BY to a request
      *
-     * @param $itemtype ID of the device type
-     * @param $ID field to add
-     * @param $order order define
-     * @param $key item number
+     * @param $itemtype
+     * @param $ID
+     * @param $order
+     * @param $key
      *
-     * @return select string
+     * @return string string
      *
      **/
-    public static function addOrderBy($itemtype, $ID, $order, $key = 0)
+    public static function addOrderBy($itemtype, $id, $order, $key = 0)
     {
         global $CFG_GLPI;
 
@@ -981,19 +930,19 @@ class PreImport extends CommonDBTM
         }
         $searchopt = Search::getOptions($itemtype);
 
-        $table = $searchopt[$ID]["table"];
-        $field = $searchopt[$ID]["field"];
+        $table = $searchopt[$id]["table"];
+        $field = $searchopt[$id]["field"];
 
         $addtable = '';
         $dbu      = new DbUtils();
 
         if ($table != $dbu->getTableForItemType($itemtype)
-            && $searchopt[$ID]["linkfield"] != $dbu->getForeignKeyFieldForTable($table)) {
-            $addtable .= "_" . $searchopt[$ID]["linkfield"];
+            && $searchopt[$id]["linkfield"] != $dbu->getForeignKeyFieldForTable($table)) {
+            $addtable .= "_" . $searchopt[$id]["linkfield"];
         }
 
-        if (isset($searchopt[$ID]['joinparams'])) {
-            $complexjoin = Search::computeComplexJoinID($searchopt[$ID]['joinparams']);
+        if (isset($searchopt[$id]['joinparams'])) {
+            $complexjoin = Search::computeComplexJoinID($searchopt[$id]['joinparams']);
 
             if (!empty($complexjoin)) {
                 $addtable .= "_" . $complexjoin;
