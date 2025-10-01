@@ -1,19 +1,19 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR $copyright
-# This file is distributed under the same license as the $soft package.
+# Copyright (C) YEAR ManufacturersImports Development Team
+# This file is distributed under the same license as the ManufacturersImports - Accounts plugin package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
-# Xavier CAILLAUD <thetsmr@gmail.com>, 2022
+# Xavier CAILLAUD <thetsmr@gmail.com>, 2025
 # 
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: $soft\n"
+"Project-Id-Version: ManufacturersImports - Accounts plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-11 11:33+0000\n"
+"POT-Creation-Date: 2025-10-01 15:57+0000\n"
 "PO-Revision-Date: 2020-11-02 16:09+0000\n"
-"Last-Translator: Xavier CAILLAUD <thetsmr@gmail.com>, 2022\n"
+"Last-Translator: Xavier CAILLAUD <thetsmr@gmail.com>, 2025\n"
 "Language-Team: French (France) (https://app.transifex.com/infotelGLPI/teams/12364/fr_FR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,8 +21,8 @@ msgstr ""
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
-#: setup.php:92 front/massiveaction.php:44 src/Menu.php:53
-#: src/Preimport.php:66 src/Profile.php:96
+#: setup.php:92 front/massiveaction.php:44 src/Profile.php:97 src/Menu.php:53
+#: src/Preimport.php:66
 msgid "Suppliers import"
 msgid_plural "Suppliers imports"
 msgstr[0] "Import fabricants"
@@ -33,6 +33,10 @@ msgstr[2] "Imports fabricants"
 msgid "Please activate the plugin"
 msgstr "Merci d'activer le plugin"
 
+#: src/Manufacturer.php:118
+msgid "Automatic"
+msgstr "Automatique"
+
 #: src/Config.php:229 src/Config.php:360
 msgid "Manufacturer web address"
 msgstr "Url du fabricant"
@@ -41,7 +45,7 @@ msgstr "Url du fabricant"
 msgid "Default supplier attached"
 msgstr "Fournisseur affecté par défaut"
 
-#: src/Config.php:246 src/Preimport.php:704
+#: src/Config.php:246 src/Preimport.php:661
 msgid "New warranty attached"
 msgstr "Nouvelle garantie affectée"
 
@@ -77,7 +81,7 @@ msgstr "Clé API secrète"
 msgid "Section for document records"
 msgstr "Rubrique pour l'enregistrement des documents"
 
-#: src/Config.php:647 src/Preimport.php:409 src/Preimport.php:422
+#: src/Config.php:647 src/Preimport.php:394 src/Preimport.php:407
 msgid "Manufacturer information"
 msgstr "Informations fabricant"
 
@@ -93,104 +97,104 @@ msgstr ""
 "Vous n'avez pas importé la garantie pour cet objet. Voulez-vous la récupérer"
 " ?"
 
-#: src/Import.php:54
-msgid "Warranty import (Dell, HP)"
-msgstr "Import des garanties (Dell, HP)"
-
-#: src/Import.php:184 src/Postimport.php:775
-msgid "Import OK"
-msgstr "Import OK"
-
-#: src/Import.php:187 src/Postimport.php:881
-msgid "Import failed"
-msgstr "Import KO"
-
 #: src/Lenovo.php:59
 msgid "Model number"
 msgstr "Numéro de modèle"
 
-#: src/Postimport.php:86
+#: src/Postimport.php:88
 msgid "Curl PHP package not installed"
 msgstr "Le module Curl pour PHP n'est pas installé"
 
-#: src/Postimport.php:247
+#: src/Postimport.php:249
 msgid "Post import"
 msgstr "Post-Import"
 
-#: src/Postimport.php:255
+#: src/Postimport.php:257
 msgid "Result"
 msgstr "Résultat"
 
-#: src/Postimport.php:256
+#: src/Postimport.php:258
 msgid "Details"
 msgstr "Détails"
 
-#: src/Postimport.php:288
+#: src/Postimport.php:290
 #, php-format
 msgid "Total number of devices imported %s"
 msgstr "Nombre total de matériel importés %s"
 
-#: src/Postimport.php:757 src/Postimport.php:764
+#: src/Postimport.php:759 src/Postimport.php:766
 msgid "Imported from web site"
 msgstr "Importé depuis le site de"
 
-#: src/Postimport.php:758 src/Postimport.php:765
+#: src/Postimport.php:760 src/Postimport.php:767
 msgid "With the manufacturersimports plugin"
 msgstr "Avec le plugin manufacturersimports"
 
-#: src/Postimport.php:904
+#: src/Postimport.php:777 src/Import.php:184
+msgid "Import OK"
+msgstr "Import OK"
+
+#: src/Postimport.php:883 src/Import.php:187
+msgid "Import failed"
+msgstr "Import KO"
+
+#: src/Postimport.php:906
 msgid "Connection failed/data download from manufacturer web site"
 msgstr "Echec de connexion/récupération de données au site du fabricant"
 
-#: src/Preimport.php:380
+#: src/Preimport.php:365
 msgid "The choosen supplier is not recursive"
 msgstr "Le fournisseur choisi n'est pas récursif"
 
-#: src/Preimport.php:429
+#: src/Preimport.php:414
 msgid "Not yet imported"
 msgstr "Pas encore importé"
 
-#: src/Preimport.php:432
+#: src/Preimport.php:417
 msgid "Problem during the importation"
 msgstr "Problème lors de l'importation"
 
-#: src/Preimport.php:440
+#: src/Preimport.php:425
 msgid "Already imported"
 msgstr "Déjà importé"
 
-#: src/Preimport.php:478
+#: src/Preimport.php:463
 msgid "Choose inventory type and manufacturer"
 msgstr "Choix du type de matériel et du fabricant"
 
-#: src/Preimport.php:522
+#: src/Preimport.php:507
 msgid "Devices not imported"
 msgstr "Matériels non importés"
 
-#: src/Preimport.php:523
+#: src/Preimport.php:508
 msgid "Devices already imported"
 msgstr "Matériels déjà importés"
 
-#: src/Preimport.php:529 src/Preimport.php:533
+#: src/Preimport.php:514 src/Preimport.php:518
 msgid "No manufacturer available. Please configure at least one manufacturer"
 msgstr "Aucun fabricant utilisable. Merci de configurer au moins un fabricant"
 
-#: src/Preimport.php:691
+#: src/Preimport.php:648
 msgid "Model Number"
 msgstr "Numéro de modèle"
 
-#: src/Preimport.php:699
+#: src/Preimport.php:656
 msgid "Supplier attached"
 msgstr "Fournisseur affecté"
 
-#: src/Preimport.php:761
+#: src/Preimport.php:718
 #, php-format
 msgid "Total number of devices to import %s"
 msgstr "Nombre total de matériel à importer %s"
 
-#: src/Preimport.php:817
+#: src/Preimport.php:774
 msgid "No device finded"
 msgstr "Aucun matériel trouvé"
 
-#: src/Preimport.php:1111
+#: src/Preimport.php:1060
 msgid "Reset the import"
 msgstr "Réinitialiser l'import"
+
+#: src/Import.php:54
+msgid "Warranty import (Dell, HP)"
+msgstr "Import des garanties (Dell, HP)"
