@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ManufacturersImports - Accounts plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-02 06:54+0000\n"
+"POT-Creation-Date: 2025-10-02 11:44+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -49,44 +49,44 @@ msgstr ""
 msgid "Already imported"
 msgstr ""
 
-#: src/PreImport.php:463
+#: src/PreImport.php:461
 msgid "Choose inventory type and manufacturer"
 msgstr ""
 
-#: src/PreImport.php:507
+#: src/PreImport.php:505
 msgid "Devices not imported"
 msgstr ""
 
-#: src/PreImport.php:508
+#: src/PreImport.php:506
 msgid "Devices already imported"
 msgstr ""
 
-#: src/PreImport.php:514 src/PreImport.php:518
+#: src/PreImport.php:512 src/PreImport.php:516
 msgid "No manufacturer available. Please configure at least one manufacturer"
 msgstr ""
 
-#: src/PreImport.php:648
+#: src/PreImport.php:646
 msgid "Model Number"
 msgstr ""
 
-#: src/PreImport.php:656
+#: src/PreImport.php:654
 msgid "Supplier attached"
 msgstr ""
 
-#: src/PreImport.php:661 src/Config.php:246
+#: src/PreImport.php:659 src/Config.php:246
 msgid "New warranty attached"
 msgstr ""
 
-#: src/PreImport.php:718
+#: src/PreImport.php:716
 #, php-format
 msgid "Total number of devices to import %s"
 msgstr ""
 
-#: src/PreImport.php:774
+#: src/PreImport.php:772
 msgid "No device finded"
 msgstr ""
 
-#: src/PreImport.php:1060
+#: src/PreImport.php:1058
 msgid "Reset the import"
 msgstr ""
 
@@ -152,11 +152,11 @@ msgstr ""
 msgid "Warranty import (Dell, HP)"
 msgstr ""
 
-#: src/Import.php:184 src/PostImport.php:777
+#: src/Import.php:184 src/PostImport.php:779
 msgid "Import OK"
 msgstr ""
 
-#: src/Import.php:187 src/PostImport.php:883
+#: src/Import.php:187 src/PostImport.php:885
 msgid "Import failed"
 msgstr ""
 
@@ -181,14 +181,14 @@ msgstr ""
 msgid "Total number of devices imported %s"
 msgstr ""
 
-#: src/PostImport.php:759 src/PostImport.php:766
+#: src/PostImport.php:759 src/PostImport.php:767
 msgid "Imported from web site"
 msgstr ""
 
-#: src/PostImport.php:760 src/PostImport.php:767
+#: src/PostImport.php:760 src/PostImport.php:768
 msgid "With the manufacturersimports plugin"
 msgstr ""
 
-#: src/PostImport.php:906
+#: src/PostImport.php:908
 msgid "Connection failed/data download from manufacturer web site"
 msgstr ""
