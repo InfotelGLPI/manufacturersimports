@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ManufacturersImports - Accounts plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-01 16:54+0000\n"
+"POT-Creation-Date: 2025-10-02 06:54+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,8 +18,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: setup.php:92 front/massiveaction.php:44 src/Profile.php:97 src/Menu.php:53
-#: src/Preimport.php:66
+#: setup.php:92 front/massiveaction.php:44 src/PreImport.php:66
+#: src/Profile.php:97 src/Menu.php:53
 msgid "Suppliers import"
 msgid_plural "Suppliers imports"
 msgstr[0] ""
@@ -27,6 +27,67 @@ msgstr[1] ""
 
 #: front/config.php:41
 msgid "Please activate the plugin"
+msgstr ""
+
+#: src/PreImport.php:365
+msgid "The choosen supplier is not recursive"
+msgstr ""
+
+#: src/PreImport.php:394 src/PreImport.php:407 src/Config.php:647
+msgid "Manufacturer information"
+msgstr ""
+
+#: src/PreImport.php:414
+msgid "Not yet imported"
+msgstr ""
+
+#: src/PreImport.php:417
+msgid "Problem during the importation"
+msgstr ""
+
+#: src/PreImport.php:425
+msgid "Already imported"
+msgstr ""
+
+#: src/PreImport.php:463
+msgid "Choose inventory type and manufacturer"
+msgstr ""
+
+#: src/PreImport.php:507
+msgid "Devices not imported"
+msgstr ""
+
+#: src/PreImport.php:508
+msgid "Devices already imported"
+msgstr ""
+
+#: src/PreImport.php:514 src/PreImport.php:518
+msgid "No manufacturer available. Please configure at least one manufacturer"
+msgstr ""
+
+#: src/PreImport.php:648
+msgid "Model Number"
+msgstr ""
+
+#: src/PreImport.php:656
+msgid "Supplier attached"
+msgstr ""
+
+#: src/PreImport.php:661 src/Config.php:246
+msgid "New warranty attached"
+msgstr ""
+
+#: src/PreImport.php:718
+#, php-format
+msgid "Total number of devices to import %s"
+msgstr ""
+
+#: src/PreImport.php:774
+msgid "No device finded"
+msgstr ""
+
+#: src/PreImport.php:1060
+msgid "Reset the import"
 msgstr ""
 
 #: src/Manufacturer.php:118
@@ -39,10 +100,6 @@ msgstr ""
 
 #: src/Config.php:238 src/Config.php:382
 msgid "Default supplier attached"
-msgstr ""
-
-#: src/Config.php:246 src/Preimport.php:661
-msgid "New warranty attached"
 msgstr ""
 
 #: src/Config.php:255 src/Config.php:427
@@ -77,10 +134,6 @@ msgstr ""
 msgid "Section for document records"
 msgstr ""
 
-#: src/Config.php:647 src/Preimport.php:394 src/Preimport.php:407
-msgid "Manufacturer information"
-msgstr ""
-
 #: src/Config.php:654 src/Config.php:763
 msgctxt "button"
 msgid "Retrieve warranty from manufacturer"
@@ -95,100 +148,47 @@ msgstr ""
 msgid "Model number"
 msgstr ""
 
-#: src/Postimport.php:88
+#: src/Import.php:54
+msgid "Warranty import (Dell, HP)"
+msgstr ""
+
+#: src/Import.php:184 src/PostImport.php:777
+msgid "Import OK"
+msgstr ""
+
+#: src/Import.php:187 src/PostImport.php:883
+msgid "Import failed"
+msgstr ""
+
+#: src/PostImport.php:88
 msgid "Curl PHP package not installed"
 msgstr ""
 
-#: src/Postimport.php:249
+#: src/PostImport.php:249
 msgid "Post import"
 msgstr ""
 
-#: src/Postimport.php:257
+#: src/PostImport.php:257
 msgid "Result"
 msgstr ""
 
-#: src/Postimport.php:258
+#: src/PostImport.php:258
 msgid "Details"
 msgstr ""
 
-#: src/Postimport.php:290
+#: src/PostImport.php:290
 #, php-format
 msgid "Total number of devices imported %s"
 msgstr ""
 
-#: src/Postimport.php:759 src/Postimport.php:766
+#: src/PostImport.php:759 src/PostImport.php:766
 msgid "Imported from web site"
 msgstr ""
 
-#: src/Postimport.php:760 src/Postimport.php:767
+#: src/PostImport.php:760 src/PostImport.php:767
 msgid "With the manufacturersimports plugin"
 msgstr ""
 
-#: src/Postimport.php:777 src/Import.php:184
-msgid "Import OK"
-msgstr ""
-
-#: src/Postimport.php:883 src/Import.php:187
-msgid "Import failed"
-msgstr ""
-
-#: src/Postimport.php:906
+#: src/PostImport.php:906
 msgid "Connection failed/data download from manufacturer web site"
-msgstr ""
-
-#: src/Preimport.php:365
-msgid "The choosen supplier is not recursive"
-msgstr ""
-
-#: src/Preimport.php:414
-msgid "Not yet imported"
-msgstr ""
-
-#: src/Preimport.php:417
-msgid "Problem during the importation"
-msgstr ""
-
-#: src/Preimport.php:425
-msgid "Already imported"
-msgstr ""
-
-#: src/Preimport.php:463
-msgid "Choose inventory type and manufacturer"
-msgstr ""
-
-#: src/Preimport.php:507
-msgid "Devices not imported"
-msgstr ""
-
-#: src/Preimport.php:508
-msgid "Devices already imported"
-msgstr ""
-
-#: src/Preimport.php:514 src/Preimport.php:518
-msgid "No manufacturer available. Please configure at least one manufacturer"
-msgstr ""
-
-#: src/Preimport.php:648
-msgid "Model Number"
-msgstr ""
-
-#: src/Preimport.php:656
-msgid "Supplier attached"
-msgstr ""
-
-#: src/Preimport.php:718
-#, php-format
-msgid "Total number of devices to import %s"
-msgstr ""
-
-#: src/Preimport.php:774
-msgid "No device finded"
-msgstr ""
-
-#: src/Preimport.php:1060
-msgid "Reset the import"
-msgstr ""
-
-#: src/Import.php:54
-msgid "Warranty import (Dell, HP)"
 msgstr ""
