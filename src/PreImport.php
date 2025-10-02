@@ -456,8 +456,6 @@ class PreImport extends CommonDBTM
             $p[$key] = $val;
         }
 
-        $dbu = new DbUtils();
-
         echo "<form name='form' method='post' action='" . PLUGIN_MANUFACTURERSIMPORTS_WEBDIR . "/front/import.php'>";
         echo "<div class='center'><table class='tab_cadre' cellpadding='5'>";
         echo "<tr><th colspan='4'>" . __('Choose inventory type and manufacturer', 'manufacturersimports') . "</th></tr>";
@@ -593,8 +591,8 @@ class PreImport extends CommonDBTM
                     $output_type = $_GET["display_type"];
                 }
                 $parameters = "itemtype=" . $p['itemtype']
-                              . "&amp;manufacturers_id=" . $p['manufacturers_id']
-                              . "&amp;imported=" . $p['imported'];
+                              . "&manufacturers_id=" . $p['manufacturers_id']
+                              . "&imported=" . $p['imported'];
                 $total      = 0;
 
                 if ($output_type == Search::HTML_OUTPUT) {
@@ -999,12 +997,12 @@ class PreImport extends CommonDBTM
         // Back and fast backward button
         if (!$start == 0) {
             echo "<th class='left'>";
-            echo "<a href='$target?$parameters&amp;start=0'>";
+            echo "<a href='$target?$parameters&start=0'>";
             echo "<i style='font-size: 2em;' class='ti ti-chevrons-left' title=\""
                  . __s('Start') . "\"></i>";
             echo "</a></th>";
             echo "<th class='left'>";
-            echo "<a href='$target?$parameters&amp;start=$back'>";
+            echo "<a href='$target?$parameters&start=$back'>";
             echo "<i style='font-size: 2em;' class='ti ti-chevron-left' title=\""
                  . __s('Previous') . "\"></i>";
             echo "</a></th>";
@@ -1012,7 +1010,7 @@ class PreImport extends CommonDBTM
 
         // Print the "where am I?"
         echo "<td width='50%'  class='tab_bg_2'>";
-        Html::printPagerForm("$target?$parameters&amp;start=$start");
+        Html::printPagerForm("$target?$parameters&start=$start");
         echo "</td>\n";
 
         echo "<td width='50%' class='tab_bg_2 b'>";
@@ -1023,13 +1021,13 @@ class PreImport extends CommonDBTM
         // Forward and fast forward button
         if ($forward < $numrows) {
             echo "<th class='right'>";
-            echo "<a href='$target?$parameters&amp;start=$forward'>";
+            echo "<a href='$target?$parameters&start=$forward'>";
             echo "<i style='font-size: 2em;' class='ti ti-chevron-right' title=\""
                  . __s('Next') . "\"></i>";
             echo "</a></th>\n";
 
             echo "<th class='right'>";
-            echo "<a href='$target?$parameters&amp;start=$end'>";
+            echo "<a href='$target?$parameters&start=$end'>";
             echo "<i style='font-size: 2em;' class='ti ti-chevrons-right' title=\""
                  . __s('End') . "\"></i>";
             echo "</a></th>\n";
@@ -1090,7 +1088,7 @@ class PreImport extends CommonDBTM
         $out = "";
         if (is_array($array) && count($array) > 0) {
             foreach ($array as $key => $val) {
-                $out .= "&amp;" . $name . "[$key]=" . urlencode(stripslashes($val));
+                $out .= "&" . $name . "[$key]=" . urlencode(stripslashes($val));
             }
         }
         return $out;

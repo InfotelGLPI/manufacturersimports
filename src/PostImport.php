@@ -759,6 +759,7 @@ class PostImport extends CommonDBTM
                                             __('Imported from web site', 'manufacturersimports') . " " . $options["suppliername"] . " " .
                                             __('With the manufacturersimports plugin', 'manufacturersimports') . " (" . Html::convdate($options["date"]) . ")";
             }
+            $input_infocom["comment"] = addslashes($input_infocom["comment"]);
             $infocom = new Infocom();
             $infocom->update($input_infocom);
         } else {
@@ -768,6 +769,7 @@ class PostImport extends CommonDBTM
                                             " (" . Html::convdate($options["date"]) . ")";
             }
             $infocom = new Infocom();
+            $input_infocom["comment"] = addslashes($input_infocom["comment"]);
             $infocom->add($input_infocom);
         }
 
