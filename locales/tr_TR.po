@@ -1,20 +1,20 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR $copyright
-# This file is distributed under the same license as the $soft package.
+# Copyright (C) YEAR ManufacturersImports Development Team
+# This file is distributed under the same license as the ManufacturersImports - Accounts plugin package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
 # Xavier CAILLAUD <thetsmr@gmail.com>, 2020
-# Kaya Zeren <kayazeren@gmail.com>, 2024
+# Kaya Zeren <kayazeren@gmail.com>, 2025
 # 
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: $soft\n"
+"Project-Id-Version: ManufacturersImports - Accounts plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-11 11:33+0000\n"
+"POT-Creation-Date: 2025-10-02 11:44+0000\n"
 "PO-Revision-Date: 2020-11-02 16:09+0000\n"
-"Last-Translator: Kaya Zeren <kayazeren@gmail.com>, 2024\n"
+"Last-Translator: Kaya Zeren <kayazeren@gmail.com>, 2025\n"
 "Language-Team: Turkish (Turkey) (https://app.transifex.com/infotelGLPI/teams/12364/tr_TR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,8 +22,8 @@ msgstr ""
 "Language: tr_TR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: setup.php:92 front/massiveaction.php:44 src/Menu.php:53
-#: src/Preimport.php:66 src/Profile.php:96
+#: setup.php:92 front/massiveaction.php:44 src/PreImport.php:66
+#: src/Profile.php:97 src/Menu.php:53
 msgid "Suppliers import"
 msgid_plural "Suppliers imports"
 msgstr[0] "Sağlayıcı içe aktarma"
@@ -33,6 +33,72 @@ msgstr[1] "Sağlayıcıları içe aktarma"
 msgid "Please activate the plugin"
 msgstr "Lütfen eklentiyi etkinleştirin"
 
+#: src/PreImport.php:365
+msgid "The choosen supplier is not recursive"
+msgstr "Seçilmiş sağlayıcı yinelenen türde değil"
+
+#: src/PreImport.php:394 src/PreImport.php:407 src/Config.php:647
+msgid "Manufacturer information"
+msgstr "Üretici bilgileri"
+
+#: src/PreImport.php:414
+msgid "Not yet imported"
+msgstr "Henüz içe aktarılmamış"
+
+#: src/PreImport.php:417
+msgid "Problem during the importation"
+msgstr "İçe aktarma sırasında sorun çıktı"
+
+#: src/PreImport.php:425
+msgid "Already imported"
+msgstr "Zaten içe aktarılmış"
+
+#: src/PreImport.php:461
+msgid "Choose inventory type and manufacturer"
+msgstr "Envanter türü ve üreticiyi seçin"
+
+#: src/PreImport.php:505
+msgid "Devices not imported"
+msgstr "Aygıtlar içe aktarılmadı"
+
+#: src/PreImport.php:506
+msgid "Devices already imported"
+msgstr "Aygıtlar zaten içe aktarılmış"
+
+#: src/PreImport.php:512 src/PreImport.php:516
+msgid "No manufacturer available. Please configure at least one manufacturer"
+msgstr ""
+"Kullanılabilecek bir üretici bulunamadı. Lütfen en az bir üretici ekleyin"
+
+#: src/PreImport.php:646
+msgid "Model Number"
+msgstr "Model numarası"
+
+#: src/PreImport.php:654
+msgid "Supplier attached"
+msgstr "Atanmış sağlayıcı"
+
+#: src/PreImport.php:659 src/Config.php:246
+msgid "New warranty attached"
+msgstr "Yeni garanti eklendi"
+
+#: src/PreImport.php:716
+#, php-format
+msgid "Total number of devices to import %s"
+msgstr "İçe aktarılacak toplam aygıt sayısı %s"
+
+#: src/PreImport.php:772
+msgid "No device finded"
+msgstr "Herhangi bir aygıt bulunamadı"
+
+#: src/PreImport.php:1058
+msgid "Reset the import"
+msgstr "İçe aktarmayı sıfırla"
+
+#: src/Manufacturer.php:118
+msgid "Automatic"
+msgstr "Otomatik"
+
 #: src/Config.php:229 src/Config.php:360
 msgid "Manufacturer web address"
 msgstr "Üretici web sitesi adresi"
@@ -40,10 +106,6 @@ msgstr "Üretici web sitesi adresi"
 #: src/Config.php:238 src/Config.php:382
 msgid "Default supplier attached"
 msgstr "Atanmış varsayılan sağlayıcı "
-
-#: src/Config.php:246 src/Preimport.php:704
-msgid "New warranty attached"
-msgstr "Yeni garanti eklendi"
 
 #: src/Config.php:255 src/Config.php:427
 msgid "Auto add of document"
@@ -77,10 +139,6 @@ msgstr "Müşteri parolası"
 msgid "Section for document records"
 msgstr "Belge kayıtları bölümü"
 
-#: src/Config.php:647 src/Preimport.php:409 src/Preimport.php:422
-msgid "Manufacturer information"
-msgstr "Üretici bilgileri"
-
 #: src/Config.php:654 src/Config.php:763
 msgctxt "button"
 msgid "Retrieve warranty from manufacturer"
@@ -91,105 +149,51 @@ msgid ""
 "You did not import the warranty for this item. Do you want to get it back?"
 msgstr "Bu ögenin garantisini içe aktarmadınız. Geri almak ister misiniz?"
 
-#: src/Import.php:54
-msgid "Warranty import (Dell, HP)"
-msgstr "Garanti içe aktarma (Dell, HP)"
-
-#: src/Import.php:184 src/Postimport.php:775
-msgid "Import OK"
-msgstr "İçe aktarıldı"
-
-#: src/Import.php:187 src/Postimport.php:881
-msgid "Import failed"
-msgstr "İçe aktarılamadı"
-
 #: src/Lenovo.php:59
 msgid "Model number"
 msgstr "Model numarası"
 
-#: src/Postimport.php:86
+#: src/Import.php:54
+msgid "Warranty import (Dell, HP)"
+msgstr "Garanti içe aktarma (Dell, HP)"
+
+#: src/Import.php:184 src/PostImport.php:779
+msgid "Import OK"
+msgstr "İçe aktarıldı"
+
+#: src/Import.php:187 src/PostImport.php:885
+msgid "Import failed"
+msgstr "İçe aktarılamadı"
+
+#: src/PostImport.php:88
 msgid "Curl PHP package not installed"
 msgstr "Curl PHP paketi yüklü değil"
 
-#: src/Postimport.php:247
+#: src/PostImport.php:249
 msgid "Post import"
 msgstr "İçe aktarma sonrası"
 
-#: src/Postimport.php:255
+#: src/PostImport.php:257
 msgid "Result"
 msgstr "Sonuçlar"
 
-#: src/Postimport.php:256
+#: src/PostImport.php:258
 msgid "Details"
 msgstr "Ayrıntılar"
 
-#: src/Postimport.php:288
+#: src/PostImport.php:290
 #, php-format
 msgid "Total number of devices imported %s"
 msgstr "Toplam %s aygıt içe aktarıldı"
 
-#: src/Postimport.php:757 src/Postimport.php:764
+#: src/PostImport.php:759 src/PostImport.php:767
 msgid "Imported from web site"
 msgstr "Web sitesinden içe aktarılan"
 
-#: src/Postimport.php:758 src/Postimport.php:765
+#: src/PostImport.php:760 src/PostImport.php:768
 msgid "With the manufacturersimports plugin"
 msgstr "manufacturersimports eklentisi ile"
 
-#: src/Postimport.php:904
+#: src/PostImport.php:908
 msgid "Connection failed/data download from manufacturer web site"
 msgstr "Bağlantı kesildi / üreticinin sitesinden veri indirilemedi"
-
-#: src/Preimport.php:380
-msgid "The choosen supplier is not recursive"
-msgstr "Seçilmiş sağlayıcı yinelenen türde değil"
-
-#: src/Preimport.php:429
-msgid "Not yet imported"
-msgstr "Henüz içe aktarılmamış"
-
-#: src/Preimport.php:432
-msgid "Problem during the importation"
-msgstr "İçe aktarma sırasında sorun çıktı"
-
-#: src/Preimport.php:440
-msgid "Already imported"
-msgstr "Zaten içe aktarılmış"
-
-#: src/Preimport.php:478
-msgid "Choose inventory type and manufacturer"
-msgstr "Envanter türü ve üreticiyi seçin"
-
-#: src/Preimport.php:522
-msgid "Devices not imported"
-msgstr "Aygıtlar içe aktarılmadı"
-
-#: src/Preimport.php:523
-msgid "Devices already imported"
-msgstr "Aygıtlar zaten içe aktarılmış"
-
-#: src/Preimport.php:529 src/Preimport.php:533
-msgid "No manufacturer available. Please configure at least one manufacturer"
-msgstr ""
-"Kullanılabilecek bir üretici bulunamadı. Lütfen en az bir üretici ekleyin"
-
-#: src/Preimport.php:691
-msgid "Model Number"
-msgstr "Model numarası"
-
-#: src/Preimport.php:699
-msgid "Supplier attached"
-msgstr "Atanmış sağlayıcı"
-
-#: src/Preimport.php:761
-#, php-format
-msgid "Total number of devices to import %s"
-msgstr "İçe aktarılacak toplam aygıt sayısı %s"
-
-#: src/Preimport.php:817
-msgid "No device finded"
-msgstr "Herhangi bir aygıt bulunamadı"
-
-#: src/Preimport.php:1111
-msgid "Reset the import"
-msgstr "İçe aktarmayı sıfırla"
