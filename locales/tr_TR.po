@@ -188,7 +188,7 @@ msgstr "Toplam %s aygıt içe aktarıldı"
 
 #: src/PostImport.php:759 src/PostImport.php:767
 msgid "Imported from web site"
-msgstr "Web sitesinden içe aktarılan"
+msgstr "Siteden içe aktarılan"
 
 #: src/PostImport.php:760 src/PostImport.php:768
 msgid "With the manufacturersimports plugin"
