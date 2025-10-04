@@ -109,7 +109,7 @@ msgstr "Atanmış varsayılan sağlayıcı "
 
 #: src/Config.php:255 src/Config.php:427
 msgid "Auto add of document"
-msgstr "Kendiliğinden belge ekleme"
+msgstr "Otomatik belge ekleme"
 
 #: src/Config.php:272 src/Config.php:442
 msgid "Add a comment line"
