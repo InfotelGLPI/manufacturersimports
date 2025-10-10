@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ManufacturersImports - Accounts plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-02 11:44+0000\n"
+"POT-Creation-Date: 2025-10-10 13:22+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -152,11 +152,11 @@ msgstr ""
 msgid "Warranty import (Dell, HP)"
 msgstr ""
 
-#: src/Import.php:184 src/PostImport.php:779
+#: src/Import.php:184 src/PostImport.php:783
 msgid "Import OK"
 msgstr ""
 
-#: src/Import.php:187 src/PostImport.php:885
+#: src/Import.php:187 src/PostImport.php:889
 msgid "Import failed"
 msgstr ""
 
@@ -181,14 +181,14 @@ msgstr ""
 msgid "Total number of devices imported %s"
 msgstr ""
 
-#: src/PostImport.php:759 src/PostImport.php:767
+#: src/PostImport.php:759 src/PostImport.php:769
 msgid "Imported from web site"
 msgstr ""
 
-#: src/PostImport.php:760 src/PostImport.php:768
+#: src/PostImport.php:760 src/PostImport.php:770
 msgid "With the manufacturersimports plugin"
 msgstr ""
 
-#: src/PostImport.php:908
+#: src/PostImport.php:912
 msgid "Connection failed/data download from manufacturer web site"
 msgstr ""
