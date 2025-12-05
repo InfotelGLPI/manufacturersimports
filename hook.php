@@ -37,7 +37,7 @@ function plugin_manufacturersimports_install()
 {
     global $DB;
 
-    $migration = new Migration("3.0.5");
+    $migration = new Migration("3.0.6");
     $update    = false;
 
     //Root of SQL files for DB installation or upgrade
@@ -110,6 +110,8 @@ function plugin_manufacturersimports_install()
              WHERE `name` ='" . Config::HP . "'";
     $DB->doQuery($query);
 
+
+    $DB->runFile($sql_root . "/update-3.1.2.sql");
 
     $cron = new CronTask;
     if ($cron->getFromDBbyName(Dell::class, 'DataRecoveryDELL')) {
