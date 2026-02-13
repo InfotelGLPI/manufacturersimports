@@ -172,7 +172,7 @@ class Dell extends Manufacturer
             foreach ($info[0]['entitlements'] as $d) {
                 if ($d['endDate']) {
                     $date = new \DateTime($d['endDate']);
-                    if ($max_date == false || $date < $max_date) {
+                    if ($max_date == false || $date > $max_date) {
                         $max_date = $date;
                     }
                 }
@@ -202,7 +202,7 @@ class Dell extends Manufacturer
             foreach ($info[0]['entitlements'] as $k => $d) {
                 if ($d['endDate']) {
                     $date = new \DateTime($d['endDate']);
-                    if ($max_date == false || $date < $max_date) {
+                    if ($max_date == false || $date > $max_date) {
                         $max_date = $date;
                         $i = $k;
                     }
