@@ -753,7 +753,7 @@ class Config extends CommonDBTM
             if (!empty($suppliername) && !empty($item->fields['serial'])) {
                 $NotAlreadyImported = $log->checkIfAlreadyImported($item->getType(), $item->getID());
                 if (!$NotAlreadyImported) {
-                    echo "<div class='alert alert-important alert-warning d-flex'>";
+                    echo "<div class='alert alert-warning d-flex'>";
                     echo __("You did not import the warranty for this item. Do you want to get it back?", "manufacturersimports");
                     $target = Config::getFormUrl(true);
                     echo "&nbsp;";

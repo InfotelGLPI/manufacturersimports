@@ -512,7 +512,7 @@ class PreImport extends CommonDBTM
                 echo __('No manufacturer available. Please configure at least one manufacturer', 'manufacturersimports');
                 echo "</a>";
             } else {
-                echo "<div class='alert alert-important alert-warning d-flex'>";
+                echo "<div class='alert  alert-warning d-flex'>";
                 echo __('No manufacturer available. Please configure at least one manufacturer', 'manufacturersimports');
                 echo "</div>";
             }
