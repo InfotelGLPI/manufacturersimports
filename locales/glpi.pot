@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ManufacturersImports - Accounts plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-01 14:57+0000\n"
+"POT-Creation-Date: 2026-04-01 13:40+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,15 +18,64 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: setup.php:92 front/massiveaction.php:44 src/PreImport.php:66
-#: src/Profile.php:97 src/Menu.php:53
+#: front/config.php:41
+msgid "Please activate the plugin"
+msgstr ""
+
+#: front/massiveaction.php:44 src/Profile.php:97 src/Menu.php:53
+#: src/PreImport.php:66 setup.php:92
 msgid "Suppliers import"
 msgid_plural "Suppliers imports"
 msgstr[0] ""
 msgstr[1] ""
 
-#: front/config.php:41
-msgid "Please activate the plugin"
+#: src/Lenovo.php:59
+msgid "Model number"
+msgstr ""
+
+#: src/PostImport.php:88
+msgid "Curl PHP package not installed"
+msgstr ""
+
+#: src/PostImport.php:249
+msgid "Post import"
+msgstr ""
+
+#: src/PostImport.php:257
+msgid "Result"
+msgstr ""
+
+#: src/PostImport.php:258
+msgid "Details"
+msgstr ""
+
+#: src/PostImport.php:290
+#, php-format
+msgid "Total number of devices imported %s"
+msgstr ""
+
+#: src/PostImport.php:759 src/PostImport.php:769
+msgid "Imported from web site"
+msgstr ""
+
+#: src/PostImport.php:760 src/PostImport.php:770
+msgid "With the manufacturersimports plugin"
+msgstr ""
+
+#: src/PostImport.php:783 src/Import.php:184
+msgid "Import OK"
+msgstr ""
+
+#: src/PostImport.php:889 src/Import.php:187
+msgid "Import failed"
+msgstr ""
+
+#: src/PostImport.php:912
+msgid "Connection failed/data download from manufacturer web site"
+msgstr ""
+
+#: src/Import.php:54
+msgid "Warranty import (Dell, HP)"
 msgstr ""
 
 #: src/PreImport.php:365
@@ -90,10 +139,6 @@ msgstr ""
 msgid "Reset the import"
 msgstr ""
 
-#: src/Manufacturer.php:118
-msgid "Automatic"
-msgstr ""
-
 #: src/Config.php:229 src/Config.php:360
 msgid "Manufacturer web address"
 msgstr ""
@@ -144,51 +189,6 @@ msgid ""
 "You did not import the warranty for this item. Do you want to get it back?"
 msgstr ""
 
-#: src/Lenovo.php:59
-msgid "Model number"
-msgstr ""
-
-#: src/Import.php:54
-msgid "Warranty import (Dell, HP)"
-msgstr ""
-
-#: src/Import.php:184 src/PostImport.php:783
-msgid "Import OK"
-msgstr ""
-
-#: src/Import.php:187 src/PostImport.php:889
-msgid "Import failed"
-msgstr ""
-
-#: src/PostImport.php:88
-msgid "Curl PHP package not installed"
-msgstr ""
-
-#: src/PostImport.php:249
-msgid "Post import"
-msgstr ""
-
-#: src/PostImport.php:257
-msgid "Result"
-msgstr ""
-
-#: src/PostImport.php:258
-msgid "Details"
-msgstr ""
-
-#: src/PostImport.php:290
-#, php-format
-msgid "Total number of devices imported %s"
-msgstr ""
-
-#: src/PostImport.php:759 src/PostImport.php:769
-msgid "Imported from web site"
-msgstr ""
-
-#: src/PostImport.php:760 src/PostImport.php:770
-msgid "With the manufacturersimports plugin"
-msgstr ""
-
-#: src/PostImport.php:912
-msgid "Connection failed/data download from manufacturer web site"
+#: src/Manufacturer.php:118
+msgid "Automatic"
 msgstr ""
