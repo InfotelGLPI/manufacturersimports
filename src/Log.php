@@ -52,21 +52,19 @@ class Log extends CommonDBTM
     {
         global $DB;
 
-        $query = "SELECT * FROM `".$this->getTable()."` " .
-         "WHERE `items_id` = '" . $items_id . "'
-         AND `itemtype` = '" . $itemtype . "' ";
-        if ($result = $DB->doQuery($query)) {
-            if ($DB->numrows($result) != 1) {
-                return false;
-            }
-            $this->fields = $DB->fetchAssoc($result);
-            if (is_array($this->fields) && count($this->fields)) {
-                return true;
-            } else {
-                return false;
-            }
+        $iterator = $DB->request([
+            'FROM'  => $this->getTable(),
+            'WHERE' => [
+                'items_id' => $items_id,
+                'itemtype' => $itemtype,
+            ],
+            'LIMIT' => 1,
+        ]);
+        if (count($iterator) !== 1) {
+            return false;
         }
-        return false;
+        $this->fields = $iterator->current();
+        return is_array($this->fields) && count($this->fields) > 0;
     }
 
    /**
@@ -96,10 +94,7 @@ class Log extends CommonDBTM
         if ($this->getFromDBbyDevice($items_id, $itemtype)) {
             $doc= new Document();
             if ($doc->GetfromDB($this->fields["documents_id"])) {
-                $query ="DELETE
-              FROM `glpi_documents_items`
-              WHERE `documents_id` = '".$this->fields["documents_id"]."';";
-                $DB->doQuery($query);
+                $DB->delete('glpi_documents_items', ['documents_id' => $this->fields["documents_id"]]);
 
                 if (is_file(GLPI_DOC_DIR."/".$doc->fields["filename"])
                   && !is_dir(GLPI_DOC_DIR."/".$doc->fields["filename"])) {

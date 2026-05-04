@@ -823,7 +823,7 @@ class PreImport extends CommonDBTM
             foreach ($actions as $name => $label) {
                 if (!empty($name)) {
                     echo "<input type='submit' name='$name' ";
-                    echo "value=\"" . addslashes($label) . "\" class='submit btn btn-primary'>&nbsp;";
+                    echo "value=\"" . htmlescape($label) . "\" class='submit btn btn-primary'>&nbsp;";
                 }
             }
         }
@@ -842,11 +842,16 @@ class PreImport extends CommonDBTM
      */
     public static function queryImport($p, $config, $toview, $isCron = false)
     {
+        if (!in_array($p['itemtype'], Config::$types, true)) {
+            return '';
+        }
+        $p['manufacturers_id'] = (int) $p['manufacturers_id'];
+
         $dbu = new DbUtils();
 
         $modeltable = $dbu->getTableForItemType($p['itemtype'] . "Model");
         $modelfield = $dbu->getForeignKeyFieldForTable($dbu->getTableForItemType($p['itemtype'] . "Model"));
-        $item       = new $p['itemtype']();
+        $item       = getItemForItemtype($p['itemtype']);
         $itemtable  = $dbu->getTableForItemType($p['itemtype']);
 
         $query = "SELECT `" . $itemtable . "`.`id`,
@@ -1088,7 +1093,7 @@ class PreImport extends CommonDBTM
         $out = "";
         if (is_array($array) && count($array) > 0) {
             foreach ($array as $key => $val) {
-                $out .= "&" . $name . "[$key]=" . urlencode(stripslashes($val));
+                $out .= "&" . $name . "[$key]=" . urlencode($val);
             }
         }
         return $out;

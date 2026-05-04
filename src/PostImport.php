@@ -116,12 +116,7 @@ class PostImport extends CommonDBTM
         curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
 
-        if (preg_match('`^https://`i', $options["url"])) {
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-        }
         curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)");
@@ -448,13 +443,17 @@ class PostImport extends CommonDBTM
           WHERE `" . $itemtable . "`.`manufacturers_id` = `glpi_manufacturers`.`id`
           AND `" . $itemtable . "`.`is_deleted` = '0'
           AND `" . $itemtable . "`.`is_template` = '0'
-          AND `glpi_manufacturers`.`id` = '" . $manufacturerId . "'
+          AND `glpi_manufacturers`.`id` = '" . (int) $manufacturerId . "'
           AND `" . $itemtable . "`.`serial` != ''
-          AND `" . $itemtable . "`.`id` = '" . $ID . "' ";
+          AND `" . $itemtable . "`.`id` = '" . (int) $ID . "' ";
         $query  .= " ORDER BY `" . $itemtable . "`.`name`";
         $result = $DB->doQuery($query);
 
-        $supplierclass = "GlpiPlugin\Manufacturersimports\\".$suppliername;
+        $allowed_suppliers = [Config::DELL, Config::HP, Config::FUJITSU, Config::LENOVO, Config::TOSHIBA, Config::WORTMANN_AG];
+        if (!in_array($suppliername, $allowed_suppliers, true)) {
+            return;
+        }
+        $supplierclass = "GlpiPlugin\Manufacturersimports\\" . $suppliername;
         $token         = $supplierclass::getToken($config);
 
         while ($line = $DB->fetchArray($result)) {
@@ -621,7 +620,7 @@ class PostImport extends CommonDBTM
             $contents = stristr($contents, $field);
         }
 
-        if (!$contents === false) {
+        if ($contents !== false) {
             $maBuyDate    = self::importDate($suppliername, $contents);
             $maDate       = self::importStartDate($suppliername, $contents);
             $maDateFin    = self::importDateFin($suppliername, $contents);
@@ -759,9 +758,6 @@ class PostImport extends CommonDBTM
                                             __('Imported from web site', 'manufacturersimports') . " " . $options["suppliername"] . " " .
                                             __('With the manufacturersimports plugin', 'manufacturersimports') . " (" . Html::convdate($options["date"]) . ")";
             }
-            if (isset($input_infocom["comment"])) {
-                $input_infocom["comment"] = addslashes($input_infocom["comment"]);
-            }
             $infocom = new Infocom();
             $infocom->update($input_infocom);
         } else {
@@ -771,9 +767,6 @@ class PostImport extends CommonDBTM
                                             " (" . Html::convdate($options["date"]) . ")";
             }
             $infocom = new Infocom();
-            if (isset($input_infocom["comment"])) {
-                $input_infocom["comment"] = addslashes($input_infocom["comment"]);
-            }
             $infocom->add($input_infocom);
         }
 
@@ -790,7 +783,7 @@ class PostImport extends CommonDBTM
             echo __('Date of purchase') . ": ";
             echo Html::convdate($buy_date) . "->" . Html::convdate($options["buyDate"]) . "<br>";
             echo __('Start date of warranty') . ": ";
-            echo $warranty_date . "->" . Html::convdate($options["maDate"]) . "<br>";
+            echo htmlescape($warranty_date) . "->" . Html::convdate($options["maDate"]) . "<br>";
             if ($warranty_duration == -1) {
                 $warranty_duration = __('Lifelong');
                 $warranty          = __('Lifelong');
@@ -851,8 +844,7 @@ class PostImport extends CommonDBTM
 
         $input                          = [];
         $input["entities_id"]           = $options["entities_id"];
-        $input["name"]                  =
-           addslashes("infocoms_" . $options["suppliername"] . "_" . $name . "_" . $options["ID"]);
+        $input["name"]                  = "infocoms_" . $options["suppliername"] . "_" . $name . "_" . $options["ID"];
         $input["upload_file"]           = $filename;
         $input["documentcategories_id"] = $options["rubrique"];
         $input["mime"]                  = "text/html";

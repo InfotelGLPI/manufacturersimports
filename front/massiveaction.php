@@ -65,10 +65,11 @@ if (isset($_POST["action"])
                 }
             }
             Session::addMessageAfterRedirect(__('Operation successful'));
-            Html::redirect($_SERVER['HTTP_REFERER'] . "?itemtype=" . $_POST["itemtype"] .
-                "&manufacturers_id=" . $_POST["manufacturers_id"] .
-                "&start=" . $_POST["start"] .
-                "&imported=" . $_POST["imported"]);
+            Html::redirect(PLUGIN_MANUFACTURERSIMPORTS_WEBDIR . "/front/import.php?itemtype=" .
+                urlencode($_POST["itemtype"]) .
+                "&manufacturers_id=" . (int) $_POST["manufacturers_id"] .
+                "&start=" . (int) $_POST["start"] .
+                "&imported=" . (int) $_POST["imported"]);
             break;
     }
 } else {

@@ -125,20 +125,19 @@ class Config extends CommonDBTM
         global $DB;
 
         if ($this->fields["is_recursive"]) {
-            $dbu   = new DbUtils();
-            $query = "DELETE FROM `" . $this->getTable() . "`
-                   WHERE `name` = '" . $this->fields["name"] . "'
-                     AND `id` != '" . $this->fields['id'] . "' "
-                     . $dbu->getEntitiesRestrictRequest(
-                         'AND',
-                         $this->getTable(),
-                         '',
-                         $dbu->getSonsOf(
-                             "glpi_entities",
-                             $this->fields["entities_id"]
-                         )
-                     );
-            $DB->doQuery($query);
+            $dbu      = new DbUtils();
+            $criteria = array_merge(
+                [
+                    'name' => $this->fields["name"],
+                    ['id' => ['<>', (int) $this->fields['id']]],
+                ],
+                $dbu->getEntitiesRestrictCriteria(
+                    $this->getTable(),
+                    '',
+                    $dbu->getSonsOf("glpi_entities", $this->fields["entities_id"])
+                )
+            );
+            $DB->delete($this->getTable(), $criteria);
         }
     }
 
@@ -147,20 +146,19 @@ class Config extends CommonDBTM
         global $DB;
 
         if ($this->fields["is_recursive"]) {
-            $dbu   = new DbUtils();
-            $query = "DELETE FROM `" . $this->getTable() . "`
-                  WHERE `name` = '" . $this->fields["name"] . "'
-                     AND `id` != '" . $this->fields["id"] . "' "
-                     . $dbu->getEntitiesRestrictRequest(
-                         'AND',
-                         $this->getTable(),
-                         '',
-                         $dbu->getSonsOf(
-                             "glpi_entities",
-                             $this->fields["entities_id"]
-                         )
-                     );
-            $DB->doQuery($query);
+            $dbu      = new DbUtils();
+            $criteria = array_merge(
+                [
+                    'name' => $this->fields["name"],
+                    ['id' => ['<>', (int) $this->fields["id"]]],
+                ],
+                $dbu->getEntitiesRestrictCriteria(
+                    $this->getTable(),
+                    '',
+                    $dbu->getSonsOf("glpi_entities", $this->fields["entities_id"])
+                )
+            );
+            $DB->delete($this->getTable(), $criteria);
         }
     }
 
@@ -342,7 +340,7 @@ class Config extends CommonDBTM
         echo "<tr>";
         echo "<td class='tab_bg_2 center'>" . __('Name') . "</td>";
         echo "<td class='tab_bg_2 left'>";
-        echo $this->fields["name"];
+        echo htmlescape($this->fields["name"]);
         echo Html::hidden('name', ['value' => $this->fields["name"]]);
         echo "</td>";
 
@@ -456,6 +454,28 @@ class Config extends CommonDBTM
         return true;
     }
 
+    public function prepareInputForAdd($input)
+    {
+        $allowed = [
+            'id', 'name', 'supplier_url', 'token_url', 'warranty_url',
+            'supplier_key', 'supplier_secret', 'manufacturers_id', 'suppliers_id',
+            'documentcategories_id', 'document_adding', 'comment_adding',
+            'warranty_duration', 'entities_id', 'is_recursive',
+        ];
+        return array_intersect_key($input, array_flip($allowed));
+    }
+
+    public function prepareInputForUpdate($input)
+    {
+        $allowed = [
+            'id', 'name', 'supplier_url', 'token_url', 'warranty_url',
+            'supplier_key', 'supplier_secret', 'manufacturers_id', 'suppliers_id',
+            'documentcategories_id', 'document_adding', 'comment_adding',
+            'warranty_duration', 'entities_id', 'is_recursive',
+        ];
+        return array_intersect_key($input, array_flip($allowed));
+    }
+
     /**
      * For other plugins, add a type to the linkable types
      *
@@ -501,7 +521,10 @@ class Config extends CommonDBTM
 
     public static function checkManufacturerName($itemtype, $items_id)
     {
-        $item = new $itemtype();
+        $item = getItemForItemtype($itemtype);
+        if (!$item) {
+            return false;
+        }
         $name = false;
 
         if ($item->getFromDB($items_id)) {
@@ -520,7 +543,10 @@ class Config extends CommonDBTM
 
     public static function checkManufacturerID($itemtype, $items_id)
     {
-        $item = new $itemtype();
+        $item = getItemForItemtype($itemtype);
+        if (!$item) {
+            return false;
+        }
         $id   = false;
 
         if ($item->getFromDB($items_id)) {
@@ -664,7 +690,10 @@ class Config extends CommonDBTM
 
     public static function retrieveOneWarranty($itemtype, $items_id)
     {
-        $item = new $itemtype();
+        $item = getItemForItemtype($itemtype);
+        if (!$item) {
+            return;
+        }
         if ($item->getFromDB($items_id)) {
             $log = new Log();
             $log->reinitializeImport($itemtype, $items_id);
@@ -700,7 +729,11 @@ class Config extends CommonDBTM
                     "display" => false];
 
 
-                $supplierclass                  = "GlpiPlugin\Manufacturersimports\\".$suppliername;
+                $allowed_suppliers = [self::DELL, self::HP, self::FUJITSU, self::LENOVO, self::TOSHIBA, self::WORTMANN_AG];
+                if (!in_array($suppliername, $allowed_suppliers, true)) {
+                    return;
+                }
+                $supplierclass                  = "GlpiPlugin\Manufacturersimports\\" . $suppliername;
                 $token                          = $supplierclass::getToken($config);
                 $warranty_url                   = $supplierclass::getWarrantyUrl($config, $item->fields['serial']);
                 $options['token']               = $token;

@@ -48,8 +48,6 @@ function plugin_init_manufacturersimports()
 {
     global $PLUGIN_HOOKS, $CFG_GLPI;
 
-    $PLUGIN_HOOKS['csrf_compliant']['manufacturersimports'] = true;
-
     if (Plugin::isPluginActive('manufacturersimports')
         && Session::getLoginUserID()) {
         Plugin::registerClass(
@@ -59,21 +57,21 @@ function plugin_init_manufacturersimports()
 
         //Display menu entry only if user has right to see it !
         if (Session::haveRight('plugin_manufacturersimports', READ)) {
-            $PLUGIN_HOOKS["menu_toadd"]['manufacturersimports']
+            $PLUGIN_HOOKS[Hooks::MENU_TOADD]['manufacturersimports']
                = ['tools' => Menu::class];
         }
 
         if (Session::haveRight('config', UPDATE)) {
-            $PLUGIN_HOOKS['config_page']['manufacturersimports'] = 'front/config.php';
-            $PLUGIN_HOOKS['use_massive_action']['manufacturersimports'] = 1;
+            $PLUGIN_HOOKS[Hooks::CONFIG_PAGE]['manufacturersimports'] = 'front/config.php';
+            $PLUGIN_HOOKS[Hooks::USE_MASSIVE_ACTION]['manufacturersimports'] = 1;
         }
 
         // End init, when all types are registered
-        $PLUGIN_HOOKS['post_init']['manufacturersimports']
+        $PLUGIN_HOOKS[Hooks::POST_INIT]['manufacturersimports']
            = 'plugin_manufacturersimports_postinit';
 
-        $PLUGIN_HOOKS['infocom']['manufacturersimports']       = [Config::class, 'showForInfocom'];
-        $PLUGIN_HOOKS['pre_show_item']['manufacturersimports'] = [Config::class, 'showItemImport'];
+        $PLUGIN_HOOKS[Hooks::INFOCOM]['manufacturersimports']       = [Config::class, 'showForInfocom'];
+        $PLUGIN_HOOKS[Hooks::PRE_SHOW_ITEM]['manufacturersimports'] = [Config::class, 'showItemImport'];
     }
 
     if (isset($_SESSION['glpiactiveprofile']['interface'])

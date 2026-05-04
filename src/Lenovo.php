@@ -36,8 +36,6 @@ if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access directly to this file");
 }
 
-ini_set("max_execution_time", "0");
-
 /**
  * Class Lenovo
  */

@@ -37,7 +37,7 @@ function plugin_manufacturersimports_install()
 {
     global $DB;
 
-    $migration = new Migration("3.0.6");
+    $migration = new Migration(PLUGIN_MANUFACTURERSIMPORTS_VERSION);
     $update    = false;
 
     //Root of SQL files for DB installation or upgrade
@@ -81,34 +81,29 @@ function plugin_manufacturersimports_install()
         $DB->runFile($sql_root . "/update-3.0.6.sql");
     }
 
-    $query = "UPDATE `glpi_plugin_manufacturersimports_configs`
-             SET `Supplier_url` = 'https://www.dell.com/support/home/product-support/servicetag/',
-                 `warranty_url` ='https://apigtwb2c.us.dell.com/PROD/sbil/eapi/v5/asset-entitlements?servicetags=',
-                 `token_url`    = 'https://apigtwb2c.us.dell.com/auth/oauth/v2/token'
-             WHERE `name` ='" . Config::DELL . "'";
-    $DB->doQuery($query);
+    $DB->update('glpi_plugin_manufacturersimports_configs', [
+        'Supplier_url' => 'https://www.dell.com/support/home/product-support/servicetag/',
+        'warranty_url' => 'https://apigtwb2c.us.dell.com/PROD/sbil/eapi/v5/asset-entitlements?servicetags=',
+        'token_url'    => 'https://apigtwb2c.us.dell.com/auth/oauth/v2/token',
+    ], ['name' => Config::DELL]);
 
-    $query = "UPDATE `glpi_plugin_manufacturersimports_configs`
-             SET `Supplier_url` = 'https://www.lenovo.com/us/en/warrantyApos?serialNumber='
-             WHERE `name` ='" . Config::LENOVO . "'";
-    $DB->doQuery($query);
+    $DB->update('glpi_plugin_manufacturersimports_configs', [
+        'Supplier_url' => 'https://www.lenovo.com/us/en/warrantyApos?serialNumber=',
+    ], ['name' => Config::LENOVO]);
 
-    $query = "UPDATE `glpi_plugin_manufacturersimports_configs`
-             SET `Supplier_url` = 'http://support.ts.fujitsu.com/Warranty/WarrantyStatus.asp?lng=com&IDNR'
-             WHERE `name` ='" . Config::FUJITSU . "'";
-    $DB->doQuery($query);
+    $DB->update('glpi_plugin_manufacturersimports_configs', [
+        'Supplier_url' => 'http://support.ts.fujitsu.com/Warranty/WarrantyStatus.asp?lng=com&IDNR',
+    ], ['name' => Config::FUJITSU]);
 
-    $query = "UPDATE `glpi_plugin_manufacturersimports_configs`
-             SET `Supplier_url` = 'https://www.wortmann.de/fr-fr/profile/snsearch.aspx?SN='
-             WHERE `name` ='" . Config::WORTMANN_AG . "'";
-    $DB->doQuery($query);
+    $DB->update('glpi_plugin_manufacturersimports_configs', [
+        'Supplier_url' => 'https://www.wortmann.de/fr-fr/profile/snsearch.aspx?SN=',
+    ], ['name' => Config::WORTMANN_AG]);
 
-    $query = "UPDATE `glpi_plugin_manufacturersimports_configs`
-             SET `Supplier_url` = 'https://support.hp.com/fr-fr/check-warranty/',
-                 `warranty_url` ='https://warranty.api.hp.com/productwarranty/v2/queries',
-                 `token_url`    = 'https://warranty.api.hp.com/oauth/v1/token'
-             WHERE `name` ='" . Config::HP . "'";
-    $DB->doQuery($query);
+    $DB->update('glpi_plugin_manufacturersimports_configs', [
+        'Supplier_url' => 'https://support.hp.com/fr-fr/check-warranty/',
+        'warranty_url' => 'https://warranty.api.hp.com/productwarranty/v2/queries',
+        'token_url'    => 'https://warranty.api.hp.com/oauth/v1/token',
+    ], ['name' => Config::HP]);
 
 
     $DB->runFile($sql_root . "/update-3.1.2.sql");
@@ -126,10 +121,11 @@ function plugin_manufacturersimports_install()
 
     if ($update) {
         foreach ($DB->request('glpi_plugin_manufacturersimports_profiles') as $data) {
-            $query = "UPDATE `glpi_plugin_manufacturersimports_profiles`
-                   SET `profiles_id` = '" . $data["id"] . "'
-                   WHERE `id` = '" . $data["id"] . "';";
-            $DB->doQuery($query);
+            $DB->update(
+                'glpi_plugin_manufacturersimports_profiles',
+                ['profiles_id' => (int) $data["id"]],
+                ['id' => (int) $data["id"]]
+            );
         }
 
         $migration->dropField('glpi_plugin_manufacturersimports_profiles', 'name');
@@ -147,7 +143,7 @@ function plugin_manufacturersimports_install()
 function plugin_manufacturersimports_uninstall()
 {
 
-    $migration = new Migration("3.0.6");
+    $migration = new Migration(PLUGIN_MANUFACTURERSIMPORTS_VERSION);
     $tables    = ["glpi_plugin_manufacturersimports_configs",
                        "glpi_plugin_manufacturersimports_logs"];
     foreach ($tables as $table) {

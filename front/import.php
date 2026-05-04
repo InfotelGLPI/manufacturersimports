@@ -31,6 +31,11 @@ use Glpi\Exception\Http\AccessDeniedHttpException;
 use GlpiPlugin\Manufacturersimports\Menu;
 use GlpiPlugin\Manufacturersimports\PreImport;
 
+$preimport = new PreImport();
+if (!$preimport->canView() && !Session::haveRight("config", UPDATE)) {
+    throw new AccessDeniedHttpException();
+}
+
 Html::header(
     PreImport::getTypeName(),
     '',
@@ -38,7 +43,6 @@ Html::header(
     Menu::class
 );
 
-$preimport = new PreImport();
 if ($preimport->canView() || Session::haveRight("config", UPDATE)) {
     $values = $_GET;
     if (isset($_POST["typechoice"])) {

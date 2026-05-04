@@ -148,11 +148,11 @@ class Profile extends \Profile
             $matching       = ['manufacturersimports' => 'plugin_manufacturersimports'];
             $current_rights = ProfileRight::getProfileRights($profiles_id, array_values($matching));
             if (!isset($current_rights['plugin_manufacturersimports'])) {
-                $query = "UPDATE `glpi_profilerights`
-                      SET `rights`='" . self::translateARight($profile_data['plugin_manufacturersimports']) . "'
-                      WHERE `name`='plugin_manufacturersimports'
-                        AND `profiles_id`='$profiles_id'";
-                $DB->doQuery($query);
+                $DB->update(
+                    'glpi_profilerights',
+                    ['rights' => self::translateARight($profile_data['plugin_manufacturersimports'])],
+                    ['name' => 'plugin_manufacturersimports', 'profiles_id' => $profiles_id]
+                );
             }
         }
     }
