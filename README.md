@@ -51,7 +51,7 @@ Url du fabricant : https://supportapi.lenovo.com/v2.5/warranty
 > * Pour Toshiba
 
 URL dans le plugin :
-Url du fabricant : http://aps2.toshiba-tro.de/unit-details-php/unitdetails.aspx?
+Url du fabricant : https://support.dynabook.com/support/warrantyResults?
 
 
 > * Pour Fujitsu

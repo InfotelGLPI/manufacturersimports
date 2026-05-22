@@ -1,0 +1,7 @@
+{
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "autoloader-suffix": "GlpiPluginManufacturersimports"
+    }
+}

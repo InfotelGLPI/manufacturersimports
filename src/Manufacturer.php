@@ -199,4 +199,13 @@ class Manufacturer extends CommonDBTM
     {
         return false;
     }
+
+    /**
+     * Returns the config form field name whose value should be used as the connectivity test URL.
+     * Override in subclasses that use a different field (e.g. token_url for OAuth suppliers).
+     */
+    public function getTestUrlField(): string
+    {
+        return 'supplier_url';
+    }
 }

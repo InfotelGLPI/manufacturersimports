@@ -1,0 +1,13 @@
+<phpunit bootstrap="tests/bootstrap.php" colors="true" testdox="true">
+   <testsuites>
+      <testsuite name="Unit">
+         <file>tests/ConfigTest.php</file>
+         <file>tests/DellTest.php</file>
+         <file>tests/HPTest.php</file>
+         <file>tests/PreImportTest.php</file>
+         <file>tests/LenovoTest.php</file>
+         <file>tests/ToshibaTest.php</file>
+         <file>tests/WortmannTest.php</file>
+      </testsuite>
+   </testsuites>
+</phpunit>

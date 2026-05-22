@@ -1,4 +1,5 @@
 <?php
+
 /*
  * @version $Id: HEADER 15930 2011-10-30 15:47:55Z tsmr $
  -------------------------------------------------------------------------
@@ -91,8 +92,7 @@ class Dell extends Manufacturer
         $key = null,
         $apisecret = null,
         $supplierUrl = null
-    )
-    {
+    ) {
         if (!$compSerial) {
             // by default
             $info["name"]            = Config::DELL;
@@ -114,6 +114,11 @@ class Dell extends Manufacturer
     public function getSearchField()
     {
         return false;
+    }
+
+    public function getTestUrlField(): string
+    {
+        return 'token_url';
     }
 
     /**
@@ -170,7 +175,7 @@ class Dell extends Manufacturer
             foreach ($info[0]['entitlements'] as $d) {
                 if ($d['endDate']) {
                     $date = new \DateTime($d['endDate']);
-                    if ($max_date == false || $date < $max_date) {
+                    if ($max_date == false || $date > $max_date) {
                         $max_date = $date;
                     }
                 }
@@ -200,7 +205,7 @@ class Dell extends Manufacturer
             foreach ($info[0]['entitlements'] as $k => $d) {
                 if ($d['endDate']) {
                     $date = new \DateTime($d['endDate']);
-                    if ($max_date == false || $date < $max_date) {
+                    if ($max_date == false || $date > $max_date) {
                         $max_date = $date;
                         $i = $k;
                     }
@@ -227,12 +232,12 @@ class Dell extends Manufacturer
         $token = false;
         // must manage token
         $options  = ["url"          => $config->fields["token_url"],
-                     "download"     => false,
-                     "file"         => false,
-                     "post"         => ['client_id'     => $config->fields["supplier_key"],
-                                        'client_secret' => $config->fields["supplier_secret"],
-                                        'grant_type'    => 'client_credentials'],
-                     "suppliername" => $config->fields["name"]];
+            "download"     => false,
+            "file"         => false,
+            "post"         => ['client_id'     => $config->fields["supplier_key"],
+                'client_secret' => $config->fields["supplier_secret"],
+                'grant_type'    => 'client_credentials'],
+            "suppliername" => $config->fields["name"]];
         $contents = PostImport::cURLData($options);
         // must extract from $contents the token bearer
         $response = json_decode($contents, true);

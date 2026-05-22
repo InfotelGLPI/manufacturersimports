@@ -410,7 +410,16 @@ class Config extends CommonDBTM
             echo "<tr>";
             echo "<td class='tab_bg_2 center' colspan='2'>" . __('Client secret', 'manufacturersimports') . "</td>";
             echo "<td class='tab_bg_2 left' colspan='2'>";
-            echo Html::input('supplier_secret', ['value' => $this->fields["supplier_secret"], 'size' => 75]);
+            $rand_secret = mt_rand();
+            echo "<div class='input-group'>";
+            echo Html::input('supplier_secret', ['id' => "supplier_secret_$rand_secret", 'value' => $this->fields["supplier_secret"], 'type' => 'password', 'autocomplete' => 'new-password', 'class' => 'form-control']);
+            echo "<button type='button' class='btn btn-outline-secondary'
+                onclick=\"var f=document.getElementById('supplier_secret_$rand_secret'),i=this.querySelector('i');
+                         if(f.type==='password'){f.type='text';i.classList.replace('ti-eye','ti-eye-off');}
+                         else{f.type='password';i.classList.replace('ti-eye-off','ti-eye');}\">";
+            echo "<i class='ti ti-eye'></i>";
+            echo "</button>";
+            echo "</div>";
             echo "</td>";
             echo "</tr>";
         } elseif ($this->fields["name"] == self::LENOVO) {
@@ -435,6 +444,80 @@ class Config extends CommonDBTM
                 'value' => $this->fields["documentcategories_id"]]);
             echo "</td>";
             echo "</tr>";
+        }
+
+        // Generic connectivity test button — each manufacturer class declares which field to use.
+        $supplier_name  = $this->fields["name"] ?? '';
+        $supplier_class = "GlpiPlugin\\Manufacturersimports\\" . $supplier_name;
+        if ($supplier_name !== '' && class_exists($supplier_class)) {
+            $supplier_obj = new $supplier_class();
+            $test_field   = $supplier_obj->getTestUrlField();
+            $is_api_test  = ($test_field === 'token_url');
+            $test_label   = $is_api_test
+                ? __('Test connection', 'manufacturersimports')
+                : __('Test warranty page', 'manufacturersimports');
+            $test_icon    = $is_api_test ? 'ti-plug-connected' : 'ti-world-www';
+            $row_label    = $is_api_test
+                ? __('API connection test', 'manufacturersimports')
+                : __('Warranty page test', 'manufacturersimports');
+            $base_url     = htmlspecialchars($this->fields[$test_field] ?? '', ENT_QUOTES);
+            $action_url   = self::getFormURL(true);
+            $rand_test    = mt_rand();
+
+            echo "<tr>";
+            echo "<td class='tab_bg_2 center' colspan='2'>" . $row_label . "</td>";
+            echo "<td class='tab_bg_2 left' colspan='2'>";
+            echo "<button type='button' class='btn btn-info' id='test_btn_$rand_test'>";
+            echo "<i class='ti $test_icon me-1'></i>" . $test_label;
+            echo "</button>";
+            echo "<span id='test_result_$rand_test' class='ms-3'></span>";
+            echo "</td>";
+            echo "</tr>";
+            $test_mode    = $is_api_test ? 'oauth' : 'head';
+            $oauth_params = $is_api_test
+                ? "params.supplier_key    = document.querySelector('input[name=\"supplier_key\"]')?.value ?? '';
+                    params.supplier_secret = document.querySelector('input[name=\"supplier_secret\"]')?.value ?? '';"
+                : '';
+            echo Html::scriptBlock("
+                document.getElementById('test_btn_{$rand_test}').addEventListener('click', function () {
+                    var btn    = this;
+                    var result = document.getElementById('test_result_{$rand_test}');
+                    var csrf   = document.querySelector('[name=_glpi_csrf_token]')?.value ?? '';
+                    var url    = document.querySelector('input[name=\"{$test_field}\"]')?.value || '{$base_url}';
+                    var params = {
+                        test_connection: 1,
+                        token_url:       url,
+                        test_mode:       '{$test_mode}'
+                    };
+                    {$oauth_params}
+                    btn.disabled = true;
+                    result.innerHTML = '<i class=\"ti ti-loader-2 ti-spin\"></i>';
+                    fetch('{$action_url}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type':     'application/x-www-form-urlencoded',
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'X-Glpi-Csrf-Token': csrf
+                        },
+                        body: new URLSearchParams(params)
+                    })
+                    .then(function (r) { return r.text(); })
+                    .then(function (text) {
+                        var d;
+                        try { d = JSON.parse(text); } catch (e) {
+                            result.innerHTML = '<span class=\"text-danger\"><i class=\"ti ti-circle-x me-1\"></i>' + text.substring(0, 200) + '</span>';
+                            return;
+                        }
+                        result.innerHTML = d.success
+                            ? '<span class=\"text-success\"><i class=\"ti ti-circle-check me-1\"></i>' + d.message + '</span>'
+                            : '<span class=\"text-danger\"><i class=\"ti ti-circle-x me-1\"></i>' + d.message + '</span>';
+                    })
+                    .catch(function (e) {
+                        result.innerHTML = '<span class=\"text-danger\"><i class=\"ti ti-circle-x me-1\"></i>' + e.message + '</span>';
+                    })
+                    .finally(function () { btn.disabled = false; });
+                });
+            ");
         }
         echo "<tr>";
         echo "<td class='tab_bg_2 center' colspan='2'>" . __('Add a comment line', 'manufacturersimports') . "</td>";
@@ -462,7 +545,16 @@ class Config extends CommonDBTM
             'documentcategories_id', 'document_adding', 'comment_adding',
             'warranty_duration', 'entities_id', 'is_recursive',
         ];
-        return array_intersect_key($input, array_flip($allowed));
+        $input = array_intersect_key($input, array_flip($allowed));
+
+        $input += [
+            'supplier_key'    => '',
+            'supplier_secret' => '',
+            'token_url'       => '',
+            'warranty_url'    => '',
+        ];
+
+        return $input;
     }
 
     public function prepareInputForUpdate($input)

@@ -53,6 +53,10 @@ class HP extends Manufacturer
         return false;
     }
 
+    public function getTestUrlField(): string
+    {
+        return 'token_url';
+    }
 
     public function getSupplierInfo(
         $compSerial = null,
