@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ManufacturersImports - Accounts plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-13 16:50+0000\n"
+"POT-Creation-Date: 2026-05-22 15:59+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,13 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: src/Profile.php:97 src/PreImport.php:66 src/Menu.php:53 setup.php:90
+#: front/massiveaction.php:44
+msgid "Suppliers import"
+msgid_plural "Suppliers imports"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/Import.php:54
 msgid "Warranty import (Dell, HP)"
@@ -30,16 +37,81 @@ msgstr ""
 msgid "Import failed"
 msgstr ""
 
+#: src/Lenovo.php:57
+msgid "Model number"
+msgstr ""
+
+#: src/Manufacturer.php:118
+msgid "Automatic"
+msgstr ""
+
+#: src/PreImport.php:365
+msgid "The choosen supplier is not recursive"
+msgstr ""
+
+#: src/PreImport.php:394 src/PreImport.php:407 src/Config.php:673
+msgid "Manufacturer information"
+msgstr ""
+
+#: src/PreImport.php:414
+msgid "Not yet imported"
+msgstr ""
+
+#: src/PreImport.php:417
+msgid "Problem during the importation"
+msgstr ""
+
+#: src/PreImport.php:425
+msgid "Already imported"
+msgstr ""
+
+#: src/PreImport.php:461
+msgid "Choose inventory type and manufacturer"
+msgstr ""
+
+#: src/PreImport.php:505
+msgid "Devices not imported"
+msgstr ""
+
+#: src/PreImport.php:506
+msgid "Devices already imported"
+msgstr ""
+
+#: src/PreImport.php:512 src/PreImport.php:516
+msgid "No manufacturer available. Please configure at least one manufacturer"
+msgstr ""
+
+#: src/PreImport.php:646
+msgid "Model Number"
+msgstr ""
+
+#: src/PreImport.php:654
+msgid "Supplier attached"
+msgstr ""
+
+#: src/PreImport.php:659 src/Config.php:244
+msgid "New warranty attached"
+msgstr ""
+
+#: src/PreImport.php:716
+#, php-format
+msgid "Total number of devices to import %s"
+msgstr ""
+
+#: src/PreImport.php:772
+msgid "No device finded"
+msgstr ""
+
+#: src/PreImport.php:1063
+msgid "Reset the import"
+msgstr ""
+
 #: src/Config.php:227 src/Config.php:358
 msgid "Manufacturer web address"
 msgstr ""
 
 #: src/Config.php:236 src/Config.php:380
 msgid "Default supplier attached"
-msgstr ""
-
-#: src/Config.php:244 src/PreImport.php:659
-msgid "New warranty attached"
 msgstr ""
 
 #: src/Config.php:253 src/Config.php:425
@@ -72,10 +144,6 @@ msgstr ""
 
 #: src/Config.php:432
 msgid "Section for document records"
-msgstr ""
-
-#: src/Config.php:673 src/PreImport.php:394 src/PreImport.php:407
-msgid "Manufacturer information"
 msgstr ""
 
 #: src/Config.php:680 src/Config.php:796
@@ -119,74 +187,6 @@ msgstr ""
 
 #: src/PostImport.php:904
 msgid "Connection failed/data download from manufacturer web site"
-msgstr ""
-
-#: src/PreImport.php:66 src/Profile.php:97 src/Menu.php:53 setup.php:90
-#: front/massiveaction.php:44
-msgid "Suppliers import"
-msgid_plural "Suppliers imports"
-msgstr[0] ""
-msgstr[1] ""
-
-#: src/PreImport.php:365
-msgid "The choosen supplier is not recursive"
-msgstr ""
-
-#: src/PreImport.php:414
-msgid "Not yet imported"
-msgstr ""
-
-#: src/PreImport.php:417
-msgid "Problem during the importation"
-msgstr ""
-
-#: src/PreImport.php:425
-msgid "Already imported"
-msgstr ""
-
-#: src/PreImport.php:461
-msgid "Choose inventory type and manufacturer"
-msgstr ""
-
-#: src/PreImport.php:505
-msgid "Devices not imported"
-msgstr ""
-
-#: src/PreImport.php:506
-msgid "Devices already imported"
-msgstr ""
-
-#: src/PreImport.php:512 src/PreImport.php:516
-msgid "No manufacturer available. Please configure at least one manufacturer"
-msgstr ""
-
-#: src/PreImport.php:646
-msgid "Model Number"
-msgstr ""
-
-#: src/PreImport.php:654
-msgid "Supplier attached"
-msgstr ""
-
-#: src/PreImport.php:716
-#, php-format
-msgid "Total number of devices to import %s"
-msgstr ""
-
-#: src/PreImport.php:772
-msgid "No device finded"
-msgstr ""
-
-#: src/PreImport.php:1063
-msgid "Reset the import"
-msgstr ""
-
-#: src/Lenovo.php:57
-msgid "Model number"
-msgstr ""
-
-#: src/Manufacturer.php:118
-msgid "Automatic"
 msgstr ""
 
 #: front/config.php:41
