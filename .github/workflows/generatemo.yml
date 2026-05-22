@@ -1,4 +1,6 @@
 name: Generate MO
+permissions:
+  contents: write
 on:
   push:
     branches: [ master ]

@@ -6,6 +6,8 @@ on:
       - '*.*.*' # Push events to matching ex:20.15.10
 
 name: Create release with tag
+permissions:
+  contents: write
 env:
   TAG_VALUE: ${GITHUB_REF/refs\/tags\//}
 jobs:

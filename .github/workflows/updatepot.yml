@@ -1,4 +1,6 @@
 name: Update POT
+permissions:
+  contents: write
 on:
   push:
     branches: [ master ]
