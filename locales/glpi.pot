@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ManufacturersImports - Accounts plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-22 16:02+0000\n"
+"POT-Creation-Date: 2026-05-22 17:20+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -49,7 +49,7 @@ msgstr ""
 msgid "The choosen supplier is not recursive"
 msgstr ""
 
-#: src/PreImport.php:394 src/PreImport.php:407 src/Config.php:673
+#: src/PreImport.php:394 src/PreImport.php:407 src/Config.php:765
 msgid "Manufacturer information"
 msgstr ""
 
@@ -114,11 +114,11 @@ msgstr ""
 msgid "Default supplier attached"
 msgstr ""
 
-#: src/Config.php:253 src/Config.php:425
+#: src/Config.php:253 src/Config.php:434
 msgid "Auto add of document"
 msgstr ""
 
-#: src/Config.php:270 src/Config.php:440
+#: src/Config.php:270 src/Config.php:523
 msgid "Add a comment line"
 msgstr ""
 
@@ -134,7 +134,7 @@ msgstr ""
 msgid "New warranty affected by default (Replace if 0)"
 msgstr ""
 
-#: src/Config.php:405 src/Config.php:418
+#: src/Config.php:405 src/Config.php:427
 msgid "Client id"
 msgstr ""
 
@@ -142,21 +142,37 @@ msgstr ""
 msgid "Client secret"
 msgstr ""
 
-#: src/Config.php:432
+#: src/Config.php:441
 msgid "Section for document records"
 msgstr ""
 
-#: src/Config.php:680 src/Config.php:796
+#: src/Config.php:457
+msgid "Test connection"
+msgstr ""
+
+#: src/Config.php:458
+msgid "Test warranty page"
+msgstr ""
+
+#: src/Config.php:461
+msgid "API connection test"
+msgstr ""
+
+#: src/Config.php:462
+msgid "Warranty page test"
+msgstr ""
+
+#: src/Config.php:772 src/Config.php:888
 msgctxt "button"
 msgid "Retrieve warranty from manufacturer"
 msgstr ""
 
-#: src/Config.php:790
+#: src/Config.php:882
 msgid ""
 "You did not import the warranty for this item. Do you want to get it back?"
 msgstr ""
 
-#: src/PostImport.php:88
+#: src/PostImport.php:88 ajax/testConnection.php:32 front/config.form.php:78
 msgid "Curl PHP package not installed"
 msgstr ""
 
@@ -187,6 +203,27 @@ msgstr ""
 
 #: src/PostImport.php:904
 msgid "Connection failed/data download from manufacturer web site"
+msgstr ""
+
+#: ajax/testConnection.php:24 front/config.form.php:74
+msgid "Token URL is empty"
+msgstr ""
+
+#: ajax/testConnection.php:68 front/config.form.php:146
+#, php-format
+msgid "Server reachable (HTTP %d)"
+msgstr ""
+
+#: front/config.form.php:116
+msgid "Authentication successful (token received)"
+msgstr ""
+
+#: front/config.form.php:118
+msgid "No access token in response"
+msgstr ""
+
+#: front/config.form.php:143
+msgid "No response from server"
 msgstr ""
 
 #: front/config.php:41
