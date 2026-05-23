@@ -114,7 +114,7 @@ msgstr "Importation des objets %1$d à%2$d"
 #: templates/massive_import_progress.html.twig:33
 #, php-format
 msgid "Importing from %s"
-msgstr "Importé depuis le site de %s"
+msgstr "Importation depuis %s"
 
 #: templates/config_form.html.twig:68
 msgid "Manufacturer"
