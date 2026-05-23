@@ -31,6 +31,7 @@
 use GlpiPlugin\Manufacturersimports\Config;
 use GlpiPlugin\Manufacturersimports\PostImport;
 use Glpi\Progress\ProgressStorage;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 if (!defined('GLPI_ROOT')) {
     die("Can not access directly to this file");
@@ -50,34 +51,39 @@ if (
 }
 
 Toolbox::safeIniSet('max_execution_time', '300');
+session_write_close();
 
 $storage  = new ProgressStorage();
 $progress = $storage->spawnProgressIndicator();
-$key      = $progress->getStorageKey();
 
-header('Content-Type: text/html; charset=UTF-8');
-header('Content-Length: ' . strlen($key));
-header('Connection: close');
-header('Cache-Control: no-cache, no-store');
+return new StreamedResponse(
+    function () use ($progress) {
+        while (ob_get_level() > 0) {
+            ob_end_clean();
+        }
 
-while (ob_get_level() > 0) {
-    ob_end_clean();
-}
+        echo $progress->getStorageKey();
+        flush();
 
-echo $key;
-flush();
+        if (function_exists('fastcgi_finish_request')) {
+            fastcgi_finish_request();
+        }
 
-if (function_exists('fastcgi_finish_request')) {
-    fastcgi_finish_request();
-}
+        ignore_user_abort(true);
 
-session_write_close();
-ignore_user_abort(true);
-
-try {
-    PostImport::massiveimportWithProgress($_POST, $progress);
-    $progress->finish();
-} catch (\Throwable $e) {
-    Toolbox::logError($e->getMessage());
-    $progress->fail();
-}
+        try {
+            PostImport::massiveimportWithProgress($_POST, $progress);
+            $progress->finish();
+        } catch (Throwable $e) {
+            Toolbox::logInfo($e->getMessage());
+            $progress->fail();
+        }
+    },
+    headers: [
+        'Content-Type'   => 'text/html',
+        'Content-Length' => strlen($progress->getStorageKey()),
+        'Cache-Control'  => 'no-cache,no-store',
+        'Pragma'         => 'no-cache',
+        'Connection'     => 'close',
+    ]
+);

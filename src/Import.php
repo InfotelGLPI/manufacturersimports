@@ -84,8 +84,6 @@ class Import extends CommonDBTM
      */
     public static function importCron($task, $supplier)
     {
-        global $DB;
-
         $config = new Config();
         $config->getFromDBByCrit(['name' => $supplier]);
 
@@ -111,13 +109,10 @@ class Import extends CommonDBTM
         //      foreach ($types as $type) {
         $type               = "Computer";
         $params['itemtype'] = $type;
-        $query              = PreImport::queryImport($params, $config, $toview, true);
+        $iterator = PreImport::queryImport($params, $config, $toview, true);
 
-        $result = $DB->doQuery($query);
-
-        if ($DB->numrows($result) > 0) {
-            while ($data = $DB->fetchArray($result)) {
-                $log->reinitializeImport($type, $data['id']);
+        foreach ($iterator as $data) {
+            $log->reinitializeImport($type, $data['id']);
 
                 $compSerial = $data['serial'];
                 $ID         = $data['id'];
@@ -176,7 +171,6 @@ class Import extends CommonDBTM
                         $nb_import_error += 1;
                     }
                 }
-            }
         }
 
         //      }

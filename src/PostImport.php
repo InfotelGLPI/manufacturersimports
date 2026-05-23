@@ -32,15 +32,16 @@ namespace GlpiPlugin\Manufacturersimports;
 
 use CommonDBTM;
 use DbUtils;
-use Document;
-use Document_Item;
-use Dropdown;
 use Glpi\Application\View\TemplateRenderer;
+use Glpi\DBAL\QueryExpression;
 use Glpi\Message\MessageType;
 use Glpi\Progress\StoredProgressIndicator;
 use GLPIKey;
 use Html;
 use Infocom;
+use Document;
+use Document_Item;
+use Dropdown;
 use Session;
 use Toolbox;
 
@@ -336,21 +337,29 @@ class PostImport extends CommonDBTM
         $itemtable  = $dbu->getTableForItemType($type);
         $modelfield = $dbu->getForeignKeyFieldForTable($dbu->getTableForItemType($type . 'Model'));
 
-        $query = "SELECT `{$itemtable}`.`id`,
-                         `{$itemtable}`.`name`,
-                         `{$itemtable}`.`entities_id`,
-                         `{$itemtable}`.`serial`,
-                         `{$itemtable}`.`{$modelfield}`
-                  FROM `{$itemtable}`, `glpi_manufacturers`
-                  WHERE `{$itemtable}`.`manufacturers_id` = `glpi_manufacturers`.`id`
-                  AND `{$itemtable}`.`is_deleted` = '0'
-                  AND `{$itemtable}`.`is_template` = '0'
-                  AND `glpi_manufacturers`.`id` = '" . (int) $manufacturerId . "'
-                  AND `{$itemtable}`.`serial` != ''
-                  AND `{$itemtable}`.`id` = '" . (int) $ID . "'
-                  ORDER BY `{$itemtable}`.`name`";
-
-        $result_db = $DB->doQuery($query);
+        $iterator = $DB->request([
+            'SELECT'     => [
+                "$itemtable.id",
+                "$itemtable.name",
+                "$itemtable.entities_id",
+                "$itemtable.serial",
+                "$itemtable.$modelfield",
+            ],
+            'FROM'       => $itemtable,
+            'INNER JOIN' => [
+                'glpi_manufacturers' => [
+                    'ON' => ['glpi_manufacturers' => 'id', $itemtable => 'manufacturers_id'],
+                ],
+            ],
+            'WHERE'      => [
+                "$itemtable.is_deleted"  => 0,
+                "$itemtable.is_template" => 0,
+                'glpi_manufacturers.id'  => (int) $manufacturerId,
+                ["$itemtable.serial"     => ['!=', '']],
+                "$itemtable.id"          => (int) $ID,
+            ],
+            'ORDER'      => new QueryExpression("`$itemtable`.`name`"),
+        ]);
 
         $allowed_suppliers = [
             Config::DELL, Config::HP, Config::FUJITSU,
@@ -365,7 +374,7 @@ class PostImport extends CommonDBTM
 
         $result = ['name' => "#{$ID}", 'serial' => '', 'success' => false];
 
-        while ($line = $DB->fetchArray($result_db)) {
+        foreach ($iterator as $line) {
             $dID = ($_SESSION['glpiis_ids_visible'] || empty($line['name']))
                 ? ' (' . $line['id'] . ')' : '';
             $result['name']   = htmlescape($line['name']) . $dID;
@@ -870,14 +879,14 @@ class PostImport extends CommonDBTM
 
             if ($options["addcomments"]) {
                 $input_infocom["comment"] = $ic_comment . "\n"
-                                            . __('Imported from web site', 'manufacturersimports') . " " . $options["suppliername"] . " "
+                                            . __('Imported from', 'manufacturersimports') . " " . $options["suppliername"] . " "
                                             . __('With the manufacturersimports plugin', 'manufacturersimports') . " (" . Html::convdate($options["date"]) . ")";
             }
             $infocom = new Infocom();
             $infocom->update($input_infocom);
         } else {
             if ($options["addcomments"]) {
-                $input_infocom["comment"] = __('Imported from web site', 'manufacturersimports')
+                $input_infocom["comment"] = __('Imported from', 'manufacturersimports')
                                             . " " . $options["suppliername"] . " " . __('With the manufacturersimports plugin', 'manufacturersimports')
                                             . " (" . Html::convdate($options["date"]) . ")";
             }
