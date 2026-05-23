@@ -104,7 +104,7 @@ msgstr "Import en cours"
 
 #: src/PostImport.php:873 src/PostImport.php:880
 msgid "Imported from web site"
-msgstr "Importé depuis le site de"
+msgstr "Importé depuis"
 
 #: src/PostImport.php:276
 #, php-format
