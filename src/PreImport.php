@@ -56,6 +56,7 @@ class PreImport extends CommonDBTM
 
     public const IMPORTED     = 2;
     public const NOT_IMPORTED = 1;
+    public const IMPORT_ERROR = 3;
 
     /**
      * Return the localized name of the current Type
@@ -491,6 +492,7 @@ class PreImport extends CommonDBTM
         $imported_opts = [
             self::NOT_IMPORTED => __('Devices not imported', 'manufacturersimports'),
             self::IMPORTED     => __('Devices already imported', 'manufacturersimports'),
+            self::IMPORT_ERROR => __('Devices with import error', 'manufacturersimports'),
         ];
 
         TemplateRenderer::getInstance()->display('@manufacturersimports/search_form.html.twig', [
@@ -620,7 +622,7 @@ class PreImport extends CommonDBTM
                 (int) $p['imported']
             );
 
-            if ((int) $p['imported'] === self::NOT_IMPORTED) {
+            if ((int) $p['imported'] !== self::IMPORTED) {
                 $total++;
             }
         }
@@ -916,13 +918,17 @@ class PreImport extends CommonDBTM
           AND `" . $itemtable . "`.`is_template` = '0'
           AND `glpi_plugin_manufacturersimports_configs`.`id` = '" . $p['manufacturers_id'] . "'
           AND `" . $itemtable . "`.`serial` != '' ";
-        //already imported
         if ($p['imported'] == self::IMPORTED) {
-            $query .= " AND `import_status` != " . self::IMPORTED . "";
-            //not imported
+            $query .= " AND `import_status` = 1";
         } elseif ($p['imported'] == self::NOT_IMPORTED) {
-            $query .= " AND (`date_import` IS NULL OR `import_status` = " . self::IMPORTED . " ";
-            $query .= ") ";
+            if ($isCron) {
+                // Cron retries previously failed imports as well
+                $query .= " AND (`date_import` IS NULL OR `import_status` = 2)";
+            } else {
+                $query .= " AND `date_import` IS NULL";
+            }
+        } elseif ($p['imported'] == self::IMPORT_ERROR) {
+            $query .= " AND `import_status` = 2";
         }
         $entities = "";
         if ($config->isRecursive()) {
