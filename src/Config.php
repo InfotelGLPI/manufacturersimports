@@ -34,6 +34,7 @@ use Ajax;
 use CommonDBTM;
 use DbUtils;
 use Dropdown;
+use Glpi\Application\View\TemplateRenderer;
 use Html;
 use Session;
 use Toolbox;
@@ -307,147 +308,18 @@ class Config extends CommonDBTM
             }
         }
 
-        echo "<table class='tab_cadre_fixe'>";
-        echo "<tr>";
-        echo "<td class='tab_bg_2 center' colspan='2'>" . __('Preconfiguration') . "&nbsp;";
+        $preconfig      = (int) ($_GET['preconfig'] ?? -1);
+        $preconfig_rand = mt_rand();
+        $supplier_name  = $this->fields['name'] ?? '';
 
-        $opt    = ['value' => $_GET['preconfig']];
-        $rand   = self::dropdownSupplier('supplier', $opt);
-        $params = ['supplier' => '__VALUE__'];
+        $test_field  = '';
+        $is_api_test = false;
+        $test_label  = '';
+        $test_icon   = '';
+        $row_label   = '';
+        $base_url    = '';
+        $test_mode   = '';
 
-        Ajax::updateItemOnSelectEvent(
-            "dropdown_supplier$rand",
-            "show_preconfig",
-            "../ajax/dropdownSuppliers.php",
-            $params
-        );
-        echo "<span id='show_preconfig'>";
-        echo "</span>";
-        echo "</td>";
-        echo "</tr>";
-        echo "</table>";
-
-        if ($_GET['preconfig'] == -1 && $ID <= 0) {
-            $style = "style='display:none;'";
-        } else {
-            $style = "style='display:block;'";
-        }
-        echo "<div id='show_form' $style>";
-
-        $this->initForm($ID, $options);
-        $this->showFormHeader($options);
-
-        echo "<tr>";
-        echo "<td class='tab_bg_2 center'>" . __('Name') . "</td>";
-        echo "<td class='tab_bg_2 left'>";
-        echo htmlescape($this->fields["name"]);
-        echo Html::hidden('name', ['value' => $this->fields["name"]]);
-        echo "</td>";
-
-        echo "<td class='tab_bg_2 center'>" . __('Manufacturer') . "</td>";
-        echo "<td class='tab_bg_2 left'>";
-        Dropdown::show(
-            'Manufacturer',
-            ['name'  => "manufacturers_id",
-                'value' => $this->fields["manufacturers_id"]]
-        );
-        echo "</td>";
-        echo "</tr>";
-
-        echo "<tr>";
-        echo "<td class='tab_bg_2 center' colspan='2'>" . __('Manufacturer web address', 'manufacturersimports') . "</td>";
-        echo "<td class='tab_bg_2 left' colspan='2'>";
-        echo Html::input('supplier_url', ['value' => $this->fields["supplier_url"], 'size' => 75]);
-        echo "</td>";
-        echo "</tr>";
-
-        if ($this->fields["name"] == self::DELL || $this->fields["name"] == self::HP) {
-            echo "<tr>";
-            echo "<td class='tab_bg_2 center' colspan='2'>" . __('Access token API address', 'manufacturersimports') . "</td>";
-            echo "<td class='tab_bg_2 left' colspan='2'>";
-            echo Html::input('token_url', ['value' => $this->fields["token_url"], 'size' => 75]);
-            echo "</td>";
-            echo "</tr>";
-            echo "<tr>";
-            echo "<td class='tab_bg_2 center' colspan='2'>" . __('Warranty API address', 'manufacturersimports') . "</td>";
-            echo "<td class='tab_bg_2 left' colspan='2'>";
-            echo Html::input('warranty_url', ['value' => $this->fields["warranty_url"], 'size' => 75]);
-            echo "</td>";
-            echo "</tr>";
-        }
-
-        echo "<tr>";
-        echo "<td class='tab_bg_2 center' colspan='2'>" . __('Default supplier attached', 'manufacturersimports') . "</td>";
-        echo "<td class='tab_bg_2 left' colspan='2'>";
-        Dropdown::show('Supplier', ['name'  => "suppliers_id",
-            'value' => $this->fields["suppliers_id"]]);
-        echo "</td>";
-        echo "</tr>";
-
-        if ($this->fields["name"] == self::FUJITSU) {
-            echo "<tr>";
-            echo "<td class='tab_bg_2 center' colspan='2'>"
-                 . __(
-                     'New warranty affected by default (Replace if 0)',
-                     'manufacturersimports'
-                 ) . "</td>";
-            echo "<td class='tab_bg_2 left' colspan='2'>";
-            Dropdown::showNumber("warranty_duration", ['value' => $this->fields["warranty_duration"],
-                'min'   => 0,
-                'max'   => 120]);
-            echo "</td>";
-            echo "</tr>";
-        } else {
-            echo Html::hidden('warranty_duration', ['value' => 0]);
-        }
-        if ($this->fields["name"] == self::DELL || $this->fields["name"] == self::HP) {
-            echo "<tr>";
-            echo "<td class='tab_bg_2 center' colspan='2'>" . __('Client id', 'manufacturersimports') . "</td>";
-            echo "<td class='tab_bg_2 left' colspan='2'>";
-            echo Html::input('supplier_key', ['value' => $this->fields["supplier_key"], 'size' => 75]);
-            echo "</td>";
-            echo "</tr>";
-            echo "<tr>";
-            echo "<td class='tab_bg_2 center' colspan='2'>" . __('Client secret', 'manufacturersimports') . "</td>";
-            echo "<td class='tab_bg_2 left' colspan='2'>";
-            $rand_secret = mt_rand();
-            echo "<div class='input-group'>";
-            echo Html::input('supplier_secret', ['id' => "supplier_secret_$rand_secret", 'value' => $this->fields["supplier_secret"], 'type' => 'password', 'autocomplete' => 'new-password', 'class' => 'form-control']);
-            echo "<button type='button' class='btn btn-outline-secondary'
-                onclick=\"var f=document.getElementById('supplier_secret_$rand_secret'),i=this.querySelector('i');
-                         if(f.type==='password'){f.type='text';i.classList.replace('ti-eye','ti-eye-off');}
-                         else{f.type='password';i.classList.replace('ti-eye-off','ti-eye');}\">";
-            echo "<i class='ti ti-eye'></i>";
-            echo "</button>";
-            echo "</div>";
-            echo "</td>";
-            echo "</tr>";
-        } elseif ($this->fields["name"] == self::LENOVO) {
-            echo "<tr>";
-            echo "<td class='tab_bg_2 center' colspan='2'>" . __('Client id', 'manufacturersimports') . "</td>";
-            echo "<td class='tab_bg_2 left' colspan='2'>";
-            echo Html::input('supplier_key', ['value' => $this->fields["supplier_key"], 'size' => 75]);
-            echo "</td>";
-            echo "</tr>";
-        } else {
-            echo "<tr>";
-            echo "<td class='tab_bg_2 center' colspan='2'>" . __('Auto add of document', 'manufacturersimports') . "</td>";
-            echo "<td class='tab_bg_2 left' colspan='2'>";
-            Dropdown::showYesNo("document_adding", $this->fields["document_adding"]);
-            echo "</td>";
-            echo "</tr>";
-
-            echo "<tr>";
-            echo "<td class='tab_bg_2 center' colspan='2'>" . __('Section for document records', 'manufacturersimports') . "</td>";
-            echo "<td class='tab_bg_2 left' colspan='2'>";
-            Dropdown::show('DocumentCategory', ['name'  => "documentcategories_id",
-                'value' => $this->fields["documentcategories_id"]]);
-            echo "</td>";
-            echo "</tr>";
-        }
-
-        // Generic connectivity test button — each manufacturer class declares which field to use.
-        $supplier_name  = $this->fields["name"] ?? '';
         $supplier_class = "GlpiPlugin\\Manufacturersimports\\" . $supplier_name;
         if ($supplier_name !== '' && class_exists($supplier_class)) {
             $supplier_obj = new $supplier_class();
@@ -460,79 +332,25 @@ class Config extends CommonDBTM
             $row_label    = $is_api_test
                 ? __('API connection test', 'manufacturersimports')
                 : __('Warranty page test', 'manufacturersimports');
-            $base_url     = htmlspecialchars($this->fields[$test_field] ?? '', ENT_QUOTES);
-            $action_url   = self::getFormURL(true);
-            $rand_test    = mt_rand();
-
-            echo "<tr>";
-            echo "<td class='tab_bg_2 center' colspan='2'>" . $row_label . "</td>";
-            echo "<td class='tab_bg_2 left' colspan='2'>";
-            echo "<button type='button' class='btn btn-info' id='test_btn_$rand_test'>";
-            echo "<i class='ti $test_icon me-1'></i>" . $test_label;
-            echo "</button>";
-            echo "<span id='test_result_$rand_test' class='ms-3'></span>";
-            echo "</td>";
-            echo "</tr>";
+            $base_url     = $this->fields[$test_field] ?? '';
             $test_mode    = $is_api_test ? 'oauth' : 'head';
-            $oauth_params = $is_api_test
-                ? "params.supplier_key    = document.querySelector('input[name=\"supplier_key\"]')?.value ?? '';
-                    params.supplier_secret = document.querySelector('input[name=\"supplier_secret\"]')?.value ?? '';"
-                : '';
-            echo Html::scriptBlock("
-                document.getElementById('test_btn_{$rand_test}').addEventListener('click', function () {
-                    var btn    = this;
-                    var result = document.getElementById('test_result_{$rand_test}');
-                    var csrf   = document.querySelector('[name=_glpi_csrf_token]')?.value ?? '';
-                    var url    = document.querySelector('input[name=\"{$test_field}\"]')?.value || '{$base_url}';
-                    var params = {
-                        test_connection: 1,
-                        token_url:       url,
-                        test_mode:       '{$test_mode}'
-                    };
-                    {$oauth_params}
-                    btn.disabled = true;
-                    result.innerHTML = '<i class=\"ti ti-loader-2 ti-spin\"></i>';
-                    fetch('{$action_url}', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type':     'application/x-www-form-urlencoded',
-                            'X-Requested-With': 'XMLHttpRequest',
-                            'X-Glpi-Csrf-Token': csrf
-                        },
-                        body: new URLSearchParams(params)
-                    })
-                    .then(function (r) { return r.text(); })
-                    .then(function (text) {
-                        var d;
-                        try { d = JSON.parse(text); } catch (e) {
-                            result.innerHTML = '<span class=\"text-danger\"><i class=\"ti ti-circle-x me-1\"></i>' + text.substring(0, 200) + '</span>';
-                            return;
-                        }
-                        result.innerHTML = d.success
-                            ? '<span class=\"text-success\"><i class=\"ti ti-circle-check me-1\"></i>' + d.message + '</span>'
-                            : '<span class=\"text-danger\"><i class=\"ti ti-circle-x me-1\"></i>' + d.message + '</span>';
-                    })
-                    .catch(function (e) {
-                        result.innerHTML = '<span class=\"text-danger\"><i class=\"ti ti-circle-x me-1\"></i>' + e.message + '</span>';
-                    })
-                    .finally(function () { btn.disabled = false; });
-                });
-            ");
         }
-        echo "<tr>";
-        echo "<td class='tab_bg_2 center' colspan='2'>" . __('Add a comment line', 'manufacturersimports') . "</td>";
-        echo "<td class='tab_bg_2 left' colspan='2'>";
-        Dropdown::showYesNo("comment_adding", $this->fields["comment_adding"]);
-        echo "</td>";
-        echo "</tr>";
 
-        $this->showFormButtons($options);
-
-        echo "<div class='center'>";
-        echo "<a class='submit btn btn-primary' href='" . self::getFormURL(true) . "'>";
-        echo __('Back');
-        echo "</a>";
-        echo "</div>";
+        TemplateRenderer::getInstance()->display('@manufacturersimports/config_form.html.twig', [
+            'item'          => $this,
+            'params'        => $options,
+            'preconfig'     => $preconfig,
+            'preconfig_rand' => $preconfig_rand,
+            'is_new'        => ($ID <= 0),
+            'test_field'    => $test_field,
+            'is_api_test'   => $is_api_test,
+            'test_label'    => $test_label,
+            'test_icon'     => $test_icon,
+            'row_label'     => $row_label,
+            'base_url'      => $base_url,
+            'test_mode'     => $test_mode,
+            'action_url'    => self::getFormURL(true),
+        ]);
 
         return true;
     }

@@ -1,0 +1,219 @@
+{#
+# -------------------------------------------------------------------------
+# Manufacturersimports plugin for GLPI
+# -------------------------------------------------------------------------
+#
+# LICENSE
+#
+# This file is part of Manufacturersimports.
+#
+# Manufacturersimports is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# Manufacturersimports is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Manufacturersimports. If not, see <http://www.gnu.org/licenses/>.
+# -------------------------------------------------------------------------
+# @copyright Copyright (C) 2026-2026 by Manufacturersimports plugin team.
+# @license   GPLv2 https://www.gnu.org/licenses/gpl-2.0.html
+# @link      https://github.com/InfotelGLPI/Manufacturersimports
+# -------------------------------------------------------------------------
+#}
+
+{% import 'components/form/fields_macros.html.twig' as fields %}
+
+{% set params = params|default({})|merge({'target': action_url}) %}
+
+{# Preconfiguration card — outside the main form #}
+<div class="card mb-3">
+    <div class="card-body d-flex align-items-center gap-3 flex-wrap">
+        <span class="fw-bold">{{ __('Preconfiguration') }}</span>
+        {% do call('GlpiPlugin\\Manufacturersimports\\Config::dropdownSupplier', [
+            'supplier',
+            {'value': preconfig, 'rand': preconfig_rand}
+        ]) %}
+        <span id="show_preconfig"></span>
+        {% do call('Ajax::updateItemOnSelectEvent', [
+            'dropdown_supplier' ~ preconfig_rand,
+            'show_preconfig',
+            '../ajax/dropdownSuppliers.php',
+            {'supplier': '__VALUE__'}
+        ]) %}
+    </div>
+</div>
+
+{# Main form wrapper — hidden for new items until a preconfig is selected #}
+<div id="show_form"{% if is_new and preconfig == -1 %} style="display:none;"{% endif %}>
+
+    {{ include('components/form/header.html.twig', {'no_header': true}) }}
+
+    <div class="card-body">
+        <div class="row">
+
+            {# Name: read-only display + hidden submit value #}
+            {{ fields.htmlField('_name', item.fields['name']|e, __('Name')) }}
+            {{ fields.hiddenField('name', item.fields['name']) }}
+
+            {# Linked GLPI manufacturer entry #}
+            {{ fields.dropdownField(
+                'Manufacturer',
+                'manufacturers_id',
+                item.fields['manufacturers_id'],
+                __('Manufacturer')
+            ) }}
+
+            {# Supplier base URL #}
+            {{ fields.urlField(
+                'supplier_url',
+                item.fields['supplier_url'],
+                __('Manufacturer web address', 'manufacturersimports')
+            ) }}
+
+            {# Dell / HP: OAuth token URL and warranty API URL #}
+            {% if item.fields['name'] in ['Dell', 'HP'] %}
+                {{ fields.urlField(
+                    'token_url',
+                    item.fields['token_url'],
+                    __('Access token API address', 'manufacturersimports')
+                ) }}
+                {{ fields.urlField(
+                    'warranty_url',
+                    item.fields['warranty_url'],
+                    __('Warranty API address', 'manufacturersimports')
+                ) }}
+            {% endif %}
+
+            {# Default GLPI supplier linked to this config #}
+            {{ fields.dropdownField(
+                'Supplier',
+                'suppliers_id',
+                item.fields['suppliers_id'],
+                __('Default supplier attached', 'manufacturersimports')
+            ) }}
+
+            {# Fujitsu: configurable warranty duration; all others: force 0 #}
+            {% if item.fields['name'] == 'Fujitsu' %}
+                {{ fields.dropdownNumberField(
+                    'warranty_duration',
+                    item.fields['warranty_duration'],
+                    __('New warranty affected by default (Replace if 0)', 'manufacturersimports'),
+                    {'min': 0, 'max': 120}
+                ) }}
+            {% else %}
+                {{ fields.hiddenField('warranty_duration', 0) }}
+            {% endif %}
+
+            {# Credentials — structure varies by supplier #}
+            {% if item.fields['name'] in ['Dell', 'HP'] %}
+                {{ fields.textField(
+                    'supplier_key',
+                    item.fields['supplier_key'],
+                    __('Client id', 'manufacturersimports')
+                ) }}
+                {{ fields.passwordField(
+                    'supplier_secret',
+                    item.fields['supplier_secret'],
+                    __('Client secret', 'manufacturersimports'),
+                    {'is_disclosable': true, 'clearable': false}
+                ) }}
+            {% elseif item.fields['name'] == 'Lenovo' %}
+                {{ fields.textField(
+                    'supplier_key',
+                    item.fields['supplier_key'],
+                    __('Client id', 'manufacturersimports')
+                ) }}
+            {% else %}
+                {{ fields.dropdownYesNo(
+                    'document_adding',
+                    item.fields['document_adding'],
+                    __('Auto add of document', 'manufacturersimports')
+                ) }}
+                {{ fields.dropdownField(
+                    'DocumentCategory',
+                    'documentcategories_id',
+                    item.fields['documentcategories_id'],
+                    __('Section for document records', 'manufacturersimports')
+                ) }}
+            {% endif %}
+
+            {# Connection test — only rendered when the supplier class exposes a testable URL #}
+            {% if test_field is not empty %}
+                {% set rand_test = random() %}
+                {% set test_btn %}
+                    <button type="button" class="btn btn-info" id="test_btn_{{ rand_test }}">
+                        <i class="ti {{ test_icon }} me-1"></i>{{ test_label }}
+                    </button>
+                    <span id="test_result_{{ rand_test }}" class="ms-3"></span>
+                {% endset %}
+                {{ fields.htmlField('_test_connection', test_btn, row_label) }}
+                <script>
+                document.getElementById('test_btn_{{ rand_test }}').addEventListener('click', function () {
+                    var btn    = this;
+                    var result = document.getElementById('test_result_{{ rand_test }}');
+                    var csrf   = document.querySelector('[name=_glpi_csrf_token]')?.value ?? '';
+                    var url    = document.querySelector('input[name="{{ test_field|e('js') }}"]')?.value
+                                 || '{{ base_url|e('js') }}';
+                    var params = {
+                        test_connection: 1,
+                        token_url:       url,
+                        test_mode:       '{{ test_mode|e('js') }}'
+                    };
+                    {% if is_api_test %}
+                    params.supplier_key    = document.querySelector('input[name="supplier_key"]')?.value ?? '';
+                    params.supplier_secret = document.querySelector('input[name="supplier_secret"]')?.value ?? '';
+                    {% endif %}
+                    btn.disabled = true;
+                    result.innerHTML = '<i class="ti ti-loader-2 ti-spin"></i>';
+                    fetch('{{ action_url|e('js') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type':     'application/x-www-form-urlencoded',
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'X-Glpi-Csrf-Token': csrf
+                        },
+                        body: new URLSearchParams(params)
+                    })
+                    .then(function (r) { return r.text(); })
+                    .then(function (text) {
+                        var d;
+                        try { d = JSON.parse(text); } catch (e) {
+                            result.innerHTML = '<span class="text-danger"><i class="ti ti-circle-x me-1"></i>'
+                                               + text.substring(0, 200) + '</span>';
+                            return;
+                        }
+                        result.innerHTML = d.success
+                            ? '<span class="text-success"><i class="ti ti-circle-check me-1"></i>' + d.message + '</span>'
+                            : '<span class="text-danger"><i class="ti ti-circle-x me-1"></i>' + d.message + '</span>';
+                    })
+                    .catch(function (e) {
+                        result.innerHTML = '<span class="text-danger"><i class="ti ti-circle-x me-1"></i>' + e.message + '</span>';
+                    })
+                    .finally(function () { btn.disabled = false; });
+                });
+                </script>
+            {% endif %}
+
+            {# Whether to append a comment line on import #}
+            {{ fields.dropdownYesNo(
+                'comment_adding',
+                item.fields['comment_adding'],
+                __('Add a comment line', 'manufacturersimports')
+            ) }}
+
+        </div>
+    </div>
+
+    {{ include('components/form/buttons.html.twig') }}
+
+</div>
+
+{# Back link — outside the form #}
+<div class="text-center mt-3">
+    <a class="btn btn-secondary" href="{{ action_url }}">{{ __('Back') }}</a>
+</div>
