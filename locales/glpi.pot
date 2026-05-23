@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-23 09:26+0000\n"
+"POT-Creation-Date: 2026-05-23 09:34+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,7 +34,7 @@ msgstr ""
 msgid "Already imported"
 msgstr ""
 
-#: front/config.form.php:116
+#: front/config.form.php:117
 msgid "Authentication successful (token received)"
 msgstr ""
 
@@ -42,7 +42,7 @@ msgstr ""
 msgid "Auto add of document"
 msgstr ""
 
-#: src/Manufacturer.php:118
+#: src/Manufacturer.php:119
 msgid "Automatic"
 msgstr ""
 
@@ -66,7 +66,7 @@ msgstr ""
 msgid "Connection failed/data download from manufacturer web site"
 msgstr ""
 
-#: src/PostImport.php:88 ajax/testConnection.php:32 front/config.form.php:78
+#: src/PostImport.php:88 ajax/testConnection.php:54 front/config.form.php:79
 msgid "Curl PHP package not installed"
 msgstr ""
 
@@ -114,7 +114,7 @@ msgstr ""
 msgid "Model Number"
 msgstr ""
 
-#: src/Lenovo.php:57
+#: src/Lenovo.php:58
 msgid "Model number"
 msgstr ""
 
@@ -130,7 +130,7 @@ msgstr ""
 msgid "New warranty attached"
 msgstr ""
 
-#: front/config.form.php:118
+#: front/config.form.php:119
 msgid "No access token in response"
 msgstr ""
 
@@ -142,7 +142,7 @@ msgstr ""
 msgid "No manufacturer available. Please configure at least one manufacturer"
 msgstr ""
 
-#: front/config.form.php:143
+#: front/config.form.php:144
 msgid "No response from server"
 msgstr ""
 
@@ -150,7 +150,7 @@ msgstr ""
 msgid "Not yet imported"
 msgstr ""
 
-#: front/config.php:41
+#: front/config.php:42
 msgid "Please activate the plugin"
 msgstr ""
 
@@ -183,7 +183,7 @@ msgstr ""
 msgid "Section for document records"
 msgstr ""
 
-#: ajax/testConnection.php:68 front/config.form.php:146
+#: ajax/testConnection.php:90 front/config.form.php:147
 #, php-format
 msgid "Server reachable (HTTP %d)"
 msgstr ""
@@ -192,8 +192,8 @@ msgstr ""
 msgid "Supplier attached"
 msgstr ""
 
-#: src/Profile.php:97 src/PreImport.php:66 src/Menu.php:53 setup.php:90
-#: front/massiveaction.php:44
+#: src/Profile.php:98 src/PreImport.php:66 src/Menu.php:54 setup.php:90
+#: front/massiveaction.php:45
 msgid "Suppliers import"
 msgid_plural "Suppliers imports"
 msgstr[0] ""
@@ -211,7 +211,7 @@ msgstr ""
 msgid "The choosen supplier is not recursive"
 msgstr ""
 
-#: ajax/testConnection.php:24 front/config.form.php:74
+#: ajax/testConnection.php:46 front/config.form.php:75
 msgid "Token URL is empty"
 msgstr ""
 
