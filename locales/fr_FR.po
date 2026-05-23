@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-23 09:54+0000\n"
+"POT-Creation-Date: 2026-05-23 10:16+0000\n"
 "PO-Revision-Date: 2020-11-02 16:09+0000\n"
 "Last-Translator: Xavier CAILLAUD <thetsmr@gmail.com>, 2026\n"
 "Language-Team: French (France) (https://app.transifex.com/infotelGLPI/teams/12364/fr_FR/)\n"
@@ -50,6 +50,7 @@ msgid "Automatic"
 msgstr "Automatique"
 
 #: templates/config_form.html.twig:218
+#: templates/massive_import_progress.html.twig:71
 msgid "Back"
 msgstr "Retour"
 
@@ -65,21 +66,17 @@ msgstr "ID du client"
 msgid "Client secret"
 msgstr "Clé API secrète"
 
-#: src/PostImport.php:904
+#: src/PostImport.php:1019
 msgid "Connection failed/data download from manufacturer web site"
 msgstr "Echec de connexion/récupération de données au site du fabricant"
 
-#: src/PostImport.php:88 ajax/testConnection.php:54 front/config.form.php:79
+#: src/PostImport.php:91 ajax/testConnection.php:54 front/config.form.php:79
 msgid "Curl PHP package not installed"
 msgstr "Le module Curl pour PHP n'est pas installé"
 
 #: src/Config.php:237 templates/config_form.html.twig:97
 msgid "Default supplier attached"
 msgstr "Fournisseur affecté par défaut"
-
-#: src/PostImport.php:253
-msgid "Details"
-msgstr "Détails"
 
 #: src/PreImport.php:492
 msgid "Devices already imported"
@@ -89,17 +86,31 @@ msgstr "Matériels déjà importés"
 msgid "Devices not imported"
 msgstr "Matériels non importés"
 
-#: src/Import.php:184 src/PostImport.php:776
+#: src/Import.php:184 src/PostImport.php:293 src/PostImport.php:891
 msgid "Import OK"
 msgstr "Import OK"
 
-#: src/Import.php:187 src/PostImport.php:881
+#: src/Import.php:187 src/PostImport.php:298 src/PostImport.php:996
 msgid "Import failed"
 msgstr "Import KO"
 
-#: src/PostImport.php:758 src/PostImport.php:765
+#: templates/massive_import_progress.html.twig:35
+msgid "Import in progress"
+msgstr "Import en cours"
+
+#: src/PostImport.php:873 src/PostImport.php:880
 msgid "Imported from web site"
 msgstr "Importé depuis le site de"
+
+#: src/PostImport.php:276
+#, php-format
+msgid "Importing device %1$d of %2$d"
+msgstr "Importation des objets %1$d à%2$d"
+
+#: templates/massive_import_progress.html.twig:33
+#, php-format
+msgid "Importing from %s"
+msgstr "Importé depuis le site de %s"
 
 #: templates/config_form.html.twig:68
 msgid "Manufacturer"
@@ -162,10 +173,6 @@ msgctxt "button"
 msgid "Post"
 msgstr "Envoyer"
 
-#: src/PostImport.php:244
-msgid "Post import"
-msgstr "Post-Import"
-
 #: templates/config_form.html.twig:36
 msgid "Preconfiguration"
 msgstr "Préconfiguration"
@@ -177,10 +184,6 @@ msgstr "Problème lors de l'importation"
 #: src/PreImport.php:1096
 msgid "Reset the import"
 msgstr "Réinitialiser l'import"
-
-#: src/PostImport.php:252
-msgid "Result"
-msgstr "Résultat"
 
 #: src/Config.php:590 src/Config.php:706
 msgctxt "button"
@@ -233,7 +236,7 @@ msgstr "Le fournisseur choisi n'est pas récursif"
 msgid "Token URL is empty"
 msgstr "l'URL du Token est vide"
 
-#: src/PostImport.php:285
+#: src/PostImport.php:307
 #, php-format
 msgid "Total number of devices imported %s"
 msgstr "Nombre total de matériel importés %s"
@@ -255,7 +258,7 @@ msgstr "Import des garanties (Dell, HP)"
 msgid "Warranty page test"
 msgstr "Test de page de garantie"
 
-#: src/PostImport.php:759 src/PostImport.php:766
+#: src/PostImport.php:874 src/PostImport.php:881
 msgid "With the manufacturersimports plugin"
 msgstr "Avec le plugin manufacturersimports"
 
