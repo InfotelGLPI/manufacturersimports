@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-23 10:16+0000\n"
+"POT-Creation-Date: 2026-05-23 10:26+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,7 +30,7 @@ msgstr ""
 msgid "Add a comment line"
 msgstr ""
 
-#: src/PreImport.php:792
+#: src/PreImport.php:793
 msgid "Already imported"
 msgstr ""
 
@@ -42,7 +42,7 @@ msgstr ""
 msgid "Auto add of document"
 msgstr ""
 
-#: src/Manufacturer.php:119
+#: src/Manufacturers/Manufacturer.php:119
 msgid "Automatic"
 msgstr ""
 
@@ -74,11 +74,11 @@ msgstr ""
 msgid "Default supplier attached"
 msgstr ""
 
-#: src/PreImport.php:492
+#: src/PreImport.php:493
 msgid "Devices already imported"
 msgstr ""
 
-#: src/PreImport.php:491
+#: src/PreImport.php:492
 msgid "Devices not imported"
 msgstr ""
 
@@ -112,7 +112,7 @@ msgstr ""
 msgid "Manufacturer"
 msgstr ""
 
-#: src/PreImport.php:777 src/Config.php:583
+#: src/PreImport.php:778 src/Config.php:583
 msgid "Manufacturer information"
 msgstr ""
 
@@ -120,11 +120,11 @@ msgstr ""
 msgid "Manufacturer web address"
 msgstr ""
 
-#: src/PreImport.php:586
+#: src/PreImport.php:587
 msgid "Model Number"
 msgstr ""
 
-#: src/Lenovo.php:58
+#: src/Manufacturers/Lenovo.php:60
 msgid "Model number"
 msgstr ""
 
@@ -136,7 +136,7 @@ msgstr ""
 msgid "New warranty affected by default (Replace if 0)"
 msgstr ""
 
-#: src/PreImport.php:589 src/Config.php:245
+#: src/PreImport.php:590 src/Config.php:245
 msgid "New warranty attached"
 msgstr ""
 
@@ -156,7 +156,7 @@ msgstr ""
 msgid "No response from server"
 msgstr ""
 
-#: src/PreImport.php:781
+#: src/PreImport.php:782
 msgid "Not yet imported"
 msgstr ""
 
@@ -173,11 +173,11 @@ msgstr ""
 msgid "Preconfiguration"
 msgstr ""
 
-#: src/PreImport.php:784
+#: src/PreImport.php:785
 msgid "Problem during the importation"
 msgstr ""
 
-#: src/PreImport.php:1096
+#: src/PreImport.php:1097
 msgid "Reset the import"
 msgstr ""
 
@@ -204,11 +204,11 @@ msgstr ""
 msgid "Server reachable (HTTP %d)"
 msgstr ""
 
-#: src/PreImport.php:588
+#: src/PreImport.php:589
 msgid "Supplier attached"
 msgstr ""
 
-#: src/Profile.php:131 src/PreImport.php:67 src/Menu.php:54 setup.php:91
+#: src/Profile.php:131 src/PreImport.php:68 src/Menu.php:54 setup.php:91
 #: front/massiveaction.php:45
 msgid "Suppliers import"
 msgid_plural "Suppliers imports"
@@ -223,7 +223,7 @@ msgstr ""
 msgid "Test warranty page"
 msgstr ""
 
-#: src/PreImport.php:736
+#: src/PreImport.php:737
 msgid "The choosen supplier is not recursive"
 msgstr ""
 
