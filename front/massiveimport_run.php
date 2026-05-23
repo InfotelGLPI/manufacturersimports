@@ -1,0 +1,83 @@
+<?php
+
+/*
+ * @version $Id: HEADER 15930 2011-10-30 15:47:55Z tsmr $
+ -------------------------------------------------------------------------
+ Manufacturersimports plugin for GLPI
+ Copyright (C) 2015-2026 by the Manufacturersimports Development Team.
+
+ https://github.com/InfotelGLPI/manufacturersimports
+ -------------------------------------------------------------------------
+
+ LICENSE
+
+ This file is part of Manufacturersimports.
+
+ Manufacturersimports is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2 of the License, or
+ (at your option) any later version.
+
+ Manufacturersimports is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with Manufacturersimports. If not, see <http://www.gnu.org/licenses/>.
+ --------------------------------------------------------------------------
+ */
+
+use GlpiPlugin\Manufacturersimports\Config;
+use GlpiPlugin\Manufacturersimports\PostImport;
+use Glpi\Progress\ProgressStorage;
+
+if (!defined('GLPI_ROOT')) {
+    die("Can not access directly to this file");
+}
+
+Session::checkLoginUser();
+(new Config())->checkGlobal(UPDATE);
+
+if (
+    !isset($_POST['item'])
+    || !is_array($_POST['item'])
+    || !count(array_filter($_POST['item'], fn($v) => $v == 1))
+    || !isset($_POST['manufacturers_id'])
+) {
+    http_response_code(400);
+    exit;
+}
+
+Toolbox::safeIniSet('max_execution_time', '300');
+
+$storage  = new ProgressStorage();
+$progress = $storage->spawnProgressIndicator();
+$key      = $progress->getStorageKey();
+
+header('Content-Type: text/html; charset=UTF-8');
+header('Content-Length: ' . strlen($key));
+header('Connection: close');
+header('Cache-Control: no-cache, no-store');
+
+while (ob_get_level() > 0) {
+    ob_end_clean();
+}
+
+echo $key;
+flush();
+
+if (function_exists('fastcgi_finish_request')) {
+    fastcgi_finish_request();
+}
+
+session_write_close();
+ignore_user_abort(true);
+
+try {
+    PostImport::massiveimportWithProgress($_POST, $progress);
+    $progress->finish();
+} catch (\Throwable $e) {
+    Toolbox::logError($e->getMessage());
+    $progress->fail();
+}

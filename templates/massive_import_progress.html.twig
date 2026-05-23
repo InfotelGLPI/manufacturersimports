@@ -1,0 +1,83 @@
+{#
+ -------------------------------------------------------------------------
+ Manufacturersimports plugin for GLPI
+ -------------------------------------------------------------------------
+
+ LICENSE
+
+ This file is part of Manufacturersimports.
+
+ Manufacturersimports is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2 of the License, or
+ (at your option) any later version.
+
+ Manufacturersimports is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with Manufacturersimports. If not, see <http://www.gnu.org/licenses/>.
+ -------------------------------------------------------------------------
+ @copyright Copyright (C) 2026-2026 by Manufacturersimports plugin team.
+ @license   GPLv2 https://www.gnu.org/licenses/gpl-2.0.html
+ @link      https://github.com/InfotelGLPI/Manufacturersimports
+ -------------------------------------------------------------------------
+#}
+
+<div class="card mb-3">
+    <div class="card-header">
+        <strong>
+            {% if suppliername %}
+                {{ __('Importing from %s', 'manufacturersimports')|format(suppliername) }}
+            {% else %}
+                {{ __('Import in progress', 'manufacturersimports') }}
+            {% endif %}
+        </strong>
+    </div>
+    <div class="card-body">
+        <div id="massive-import-progress"
+             data-run-url="{{ run_url }}"
+             data-back-url="{{ back_url }}"
+             data-params="{{ run_params|json_encode }}"></div>
+    </div>
+</div>
+
+<script type="module">
+    const container = document.getElementById('massive-import-progress');
+    const run_url   = container.dataset.runUrl;
+    const back_url  = container.dataset.backUrl;
+    const params    = JSON.parse(container.dataset.params);
+
+    const form_data = new FormData();
+    for (const [key, val] of Object.entries(params)) {
+        if (key === 'item' && val !== null && typeof val === 'object') {
+            for (const [id, checked] of Object.entries(val)) {
+                form_data.append(`item[${id}]`, checked);
+            }
+        } else {
+            form_data.append(key, val ?? '');
+        }
+    }
+    form_data.append('_glpi_csrf_token', getAjaxCsrfToken());
+
+    const { ProgressIndicator } = await import(`${CFG_GLPI.root_doc}/js/modules/ProgressIndicator.js`);
+
+    const add_back_button = () => {
+        const link       = document.createElement('a');
+        link.href        = back_url;
+        link.className   = 'btn btn-secondary mt-3';
+        link.textContent = {{ __('Back')|json_encode|raw }};
+        container.appendChild(link);
+    };
+
+    const pi = new ProgressIndicator({
+        container,
+        request: new Request(run_url, { method: 'POST', body: form_data }),
+        success_callback: add_back_button,
+        error_callback:   add_back_button,
+    });
+
+    pi.start();
+</script>

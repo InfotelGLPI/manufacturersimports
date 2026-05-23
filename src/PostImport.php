@@ -35,6 +35,9 @@ use DbUtils;
 use Document;
 use Document_Item;
 use Dropdown;
+use Glpi\Application\View\TemplateRenderer;
+use Glpi\Message\MessageType;
+use Glpi\Progress\StoredProgressIndicator;
 use GLPIKey;
 use Html;
 use Infocom;
@@ -234,64 +237,176 @@ class PostImport extends CommonDBTM
     public static function massiveimport($values)
     {
         $config = new Config();
-        $log    = new Log();
+        $config->getFromDB($values['manufacturers_id']);
 
-        $_SESSION["glpi_plugin_manufacturersimports_total"] = 0;
+        $back_url  = PLUGIN_MANUFACTURERSIMPORTS_WEBDIR . '/front/import.php?back=back'
+                     . '&itemtype=' . urlencode($values['itemtype'])
+                     . '&manufacturers_id=' . (int) $values['manufacturers_id']
+                     . '&start=' . (int) ($values['start'] ?? 0)
+                     . '&imported=' . (int) ($values['imported'] ?? 0);
 
-        //        Html::progressBar('import', ['create'  => true, 'message' =>__('Launching of imports', 'manufacturersimports')]);
+        $run_params = array_diff_key($values, ['_glpi_csrf_token' => '']);
 
-        echo "<table class='tab_cadre' width='70%' cellpadding='2'>";
-        echo "<tr><th colspan='6'>" . __('Post import', 'manufacturersimports') . "</th></tr>";
-        echo "<tr><th>" . __('Name') . "</th>";
-        echo "<th>" . __('Serial number') . "</th>";
+        TemplateRenderer::getInstance()->display('@manufacturersimports/massive_import_progress.html.twig', [
+            'suppliername' => $config->fields['name'] ?? '',
+            'run_url'      => PLUGIN_MANUFACTURERSIMPORTS_WEBDIR . '/front/massiveimport_run.php',
+            'back_url'     => $back_url,
+            'run_params'   => $run_params,
+        ]);
+    }
 
-        $config->getFromDB($values["manufacturers_id"]);
-        $suppliername = $config->fields["name"];
+    /**
+     * Run the massive import in background and report progress.
+     */
+    public static function massiveimportWithProgress(array $values, StoredProgressIndicator $progress): void
+    {
+        $log   = new Log();
+        $items = array_filter($values['item'] ?? [], fn($v) => $v == 1);
+        $total_items = count($items);
 
-        echo "<th>" . _n('Link', 'Links', 1) . "</th>";
-        echo "<th>" . __('Result', 'manufacturersimports') . "</th>";
-        echo "<th>" . __('Details', 'manufacturersimports') . "</th>";
-        echo "</tr>";
+        $progress->setMaxSteps(max(1, $total_items));
 
-        $pos = 0;
-        foreach ($values["item"] as $key => $val) {
-            if ($val == 1) {
-                $NotAlreadyImported = $log->checkIfAlreadyImported($values["itemtype"], $key);
-                if (!$NotAlreadyImported) {
-                    self::seePostImport(
-                        $values["itemtype"],
-                        $key,
-                        $values["to_suppliers_id$key"],
-                        $values["to_warranty_duration$key"],
-                        $values["manufacturers_id"]
+        $total_imported = 0;
+        $step           = 0;
+
+        foreach ($items as $key => $val) {
+            $step++;
+            $progress->setCurrentStep($step);
+            $progress->setProgressBarMessage(
+                sprintf(__('Importing device %1$d of %2$d', 'manufacturersimports'), $step, $total_items)
+            );
+
+            $already_imported = $log->checkIfAlreadyImported($values['itemtype'], $key);
+            if (!$already_imported) {
+                $result = self::seePostImportForProgress(
+                    $values['itemtype'],
+                    $key,
+                    $values["to_suppliers_id$key"] ?? 0,
+                    $values["to_warranty_duration$key"] ?? 0,
+                    $values['manufacturers_id']
+                );
+
+                if ($result['success']) {
+                    $total_imported++;
+                    $progress->addMessage(
+                        MessageType::Success,
+                        $result['name'] . ' — ' . __('Import OK', 'manufacturersimports')
+                    );
+                } else {
+                    $progress->addMessage(
+                        MessageType::Error,
+                        $result['name'] . ' — ' . __('Import failed', 'manufacturersimports')
                     );
                 }
             }
-            $pos += 1;
-            //            Html::changeProgressBarPosition(
-            //                $pos,
-            //                count($values["item"]),
-            //                __('Import in progress', 'manufacturersimports') . " (" . $values['itemtype']::getTypeName(2) . " : " . $suppliername . ")"
-            //            );
         }
-        //        Html::changeProgressBarPosition(
-        //            $pos,
-        //            count($values["item"]),
-        //            __('Done')
-        //        );
 
-        echo "<tr class='tab_bg_1'><td colspan='6'>";
-        $total = $_SESSION["glpi_plugin_manufacturersimports_total"];
-        echo sprintf(__('Total number of devices imported %s', 'manufacturersimports'), $total);
-        echo "</td></tr>";
-        echo "</table>";
-        echo "<br><div class='center'>";
-        echo "<a class='submit btn btn-primary' href='" . PLUGIN_MANUFACTURERSIMPORTS_WEBDIR . "/front/import.php?back=back&amp;itemtype="
-             . $values["itemtype"] . "&amp;manufacturers_id=" . $values["manufacturers_id"] . "&amp;start=" . $values["start"]
-             . "&amp;imported=" . $values["imported"] . "'>";
-        echo __('Back');
-        echo "</a>";
-        echo "</div>";
+        $progress->setCurrentStep($total_items);
+        $progress->addMessage(
+            MessageType::Notice,
+            sprintf(__('Total number of devices imported %s', 'manufacturersimports'), $total_imported)
+        );
+    }
+
+    /**
+     * Run the import for a single device and return result data (no HTML output).
+     *
+     * @return array{name: string, serial: string, success: bool}
+     */
+    public static function seePostImportForProgress(
+        string $type,
+        int $ID,
+        int $fromsupplier,
+        int $fromwarranty,
+        int $configID
+    ): array {
+        global $DB;
+
+        $config = new Config();
+        $config->getFromDB($configID);
+        $manufacturerId = $config->fields['manufacturers_id'];
+        $suppliername   = $config->fields['name'];
+        $supplierUrl    = $config->fields['supplier_url'];
+        $supplierkey    = $config->fields['supplier_key'];
+        $supplierSecret = $config->fields['supplier_secret'];
+
+        $supplierId = $fromsupplier ?: $config->fields['suppliers_id'];
+
+        $dbu        = new DbUtils();
+        $itemtable  = $dbu->getTableForItemType($type);
+        $modelfield = $dbu->getForeignKeyFieldForTable($dbu->getTableForItemType($type . 'Model'));
+
+        $query = "SELECT `{$itemtable}`.`id`,
+                         `{$itemtable}`.`name`,
+                         `{$itemtable}`.`entities_id`,
+                         `{$itemtable}`.`serial`,
+                         `{$itemtable}`.`{$modelfield}`
+                  FROM `{$itemtable}`, `glpi_manufacturers`
+                  WHERE `{$itemtable}`.`manufacturers_id` = `glpi_manufacturers`.`id`
+                  AND `{$itemtable}`.`is_deleted` = '0'
+                  AND `{$itemtable}`.`is_template` = '0'
+                  AND `glpi_manufacturers`.`id` = '" . (int) $manufacturerId . "'
+                  AND `{$itemtable}`.`serial` != ''
+                  AND `{$itemtable}`.`id` = '" . (int) $ID . "'
+                  ORDER BY `{$itemtable}`.`name`";
+
+        $result_db = $DB->doQuery($query);
+
+        $allowed_suppliers = [
+            Config::DELL, Config::HP, Config::FUJITSU,
+            Config::LENOVO, Config::TOSHIBA, Config::WORTMANN_AG,
+        ];
+        if (!in_array($suppliername, $allowed_suppliers, true)) {
+            return ['name' => "#{$ID}", 'serial' => '', 'success' => false];
+        }
+
+        $supplierclass = 'GlpiPlugin\\Manufacturersimports\\' . $suppliername;
+        $token         = $supplierclass::getToken($config);
+
+        $result = ['name' => "#{$ID}", 'serial' => '', 'success' => false];
+
+        while ($line = $DB->fetchArray($result_db)) {
+            $dID = ($_SESSION['glpiis_ids_visible'] || empty($line['name']))
+                ? ' (' . $line['id'] . ')' : '';
+            $result['name']   = htmlescape($line['name']) . $dID;
+            $result['serial'] = $line['serial'];
+
+            $otherSerial = '';
+            $models_id   = $line[$modelfield];
+            if (class_exists($type . 'Model') && $models_id != 0) {
+                $modelitemtype = $type . 'Model';
+                $modelclass    = new $modelitemtype();
+                $modelclass->getFromDB($models_id);
+                $otherSerial = $modelclass->fields['product_number'] ?? '';
+            }
+
+            $url          = PreImport::selectSupplier($suppliername, $supplierUrl, $line['serial'], $otherSerial, $supplierkey, $supplierSecret);
+            $post         = PreImport::getSupplierPost($suppliername, $line['serial'], $otherSerial, $supplierkey, $supplierSecret);
+            $warranty_url = $supplierclass::getWarrantyUrl($config, $line['serial']);
+
+            $options = [
+                'url'          => $warranty_url['url'] ?? $url,
+                'sn'           => $line['serial'],
+                'pn'           => $otherSerial,
+                'post'         => $post,
+                'type'         => $type,
+                'ID'           => $line['id'],
+                'config'       => $config,
+                'line'         => $line,
+                'fromsupplier' => $supplierId,
+                'fromwarranty' => $fromwarranty,
+                'display'      => false,
+                'token'        => $token,
+            ];
+
+            if ($suppliername === Config::LENOVO) {
+                $options['ClientID'] = $supplierkey;
+            }
+
+            $result['success'] = (bool) self::saveImport($options);
+        }
+
+        return $result;
     }
 
     /**

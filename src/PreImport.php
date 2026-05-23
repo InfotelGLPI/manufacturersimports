@@ -75,27 +75,27 @@ class PreImport extends CommonDBTM
      * @param int    $entity_restrict
      * @param string $types
      */
-    public static function showAllItems($myname, $value_type = 0, $value = 0, $entity_restrict = -1, $types = '')
-    {
-        if (!is_array($types)) {
-            $types = Config::getTypes();
-        }
-
-        $rand    = mt_rand();
-        $options = [];
-
-        foreach ($types as $type) {
-            $item           = new $type();
-            $options[$type] = $item::getTypeName();
-        }
-        asort($options);
-        if (count($options)) {
-            $id = "item_type$rand";
-            Dropdown::showFromArray($myname, $options, ['value'               => $value,
-                'id'                  => $id,
-                'display_emptychoice' => true]);
-        }
-    }
+//    public static function showAllItems($myname, $value_type = 0, $value = 0, $entity_restrict = -1, $types = '')
+//    {
+//        if (!is_array($types)) {
+//            $types = Config::getTypes();
+//        }
+//
+//        $rand    = mt_rand();
+//        $options = [];
+//
+//        foreach ($types as $type) {
+//            $item           = new $type();
+//            $options[$type] = $item::getTypeName();
+//        }
+//        asort($options);
+//        if (count($options)) {
+//            $id = "item_type$rand";
+//            Dropdown::showFromArray($myname, $options, ['value'               => $value,
+//                'id'                  => $id,
+//                'display_emptychoice' => true]);
+//        }
+//    }
 
     /**
      * Fonction to use the supplier url
