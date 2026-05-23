@@ -28,28 +28,32 @@
  --------------------------------------------------------------------------
  */
 
-namespace GlpiPlugin\Manufacturersimports;
+namespace GlpiPlugin\Manufacturersimports\Manufacturers;
+
+use GlpiPlugin\Manufacturersimports\Config;
+use GlpiPlugin\Manufacturersimports\PostImport;
+use Search;
 
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access directly to this file");
 }
 
 /**
- * Class Wortmann_ag
+ * Class Toshiba
  */
-class Wortmann_ag extends Manufacturer
+class Toshiba extends Manufacturer
 {
     /**
      * @see Manufacturer::showDocTitle()
      */
     public function showDocTitle($output_type, $header_num)
     {
-        return false;
+        return Search::showHeaderItem($output_type, __('File'), $header_num);
     }
 
     public function getSearchField()
     {
-        return "search";
+        return false;
     }
 
     /**
@@ -63,10 +67,24 @@ class Wortmann_ag extends Manufacturer
         $supplierUrl = null
     )
     {
-        $info["name"]         = Config::WORTMANN_AG;
-        $info["supplier_url"] = "https://www.wortmann.de/fr-fr/profile/snsearch.aspx?SN=";
-        $info["url"]          = $supplierUrl.$compSerial;
+        $info["name"]         = Config::TOSHIBA;
+        $info["supplier_url"] = "https://support.dynabook.com/support/warrantyResults?";
+        $info["url"]          = $supplierUrl .
+                                "sno=" . $compSerial;
         return $info;
+    }
+
+    /**
+     * Summary of getWarrantyUrl
+     *
+     * @param  $config
+     * @param  $compSerial
+     *
+     * @return string[]
+     */
+    public static function getWarrantyUrl($config, $compSerial)
+    {
+        return ["url" => "https://support.dynabook.com/support/warrantyResults?sno=" . "$compSerial"];
     }
 
     /**
@@ -74,19 +92,11 @@ class Wortmann_ag extends Manufacturer
      */
     public function getBuyDate($contents)
     {
-        $field     = "but de la service";
-        $searchstart = stristr($contents, $field);
-        $myDate = substr($searchstart, 26, 10);
-
+        $field  = "shipDate";
+        $search = stristr($contents, $field);
+        $myDate = substr($search, 11, 21);
         $myDate = trim($myDate);
-        $myDate = str_replace('/', '-', $myDate);
-
-        $myDate = PostImport::checkDate($myDate, true);
-
-        if ($myDate != "0000-00-00") {
-            list($day, $month, $year) = explode('-', $myDate);
-            $myDate = date("Y-m-d", mktime(0, 0, 0, $month, $day, $year));
-        }
+        $myDate = PostImport::checkDate($myDate);
 
         return $myDate;
     }
@@ -96,7 +106,13 @@ class Wortmann_ag extends Manufacturer
      */
     public function getStartDate($contents)
     {
-        return self::getBuyDate($contents);
+        $field  = "customerPurchaseDate";
+        $search = stristr($contents, $field);
+        $myDate = substr($search, 23, 21);
+        $myDate = trim($myDate);
+        $myDate = PostImport::checkDate($myDate);
+
+        return $myDate;
     }
 
     /**
@@ -104,19 +120,11 @@ class Wortmann_ag extends Manufacturer
      */
     public function getExpirationDate($contents)
     {
-        $field     = "Fin de service";
-        $searchstart = stristr($contents, $field);
-        $myDate = substr($searchstart, 23, 10);
-
-        $myDate = trim($myDate);
-        $myDate = str_replace('/', '-', $myDate);
-
-        $myDate = PostImport::checkDate($myDate, true);
-
-        if ($myDate != "0000-00-00") {
-            list($day, $month, $year) = explode('-', $myDate);
-            $myDate = date("Y-m-d", mktime(0, 0, 0, $month, $day, $year));
-        }
-        return $myDate;
+        $field     = "warrantyExpiryDate";
+        $search    = stristr($contents, $field);
+        $myEndDate = substr($search, 21, 21);
+        $myEndDate = trim($myEndDate);
+        $myEndDate = PostImport::checkDate($myEndDate);
+        return $myEndDate;
     }
 }

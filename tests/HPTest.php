@@ -3,7 +3,7 @@
 namespace GlpiPlugin\Manufacturersimports\Tests;
 
 use GlpiPlugin\Manufacturersimports\Config;
-use GlpiPlugin\Manufacturersimports\HP;
+use GlpiPlugin\Manufacturersimports\Manufacturers\HP;
 use PHPUnit\Framework\TestCase;
 
 class HPTest extends TestCase

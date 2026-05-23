@@ -28,7 +28,7 @@
  --------------------------------------------------------------------------
  */
 
-namespace GlpiPlugin\Manufacturersimports;
+namespace GlpiPlugin\Manufacturersimports\Manufacturers;
 
 use CommonDBTM;
 use Document;

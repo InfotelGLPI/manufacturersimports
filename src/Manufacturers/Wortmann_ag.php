@@ -28,30 +28,31 @@
  --------------------------------------------------------------------------
  */
 
-namespace GlpiPlugin\Manufacturersimports;
+namespace GlpiPlugin\Manufacturersimports\Manufacturers;
 
-use Search;
+use GlpiPlugin\Manufacturersimports\Config;
+use GlpiPlugin\Manufacturersimports\PostImport;
 
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access directly to this file");
 }
 
 /**
- * Class Toshiba
+ * Class Wortmann_ag
  */
-class Toshiba extends Manufacturer
+class Wortmann_ag extends Manufacturer
 {
     /**
      * @see Manufacturer::showDocTitle()
      */
     public function showDocTitle($output_type, $header_num)
     {
-        return Search::showHeaderItem($output_type, __('File'), $header_num);
+        return false;
     }
 
     public function getSearchField()
     {
-        return false;
+        return "search";
     }
 
     /**
@@ -65,24 +66,10 @@ class Toshiba extends Manufacturer
         $supplierUrl = null
     )
     {
-        $info["name"]         = Config::TOSHIBA;
-        $info["supplier_url"] = "https://support.dynabook.com/support/warrantyResults?";
-        $info["url"]          = $supplierUrl .
-                                "sno=" . $compSerial;
+        $info["name"]         = Config::WORTMANN_AG;
+        $info["supplier_url"] = "https://www.wortmann.de/fr-fr/profile/snsearch.aspx?SN=";
+        $info["url"]          = $supplierUrl.$compSerial;
         return $info;
-    }
-
-    /**
-     * Summary of getWarrantyUrl
-     *
-     * @param  $config
-     * @param  $compSerial
-     *
-     * @return string[]
-     */
-    public static function getWarrantyUrl($config, $compSerial)
-    {
-        return ["url" => "https://support.dynabook.com/support/warrantyResults?sno=" . "$compSerial"];
     }
 
     /**
@@ -90,11 +77,19 @@ class Toshiba extends Manufacturer
      */
     public function getBuyDate($contents)
     {
-        $field  = "shipDate";
-        $search = stristr($contents, $field);
-        $myDate = substr($search, 11, 21);
+        $field     = "but de la service";
+        $searchstart = stristr($contents, $field);
+        $myDate = substr($searchstart, 26, 10);
+
         $myDate = trim($myDate);
-        $myDate = PostImport::checkDate($myDate);
+        $myDate = str_replace('/', '-', $myDate);
+
+        $myDate = PostImport::checkDate($myDate, true);
+
+        if ($myDate != "0000-00-00") {
+            list($day, $month, $year) = explode('-', $myDate);
+            $myDate = date("Y-m-d", mktime(0, 0, 0, $month, $day, $year));
+        }
 
         return $myDate;
     }
@@ -104,13 +99,7 @@ class Toshiba extends Manufacturer
      */
     public function getStartDate($contents)
     {
-        $field  = "customerPurchaseDate";
-        $search = stristr($contents, $field);
-        $myDate = substr($search, 23, 21);
-        $myDate = trim($myDate);
-        $myDate = PostImport::checkDate($myDate);
-
-        return $myDate;
+        return self::getBuyDate($contents);
     }
 
     /**
@@ -118,11 +107,19 @@ class Toshiba extends Manufacturer
      */
     public function getExpirationDate($contents)
     {
-        $field     = "warrantyExpiryDate";
-        $search    = stristr($contents, $field);
-        $myEndDate = substr($search, 21, 21);
-        $myEndDate = trim($myEndDate);
-        $myEndDate = PostImport::checkDate($myEndDate);
-        return $myEndDate;
+        $field     = "Fin de service";
+        $searchstart = stristr($contents, $field);
+        $myDate = substr($searchstart, 23, 10);
+
+        $myDate = trim($myDate);
+        $myDate = str_replace('/', '-', $myDate);
+
+        $myDate = PostImport::checkDate($myDate, true);
+
+        if ($myDate != "0000-00-00") {
+            list($day, $month, $year) = explode('-', $myDate);
+            $myDate = date("Y-m-d", mktime(0, 0, 0, $month, $day, $year));
+        }
+        return $myDate;
     }
 }

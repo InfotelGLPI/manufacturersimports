@@ -3,7 +3,7 @@
 namespace GlpiPlugin\Manufacturersimports\Tests;
 
 use GlpiPlugin\Manufacturersimports\Config;
-use GlpiPlugin\Manufacturersimports\Dell;
+use GlpiPlugin\Manufacturersimports\Manufacturers\Dell;
 use PHPUnit\Framework\TestCase;
 
 class DellTest extends TestCase

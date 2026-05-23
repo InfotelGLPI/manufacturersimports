@@ -3,7 +3,7 @@
 namespace GlpiPlugin\Manufacturersimports\Tests;
 
 use GlpiPlugin\Manufacturersimports\Config;
-use GlpiPlugin\Manufacturersimports\Lenovo;
+use GlpiPlugin\Manufacturersimports\Manufacturers\Lenovo;
 use PHPUnit\Framework\TestCase;
 
 class LenovoTest extends TestCase

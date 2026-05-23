@@ -3,7 +3,7 @@
 namespace GlpiPlugin\Manufacturersimports\Tests;
 
 use GlpiPlugin\Manufacturersimports\Config;
-use GlpiPlugin\Manufacturersimports\Toshiba;
+use GlpiPlugin\Manufacturersimports\Manufacturers\Toshiba;
 use PHPUnit\Framework\TestCase;
 
 class ToshibaTest extends TestCase

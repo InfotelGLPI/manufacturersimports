@@ -40,6 +40,7 @@ use Infocom;
 use Search;
 use Session;
 use Supplier;
+use GlpiPlugin\Manufacturersimports\Manufacturers\Manufacturer;
 use Toolbox;
 
 if (!defined('GLPI_ROOT')) {
@@ -113,7 +114,7 @@ class PreImport extends CommonDBTM
     ) {
         $url = "";
         if (!empty($suppliername)) {
-            $supplierclass = "GlpiPlugin\Manufacturersimports\\" . $suppliername;
+            $supplierclass = "GlpiPlugin\Manufacturersimports\Manufacturers\\" . $suppliername;
             $supplier      = new $supplierclass();
             $infos         = $supplier->getSupplierInfo(
                 $compSerial,
@@ -147,7 +148,7 @@ class PreImport extends CommonDBTM
     ) {
         $url_warranty = "";
         if (!empty($suppliername)) {
-            $supplierclass = "GlpiPlugin\Manufacturersimports\\" . $suppliername;
+            $supplierclass = "GlpiPlugin\Manufacturersimports\Manufacturers\\" . $suppliername;
             $supplier      = new $supplierclass();
             $infos         = $supplier->getSupplierInfo(
                 $compSerial,
@@ -174,7 +175,7 @@ class PreImport extends CommonDBTM
     {
         $url = "";
         if (!empty($suppliername)) {
-            $supplierclass = "GlpiPlugin\Manufacturersimports\\" . $suppliername;
+            $supplierclass = "GlpiPlugin\Manufacturersimports\Manufacturers\\" . $suppliername;
             $supplier      = new $supplierclass();
             if (method_exists($supplier, "getSupplierMoreInfo")) {
                 $url = $supplier->getSupplierMoreInfo($compSerial, $otherserial, $supplierkey, $supplierUrl);
@@ -196,7 +197,7 @@ class PreImport extends CommonDBTM
     {
         $js = "";
         if (!empty($suppliername)) {
-            $supplierclass = "GlpiPlugin\Manufacturersimports\\" . $suppliername;
+            $supplierclass = "GlpiPlugin\Manufacturersimports\Manufacturers\\" . $suppliername;
             $supplier      = new $supplierclass();
             if (method_exists($supplier, "getJSSupplier")) {
                 $js = $supplier->getJSSupplier($compSerial, $otherserial, $supplierkey, $supplierUrl);
@@ -221,7 +222,7 @@ class PreImport extends CommonDBTM
     ) {
         $post = "";
         if (!empty($suppliername)) {
-            $supplierclass = "GlpiPlugin\Manufacturersimports\\" . $suppliername;
+            $supplierclass = "GlpiPlugin\Manufacturersimports\Manufacturers\\" . $suppliername;
             $supplier      = new $supplierclass();
             $infos         = $supplier->getSupplierInfo($compSerial, $otherserial, $supplierkey, $supplierSecret);
             if (isset($infos['post'])) {
@@ -262,7 +263,7 @@ class PreImport extends CommonDBTM
 //        $supplierWarranty  = $config->fields["warranty_duration"];
 //        $supplierkey       = $config->fields["supplier_key"];
 //        $supplierkeysecret = $config->fields["supplier_secret"];
-//        $supplierclass     = "GlpiPlugin\Manufacturersimports\\" . $suppliername;
+//        $supplierclass     = "GlpiPlugin\Manufacturersimports\Manufacturers\\" . $suppliername;
 //        $supplier          = new $supplierclass();
 //
 //        $row_num++;
@@ -546,7 +547,7 @@ class PreImport extends CommonDBTM
         $config = new Config();
         $config->getFromDB($p['manufacturers_id']);
         $suppliername  = $config->fields['name'] ?? '';
-        $supplierclass = 'GlpiPlugin\\Manufacturersimports\\' . $suppliername;
+        $supplierclass = 'GlpiPlugin\\Manufacturersimports\\Manufacturers\\' . $suppliername;
         $supplier      = new $supplierclass();
 
         $infocom = new Infocom();

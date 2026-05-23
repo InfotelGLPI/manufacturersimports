@@ -96,7 +96,7 @@ class Config extends CommonDBTM
             case self::LENOVO:
             case self::TOSHIBA:
             case self::WORTMANN_AG:
-                $supplierclass = "GlpiPlugin\Manufacturersimports\\".$suppliername;
+                $supplierclass = "GlpiPlugin\Manufacturersimports\Manufacturers\\".$suppliername;
                 $supplier                     = new $supplierclass();
                 $infos                        = $supplier->getSupplierInfo();
                 $this->fields["name"]         = $infos["name"];
@@ -320,7 +320,7 @@ class Config extends CommonDBTM
         $base_url    = '';
         $test_mode   = '';
 
-        $supplier_class = "GlpiPlugin\\Manufacturersimports\\" . $supplier_name;
+        $supplier_class = "GlpiPlugin\\Manufacturersimports\\Manufacturers\\" . $supplier_name;
         if ($supplier_name !== '' && class_exists($supplier_class)) {
             $supplier_obj = new $supplier_class();
             $test_field   = $supplier_obj->getTestUrlField();
@@ -643,7 +643,7 @@ class Config extends CommonDBTM
                 if (!in_array($suppliername, $allowed_suppliers, true)) {
                     return;
                 }
-                $supplierclass                  = "GlpiPlugin\Manufacturersimports\\" . $suppliername;
+                $supplierclass                  = "GlpiPlugin\Manufacturersimports\Manufacturers\\" . $suppliername;
                 $token                          = $supplierclass::getToken($config);
                 $warranty_url                   = $supplierclass::getWarrantyUrl($config, $item->fields['serial']);
                 $options['token']               = $token;

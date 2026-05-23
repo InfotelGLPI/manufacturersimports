@@ -28,8 +28,9 @@
  --------------------------------------------------------------------------
  */
 
-namespace GlpiPlugin\Manufacturersimports;
+namespace GlpiPlugin\Manufacturersimports\Manufacturers;
 
+use GlpiPlugin\Manufacturersimports\Config;
 use Search;
 
 if (!defined('GLPI_ROOT')) {

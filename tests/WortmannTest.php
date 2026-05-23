@@ -3,7 +3,7 @@
 namespace GlpiPlugin\Manufacturersimports\Tests;
 
 use GlpiPlugin\Manufacturersimports\Config;
-use GlpiPlugin\Manufacturersimports\Wortmann_ag;
+use GlpiPlugin\Manufacturersimports\Manufacturers\Wortmann_ag;
 use PHPUnit\Framework\TestCase;
 
 class WortmannTest extends TestCase

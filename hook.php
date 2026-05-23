@@ -32,7 +32,7 @@ use GlpiPlugin\Manufacturersimports\Config;
 use GlpiPlugin\Manufacturersimports\Profile;
 use GlpiPlugin\Manufacturersimports\Menu;
 use GlpiPlugin\Manufacturersimports\Import;
-use GlpiPlugin\Manufacturersimports\Dell;
+use GlpiPlugin\Manufacturersimports\Manufacturers\Dell;
 
 function plugin_manufacturersimports_install()
 {

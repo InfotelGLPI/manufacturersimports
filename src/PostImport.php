@@ -360,7 +360,7 @@ class PostImport extends CommonDBTM
             return ['name' => "#{$ID}", 'serial' => '', 'success' => false];
         }
 
-        $supplierclass = 'GlpiPlugin\\Manufacturersimports\\' . $suppliername;
+        $supplierclass = 'GlpiPlugin\\Manufacturersimports\\Manufacturers\\' . $suppliername;
         $token         = $supplierclass::getToken($config);
 
         $result = ['name' => "#{$ID}", 'serial' => '', 'success' => false];
@@ -421,7 +421,7 @@ class PostImport extends CommonDBTM
     {
         $field = '';
         if (!empty($suppliername)) {
-            $supplierclass = "GlpiPlugin\Manufacturersimports\\" . $suppliername;
+            $supplierclass = "GlpiPlugin\Manufacturersimports\Manufacturers\\" . $suppliername;
             $supplier      = new $supplierclass();
             $field         = $supplier->getSearchField();
         }
@@ -437,7 +437,7 @@ class PostImport extends CommonDBTM
      */
     public static function importDate($suppliername, $contents)
     {
-        $supplierclass = "GlpiPlugin\Manufacturersimports\\" . $suppliername;
+        $supplierclass = "GlpiPlugin\Manufacturersimports\Manufacturers\\" . $suppliername;
         $supplier      = new $supplierclass();
         $importDate    = $supplier->getBuyDate($contents);
 
@@ -452,7 +452,7 @@ class PostImport extends CommonDBTM
      */
     public static function importStartDate($suppliername, $contents)
     {
-        $supplierclass   = "GlpiPlugin\Manufacturersimports\\" . $suppliername;
+        $supplierclass   = "GlpiPlugin\Manufacturersimports\Manufacturers\\" . $suppliername;
         $supplier        = new $supplierclass();
         $importStartDate = $supplier->getStartDate($contents);
 
@@ -467,7 +467,7 @@ class PostImport extends CommonDBTM
      */
     public static function importWarrantyInfo($suppliername, $contents)
     {
-        $supplierclass      = "GlpiPlugin\Manufacturersimports\\" . $suppliername;
+        $supplierclass      = "GlpiPlugin\Manufacturersimports\Manufacturers\\" . $suppliername;
         $supplier           = new $supplierclass();
         $importWarrantyInfo = $supplier->getWarrantyInfo($contents);
 
@@ -507,7 +507,7 @@ class PostImport extends CommonDBTM
      */
     public static function importDateFin($suppliername, $contents)
     {
-        $supplierclass = "GlpiPlugin\Manufacturersimports\\" . $suppliername;
+        $supplierclass = "GlpiPlugin\Manufacturersimports\Manufacturers\\" . $suppliername;
         $supplier      = new $supplierclass();
         $maDateFin     = $supplier->getExpirationDate($contents);
 
@@ -568,7 +568,7 @@ class PostImport extends CommonDBTM
         if (!in_array($suppliername, $allowed_suppliers, true)) {
             return;
         }
-        $supplierclass = "GlpiPlugin\Manufacturersimports\\" . $suppliername;
+        $supplierclass = "GlpiPlugin\Manufacturersimports\Manufacturers\\" . $suppliername;
         $token         = $supplierclass::getToken($config);
 
         while ($line = $DB->fetchArray($result)) {
