@@ -10,9 +10,38 @@ class HPTest extends TestCase
 {
     private HP $hp;
 
+    /**
+     * Real HP API response for a Z2 Tower G9 (MONSERIAL) with 2 offers (type W).
+     * Used to validate parsing logic against production data.
+     */
+    private string $realHpJson;
+
     protected function setUp(): void
     {
         $this->hp = new HP();
+
+        $this->realHpJson = json_encode([[
+            'product' => [
+                'serialNumber'       => 'MONSERIAL',
+                'productDescription' => 'HP Z2 Tower G9 Workstation Desktop PC (4Y0H8AV)',
+                'productNumber'      => null,
+                'countryCode'        => 'US',
+            ],
+            'offers' => [
+                [
+                    'offerDescription'                   => 'Warranty Hardware Maintenance On-Site',
+                    'serviceObligationTypeCode'          => 'W',
+                    'serviceObligationLineItemStartDate' => '2022-10-05',
+                    'serviceObligationLineItemEndDate'   => '2025-10-04',
+                ],
+                [
+                    'offerDescription'                   => 'Wty: HP Support for Initial Setup',
+                    'serviceObligationTypeCode'          => 'W',
+                    'serviceObligationLineItemStartDate' => '2022-10-05',
+                    'serviceObligationLineItemEndDate'   => '2023-01-02',
+                ],
+            ],
+        ]]);
     }
 
     public function testGetSupplierInfoDefaultsReturnsHPValues(): void
@@ -194,5 +223,42 @@ class HPTest extends TestCase
     public function testGetSearchFieldReturnsFalse(): void
     {
         $this->assertFalse($this->hp->getSearchField());
+    }
+
+    // ── Tests with a real HP API response (Z2 Tower G9, 2 W-type offers) ──
+
+    public function testRealResponseGetBuyDateReturnsStartDate(): void
+    {
+        // Both offers start 2022-10-05; no type-C offer, so the max start date is returned.
+        $result = $this->hp->getBuyDate($this->realHpJson);
+
+        $this->assertIsString($result);
+        $this->assertStringContainsString('2022-10-05', $result);
+    }
+
+    public function testRealResponseGetStartDateMatchesBuyDate(): void
+    {
+        $this->assertSame(
+            $this->hp->getBuyDate($this->realHpJson),
+            $this->hp->getStartDate($this->realHpJson)
+        );
+    }
+
+    public function testRealResponseGetExpirationDateReturnsLatestEndDate(): void
+    {
+        // offer[0] ends 2025-10-04, offer[1] ends 2023-01-02 — latest is 2025-10-04.
+        $result = $this->hp->getExpirationDate($this->realHpJson);
+
+        $this->assertIsString($result);
+        $this->assertStringContainsString('2025-10-04', $result);
+        $this->assertStringNotContainsString('2023', $result);
+    }
+
+    public function testRealResponseGetWarrantyInfoReturnsDescriptionOfLatestEndDate(): void
+    {
+        // offer[0] has the latest end date (2025-10-04) → its offerDescription must be returned.
+        $result = $this->hp->getWarrantyInfo($this->realHpJson);
+
+        $this->assertSame('Warranty Hardware Maintenance On-Site', $result);
     }
 }

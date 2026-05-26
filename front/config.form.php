@@ -89,11 +89,14 @@ if (isset($_POST["add"])) {
         $ch = curl_init($token_url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/x-www-form-urlencoded']);
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
             'client_id'     => $supplier_key,
             'client_secret' => $supplier_secret,
             'grant_type'    => 'client_credentials',
         ]));
+        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+        curl_setopt($ch, CURLOPT_USERPWD, $supplier_key . ':' . $supplier_secret);
         curl_setopt($ch, CURLOPT_TIMEOUT, 15);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
         if (!empty($CFG_GLPI['proxy_name'])) {
