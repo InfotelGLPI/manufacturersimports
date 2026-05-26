@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-23 15:41+0000\n"
+"POT-Creation-Date: 2026-05-26 07:28+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,7 +34,7 @@ msgstr ""
 msgid "Already imported"
 msgstr ""
 
-#: front/config.form.php:117
+#: front/config.form.php:120
 msgid "Authentication successful (token received)"
 msgstr ""
 
@@ -144,7 +144,7 @@ msgstr ""
 msgid "New warranty attached"
 msgstr ""
 
-#: front/config.form.php:119
+#: front/config.form.php:122
 msgid "No access token in response"
 msgstr ""
 
@@ -156,7 +156,7 @@ msgstr ""
 msgid "No manufacturer available. Please configure at least one manufacturer"
 msgstr ""
 
-#: front/config.form.php:144
+#: front/config.form.php:147
 msgid "No response from server"
 msgstr ""
 
@@ -203,7 +203,7 @@ msgstr ""
 msgid "Selection too large, massive action disabled."
 msgstr ""
 
-#: ajax/testConnection.php:90 front/config.form.php:147
+#: ajax/testConnection.php:90 front/config.form.php:150
 #, php-format
 msgid "Server reachable (HTTP %d)"
 msgstr ""
