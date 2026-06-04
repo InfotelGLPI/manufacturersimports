@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-26 08:37+0000\n"
+"POT-Creation-Date: 2026-06-04 08:57+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -67,7 +67,7 @@ msgstr ""
 msgid "Connection failed/data download from manufacturer web site"
 msgstr ""
 
-#: src/PostImport.php:91 ajax/testConnection.php:53 front/config.form.php:78
+#: ajax/testConnection.php:53 front/config.form.php:78 src/PostImport.php:91
 msgid "Curl PHP package not installed"
 msgstr ""
 
@@ -85,6 +85,12 @@ msgstr ""
 
 #: src/PreImport.php:496
 msgid "Devices with import error"
+msgstr ""
+
+#. TRANS: %1$d, %2$d, %3$d are page numbers
+#: src/PreImport.php:1084
+#, php-format
+msgid "From %1$d to %2$d on %3$d"
 msgstr ""
 
 #: src/Import.php:177 src/PostImport.php:293 src/PostImport.php:899
@@ -117,7 +123,7 @@ msgstr ""
 msgid "Manufacturer"
 msgstr ""
 
-#: src/PreImport.php:781 src/Config.php:582
+#: src/Config.php:582 src/PreImport.php:781
 msgid "Manufacturer information"
 msgstr ""
 
@@ -141,7 +147,7 @@ msgstr ""
 msgid "New warranty affected by default (Replace if 0)"
 msgstr ""
 
-#: src/PreImport.php:590 src/Config.php:244
+#: src/Config.php:244 src/PreImport.php:590
 msgid "New warranty attached"
 msgstr ""
 
@@ -213,8 +219,8 @@ msgstr ""
 msgid "Supplier attached"
 msgstr ""
 
-#: src/Profile.php:130 src/PreImport.php:70 src/Menu.php:53 setup.php:90
-#: front/massiveaction.php:44
+#: front/massiveaction.php:44 src/Profile.php:130 src/PreImport.php:70
+#: src/Menu.php:53 setup.php:90
 msgid "Suppliers import"
 msgid_plural "Suppliers imports"
 msgstr[0] ""
