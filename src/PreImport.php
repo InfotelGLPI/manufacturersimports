@@ -1081,7 +1081,7 @@ class PreImport extends CommonDBTM
 
         echo "<td width='50%' class='tab_bg_2 b'>";
         //TRANS: %1$d, %2$d, %3$d are page numbers
-        printf(__('From %1$d to %2$d on %3$d'), $current_start, $current_end, $numrows);
+        printf(__('From %1$d to %2$d on %3$d', 'manufacturersimports'), $current_start, $current_end, $numrows);
         echo "</td>\n";
 
         // Forward and fast forward button

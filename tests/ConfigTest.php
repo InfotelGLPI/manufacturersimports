@@ -60,7 +60,7 @@ class ConfigTest extends TestCase
         $this->assertSame('Fujitsu', Config::FUJITSU);
         $this->assertSame('Toshiba', Config::TOSHIBA);
         $this->assertSame('Lenovo', Config::LENOVO);
-        $this->assertSame('Wortmann_AG', Config::WORTMANN_AG);
+        $this->assertSame('Wortmann_ag', Config::WORTMANN_AG);
     }
 
     public function testPrepareInputForAddKeepsAllowedFields(): void

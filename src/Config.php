@@ -59,7 +59,7 @@ class Config extends CommonDBTM
     public const HP          = "HP";
     public const FUJITSU     = "Fujitsu";
     public const TOSHIBA     = "Toshiba";
-    public const WORTMANN_AG = "Wortmann_AG";
+    public const WORTMANN_AG = "Wortmann_ag";
 
     public static function getTypeName($nb = 0)
     {
