@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-04 08:59+0000\n"
+"POT-Creation-Date: 2026-06-18 16:23+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -67,7 +67,7 @@ msgstr ""
 msgid "Connection failed/data download from manufacturer web site"
 msgstr ""
 
-#: ajax/testConnection.php:53 front/config.form.php:78 src/PostImport.php:91
+#: front/config.form.php:78 src/PostImport.php:91 ajax/testConnection.php:53
 msgid "Curl PHP package not installed"
 msgstr ""
 
@@ -123,7 +123,7 @@ msgstr ""
 msgid "Manufacturer"
 msgstr ""
 
-#: src/Config.php:582 src/PreImport.php:781
+#: src/PreImport.php:781 src/Config.php:582
 msgid "Manufacturer information"
 msgstr ""
 
@@ -147,7 +147,7 @@ msgstr ""
 msgid "New warranty affected by default (Replace if 0)"
 msgstr ""
 
-#: src/Config.php:244 src/PreImport.php:590
+#: src/PreImport.php:590 src/Config.php:244
 msgid "New warranty attached"
 msgstr ""
 
@@ -210,7 +210,7 @@ msgstr ""
 msgid "Selection too large, massive action disabled."
 msgstr ""
 
-#: ajax/testConnection.php:89 front/config.form.php:149
+#: front/config.form.php:149 ajax/testConnection.php:89
 #, php-format
 msgid "Server reachable (HTTP %d)"
 msgstr ""
@@ -238,7 +238,7 @@ msgstr ""
 msgid "The choosen supplier is not recursive"
 msgstr ""
 
-#: ajax/testConnection.php:45 front/config.form.php:74
+#: front/config.form.php:74 ajax/testConnection.php:45
 msgid "Token URL is empty"
 msgstr ""
 
