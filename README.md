@@ -1,60 +1,39 @@
-# manufacturersimports
-Plugin manufacturersimports pour GLPI
+## Manufacturersimports plugin for GLPI
 
-Ce plugin est sur Transifex - Aidez-nous à le traduire :
-https://www.transifex.com/infotelGLPI/GLPI_manufacturersimports/
+[![License](https://img.shields.io/badge/License-GNU%20v2-blue.svg?style=flat-square)](https://github.com/InfotelGLPI/manufacturersimports/blob/master/LICENSE)
+[![Web](https://img.shields.io/badge/Web-Infotel-blue.svg?style=flat-square)](https://blogglpi.infotel.com)
+[![Translate](https://img.shields.io/badge/Translate-Transifex-cyan)](https://explore.transifex.com/infotelGLPI/GLPI_manufacturersimports/)
 
-This plugin is on Transifex - Help us to translate :
-https://www.transifex.com/infotelGLPI/GLPI_manufacturersimports/
+---
 
+### English
 
-Ce plugin vous permet d'injecter des informations financières depuis les sites fabricants directement dans GLPI.
-> * Vous sélectionnez vos types de matériels et si au préalable vous avez fourni numéro de série et numéro de modèle (selon les fabricants) vous pourrez importer la garantie, la date d'achat, ainsi qu'enregistrer la page hmtl des fabricants.
-> * Fonctionne avec Dell, HP, Toshiba, Lenovo (> 1.5.0), Fujitsu-Siemens et Wortmann AG
+This plugin imports warranty and financial information from manufacturer websites directly into GLPI asset infocoms.
 
+* For each asset with a configured manufacturer and a serial number, automatically retrieve the **purchase date**, **warranty start date**, and **warranty duration**.
+* Supports **Dell**, **HP**, **Lenovo**, **Toshiba/Dynabook**, **Fujitsu**, and **Wortmann AG (Terra)**.
+* Dell and HP use **OAuth2 APIs** (API keys required); Lenovo uses a **Client ID key**; Toshiba, Fujitsu, and Wortmann AG work via direct URL.
+* Optionally saves the manufacturer HTML support page as a **GLPI document** linked to the asset.
+* Optionally adds a **comment line** to infocoms indicating the import source and date.
+* Supports **bulk import** with a real-time progress bar, and **individual import** from the asset form.
+* Includes a GLPI **cron task** (`DataWarrantyImport`) for automatic nightly imports of Dell and HP warranties.
+* Applicable to: Computers, Monitors, Network Equipment, Peripherals, Printers.
 
-This plugin allows you to inject financials informations from manufacturers web site files in GLPI.
-> * You select your type of equipment in advance and if you provided serial number and model number (different from manufacturers) you can import the warranty, the date of purchase and save the page HMTL manufacturers.
-> * Works with Dell, HP, Toshiba, Lenovo (> 1.5.0), Fujitsu-Siemens and Wortmann AG
+**[Full English documentation →](docs/en/index.md)**
 
+---
 
-Fabricants / Manufacturers
+### Français
 
-> * Pour Dell, il faut maintenant s'enregistrer afin d'avoir une clé API : 
+Ce plugin importe les informations de garantie et financières depuis les sites fabricants directement dans les infocoms des matériels GLPI.
 
-https://techdirect.dell.com
+* Pour chaque matériel dont le fabricant est configuré et dont le numéro de série est renseigné, récupère automatiquement la **date d’achat**, la **date de début de garantie** et la **durée de garantie**.
+* Supporte **Dell**, **HP**, **Lenovo**, **Toshiba/Dynabook**, **Fujitsu** et **Wortmann AG (Terra)**.
+* Dell et HP utilisent des **API OAuth2** (clés API requises) ; Lenovo utilise un **Client ID** ; Toshiba, Fujitsu et Wortmann AG fonctionnent par URL directe.
+* Enregistre optionnellement la page HTML du support fabricant comme **document GLPI** lié au matériel.
+* Ajoute optionnellement une **ligne de commentaire** dans les infocoms indiquant la source et la date de l’import.
+* Supporte l’**import en masse** avec barre de progression en temps réel, et l’**import unitaire** depuis la fiche matériel.
+* Inclut une **tâche automatique GLPI** (`DataWarrantyImport`) pour l’import nocturne automatique des garanties Dell et HP.
+* Applicable à : Ordinateurs, Moniteurs, Équipements réseau, Périphériques, Imprimantes.
 
-URL dans le plugin :
-- Url du fabricant : https://www.dell.com/support/home/product-support/servicetag/
-- Adresse API du token d’accès : https://apigtwb2c.us.dell.com/auth/oauth/v2/token
-- Adresse API des garanties : https://apigtwb2c.us.dell.com/PROD/sbil/eapi/v5/asset-entitlements?servicetags=
-
-> * Pour HP, il faut maintenant s'enregistrer afin d'avoir une clé API :
-
-- Faire une demande d'accès à l'API via son HP account manager / commercial HP
-- L'account manager va rentrer la demande dans le système HP et donner quelques informations sur son client
-- Le client recevra un email de la part de l'adresse warrantyapi.customers@hp.com avec les étapes à effectuer pour finaliser sa demande et avoir l'accès
-- La clé est valable 90 jours
-- Un email sera envoyé à l'utilisateur quand il faudra renouveler cette clé ; l'email contient un lien sur lequel cliquer pour générer de nouvelles clés. C'est une démarche rapide. 
-
-URL dans le plugin :
-- Url du fabricant : https://support.hp.com/fr-fr/check-warranty/
-- Adresse API du token d’accès : https://warranty.api.hp.com/oauth/v1/token
-- Adresse API des garanties : https://warranty.api.hp.com/productwarranty/v2/queries
-
-
-> * Pour Lenovo, il faut maintenant s'enregistrer chez Lenovo afin d'avoir une clé API:
-
-URL dans le plugin :
-Url du fabricant : https://supportapi.lenovo.com/v2.5/warranty
-
-> * Pour Toshiba
-
-URL dans le plugin :
-Url du fabricant : https://support.dynabook.com/support/warrantyResults?
-
-
-> * Pour Fujitsu
-
-URL dans le plugin :
-Url du fabricant : https://support.ts.fujitsu.com/ProductCheck/Default.aspx?Lng=en&GotoDiv=Warranty/WarrantyStatus&DivID=indexwarranty&GotoUrl=IndexWarranty&RegionID=1&Token=${$i$M$f$u&Ident=
+**[Documentation complète en français →](docs/fr/index.md)**
