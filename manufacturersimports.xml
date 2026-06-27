@@ -233,7 +233,7 @@
         <lang>tr_TR</lang>
         <lang>zh_TW</lang>
     </langs>
-    <license><![CDATA[GPL v2+]]></license>
+    <license><![CDATA[GPL v3+]]></license>
     <tags>
         <fr>
             <tag>Import</tag>

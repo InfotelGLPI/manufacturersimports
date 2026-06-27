@@ -1,6 +1,6 @@
 # Documentation — Plugin Manufacturersimports pour GLPI
 
-**Licence :** GNU GPL v2+  
+**Licence :** GNU GPL v3+  
 **Auteurs :** Infotel, Xavier CAILLAUD  
 **Dépôt :** https://github.com/InfotelGLPI/manufacturersimports
 
