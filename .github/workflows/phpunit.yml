@@ -22,14 +22,14 @@ jobs:
 
     steps:
       - name: Checkout GLPI core (shallow)
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: glpi-project/glpi
           ref: 11.0/bugfixes
           path: glpi
 
       - name: Checkout plugin
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           path: glpi/plugins/manufacturersimports
 
