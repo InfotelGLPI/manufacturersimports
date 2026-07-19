@@ -35,7 +35,9 @@ if (!defined('GLPI_ROOT')) {
     die("Can not access directly to this file");
 }
 
-Session::checkLoginUser();
+// Reaching out to an arbitrary URL server-side requires the plugin update right,
+// not merely being logged in (defends against SSRF by unprivileged users).
+Session::checkRight("plugin_manufacturersimports", UPDATE);
 
 $token_url = trim($_POST['token_url'] ?? '');
 
@@ -43,6 +45,15 @@ if (empty($token_url)) {
     echo json_encode([
         'success' => false,
         'message' => __('Token URL is empty', 'manufacturersimports'),
+    ]);
+    exit;
+}
+
+// Reject non-https URLs and hosts resolving to private/reserved IPs (SSRF).
+if (!\GlpiPlugin\Manufacturersimports\Config::isSafeApiUrl($token_url)) {
+    echo json_encode([
+        'success' => false,
+        'message' => __('Invalid or forbidden URL', 'manufacturersimports'),
     ]);
     exit;
 }
@@ -62,7 +73,9 @@ curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_NOBODY, true);
 curl_setopt($ch, CURLOPT_TIMEOUT, 10);
 curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+// Do not follow redirects: a public host could otherwise bounce us to an
+// internal target, bypassing the URL validation above.
+curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
 
 if (!empty($CFG_GLPI['proxy_name'])) {
     curl_setopt($ch, CURLOPT_PROXY, $CFG_GLPI['proxy_name'] . ':' . $CFG_GLPI['proxy_port']);

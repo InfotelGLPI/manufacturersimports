@@ -112,23 +112,23 @@
             {% if item.fields['name'] in ['Dell', 'HP'] %}
                 {{ fields.textField(
                     'supplier_key',
-                    item.fields['supplier_key'],
+                    supplier_key_value,
                     __('Client id', 'manufacturersimports')
                 ) }}
                 {{ fields.passwordField(
                     'supplier_secret',
-                    item.fields['supplier_secret'],
+                    supplier_secret_value,
                     __('Client secret', 'manufacturersimports'),
                     {'is_disclosable': true, 'clearable': false}
                 ) }}
             {% elseif item.fields['name'] == 'Lenovo' %}
                 {{ fields.textField(
                     'supplier_key',
-                    item.fields['supplier_key'],
+                    supplier_key_value,
                     __('Client id', 'manufacturersimports')
                 ) }}
             {% else %}
-                {{ fields.dropdownYesNo(
+                {{ fields.sliderField(
                     'document_adding',
                     item.fields['document_adding'],
                     __('Auto add of document', 'manufacturersimports')
@@ -199,7 +199,7 @@
             {% endif %}
 
             {# Whether to append a comment line on import #}
-            {{ fields.dropdownYesNo(
+            {{ fields.sliderField(
                 'comment_adding',
                 item.fields['comment_adding'],
                 __('Add a comment line', 'manufacturersimports')

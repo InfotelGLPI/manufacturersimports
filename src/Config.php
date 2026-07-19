@@ -34,6 +34,7 @@ use CommonDBTM;
 use DbUtils;
 use Dropdown;
 use Glpi\Application\View\TemplateRenderer;
+use GLPIKey;
 use Html;
 use Session;
 use Toolbox;
@@ -52,6 +53,118 @@ class Config extends CommonDBTM
         'NetworkEquipment',
         'Peripheral', 'Printer'];
     public $dohistory = true;
+
+    /**
+     * Secret fields stored encrypted at rest. Kept out of the history log so the
+     * ciphertext never lands in glpi_logs.
+     */
+    public $history_blacklist = ['supplier_key', 'supplier_secret'];
+
+    /**
+     * Marker prefixing every GLPIKey-encrypted secret. Lets us tell an encrypted
+     * value apart from a legacy plaintext one without ambiguity, so decryption is
+     * self-migrating and never emits sodium warnings on old rows.
+     */
+    private const SECRET_PREFIX = 'crypt:';
+
+    /**
+     * Encrypt a secret value for storage. Empty values stay empty.
+     *
+     * @param string $value plaintext secret
+     *
+     * @return string prefixed ciphertext, or '' when empty
+     */
+    public static function encryptSecret(string $value): string
+    {
+        if ($value === '') {
+            return '';
+        }
+        return self::SECRET_PREFIX . (new GLPIKey())->encrypt($value);
+    }
+
+    /**
+     * Decrypt a stored secret. Values written before encryption was introduced
+     * (no prefix) are returned as-is so existing configurations keep working.
+     *
+     * @param string|null $value stored value
+     *
+     * @return string plaintext secret
+     */
+    public static function decryptSecret(?string $value): string
+    {
+        if ($value === null || $value === '') {
+            return '';
+        }
+        if (!str_starts_with($value, self::SECRET_PREFIX)) {
+            // Legacy plaintext row, not yet migrated.
+            return $value;
+        }
+        return (string) (new GLPIKey())->decrypt(substr($value, strlen(self::SECRET_PREFIX)));
+    }
+
+    /**
+     * Validate that a URL is safe to fetch server-side (SSRF mitigation).
+     *
+     * Only https is accepted and the host must not resolve to a private,
+     * loopback, link-local or otherwise reserved IP range — this blocks
+     * requests to internal services (localhost, 169.254.169.254, 10.0.0.0/8...).
+     * Callers must additionally disable HTTP redirect following so a public host
+     * cannot bounce the request to an internal target.
+     *
+     * @param string $url URL to validate
+     *
+     * @return bool true when the URL is safe to reach out to
+     */
+    public static function isSafeApiUrl(string $url): bool
+    {
+        $url = trim($url);
+        if ($url === '' || filter_var($url, FILTER_VALIDATE_URL) === false) {
+            return false;
+        }
+
+        $parts = parse_url($url);
+        if ($parts === false
+            || ($parts['scheme'] ?? '') !== 'https'
+            || empty($parts['host'])) {
+            return false;
+        }
+
+        $host = $parts['host'];
+
+        // Collect every IP the host maps to.
+        $ips = [];
+        if (filter_var($host, FILTER_VALIDATE_IP)) {
+            $ips[] = $host;
+        } else {
+            $records = @dns_get_record($host, DNS_A | DNS_AAAA);
+            if (is_array($records)) {
+                foreach ($records as $record) {
+                    if (isset($record['ip'])) {
+                        $ips[] = $record['ip'];
+                    } elseif (isset($record['ipv6'])) {
+                        $ips[] = $record['ipv6'];
+                    }
+                }
+            }
+        }
+
+        if (empty($ips)) {
+            // Host could not be resolved: refuse rather than let curl resolve it.
+            return false;
+        }
+
+        foreach ($ips as $ip) {
+            if (filter_var(
+                $ip,
+                FILTER_VALIDATE_IP,
+                FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE
+            ) === false) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     //Manufacturers constants
     public const DELL        = "Dell";
@@ -349,6 +462,8 @@ class Config extends CommonDBTM
             'base_url'      => $base_url,
             'test_mode'     => $test_mode,
             'action_url'    => self::getFormURL(true),
+            'supplier_key_value'    => self::decryptSecret($this->fields['supplier_key'] ?? ''),
+            'supplier_secret_value' => self::decryptSecret($this->fields['supplier_secret'] ?? ''),
         ]);
 
         return true;
@@ -371,6 +486,10 @@ class Config extends CommonDBTM
             'warranty_url'    => '',
         ];
 
+        // Encrypt secrets before they reach the database.
+        $input['supplier_key']    = self::encryptSecret((string) $input['supplier_key']);
+        $input['supplier_secret'] = self::encryptSecret((string) $input['supplier_secret']);
+
         return $input;
     }
 
@@ -382,7 +501,25 @@ class Config extends CommonDBTM
             'documentcategories_id', 'document_adding', 'comment_adding',
             'warranty_duration', 'entities_id', 'is_recursive',
         ];
-        return array_intersect_key($input, array_flip($allowed));
+        $input = array_intersect_key($input, array_flip($allowed));
+
+        // Secrets arrive as plaintext from the form. Skip the field when it is
+        // unchanged (compared against the decrypted stored value), otherwise
+        // re-encrypt the new value.
+        foreach (['supplier_key', 'supplier_secret'] as $secret_field) {
+            if (!array_key_exists($secret_field, $input)) {
+                continue;
+            }
+            $submitted = (string) $input[$secret_field];
+            $stored    = self::decryptSecret($this->fields[$secret_field] ?? '');
+            if ($submitted === $stored) {
+                unset($input[$secret_field]);
+            } else {
+                $input[$secret_field] = self::encryptSecret($submitted);
+            }
+        }
+
+        return $input;
     }
 
     /**
@@ -561,7 +698,7 @@ class Config extends CommonDBTM
             $configID = Config::checkManufacturerID($item->getType(), $item->getID());
             $config   = new Config();
             $config->getFromDB($configID);
-            $supplierkey = (isset($config->fields["supplier_key"])) ? $config->fields["supplier_key"] : false;
+            $supplierkey = (isset($config->fields["supplier_key"])) ? self::decryptSecret($config->fields["supplier_key"]) : false;
             $supplierurl = (isset($config->fields["supplier_url"])) ? $config->fields["supplier_url"] : false;
 
             if ($suppliername == Config::LENOVO) {
@@ -612,7 +749,7 @@ class Config extends CommonDBTM
             if ($config->getFromDBByCrit(['name' => $suppliername])) {
                 $suppliername = $config->fields["name"];
                 $supplierUrl  = $config->fields["supplier_url"];
-                $supplierkey  = $config->fields["supplier_key"];
+                $supplierkey  = self::decryptSecret($config->fields["supplier_key"]);
 
                 $url = PreImport::selectSupplier(
                     $suppliername,

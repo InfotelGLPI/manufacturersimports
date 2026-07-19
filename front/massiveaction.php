@@ -64,7 +64,7 @@ if (isset($_POST["action"])
                     $log->reinitializeImport($_POST["itemtype"], $key);
                 }
             }
-            Session::addMessageAfterRedirect(__('Operation successful'));
+            Session::addMessageAfterRedirect(__('Operation successful', 'manufacturersimports'));
             Html::redirect(PLUGIN_MANUFACTURERSIMPORTS_WEBDIR . "/front/import.php?itemtype=" .
                 urlencode($_POST["itemtype"]) .
                 "&manufacturers_id=" . (int) $_POST["manufacturers_id"] .
@@ -74,7 +74,7 @@ if (isset($_POST["action"])
     }
 } else {
     echo "<div class='alert alert-important alert-warning d-flex'>";
-    echo "<b>" . __('No selected element or badly defined operation') . "</b></div>";
+    echo "<b>" . __('No selected element or badly defined operation', 'manufacturersimports') . "</b></div>";
 }
 
 Html::footer();

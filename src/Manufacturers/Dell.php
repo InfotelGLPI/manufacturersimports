@@ -235,8 +235,8 @@ class Dell extends Manufacturer
         $options  = ["url"          => $config->fields["token_url"],
             "download"     => false,
             "file"         => false,
-            "post"         => ['client_id'     => $config->fields["supplier_key"],
-                'client_secret' => $config->fields["supplier_secret"],
+            "post"         => ['client_id'     => Config::decryptSecret($config->fields["supplier_key"]),
+                'client_secret' => Config::decryptSecret($config->fields["supplier_secret"]),
                 'grant_type'    => 'client_credentials'],
             "suppliername" => $config->fields["name"]];
         $contents = PostImport::cURLData($options);

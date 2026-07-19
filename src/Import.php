@@ -90,7 +90,7 @@ class Import extends CommonDBTM
 
         $suppliername = $config->fields["name"];
         $supplierUrl  = $config->fields["supplier_url"];
-        $supplierkey  = $config->fields["supplier_key"];
+        $supplierkey  = Config::decryptSecret($config->fields["supplier_key"]);
         $supplierId   = $config->fields["suppliers_id"];
 
         $toview = ["name" => 1];

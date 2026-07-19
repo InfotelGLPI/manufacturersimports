@@ -81,6 +81,27 @@ function plugin_manufacturersimports_install()
         $DB->runFile($sql_root . "/update-3.0.6.sql");
     }
 
+    // One-shot migration: encrypt any pre-existing plaintext secrets. Idempotent —
+    // rows already encrypted carry the Config::SECRET_PREFIX marker and are skipped.
+    if ($DB->fieldExists("glpi_plugin_manufacturersimports_configs", "supplier_secret")) {
+        foreach ($DB->request(['FROM' => 'glpi_plugin_manufacturersimports_configs']) as $row) {
+            $changes = [];
+            foreach (['supplier_key', 'supplier_secret'] as $secret_field) {
+                $value = (string) ($row[$secret_field] ?? '');
+                if ($value !== '' && !str_starts_with($value, 'crypt:')) {
+                    $changes[$secret_field] = Config::encryptSecret($value);
+                }
+            }
+            if (!empty($changes)) {
+                $DB->update(
+                    'glpi_plugin_manufacturersimports_configs',
+                    $changes,
+                    ['id' => (int) $row['id']]
+                );
+            }
+        }
+    }
+
     $DB->update('glpi_plugin_manufacturersimports_configs', [
         'Supplier_url' => 'https://www.dell.com/support/home/product-support/servicetag/',
         'warranty_url' => 'https://apigtwb2c.us.dell.com/PROD/sbil/eapi/v5/asset-entitlements?servicetags=',

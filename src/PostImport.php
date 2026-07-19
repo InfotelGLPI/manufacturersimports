@@ -327,8 +327,8 @@ class PostImport extends CommonDBTM
         $manufacturerId = $config->fields['manufacturers_id'];
         $suppliername   = $config->fields['name'];
         $supplierUrl    = $config->fields['supplier_url'];
-        $supplierkey    = $config->fields['supplier_key'];
-        $supplierSecret = $config->fields['supplier_secret'];
+        $supplierkey    = Config::decryptSecret($config->fields['supplier_key']);
+        $supplierSecret = Config::decryptSecret($config->fields['supplier_secret']);
 
         $supplierId = $fromsupplier ?: $config->fields['suppliers_id'];
 
@@ -549,8 +549,8 @@ class PostImport extends CommonDBTM
         }
         $suppliername   = $config->fields["name"];
         $supplierUrl    = $config->fields["supplier_url"];
-        $supplierkey    = $config->fields["supplier_key"];
-        $supplierSecret = $config->fields["supplier_secret"];
+        $supplierkey    = Config::decryptSecret($config->fields["supplier_key"]);
+        $supplierSecret = Config::decryptSecret($config->fields["supplier_secret"]);
 
         $dbu       = new DbUtils();
         $itemtable = $dbu->getTableForItemType($type);
@@ -692,7 +692,7 @@ class PostImport extends CommonDBTM
         $rubrique     = $config->fields["documentcategories_id"];
         $addcomments  = $config->fields["comment_adding"];
         $url_warranty = $config->fields["supplier_url"];
-        $supplier_key = $config->fields["supplier_key"];
+        $supplier_key = Config::decryptSecret($config->fields["supplier_key"]);
 
         if (isset($params['fromwarranty']) && $params['fromwarranty']) {
             $warranty = $values['fromwarranty'];

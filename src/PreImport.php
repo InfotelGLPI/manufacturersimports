@@ -667,8 +667,8 @@ class PreImport extends CommonDBTM
         $supplierUrl       = $config_fields['supplier_url'];
         $supplierId        = $config_fields['suppliers_id'];
         $supplierWarranty  = $config_fields['warranty_duration'];
-        $supplierkey       = $config_fields['supplier_key'];
-        $supplierkeysecret = $config_fields['supplier_secret'];
+        $supplierkey       = Config::decryptSecret($config_fields['supplier_key']);
+        $supplierkeysecret = Config::decryptSecret($config_fields['supplier_secret']);
 
         $otherSerial   = '';
         $modelitemtype = $line['itemtype'] . 'Model';

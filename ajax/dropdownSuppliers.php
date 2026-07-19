@@ -34,7 +34,7 @@ if (strpos($_SERVER['PHP_SELF'], "dropdownSuppliers.php")) {
    Html::header_nocache();
 }
 if (!defined('GLPI_ROOT')) {
-   die("Can not acces directly to this file");
+   die("Can not access directly to this file");
 }
 
 Session::checkLoginUser();

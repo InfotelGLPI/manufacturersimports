@@ -97,7 +97,7 @@ class ConfigTest extends TestCase
         $this->assertSame('', $result['supplier_secret']);
     }
 
-    public function testPrepareInputForAddDoesNotOverrideProvidedCredentials(): void
+    public function testPrepareInputForAddEncryptsProvidedCredentials(): void
     {
         $config = new Config();
 
@@ -107,8 +107,12 @@ class ConfigTest extends TestCase
             'supplier_secret' => 'my-secret',
         ]);
 
-        $this->assertSame('my-client-id', $result['supplier_key']);
-        $this->assertSame('my-secret', $result['supplier_secret']);
+        // Secrets must never be stored in plaintext: prepareInputForAdd encrypts
+        // them before they reach the database.
+        $this->assertArrayHasKey('supplier_key', $result);
+        $this->assertArrayHasKey('supplier_secret', $result);
+        $this->assertNotSame('my-client-id', $result['supplier_key']);
+        $this->assertNotSame('my-secret', $result['supplier_secret']);
     }
 
     public function testPrepareInputForAddRemovesUnknownFields(): void
