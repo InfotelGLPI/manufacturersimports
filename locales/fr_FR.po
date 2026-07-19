@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-18 16:23+0000\n"
+"POT-Creation-Date: 2026-07-19 22:05+0000\n"
 "PO-Revision-Date: 2020-11-02 16:09+0000\n"
 "Last-Translator: Xavier CAILLAUD <thetsmr@gmail.com>, 2026\n"
 "Language-Team: French (France) (https://app.transifex.com/infotelGLPI/teams/12364/fr_FR/)\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
-#: src/Config.php:332
+#: src/Config.php:445
 msgid "API connection test"
 msgstr "Test de connexion API"
 
@@ -29,7 +29,7 @@ msgstr "Test de connexion API"
 msgid "Access token API address"
 msgstr "Adresse API du token d’accès"
 
-#: src/Config.php:270 templates/config_form.html.twig:205
+#: src/Config.php:383 templates/config_form.html.twig:205
 msgid "Add a comment line"
 msgstr "Ajout d'une ligne dans les commentaires"
 
@@ -37,11 +37,11 @@ msgstr "Ajout d'une ligne dans les commentaires"
 msgid "Already imported"
 msgstr "Déjà importé"
 
-#: front/config.form.php:119
+#: front/config.form.php:126
 msgid "Authentication successful (token received)"
 msgstr "Authentification réussie (Token reçu)"
 
-#: src/Config.php:253 templates/config_form.html.twig:134
+#: src/Config.php:366 templates/config_form.html.twig:134
 msgid "Auto add of document"
 msgstr "Ajout automatique de document"
 
@@ -49,8 +49,8 @@ msgstr "Ajout automatique de document"
 msgid "Automatic"
 msgstr "Automatique"
 
-#: templates/config_form.html.twig:217
 #: templates/massive_import_progress.html.twig:70
+#: templates/config_form.html.twig:217
 msgid "Back"
 msgstr "Retour"
 
@@ -70,11 +70,11 @@ msgstr "Clé API secrète"
 msgid "Connection failed/data download from manufacturer web site"
 msgstr "Echec de connexion/récupération de données au site du fabricant"
 
-#: front/config.form.php:78 src/PostImport.php:91 ajax/testConnection.php:53
+#: src/PostImport.php:91 front/config.form.php:85 ajax/testConnection.php:64
 msgid "Curl PHP package not installed"
 msgstr "Le module Curl pour PHP n'est pas installé"
 
-#: src/Config.php:236 templates/config_form.html.twig:96
+#: src/Config.php:349 templates/config_form.html.twig:96
 msgid "Default supplier attached"
 msgstr "Fournisseur affecté par défaut"
 
@@ -122,15 +122,19 @@ msgstr "Importation des objets %1$d à %2$d"
 msgid "Importing from %s"
 msgstr "Importation depuis %s"
 
+#: front/config.form.php:81 ajax/testConnection.php:56
+msgid "Invalid or forbidden URL"
+msgstr "URL invalide ou interdite"
+
 #: templates/config_form.html.twig:67
 msgid "Manufacturer"
 msgstr "Fabricant"
 
-#: src/PreImport.php:781 src/Config.php:582
+#: src/PreImport.php:781 src/Config.php:719
 msgid "Manufacturer information"
 msgstr "Informations fabricant"
 
-#: src/Config.php:227 templates/config_form.html.twig:74
+#: src/Config.php:340 templates/config_form.html.twig:74
 msgid "Manufacturer web address"
 msgstr "Url du fabricant"
 
@@ -150,11 +154,11 @@ msgstr "Nom"
 msgid "New warranty affected by default (Replace if 0)"
 msgstr "Nouvelle garantie affectée par défaut (remplacée si différent de 0)"
 
-#: src/PreImport.php:590 src/Config.php:244
+#: src/PreImport.php:590 src/Config.php:357
 msgid "New warranty attached"
 msgstr "Nouvelle garantie affectée"
 
-#: front/config.form.php:121
+#: front/config.form.php:128
 msgid "No access token in response"
 msgstr "Pas de token d'authentification recue"
 
@@ -166,13 +170,21 @@ msgstr "Aucun matériel trouvé"
 msgid "No manufacturer available. Please configure at least one manufacturer"
 msgstr "Aucun fabricant utilisable. Merci de configurer au moins un fabricant"
 
-#: front/config.form.php:146
+#: front/config.form.php:155
 msgid "No response from server"
 msgstr "Pas de réponse du serveur"
+
+#: front/massiveaction.php:77
+msgid "No selected element or badly defined operation"
+msgstr "Aucun élément sélectionné ou opération mal définie"
 
 #: src/PreImport.php:785
 msgid "Not yet imported"
 msgstr "Pas encore importé"
+
+#: front/massiveaction.php:67
+msgid "Operation successful"
+msgstr "Opération réussie"
 
 #: front/config.php:41
 msgid "Please activate the plugin"
@@ -195,7 +207,7 @@ msgstr "Problème lors de l'importation"
 msgid "Reset the import"
 msgstr "Réinitialiser l'import"
 
-#: src/Config.php:589 src/Config.php:705
+#: src/Config.php:726 src/Config.php:842
 msgctxt "button"
 msgid "Retrieve warranty from manufacturer"
 msgstr "Récupérer la garantie du fabricant"
@@ -213,7 +225,7 @@ msgstr "Rubrique pour l'enregistrement des documents"
 msgid "Selection too large, massive action disabled."
 msgstr "Sélection trop importante, actions de masse désactivées."
 
-#: front/config.form.php:149 ajax/testConnection.php:89
+#: front/config.form.php:158 ajax/testConnection.php:102
 #, php-format
 msgid "Server reachable (HTTP %d)"
 msgstr "Serveur accessible (HTTP %d)"
@@ -222,19 +234,19 @@ msgstr "Serveur accessible (HTTP %d)"
 msgid "Supplier attached"
 msgstr "Fournisseur affecté"
 
-#: front/massiveaction.php:44 src/Profile.php:130 src/PreImport.php:70
-#: src/Menu.php:53 setup.php:90
+#: src/PreImport.php:70 src/Menu.php:53 src/Profile.php:130
+#: front/massiveaction.php:44 setup.php:90
 msgid "Suppliers import"
 msgid_plural "Suppliers imports"
 msgstr[0] "Import fabricants"
 msgstr[1] "Imports fabricants"
 msgstr[2] "Imports fabricants"
 
-#: src/Config.php:328
+#: src/Config.php:441
 msgid "Test connection"
 msgstr "Test de connexion"
 
-#: src/Config.php:329
+#: src/Config.php:442
 msgid "Test warranty page"
 msgstr "Test de la page de garantie"
 
@@ -242,7 +254,7 @@ msgstr "Test de la page de garantie"
 msgid "The choosen supplier is not recursive"
 msgstr "Le fournisseur choisi n'est pas récursif"
 
-#: front/config.form.php:74 ajax/testConnection.php:45
+#: front/config.form.php:76 ajax/testConnection.php:47
 msgid "Token URL is empty"
 msgstr "l'URL du Token est vide"
 
@@ -264,7 +276,7 @@ msgstr "Adresse API des garanties"
 msgid "Warranty import (Dell, HP)"
 msgstr "Import des garanties (Dell, HP)"
 
-#: src/Config.php:333
+#: src/Config.php:446
 msgid "Warranty page test"
 msgstr "Test de page de garantie"
 
@@ -272,7 +284,7 @@ msgstr "Test de page de garantie"
 msgid "With the manufacturersimports plugin"
 msgstr "Avec le plugin manufacturersimports"
 
-#: src/Config.php:699
+#: src/Config.php:836
 msgid ""
 "You did not import the warranty for this item. Do you want to get it back?"
 msgstr ""
