@@ -22,14 +22,14 @@ jobs:
 
     steps:
       - name: Checkout GLPI core (shallow)
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: glpi-project/glpi
           ref: 11.0/bugfixes
           path: glpi
 
       - name: Checkout plugin
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           path: glpi/plugins/manufacturersimports
 
@@ -41,7 +41,7 @@ jobs:
           coverage: none
 
       - name: Cache Composer dependencies
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ~/.cache/composer
           key: composer-${{ matrix.php-version }}-${{ hashFiles('glpi/composer.lock') }}
