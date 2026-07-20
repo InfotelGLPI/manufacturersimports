@@ -23,7 +23,7 @@ jobs:
           GITHUB_NAME: ${{ github.event.repository.name }}
         
         
-        run: sudo apt-get install libxml-xpath-perl;sudo apt-get install composer;echo $(xpath -e '/root/versions/version[num="'${GITHUB_REF/refs\/tags\//}'"]/compatibility/text()' $GITHUB_NAME.xml);echo ::set-output name=version_glpi::$(xpath -e '/root/versions/version[num="'${GITHUB_REF/refs\/tags\//}'"]/compatibility/text()' $GITHUB_NAME.xml); [[ -f composer.json ]] && composer install --no-dev; rm -rf $GITHUB_NAME.xml tools wiki screenshots test tests .git .github ISSUE_TEMPLATE.md TODO.txt $GITHUB_NAME.png;cd ..; tar jcvf glpi-$GITHUB_NAME-${GITHUB_REF/refs\/tags\//}.tar.bz2 $GITHUB_NAME;ls -al;echo ::set-output name=tag::${GITHUB_REF/refs\/tags\//};echo ${{ steps.getxml.outputs.info }};
+        run: sudo apt-get install libxml-xpath-perl;sudo apt-get install composer;echo $(xpath -e '/root/versions/version[num="'${GITHUB_REF/refs\/tags\//}'"]/compatibility/text()' $GITHUB_NAME.xml);echo ::set-output name=version_glpi::$(xpath -e '/root/versions/version[num="'${GITHUB_REF/refs\/tags\//}'"]/compatibility/text()' $GITHUB_NAME.xml); [[ -f composer.json ]] && composer install --no-dev; rm -rf $GITHUB_NAME.xml tools wiki screenshots test tests .git .github .gitignore .gitattributes ISSUE_TEMPLATE.md TODO.txt $GITHUB_NAME.png phpstan.neon phpstan-baseline.neon .php-cs-fixer.php .php-cs-fixer.dist.php .php-cs-fixer.cache psalm.xml phpunit.xml phpunit.xml.dist .phpunit.result.cache;cd ..; tar jcvf glpi-$GITHUB_NAME-${GITHUB_REF/refs\/tags\//}.tar.bz2 $GITHUB_NAME;ls -al;echo ::set-output name=tag::${GITHUB_REF/refs\/tags\//};echo ${{ steps.getxml.outputs.info }};
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
