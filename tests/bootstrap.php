@@ -27,7 +27,28 @@
  --------------------------------------------------------------------------
  */
 
-define('GLPI_ROOT', dirname(__DIR__, 3));
+if (!defined('GLPI_ROOT')) {
+    define('GLPI_ROOT', dirname(__DIR__, 3));
+}
+
+// Config encrypts its secrets through GLPIKey, whose constructor resolves the
+// crypt key from GLPI_CONFIG_DIR. The unit suite runs without a GLPI install
+// (no database, no generated key), so provide a throwaway config directory
+// holding a valid 32-byte sodium key: encryption then works fully offline.
+if (!defined('GLPI_CONFIG_DIR')) {
+    $config_dir = sys_get_temp_dir() . '/manufacturersimports-tests-config';
+    if (!is_dir($config_dir)) {
+        mkdir($config_dir, 0o777, true);
+    }
+    $keyfile = $config_dir . '/glpicrypt.key';
+    if (!file_exists($keyfile)) {
+        file_put_contents(
+            $keyfile,
+            random_bytes(SODIUM_CRYPTO_AEAD_XCHACHA20POLY1305_IETF_KEYBYTES)
+        );
+    }
+    define('GLPI_CONFIG_DIR', $config_dir);
+}
 
 $loader = require GLPI_ROOT . '/vendor/autoload.php';
 
