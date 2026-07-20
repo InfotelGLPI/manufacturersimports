@@ -27,6 +27,7 @@
  --------------------------------------------------------------------------
  */
 
+use Glpi\Exception\Http\AccessDeniedHttpException;
 use GlpiPlugin\Manufacturersimports\Log;
 use GlpiPlugin\Manufacturersimports\Config;
 use GlpiPlugin\Manufacturersimports\Menu;
@@ -55,13 +56,39 @@ if (isset($_POST["action"])
     && count($_POST["item"])) {
     switch ($_POST["action"]) {
         case "import":
+            $itemtype = $_POST["itemtype"];
+            // Only the itemtypes this plugin handles are acceptable here.
+            if (!in_array($itemtype, Config::$types, true)) {
+                throw new AccessDeniedHttpException();
+            }
+            foreach ($_POST["item"] as $key => $val) {
+                if ($val == 1) {
+                    $item = getItemForItemtype($itemtype);
+                    // Enforce the entity perimeter on each targeted item before
+                    // rendering the progress page (the worker re-checks too).
+                    if (!$item || !$item->can((int) $key, UPDATE)) {
+                        throw new AccessDeniedHttpException();
+                    }
+                }
+            }
             PostImport::massiveimport($_POST);
             break;
 
         case "reinit_once":
+            $itemtype = $_POST["itemtype"];
+            // Only the itemtypes this plugin handles are acceptable here.
+            if (!in_array($itemtype, Config::$types, true)) {
+                throw new AccessDeniedHttpException();
+            }
             foreach ($_POST["item"] as $key => $val) {
                 if ($val == 1) {
-                    $log->reinitializeImport($_POST["itemtype"], $key);
+                    $item = getItemForItemtype($itemtype);
+                    // Enforce the entity perimeter on each targeted item: the
+                    // global plugin right does not prove access to THIS item.
+                    if (!$item || !$item->can((int) $key, UPDATE)) {
+                        throw new AccessDeniedHttpException();
+                    }
+                    $log->reinitializeImport($itemtype, $key);
                 }
             }
             Session::addMessageAfterRedirect(__('Operation successful', 'manufacturersimports'));

@@ -105,7 +105,7 @@ class Dell extends Manufacturer
             return $info;
         }
 
-        $info["url"] = $supplierUrl . "$compSerial";
+        $info["url"] = $supplierUrl . rawurlencode($compSerial);
         return $info;
     }
 

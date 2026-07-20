@@ -66,7 +66,7 @@ class Fujitsu extends Manufacturer
     ) {
         $info["name"]         = Config::FUJITSU;
         $info["supplier_url"] = 'https://support.ts.fujitsu.com/ProductCheck/Default.aspx?Lng=en&GotoDiv=Warranty/WarrantyStatus&DivID=indexwarranty&GotoUrl=IndexWarranty&RegionID=1&Token=${$i$M$f$u&Ident=';
-        $info["url"]          = $supplierUrl . $compSerial;
+        $info["url"]          = $supplierUrl . rawurlencode((string) $compSerial);
         $info["url_web"]      = "https://support.ts.fujitsu.com/IndexWarranty.asp?lng=FR";
         return $info;
     }

@@ -549,6 +549,11 @@ class PreImport extends CommonDBTM
         $config->getFromDB($p['manufacturers_id']);
         $suppliername  = $config->fields['name'] ?? '';
         $supplierclass = 'GlpiPlugin\\Manufacturersimports\\Manufacturers\\' . $suppliername;
+        // Guard against an unexpected config name that maps to no manufacturer
+        // class, which would otherwise fatal on instantiation (as Config::display does).
+        if ($suppliername === '' || !class_exists($supplierclass)) {
+            return;
+        }
         $supplier      = new $supplierclass();
 
         $infocom = new Infocom();
@@ -562,9 +567,12 @@ class PreImport extends CommonDBTM
         $LIST_LIMIT  = $_SESSION['glpilist_limit'];
         $end_display = $p['start'] + $LIST_LIMIT;
         $target      = PLUGIN_MANUFACTURERSIMPORTS_WEBDIR . '/front/import.php';
-        $parameters  = 'itemtype=' . $p['itemtype']
-                       . '&manufacturers_id=' . $p['manufacturers_id']
-                       . '&imported=' . $p['imported'];
+        // Sanitise every segment at the source: these values flow unescaped into
+        // href attributes in printPager(). itemtype is url-encoded, the numeric
+        // filters are cast to int, so no quote can break out of the attribute.
+        $parameters  = 'itemtype=' . rawurlencode($p['itemtype'])
+                       . '&manufacturers_id=' . (int) $p['manufacturers_id']
+                       . '&imported=' . (int) $p['imported'];
 
         if ($p['start'] >= $numrows) {
             TemplateRenderer::getInstance()->display('@manufacturersimports/pre_import_list.html.twig', [

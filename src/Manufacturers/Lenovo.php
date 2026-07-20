@@ -84,10 +84,11 @@ class Lenovo extends Manufacturer {
                              $supplierUrl = null) {
 
         $info["name"]         = Config::LENOVO;
-        $info["supplier_url"] = "https://pcsupport.lenovo.com/products/$compSerial/warranty";
+        $serial_path          = rawurlencode((string) $compSerial);
+        $info["supplier_url"] = "https://pcsupport.lenovo.com/products/$serial_path/warranty";
         //      $info["url"]          = $supplierUrl . $compSerial."?machineType=&btnSubmit";
-        $info["url"]     = "https://pcsupport.lenovo.com/products/$compSerial/warranty";
-        $info["url_web"] = "https://pcsupport.lenovo.com/products/$compSerial/warranty";
+        $info["url"]     = "https://pcsupport.lenovo.com/products/$serial_path/warranty";
+        $info["url_web"] = "https://pcsupport.lenovo.com/products/$serial_path/warranty";
         return $info;
     }
 

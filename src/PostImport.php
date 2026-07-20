@@ -33,6 +33,7 @@ use CommonDBTM;
 use DbUtils;
 use Glpi\Application\View\TemplateRenderer;
 use Glpi\DBAL\QueryExpression;
+use Glpi\Exception\Http\AccessDeniedHttpException;
 use Glpi\Message\MessageType;
 use Glpi\Progress\StoredProgressIndicator;
 use GLPIKey;
@@ -106,15 +107,20 @@ class PostImport extends CommonDBTM
             $pn = $options["pn"];
         }
 
-        $ch = curl_init();
-        if (
-            isset($_SESSION['glpi_use_mode'])
-            && ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE)
-        ) {
-            curl_setopt($ch, CURLOPT_VERBOSE, 1);
-            $fp = fopen(dirname(__FILE__) . '/errorlog.txt', 'w');
-            curl_setopt($ch, CURLOPT_STDERR, $fp);
+        // Align the production path with the test endpoints: reject unsafe URLs
+        // (non-https or hosts resolving to private/reserved IPs) before reaching
+        // out server-side (SSRF).
+        if (!Config::isSafeApiUrl($url)) {
+            return __('Invalid or forbidden URL', 'manufacturersimports') . "\n";
         }
+        // Pin the validated IP so curl cannot re-resolve the host to an internal
+        // target (DNS-rebinding TOCTOU); empty when a proxy is configured.
+        $pinned_resolve = Config::getPinnedResolve($url);
+
+        $ch = curl_init();
+        // Never dump curl's verbose output (which carries Authorization/Basic
+        // credential headers) to a file inside the plugin webroot. Diagnostic
+        // details are logged below via Toolbox::logInfo() without auth headers.
         curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
         curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
@@ -123,10 +129,20 @@ class PostImport extends CommonDBTM
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)");
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        // Do not follow redirects: a public host could otherwise bounce us to an
+        // internal target, bypassing the URL validation above (SSRF).
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
+        if (!empty($pinned_resolve)) {
+            curl_setopt($ch, CURLOPT_RESOLVE, $pinned_resolve);
+        }
         curl_setopt($ch, CURLOPT_COOKIESESSION, true);
-        curl_setopt($ch, CURLOPT_COOKIEFILE, "cookiefile");
-        curl_setopt($ch, CURLOPT_COOKIEJAR, "cookiefile"); // SAME cookiefile
+        // Per-request cookie jar under the GLPI temp dir (absolute, unique),
+        // never a relative path in the webroot shared across suppliers.
+        $cookiefile = tempnam(GLPI_TMP_DIR, 'mfi_cookie_');
+        if ($cookiefile !== false) {
+            curl_setopt($ch, CURLOPT_COOKIEFILE, $cookiefile);
+            curl_setopt($ch, CURLOPT_COOKIEJAR, $cookiefile);
+        }
 
         if (!empty($options['token'])) {
             curl_setopt($ch, CURLOPT_HTTPHEADER, [
@@ -184,15 +200,14 @@ class PostImport extends CommonDBTM
 
         if (!$options["download"]) {
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
         }
 
-        // Activation de l'utilisation d'un serveur proxy
+        // Route the request through a proxy server when one is configured.
         if (!empty($CFG_GLPI["proxy_name"])) {
-            // Définition de l'adresse du proxy
+            // Set the proxy address.
             curl_setopt($ch, CURLOPT_PROXY, $proxy_host);
 
-            // Définition des identifiants si le proxy requiert une identification
+            // Set the credentials when the proxy requires authentication.
             if ($proxy_ident) {
                 curl_setopt($ch, CURLOPT_PROXYUSERPWD, $proxy_ident);
             }
@@ -221,6 +236,11 @@ class PostImport extends CommonDBTM
             //die($http_code.' Unable to connect to server. Please come back later.');
         } else {
             curl_close($ch);
+        }
+
+        // Drop the per-request cookie jar so no supplier session cookie lingers.
+        if ($cookiefile !== false && file_exists($cookiefile)) {
+            @unlink($cookiefile);
         }
 
         if ($options["download"]) {
@@ -260,6 +280,13 @@ class PostImport extends CommonDBTM
      */
     public static function massiveimportWithProgress(array $values, StoredProgressIndicator $progress): void
     {
+        $itemtype = $values['itemtype'] ?? '';
+        // Only the itemtypes handled by this plugin are acceptable before we
+        // derive any table/class from this user-supplied value.
+        if (!in_array($itemtype, Config::$types, true)) {
+            throw new AccessDeniedHttpException();
+        }
+
         $log   = new Log();
         $items = array_filter($values['item'] ?? [], fn($v) => $v == 1);
         $total_items = count($items);
@@ -276,10 +303,21 @@ class PostImport extends CommonDBTM
                 sprintf(__('Importing device %1$d of %2$d', 'manufacturersimports'), $step, $total_items)
             );
 
-            $already_imported = $log->checkIfAlreadyImported($values['itemtype'], $key);
+            $item = getItemForItemtype($itemtype);
+            // Enforce the entity perimeter on each targeted item: the global
+            // plugin right does not prove the caller may write to THIS item.
+            if (!$item || !$item->can((int) $key, UPDATE)) {
+                $progress->addMessage(
+                    MessageType::Error,
+                    sprintf(__('Device %d skipped (access denied)', 'manufacturersimports'), (int) $key)
+                );
+                continue;
+            }
+
+            $already_imported = $log->checkIfAlreadyImported($itemtype, $key);
             if (!$already_imported) {
                 $result = self::seePostImportForProgress(
-                    $values['itemtype'],
+                    $itemtype,
                     $key,
                     $values["to_suppliers_id$key"] ?? 0,
                     $values["to_warranty_duration$key"] ?? 0,
@@ -356,6 +394,9 @@ class PostImport extends CommonDBTM
                 'glpi_manufacturers.id'  => (int) $manufacturerId,
                 ["$itemtable.serial"     => ['!=', '']],
                 "$itemtable.id"          => (int) $ID,
+                // Defence in depth: never select an item outside the caller's
+                // entity perimeter, even if the can() gate upstream is bypassed.
+                $dbu->getEntitiesRestrictCriteria($itemtable),
             ],
             'ORDER'      => new QueryExpression("`$itemtable`.`name`"),
         ]);
@@ -557,20 +598,32 @@ class PostImport extends CommonDBTM
 
         $modelfield = $dbu->getForeignKeyFieldForTable($dbu->getTableForItemType($type . "Model"));
 
-        $query  = "SELECT `" . $itemtable . "`.`id`,
-                        `" . $itemtable . "`.`name`,
-                        `" . $itemtable . "`.`entities_id`,
-                        `" . $itemtable . "`.`serial`,
-                         `" . $itemtable . "`.`$modelfield`
-          FROM `" . $itemtable . "`, `glpi_manufacturers`
-          WHERE `" . $itemtable . "`.`manufacturers_id` = `glpi_manufacturers`.`id`
-          AND `" . $itemtable . "`.`is_deleted` = '0'
-          AND `" . $itemtable . "`.`is_template` = '0'
-          AND `glpi_manufacturers`.`id` = '" . (int) $manufacturerId . "'
-          AND `" . $itemtable . "`.`serial` != ''
-          AND `" . $itemtable . "`.`id` = '" . (int) $ID . "' ";
-        $query  .= " ORDER BY `" . $itemtable . "`.`name`";
-        $result = $DB->doQuery($query);
+        $iterator = $DB->request([
+            'SELECT'     => [
+                "$itemtable.id",
+                "$itemtable.name",
+                "$itemtable.entities_id",
+                "$itemtable.serial",
+                "$itemtable.$modelfield",
+            ],
+            'FROM'       => $itemtable,
+            'INNER JOIN' => [
+                'glpi_manufacturers' => [
+                    'ON' => ['glpi_manufacturers' => 'id', $itemtable => 'manufacturers_id'],
+                ],
+            ],
+            'WHERE'      => [
+                "$itemtable.is_deleted"  => 0,
+                "$itemtable.is_template" => 0,
+                'glpi_manufacturers.id'  => (int) $manufacturerId,
+                ["$itemtable.serial"     => ['!=', '']],
+                "$itemtable.id"          => (int) $ID,
+                // Defence in depth: never select an item outside the caller's
+                // entity perimeter, even if the can() gate upstream is bypassed.
+                $dbu->getEntitiesRestrictCriteria($itemtable),
+            ],
+            'ORDER'      => new QueryExpression("`$itemtable`.`name`"),
+        ]);
 
         $allowed_suppliers = [Config::DELL, Config::HP, Config::FUJITSU, Config::LENOVO, Config::TOSHIBA, Config::WORTMANN_AG];
         if (!in_array($suppliername, $allowed_suppliers, true)) {
@@ -579,7 +632,7 @@ class PostImport extends CommonDBTM
         $supplierclass = "GlpiPlugin\Manufacturersimports\Manufacturers\\" . $suppliername;
         $token         = $supplierclass::getToken($config);
 
-        while ($line = $DB->fetchArray($result)) {
+        foreach ($iterator as $line) {
             $compSerial = $line['serial'];
             $ID         = $line['id'];
             echo "<tr class='tab_bg_1' ><td>";
@@ -599,7 +652,7 @@ class PostImport extends CommonDBTM
             if ($_SESSION["glpiis_ids_visible"] || empty($line["name"])) {
                 $dID .= " (" . $line["id"] . ")";
             }
-            echo "<a href='" . $link . "?id=" . $ID . "'>" . $line["name"] . $dID . "</a><br>" . $otherSerial . "</td>";
+            echo "<a href='" . htmlescape($link) . "?id=" . (int) $ID . "'>" . htmlescape($line["name"]) . htmlescape($dID) . "</a><br>" . htmlescape($otherSerial) . "</td>";
 
             $url          = PreImport::selectSupplier(
                 $suppliername,
@@ -618,10 +671,10 @@ class PostImport extends CommonDBTM
             );
             $warranty_url = $supplierclass::getWarrantyUrl($config, $compSerial);
 
-            //On complete l url du support du fournisseur avec le serial
-            echo "<td>" . $compSerial . "</td>";
+            // Complete the supplier support URL with the serial number.
+            echo "<td>" . htmlescape($compSerial) . "</td>";
             echo "<td>";
-            echo "<a href='" . $url . "' target='_blank'>" . _n('Manufacturer', 'Manufacturers', 1) . "</a>";
+            echo "<a href='" . htmlescape($url) . "' target='_blank'>" . _n('Manufacturer', 'Manufacturers', 1) . "</a>";
             echo "</td>";
 
             $options = [
@@ -736,7 +789,7 @@ class PostImport extends CommonDBTM
         ) {
             Toolbox::loginfo($contents);
         }
-        // On extrait la date de garantie de la variable contents.
+        // Extract the warranty date from the contents variable.
         $field = self::selectSupplierfield($suppliername);
 
         if ($field != false) {
@@ -787,7 +840,7 @@ class PostImport extends CommonDBTM
                 "warranty_info" => $warrantyinfo];
             self::saveInfocoms($options, $values['display']);
 
-            // on cree un doc dans GLPI qu'on va lier au materiel
+            // Create a document in GLPI that will be linked to the asset.
             if ($adddoc != 0
                 && $suppliername != Config::DELL
                 && $suppliername != Config::HP) {

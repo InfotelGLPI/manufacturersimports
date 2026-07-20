@@ -34,6 +34,7 @@ use CommonDBTM;
 use DbUtils;
 use Dropdown;
 use Glpi\Application\View\TemplateRenderer;
+use Glpi\Exception\Http\AccessDeniedHttpException;
 use GLPIKey;
 use Html;
 use Session;
@@ -117,6 +118,20 @@ class Config extends CommonDBTM
      */
     public static function isSafeApiUrl(string $url): bool
     {
+        return self::resolveSafeIps($url) !== false;
+    }
+
+    /**
+     * Resolve a URL's host and return the list of IPs it maps to, but only when
+     * every one of them is public. Returns false when the URL is not https, is
+     * malformed, cannot be resolved, or resolves to any private/reserved range.
+     *
+     * @param string $url URL to validate
+     *
+     * @return string[]|false Validated public IPs, or false when unsafe
+     */
+    private static function resolveSafeIps(string $url)
+    {
         $url = trim($url);
         if ($url === '' || filter_var($url, FILTER_VALIDATE_URL) === false) {
             return false;
@@ -163,7 +178,47 @@ class Config extends CommonDBTM
             }
         }
 
-        return true;
+        return $ips;
+    }
+
+    /**
+     * Build CURLOPT_RESOLVE entries pinning the URL host to the exact IP(s)
+     * validated by resolveSafeIps(). This closes the DNS-rebinding TOCTOU window:
+     * without it, curl performs its own second resolution and could reach an
+     * internal IP that looked public at validation time.
+     *
+     * Returns [] when the URL is unsafe or when a proxy is configured (the proxy
+     * resolves the host itself, so client-side pinning would have no effect).
+     *
+     * @param string $url URL to fetch server-side
+     *
+     * @return string[] CURLOPT_RESOLVE entries, e.g. ['api.example.com:443:203.0.113.5']
+     */
+    public static function getPinnedResolve(string $url): array
+    {
+        global $CFG_GLPI;
+
+        if (!empty($CFG_GLPI['proxy_name'])) {
+            return [];
+        }
+
+        $ips = self::resolveSafeIps($url);
+        if ($ips === false) {
+            return [];
+        }
+
+        $parts = parse_url($url);
+        $host  = $parts['host'] ?? '';
+        $port  = $parts['port'] ?? 443;
+
+        $entries = [];
+        foreach ($ips as $ip) {
+            // Bracket IPv6 literals as required by the HOST:PORT:ADDRESS format.
+            $addr      = (strpos($ip, ':') !== false) ? '[' . $ip . ']' : $ip;
+            $entries[] = $host . ':' . $port . ':' . $addr;
+        }
+
+        return $entries;
     }
 
     //Manufacturers constants
@@ -706,39 +761,37 @@ class Config extends CommonDBTM
             } else {
                 $url = PreImport::selectSupplier($suppliername, $supplierurl, $item->fields['serial'], $otherserial, $supplierkey);
             }
-            echo "<table class='tab_cadre_fixe'>";
-            echo "<tr>";
-            echo "<th colspan='4'>" . PreImport::getTypeName(2) . "</th>";
-            echo "</tr>";
-
-            echo "<tr class='tab_bg_1'>";
-            echo "<td >";
-            echo _n('Link', 'Links', 1);
-            echo "</td>";
-            echo "<td >";
-            echo "<a href='" . $url . "' target='_blank'>" . __('Manufacturer information', 'manufacturersimports') . "</a>";
-            echo "</td>";
-            echo "<td colspan='2' class='center'>";
-            $target = Config::getFormUrl(true);
-            Html::showSimpleForm(
-                $target,
-                'retrieve_warranty',
-                _sx('button', 'Retrieve warranty from manufacturer', 'manufacturersimports'),
-                ['itemtype' => $item->getType(),
-                    'items_id' => $item->getID()]
-            );
-            echo "</td>";
-            echo "</tr>";
-            echo "</table>";
+            // Rendered via Twig so the manufacturer URL (which embeds the raw,
+            // user-controlled serial number) is auto-escaped in the href,
+            // preventing a stored XSS breakout of the attribute.
+            TemplateRenderer::getInstance()->display('@manufacturersimports/warranty_infocom.html.twig', [
+                'title'        => PreImport::getTypeName(2),
+                'url'          => $url,
+                'target'       => Config::getFormUrl(true),
+                'itemtype'     => $item->getType(),
+                'items_id'     => $item->getID(),
+                'button_label' => _sx('button', 'Retrieve warranty from manufacturer', 'manufacturersimports'),
+            ]);
         }
         return $item;
     }
 
     public static function retrieveOneWarranty($itemtype, $items_id)
     {
+        // Restrict to the itemtypes this plugin actually handles before touching
+        // anything derived from the user-supplied itemtype.
+        if (!in_array($itemtype, self::$types, true)) {
+            throw new AccessDeniedHttpException();
+        }
         $item = getItemForItemtype($itemtype);
         if (!$item) {
             return;
+        }
+        // The plugin UPDATE right alone does not prove the caller may act on THIS
+        // item: can() combines the global right with the entity perimeter, so a
+        // user restricted to entity A cannot target an item of entity B by id.
+        if (!$item->can($items_id, UPDATE)) {
+            throw new AccessDeniedHttpException();
         }
         if ($item->getFromDB($items_id)) {
             $log = new Log();

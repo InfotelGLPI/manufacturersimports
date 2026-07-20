@@ -76,6 +76,12 @@ curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
 // Do not follow redirects: a public host could otherwise bounce us to an
 // internal target, bypassing the URL validation above.
 curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
+// Pin the host to the exact IP validated above so curl cannot re-resolve it to
+// an internal address (DNS-rebinding TOCTOU). Empty when a proxy is configured.
+$resolve = \GlpiPlugin\Manufacturersimports\Config::getPinnedResolve($token_url);
+if (!empty($resolve)) {
+    curl_setopt($ch, CURLOPT_RESOLVE, $resolve);
+}
 
 if (!empty($CFG_GLPI['proxy_name'])) {
     curl_setopt($ch, CURLOPT_PROXY, $CFG_GLPI['proxy_name'] . ':' . $CFG_GLPI['proxy_port']);

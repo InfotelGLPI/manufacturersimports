@@ -105,6 +105,12 @@ if (isset($_POST["add"])) {
         curl_setopt($ch, CURLOPT_USERPWD, $supplier_key . ':' . $supplier_secret);
         curl_setopt($ch, CURLOPT_TIMEOUT, 15);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+        // Pin the host to the IP validated above (DNS-rebinding TOCTOU defence);
+        // empty when a proxy is configured (the proxy resolves the host itself).
+        $resolve = Config::getPinnedResolve($token_url);
+        if (!empty($resolve)) {
+            curl_setopt($ch, CURLOPT_RESOLVE, $resolve);
+        }
         if (!empty($CFG_GLPI['proxy_name'])) {
             curl_setopt($ch, CURLOPT_PROXY, $CFG_GLPI['proxy_name'] . ':' . $CFG_GLPI['proxy_port']);
             if (!empty($CFG_GLPI['proxy_user'])) {
@@ -140,6 +146,12 @@ if (isset($_POST["add"])) {
     // Do not follow redirects: a public host could otherwise bounce us to an
     // internal target, bypassing the URL validation above.
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
+    // Pin the host to the IP validated above (DNS-rebinding TOCTOU defence);
+    // empty when a proxy is configured (the proxy resolves the host itself).
+    $resolve = Config::getPinnedResolve($token_url);
+    if (!empty($resolve)) {
+        curl_setopt($ch, CURLOPT_RESOLVE, $resolve);
+    }
     if (!empty($CFG_GLPI['proxy_name'])) {
         curl_setopt($ch, CURLOPT_PROXY, $CFG_GLPI['proxy_name'] . ':' . $CFG_GLPI['proxy_port']);
         if (!empty($CFG_GLPI['proxy_user'])) {

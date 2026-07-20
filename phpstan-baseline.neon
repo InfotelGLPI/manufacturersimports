@@ -1,0 +1,403 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^You should not use the `die` function\. It prevents the execution of post\-request/post\-command routines\.$#'
+			identifier: glpi.forbidExit
+			count: 1
+			path: ajax/dropdownSuppliers.php
+
+		-
+			message: '#^You should not use the `die` function\. It prevents the execution of post\-request/post\-command routines\.$#'
+			identifier: glpi.forbidExit
+			count: 1
+			path: ajax/testConnection.php
+
+		-
+			message: '#^You should not use the `exit` function\. It prevents the execution of post\-request/post\-command routines\.$#'
+			identifier: glpi.forbidExit
+			count: 4
+			path: ajax/testConnection.php
+
+		-
+			message: '#^You should not use the `exit` function\. It prevents the execution of post\-request/post\-command routines\.$#'
+			identifier: glpi.forbidExit
+			count: 6
+			path: front/config.form.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: front/massiveaction.php
+
+		-
+			message: '#^You should not use the `die` function\. It prevents the execution of post\-request/post\-command routines\.$#'
+			identifier: glpi.forbidExit
+			count: 1
+			path: front/massiveimport_run.php
+
+		-
+			message: '#^You should not use the `exit` function\. It prevents the execution of post\-request/post\-command routines\.$#'
+			identifier: glpi.forbidExit
+			count: 1
+			path: front/massiveimport_run.php
+
+		-
+			message: '#^You should not use the `http_response_code` function to change the response code\. Due to a PHP bug, it may not provide the expected result \(see https\://bugs\.php\.net/bug\.php\?id\=81451\)\.$#'
+			identifier: glpi.forbidHttpResponseCode
+			count: 1
+			path: front/massiveimport_run.php
+
+		-
+			message: '#^Parameter \#1 \$criteria of method DBmysql\:\:request\(\) expects array\|Glpi\\DBAL\\QueryUnion, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: hook.php
+
+		-
+			message: '#^Call to an undefined static method CommonDBTM\:\:doSpecificMassiveActions\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: src/Config.php
+
+		-
+			message: '#^Call to an undefined static method CommonDBTM\:\:showSpecificMassiveActionsParameters\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: src/Config.php
+
+		-
+			message: '#^Default value of the parameter \#1 \$history \(int\) of method GlpiPlugin\\Manufacturersimports\\Config\:\:post_updateItem\(\) is incompatible with type bool\.$#'
+			identifier: parameter.defaultValue
+			count: 1
+			path: src/Config.php
+
+		-
+			message: '#^Instantiating an object from an unrestricted dynamic string is forbidden \(see https\://github\.com/glpi\-project/phpstan\-glpi\?tab\=readme\-ov\-file\#forbiddynamicinstantiationrule\)\.$#'
+			identifier: glpi.forbidDynamicInstantiation
+			count: 4
+			path: src/Config.php
+
+		-
+			message: '#^Method GlpiPlugin\\Manufacturersimports\\Config\:\:preconfig\(\) has invalid return type GlpiPlugin\\Manufacturersimports\\nothing\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Config.php
+
+		-
+			message: '#^Method GlpiPlugin\\Manufacturersimports\\Config\:\:preconfig\(\) should return GlpiPlugin\\Manufacturersimports\\nothing but return statement is missing\.$#'
+			identifier: return.missing
+			count: 1
+			path: src/Config.php
+
+		-
+			message: '#^Method GlpiPlugin\\Manufacturersimports\\Config\:\:showForInfocom\(\) has invalid return type GlpiPlugin\\Manufacturersimports\\nothing\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Config.php
+
+		-
+			message: '#^PHPDoc tag @param has invalid value \(item the CommonDBTM object\)\: Unexpected token "the", expected variable at offset 94 on line 4$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: src/Config.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 4
+			path: src/Config.php
+
+		-
+			message: '#^You should not use the `die` function\. It prevents the execution of post\-request/post\-command routines\.$#'
+			identifier: glpi.forbidExit
+			count: 1
+			path: src/Config.php
+
+		-
+			message: '#^Method GlpiPlugin\\Manufacturersimports\\Import\:\:importCron\(\) should return int but returns true\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Import.php
+
+		-
+			message: '#^Parameter \#2 \$supplier of static method GlpiPlugin\\Manufacturersimports\\Import\:\:importCron\(\) expects GlpiPlugin\\Manufacturersimports\\type, string given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Import.php
+
+		-
+			message: '#^Parameter \$supplier of method GlpiPlugin\\Manufacturersimports\\Import\:\:importCron\(\) has invalid type GlpiPlugin\\Manufacturersimports\\type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Import.php
+
+		-
+			message: '#^Undefined variable\: \$otherserial$#'
+			identifier: variable.undefined
+			count: 1
+			path: src/Import.php
+
+		-
+			message: '#^Variable \$otherserial in empty\(\) is never defined\.$#'
+			identifier: empty.variable
+			count: 1
+			path: src/Import.php
+
+		-
+			message: '#^You should not use the `die` function\. It prevents the execution of post\-request/post\-command routines\.$#'
+			identifier: glpi.forbidExit
+			count: 1
+			path: src/Import.php
+
+		-
+			message: '#^You should not use the `die` function\. It prevents the execution of post\-request/post\-command routines\.$#'
+			identifier: glpi.forbidExit
+			count: 1
+			path: src/Log.php
+
+		-
+			message: '#^You should not use the `die` function\. It prevents the execution of post\-request/post\-command routines\.$#'
+			identifier: glpi.forbidExit
+			count: 1
+			path: src/Manufacturers/Dell.php
+
+		-
+			message: '#^Method GlpiPlugin\\Manufacturersimports\\Manufacturers\\Fujitsu\:\:showDocTitle\(\) should return bool but returns string\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Manufacturers/Fujitsu.php
+
+		-
+			message: '#^You should not use the `die` function\. It prevents the execution of post\-request/post\-command routines\.$#'
+			identifier: glpi.forbidExit
+			count: 1
+			path: src/Manufacturers/Fujitsu.php
+
+		-
+			message: '#^Method GlpiPlugin\\Manufacturersimports\\Manufacturers\\HP\:\:showDocTitle\(\) should return bool but returns string\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Manufacturers/HP.php
+
+		-
+			message: '#^You should not use the `die` function\. It prevents the execution of post\-request/post\-command routines\.$#'
+			identifier: glpi.forbidExit
+			count: 1
+			path: src/Manufacturers/HP.php
+
+		-
+			message: '#^You should not use the `die` function\. It prevents the execution of post\-request/post\-command routines\.$#'
+			identifier: glpi.forbidExit
+			count: 1
+			path: src/Manufacturers/Ibm.php
+
+		-
+			message: '#^Method GlpiPlugin\\Manufacturersimports\\Manufacturers\\Lenovo\:\:showDocTitle\(\) should return bool but returns string\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Manufacturers/Lenovo.php
+
+		-
+			message: '#^Method GlpiPlugin\\Manufacturersimports\\Manufacturers\\Lenovo\:\:showItemTitle\(\) should return bool but returns string\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Manufacturers/Lenovo.php
+
+		-
+			message: '#^You should not use the `die` function\. It prevents the execution of post\-request/post\-command routines\.$#'
+			identifier: glpi.forbidExit
+			count: 1
+			path: src/Manufacturers/Lenovo.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$doc$#'
+			identifier: parameter.notFound
+			count: 1
+			path: src/Manufacturers/Manufacturer.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$otherserial$#'
+			identifier: parameter.notFound
+			count: 1
+			path: src/Manufacturers/Manufacturer.php
+
+		-
+			message: '#^Parameter \$ID of method GlpiPlugin\\Manufacturersimports\\Manufacturers\\Manufacturer\:\:showWarrantyItem\(\) has invalid type GlpiPlugin\\Manufacturersimports\\Manufacturers\\type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Manufacturers/Manufacturer.php
+
+		-
+			message: '#^Parameter \$supplierWarranty of method GlpiPlugin\\Manufacturersimports\\Manufacturers\\Manufacturer\:\:showWarrantyItem\(\) has invalid type GlpiPlugin\\Manufacturersimports\\Manufacturers\\type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Manufacturers/Manufacturer.php
+
+		-
+			message: '#^You should not use the `die` function\. It prevents the execution of post\-request/post\-command routines\.$#'
+			identifier: glpi.forbidExit
+			count: 1
+			path: src/Manufacturers/Manufacturer.php
+
+		-
+			message: '#^Method GlpiPlugin\\Manufacturersimports\\Manufacturers\\Toshiba\:\:showDocTitle\(\) should return bool but returns string\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Manufacturers/Toshiba.php
+
+		-
+			message: '#^You should not use the `die` function\. It prevents the execution of post\-request/post\-command routines\.$#'
+			identifier: glpi.forbidExit
+			count: 1
+			path: src/Manufacturers/Toshiba.php
+
+		-
+			message: '#^Parameter \#4 \$month of function mktime expects int\|null, string given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Manufacturers/Wortmann_ag.php
+
+		-
+			message: '#^Parameter \#5 \$day of function mktime expects int\|null, string given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Manufacturers/Wortmann_ag.php
+
+		-
+			message: '#^Parameter \#6 \$year of function mktime expects int\|null, string given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Manufacturers/Wortmann_ag.php
+
+		-
+			message: '#^You should not use the `die` function\. It prevents the execution of post\-request/post\-command routines\.$#'
+			identifier: glpi.forbidExit
+			count: 1
+			path: src/Manufacturers/Wortmann_ag.php
+
+		-
+			message: '#^Binary operation "\+" between string and 1 results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: src/PostImport.php
+
+		-
+			message: '#^Binary operation "\-" between 12 and string results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: src/PostImport.php
+
+		-
+			message: '#^Instantiating an object from an unrestricted dynamic string is forbidden \(see https\://github\.com/glpi\-project/phpstan\-glpi\?tab\=readme\-ov\-file\#forbiddynamicinstantiationrule\)\.$#'
+			identifier: glpi.forbidDynamicInstantiation
+			count: 7
+			path: src/PostImport.php
+
+		-
+			message: '#^Method GlpiPlugin\\Manufacturersimports\\PostImport\:\:seePostImport\(\) has invalid return type GlpiPlugin\\Manufacturersimports\\results\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/PostImport.php
+
+		-
+			message: '#^Method GlpiPlugin\\Manufacturersimports\\PostImport\:\:seePostImport\(\) should return GlpiPlugin\\Manufacturersimports\\results but empty return statement found\.$#'
+			identifier: return.empty
+			count: 1
+			path: src/PostImport.php
+
+		-
+			message: '#^Method GlpiPlugin\\Manufacturersimports\\PostImport\:\:seePostImport\(\) should return GlpiPlugin\\Manufacturersimports\\results but return statement is missing\.$#'
+			identifier: return.missing
+			count: 1
+			path: src/PostImport.php
+
+		-
+			message: '#^PHPDoc tag @return has invalid value \(\$field for date and warranty searching\)\: Unexpected token "\$field", expected type at offset 152 on line 6$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: src/PostImport.php
+
+		-
+			message: '#^Parameter \#3 \$otherserial of static method GlpiPlugin\\Manufacturersimports\\PreImport\:\:getSupplierPost\(\) expects null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/PostImport.php
+
+		-
+			message: '#^Parameter \#3 \$value of function curl_setopt expects bool, int given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/PostImport.php
+
+		-
+			message: '#^Variable \$maBuyDate might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: src/PostImport.php
+
+		-
+			message: '#^Variable \$warrantyinfo might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: src/PostImport.php
+
+		-
+			message: '#^You should not use the `die` function\. It prevents the execution of post\-request/post\-command routines\.$#'
+			identifier: glpi.forbidExit
+			count: 1
+			path: src/PostImport.php
+
+		-
+			message: '#^Instantiating an object from an unrestricted dynamic string is forbidden \(see https\://github\.com/glpi\-project/phpstan\-glpi\?tab\=readme\-ov\-file\#forbiddynamicinstantiationrule\)\.$#'
+			identifier: glpi.forbidDynamicInstantiation
+			count: 8
+			path: src/PreImport.php
+
+		-
+			message: '#^PHPDoc tag @return has invalid value \(\$url of the supplier\)\: Unexpected token "\$url", expected type at offset 59 on line 3$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: src/PreImport.php
+
+		-
+			message: '#^PHPDoc tag @return has invalid value \(\$url of the supplier\)\: Unexpected token "\$url", expected type at offset 66 on line 4$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: src/PreImport.php
+
+		-
+			message: '#^PHPDoc tag @return has invalid value \(\)\: Unexpected token "\\n     \*", expected type at offset 106 on line 7$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: src/PreImport.php
+
+		-
+			message: '#^You should not use the `die` function\. It prevents the execution of post\-request/post\-command routines\.$#'
+			identifier: glpi.forbidExit
+			count: 1
+			path: src/PreImport.php
+
+		-
+			message: '#^Call to an undefined method CommonGLPI\:\:getField\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Profile.php
+
+		-
+			message: '#^Method GlpiPlugin\\Manufacturersimports\\Profile\:\:getAllRights\(\) invoked with 1 parameter, 0 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: src/Profile.php
+
+		-
+			message: '#^Static method GlpiPlugin\\Manufacturersimports\\Profile\:\:getAllRights\(\) invoked with 1 parameter, 0 required\.$#'
+			identifier: arguments.count
+			count: 2
+			path: src/Profile.php
+
+		-
+			message: '#^You should not use the `die` function\. It prevents the execution of post\-request/post\-command routines\.$#'
+			identifier: glpi.forbidExit
+			count: 1
+			path: src/Profile.php

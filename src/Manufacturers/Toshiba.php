@@ -69,7 +69,7 @@ class Toshiba extends Manufacturer
         $info["name"]         = Config::TOSHIBA;
         $info["supplier_url"] = "https://support.dynabook.com/support/warrantyResults?";
         $info["url"]          = $supplierUrl .
-                                "sno=" . $compSerial;
+                                "sno=" . rawurlencode((string) $compSerial);
         return $info;
     }
 

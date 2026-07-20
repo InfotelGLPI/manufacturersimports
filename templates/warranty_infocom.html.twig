@@ -1,6 +1,4 @@
-<?php
-
-/*
+{#
  -------------------------------------------------------------------------
  manufacturersimports plugin for GLPI
  Copyright (C) 2015-2026 by the manufacturersimports Development Team.
@@ -25,33 +23,26 @@
  You should have received a copy of the GNU General Public License
  along with manufacturersimports. If not, see <http://www.gnu.org/licenses/>.
  --------------------------------------------------------------------------
- */
+ #}
 
-namespace GlpiPlugin\Manufacturersimports\Manufacturers;
-
-if (!defined('GLPI_ROOT')) {
-    die("Sorry. You can't access directly to this file");
-}
-
-/**
- * Class Ibm
- */
-class Ibm extends Manufacturer
-{
-    /**
-     * @see Manufacturer::getSupplierInfo()
-     */
-    public function getSupplierInfo(
-        $compSerial = null,
-        $otherSerial = null,
-        $key = null,
-        $apisecret = null,
-        $supplierUrl = null
-    )
-    {
-        $info["name"]="IBM";
-        $info["supplier_url"] = "http://www-304.ibm.com/jct01004c/systems/support/supportsite.wss/warranty?";
-        $info["url"] = $supplierUrl."type=".rawurlencode((string) $otherSerial)."&serial=".rawurlencode((string) $compSerial)."&brandind=5000008&Submit=Submit&action=warranty";
-        return $info;
-    }
-}
+{# The serial number is stored raw in the database and is part of {{ url }};
+   Twig auto-escaping of the href value prevents any stored-XSS breakout. #}
+<table class="tab_cadre_fixe">
+    <tr>
+        <th colspan="4">{{ title }}</th>
+    </tr>
+    <tr class="tab_bg_1">
+        <td>{{ _n('Link', 'Links', 1) }}</td>
+        <td>
+            <a href="{{ url }}" target="_blank">{{ __('Manufacturer information', 'manufacturersimports') }}</a>
+        </td>
+        <td colspan="2" class="center">
+            {% do call('Html::showSimpleForm', [
+                target,
+                'retrieve_warranty',
+                button_label,
+                {'itemtype': itemtype, 'items_id': items_id}
+            ]) %}
+        </td>
+    </tr>
+</table>

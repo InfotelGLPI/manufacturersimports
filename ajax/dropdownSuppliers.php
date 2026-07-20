@@ -38,8 +38,19 @@ if (!defined('GLPI_ROOT')) {
 }
 
 Session::checkLoginUser();
+Session::checkRight("plugin_manufacturersimports", READ);
 
 $config = new Config();
-if ($_POST['supplier'] != -1) {
-   echo "&nbsp;<a class='submit btn btn-primary' href='".$config->getFormURL()."?preconfig=".$_POST['supplier']."'>"._sx('button', 'Update')."</a>";
+
+$supplier          = $_POST['supplier'] ?? -1;
+$allowed_suppliers = [
+   Config::DELL, Config::HP, Config::FUJITSU,
+   Config::LENOVO, Config::TOSHIBA, Config::WORTMANN_AG,
+];
+
+// Only emit the link for a known supplier: this whitelist prevents any
+// reflected value from ending up in the generated markup.
+if (in_array($supplier, $allowed_suppliers, true)) {
+   $url = $config->getFormURL() . "?preconfig=" . rawurlencode($supplier);
+   echo "&nbsp;<a class='submit btn btn-primary' href='" . htmlescape($url) . "'>" . _sx('button', 'Update') . "</a>";
 }
