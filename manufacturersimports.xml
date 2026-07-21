@@ -6,28 +6,22 @@
     <logo>https://raw.githubusercontent.com/InfotelGLPI/manufacturersimports/master/manufacturersimports.png</logo>
     <description>
         <short>
-            <fr>
-                <![CDATA[Imports des informations financières des matériels directement depuis le site web des fabricants.<br />Fonctionne avec Dell, HP, Toshiba, Fujitsu-Siemens et Lenovo]]></fr>
-            <en>
-                <![CDATA[Imports of financials informations for items from manufacturers web site.<br />Works with Dell, HP, Toshiba, Fujitsu-Siemens and Lenovo]]></en>
-            <cs>
-                <![CDATA[Importy finančních informací pro položky z webu výrobce.<br />Funguje s Dell, HP, Toshiba, Fujitsu-Siemens a Lenovo]]></cs>
+            <fr><![CDATA[Imports des informations financières des matériels directement depuis le site web des fabricants.<br />Fonctionne avec Dell, HP, Toshiba, Fujitsu-Siemens et Lenovo]]></fr>
+            <en><![CDATA[Imports of financials informations for items from manufacturers web site.<br />Works with Dell, HP, Toshiba, Fujitsu-Siemens and Lenovo]]></en>
+            <cs><![CDATA[Importy finančních informací pro položky z webu výrobce.<br />Funguje s Dell, HP, Toshiba, Fujitsu-Siemens a Lenovo]]></cs>
         </short>
         <long>
-            <fr>
-               Ce plugin vous permet d’injecter des informations financières depuis les sites fabricants directement dans GLPI.
-                - Vous sélectionnez vos types de matériels et si au préalable vous avez fourni numéro de série et numéro de modèle (selon les fabricants) vous pourrez importer la garantie, la date d'achat, ainsi qu'enregistrer la page hmtl des fabricants.
-                - Fonctionne avec Dell, HP, Toshiba, Lenovo (> 1.5.0) et Fujitsu-Siemens
+            <fr>Ce plugin vous permet d’injecter des informations financières depuis les sites fabricants directement dans GLPI.
+                <br /> - Vous sélectionnez vos types de matériels et si au préalable vous avez fourni numéro de série et numéro de modèle (selon les fabricants) vous pourrez importer la garantie, la date d'achat, ainsi qu'enregistrer la page hmtl des fabricants.
+                <br /> - Fonctionne avec Dell, HP, Toshiba, Lenovo et Fujitsu-Siemens
             </fr>
-            <en>
-                This plugin allows you to inject financials informations from manufacturers web site files in GLPI.
-                - You select your type of equipment in advance and if you provided serial number and model number (different from manufacturers) you can import the warranty, the date of purchase and save the page HMTL manufacturers.
-                - Works with Dell, HP, Toshiba, Lenovo (> 1.5.0) and Fujitsu-Siemens
+            <en>This plugin allows you to inject financials informations from manufacturers web site files in GLPI.
+                <br /> - You select your type of equipment in advance and if you provided serial number and model number (different from manufacturers) you can import the warranty, the date of purchase and save the page HMTL manufacturers.
+                <br /> - Works with Dell, HP, Toshiba, Lenovo and Fujitsu-Siemens
             </en>
-            <cs>
-                Tento zásuvný modul umožňuje vpravovat finannčí informace z webů výrobců do GLPI.
-                - Předem vyberete typ vybavení a když zadáte sériové číslo a označení modelu (liší se mezi výrobci) můžete importovat informace o záruce, datu zakoupení a uložit v podobě HTML stránky.
-                - Funguje s Dell, HP, Toshiba, Lenovo (verze > 1.5.0) a Fujitsu-Siemens
+            <cs>Tento zásuvný modul umožňuje vpravovat finannčí informace z webů výrobců do GLPI.
+                <br /> - Předem vyberete typ vybavení a když zadáte sériové číslo a označení modelu (liší se mezi výrobci) můžete importovat informace o záruce, datu zakoupení a uložit v podobě HTML stránky.
+                <br /> - Funguje s Dell, HP, Toshiba, Lenovo a Fujitsu-Siemens
             </cs>
         </long>
     </description>
