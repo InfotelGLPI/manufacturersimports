@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-21 12:17+0000\n"
+"POT-Creation-Date: 2026-07-25 14:03+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -46,8 +46,7 @@ msgstr ""
 msgid "Automatic"
 msgstr ""
 
-#: templates/massive_import_progress.html.twig:70
-#: templates/config_form.html.twig:217
+#: templates/massive_import_progress.html.twig:70 templates/config_form.html.twig:217
 msgid "Back"
 msgstr ""
 
@@ -67,7 +66,7 @@ msgstr ""
 msgid "Connection failed/data download from manufacturer web site"
 msgstr ""
 
-#: src/PostImport.php:92 front/config.form.php:85 ajax/testConnection.php:64
+#: front/config.form.php:85 src/PostImport.php:92 ajax/testConnection.php:64
 msgid "Curl PHP package not installed"
 msgstr ""
 
@@ -124,7 +123,7 @@ msgstr ""
 msgid "Importing from %s"
 msgstr ""
 
-#: src/PostImport.php:114 front/config.form.php:81 ajax/testConnection.php:56
+#: front/config.form.php:81 src/PostImport.php:114 ajax/testConnection.php:56
 msgid "Invalid or forbidden URL"
 msgstr ""
 
@@ -162,7 +161,7 @@ msgstr ""
 msgid "New warranty affected by default (Replace if 0)"
 msgstr ""
 
-#: src/PreImport.php:598 src/Config.php:412
+#: src/Config.php:412 src/PreImport.php:598
 msgid "New warranty attached"
 msgstr ""
 
@@ -194,7 +193,7 @@ msgstr ""
 msgid "Operation successful"
 msgstr ""
 
-#: front/config.php:41
+#: front/config.php:42
 msgid "Please activate the plugin"
 msgstr ""
 
@@ -242,8 +241,8 @@ msgstr ""
 msgid "Supplier attached"
 msgstr ""
 
-#: src/PreImport.php:70 src/Menu.php:53 src/Profile.php:130
-#: front/massiveaction.php:45 setup.php:90
+#: front/massiveaction.php:45 src/PreImport.php:70 src/Profile.php:130
+#: src/Menu.php:53 setup.php:90
 msgid "Suppliers import"
 msgid_plural "Suppliers imports"
 msgstr[0] ""
