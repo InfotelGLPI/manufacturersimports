@@ -1,6 +1,4 @@
-<?php
-
-/*
+{#
  -------------------------------------------------------------------------
  manufacturersimports plugin for GLPI
  Copyright (C) 2015-2026 by the manufacturersimports Development Team.
@@ -25,23 +23,8 @@
  You should have received a copy of the GNU General Public License
  along with manufacturersimports. If not, see <http://www.gnu.org/licenses/>.
  --------------------------------------------------------------------------
- */
+ #}
 
-use Glpi\Application\View\TemplateRenderer;
-use GlpiPlugin\Manufacturersimports\Config;
-use GlpiPlugin\Manufacturersimports\Menu;
-
-Session::checkRight("config", UPDATE);
-
-if (Plugin::isPluginActive("manufacturersimports")) {
-   Html::header(__('Setup'), '', "tools", Menu::class, "config");
-   Search::show(Config::class);
-} else {
-    Html::header(__s('Setup'), '', "config", "plugin");
-    TemplateRenderer::getInstance()->display('@manufacturersimports/plugin_inactive.html.twig', [
-        'message' => __('Please activate the plugin', 'manufacturersimports'),
-    ]);
-    Html::footer();
-}
-
-Html::footer();
+<div class="alert alert-important alert-warning d-flex">
+    <b>{{ message }}</b>
+</div>
