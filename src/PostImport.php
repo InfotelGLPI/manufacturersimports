@@ -954,7 +954,9 @@ class PostImport extends CommonDBTM
             echo "<td>";
             echo _n('Supplier', 'Suppliers', 1) . ": ";
             if ($options["supplierId"] != 0) {
-                echo $suppliers_id . "->" . Dropdown::getDropdownName("glpi_suppliers", $options["supplierId"]) . "<br>";
+                // getDropdownName() returns the unescaped DB value: escape before echo.
+                echo htmlescape($suppliers_id) . "->"
+                     . htmlescape(Dropdown::getDropdownName("glpi_suppliers", $options["supplierId"])) . "<br>";
             }
             echo __('Date of purchase') . ": ";
             echo Html::convdate($buy_date) . "->" . Html::convdate($options["buyDate"]) . "<br>";

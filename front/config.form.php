@@ -105,6 +105,10 @@ if (isset($_POST["add"])) {
         curl_setopt($ch, CURLOPT_USERPWD, $supplier_key . ':' . $supplier_secret);
         curl_setopt($ch, CURLOPT_TIMEOUT, 15);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+        // Do not follow redirects: a public host could otherwise bounce us to an
+        // internal target, bypassing the URL validation above (consistent with the
+        // HEAD test and the production cURL calls).
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
         // Pin the host to the IP validated above (DNS-rebinding TOCTOU defence);
         // empty when a proxy is configured (the proxy resolves the host itself).
         $resolve = Config::getPinnedResolve($token_url);

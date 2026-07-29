@@ -229,6 +229,34 @@ class Config extends CommonDBTM
     public const TOSHIBA     = "Toshiba";
     public const WORTMANN_AG = "Wortmann_ag";
 
+    /**
+     * Single source of truth for the supported manufacturer names.
+     *
+     * @return string[]
+     */
+    public static function getAllowedSuppliers(): array
+    {
+        return [self::DELL, self::HP, self::FUJITSU, self::LENOVO, self::TOSHIBA, self::WORTMANN_AG];
+    }
+
+    /**
+     * Resolve a Manufacturers\* class from a supplier name. The name is free-form
+     * config data (editable by any user holding the plugin right), so it must be
+     * validated against the whitelist AND existence-checked before it is used in a
+     * `new $class()` expression, otherwise a bogus name triggers a fatal error.
+     *
+     * @param string $suppliername
+     * @return class-string|null the fully-qualified class name, or null if invalid
+     */
+    public static function resolveSupplierClass($suppliername): ?string
+    {
+        if (empty($suppliername) || !in_array($suppliername, self::getAllowedSuppliers(), true)) {
+            return null;
+        }
+        $class = "GlpiPlugin\\Manufacturersimports\\Manufacturers\\" . $suppliername;
+        return class_exists($class) ? $class : null;
+    }
+
     public static function getTypeName($nb = 0)
     {
         return _n('Manufacturer', 'Manufacturers', $nb);
@@ -263,7 +291,13 @@ class Config extends CommonDBTM
             case self::LENOVO:
             case self::TOSHIBA:
             case self::WORTMANN_AG:
-                $supplierclass = "GlpiPlugin\Manufacturersimports\Manufacturers\\".$suppliername;
+                // Whitelisted above by the switch, but existence-check before `new`
+                // to stay fatal-safe if a manufacturer class is ever renamed/removed.
+                $supplierclass = self::resolveSupplierClass($suppliername);
+                if ($supplierclass === null) {
+                    $this->post_getEmpty();
+                    break;
+                }
                 $supplier                     = new $supplierclass();
                 $infos                        = $supplier->getSupplierInfo();
                 $this->fields["name"]         = $infos["name"];
@@ -828,11 +862,11 @@ class Config extends CommonDBTM
                     "display" => false];
 
 
-                $allowed_suppliers = [self::DELL, self::HP, self::FUJITSU, self::LENOVO, self::TOSHIBA, self::WORTMANN_AG];
-                if (!in_array($suppliername, $allowed_suppliers, true)) {
+                // Static calls below still require a whitelisted, existing class.
+                $supplierclass = self::resolveSupplierClass($suppliername);
+                if ($supplierclass === null) {
                     return;
                 }
-                $supplierclass                  = "GlpiPlugin\Manufacturersimports\Manufacturers\\" . $suppliername;
                 $token                          = $supplierclass::getToken($config);
                 $warranty_url                   = $supplierclass::getWarrantyUrl($config, $item->fields['serial']);
                 $options['token']               = $token;
