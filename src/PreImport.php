@@ -564,7 +564,7 @@ class PreImport extends CommonDBTM
             $entry['supplier'] = ob_get_clean();
 
             ob_start();
-            $supplier->showWarrantyItem($line['id'], $supplierWarranty);
+            $supplier->showWarrantyItem($line['id']);
             $warranty_html = ob_get_clean();
             if (preg_match('/<td[^>]*>(.*)<\/td>/s', $warranty_html, $m)) {
                 $warranty_html = $m[1];

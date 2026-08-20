@@ -221,6 +221,41 @@ class PostImport extends CommonDBTM
             $data = curl_exec($ch);
         }
 
+        // Lenovo exception (github issue #168): the warranty payload is only
+        // served after an HTTP redirect to a region-scoped URL on the SAME host
+        // (e.g. adding /xx/en/ to the path). CURLOPT_FOLLOWLOCATION stays off
+        // globally for SSRF safety, so we follow Lenovo's redirect(s) manually
+        // here and re-apply the entry guard on every hop: refuse any target that
+        // leaves the validated origin host or no longer resolves to a public IP,
+        // and re-pin the resolved IP so curl cannot be bounced to an internal
+        // target between hops.
+        if (!$options["download"]
+            && $options['suppliername'] == Config::LENOVO) {
+            $origin_host = parse_url($url, PHP_URL_HOST);
+            $max_hops    = 5;
+            while ($max_hops-- > 0) {
+                $http_code = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                if ($http_code < 300 || $http_code >= 400) {
+                    break; // not a redirect: $data already holds the final body
+                }
+                $next = (string) curl_getinfo($ch, CURLINFO_REDIRECT_URL);
+                if ($next === ''
+                    || parse_url($next, PHP_URL_HOST) !== $origin_host
+                    || !Config::isSafeApiUrl($next)) {
+                    // Unresolvable, cross-host or internal target: abort rather
+                    // than follow it (behaves like the pre-fix failed fetch).
+                    $data = false;
+                    break;
+                }
+                curl_setopt($ch, CURLOPT_URL, $next);
+                $next_pin = Config::getPinnedResolve($next);
+                if (!empty($next_pin)) {
+                    curl_setopt($ch, CURLOPT_RESOLVE, $next_pin);
+                }
+                $data = curl_exec($ch);
+            }
+        }
+
         if (
             isset($_SESSION['glpi_use_mode'])
             && ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE)
@@ -1082,7 +1117,7 @@ class PostImport extends CommonDBTM
                         $msgerr = __('Connection failed/data download from manufacturer web site', 'manufacturersimports');
                 }
             }
-            echo "<td>$msgerr</td>";
+            echo "<td>" . htmlescape($msgerr) . "</td>";
         }
     }
 }

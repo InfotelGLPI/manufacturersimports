@@ -110,10 +110,10 @@ class Manufacturer extends CommonDBTM
 
     /**
      *
-     * @param type $ID
-     * @param type $supplierWarranty
+     * @param  $ID
+     * @param  $supplierWarranty
      */
-    public function showWarrantyItem($ID, $supplierWarranty)
+    public function showWarrantyItem($ID)
     {
         echo "<td>".__('Automatic', 'manufacturersimports');
         $name = "to_warranty_duration".$ID;
