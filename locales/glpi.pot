@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-01 15:15+0000\n"
+"POT-Creation-Date: 2026-08-20 09:23+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -46,7 +46,8 @@ msgstr ""
 msgid "Automatic"
 msgstr ""
 
-#: templates/massive_import_progress.html.twig:70 templates/config_form.html.twig:217
+#: templates/massive_import_progress.html.twig:70
+#: templates/config_form.html.twig:217
 msgid "Back"
 msgstr ""
 
@@ -62,7 +63,7 @@ msgstr ""
 msgid "Client secret"
 msgstr ""
 
-#: src/PostImport.php:1082
+#: src/PostImport.php:1117
 msgid "Connection failed/data download from manufacturer web site"
 msgstr ""
 
@@ -74,7 +75,7 @@ msgstr ""
 msgid "Default supplier attached"
 msgstr ""
 
-#: src/PostImport.php:312
+#: src/PostImport.php:347
 #, php-format
 msgid "Device %d skipped (access denied)"
 msgstr ""
@@ -97,11 +98,11 @@ msgstr ""
 msgid "From %1$d to %2$d on %3$d"
 msgstr ""
 
-#: src/Import.php:177 src/PostImport.php:331 src/PostImport.php:952
+#: src/Import.php:177 src/PostImport.php:366 src/PostImport.php:987
 msgid "Import OK"
 msgstr ""
 
-#: src/Import.php:180 src/PostImport.php:336 src/PostImport.php:1059
+#: src/Import.php:180 src/PostImport.php:371 src/PostImport.php:1094
 msgid "Import failed"
 msgstr ""
 
@@ -109,11 +110,11 @@ msgstr ""
 msgid "Import in progress"
 msgstr ""
 
-#: src/PostImport.php:934 src/PostImport.php:941
+#: src/PostImport.php:969 src/PostImport.php:976
 msgid "Imported from"
 msgstr ""
 
-#: src/PostImport.php:303
+#: src/PostImport.php:338
 #, php-format
 msgid "Importing device %1$d of %2$d"
 msgstr ""
@@ -161,7 +162,7 @@ msgstr ""
 msgid "New warranty affected by default (Replace if 0)"
 msgstr ""
 
-#: src/Config.php:446 src/PreImport.php:400
+#: src/PreImport.php:400 src/Config.php:446
 msgid "New warranty attached"
 msgstr ""
 
@@ -241,7 +242,7 @@ msgstr ""
 msgid "Supplier attached"
 msgstr ""
 
-#: front/massiveaction.php:45 src/PreImport.php:70 src/Profile.php:130
+#: front/massiveaction.php:45 src/Profile.php:130 src/PreImport.php:70
 #: src/Menu.php:53 setup.php:90
 msgid "Suppliers import"
 msgid_plural "Suppliers imports"
@@ -264,7 +265,7 @@ msgstr ""
 msgid "Token URL is empty"
 msgstr ""
 
-#: src/PostImport.php:345
+#: src/PostImport.php:380
 #, php-format
 msgid "Total number of devices imported %s"
 msgstr ""
@@ -286,7 +287,7 @@ msgstr ""
 msgid "Warranty page test"
 msgstr ""
 
-#: src/PostImport.php:935 src/PostImport.php:942
+#: src/PostImport.php:970 src/PostImport.php:977
 msgid "With the manufacturersimports plugin"
 msgstr ""
 
