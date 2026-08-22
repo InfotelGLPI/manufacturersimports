@@ -1,30 +1,30 @@
 <?php
 
-/*
- -------------------------------------------------------------------------
- manufacturersimports plugin for GLPI
- Copyright (C) 2015-2026 by the manufacturersimports Development Team.
-
- https://github.com/InfotelGLPI/manufacturersimports
- -------------------------------------------------------------------------
-
- LICENSE
-
- This file is part of manufacturersimports.
-
- manufacturersimports is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 3 of the License, or
- (at your option) any later version.
-
- manufacturersimports is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with manufacturersimports. If not, see <http://www.gnu.org/licenses/>.
- --------------------------------------------------------------------------
+/**
+ * -------------------------------------------------------------------------
+ * manufacturersimports plugin for GLPI
+ * Copyright (C) 2015-2026 by the manufacturersimports Development Team.
+ *
+ * https://github.com/InfotelGLPI/manufacturersimports
+ * -------------------------------------------------------------------------
+ *
+ * LICENSE
+ *
+ * This file is part of manufacturersimports.
+ *
+ * manufacturersimports is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * manufacturersimports is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with manufacturersimports. If not, see <http://www.gnu.org/licenses/>.
+ * --------------------------------------------------------------------------
  */
 
 use GlpiPlugin\Manufacturersimports\Config;
@@ -44,25 +44,25 @@ if (isset($_POST["add"])) {
     $config->add($_POST);
     Html::back();
 
-} else if (isset($_POST["update"])) {
+} elseif (isset($_POST["update"])) {
 
     Session::checkRight("plugin_manufacturersimports", UPDATE);
     $config->update($_POST);
     Html::back();
 
-} else if (isset($_POST["delete"])) {
+} elseif (isset($_POST["delete"])) {
 
     Session::checkRight("plugin_manufacturersimports", PURGE);
     $config->delete($_POST, true);
     Html::redirect("./config.php");
 
-} else if (isset($_POST["purge"])) {
+} elseif (isset($_POST["purge"])) {
 
     Session::checkRight("plugin_manufacturersimports", PURGE);
     $config->delete($_POST, true);
     Html::redirect("./config.php");
 
-} else if (isset($_POST["test_connection"])) {
+} elseif (isset($_POST["test_connection"])) {
     // Reaching out to an arbitrary URL server-side requires the plugin update
     // right, not merely being logged in (defends against SSRF).
     Session::checkRight("plugin_manufacturersimports", UPDATE);
@@ -175,7 +175,7 @@ if (isset($_POST["add"])) {
     }
     exit;
 
-} else if (isset($_POST["retrieve_warranty"])) {
+} elseif (isset($_POST["retrieve_warranty"])) {
     Session::checkRight("plugin_manufacturersimports", UPDATE);
 
     Config::retrieveOneWarranty($_POST["itemtype"], $_POST["items_id"]);

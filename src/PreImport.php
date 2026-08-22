@@ -1,30 +1,30 @@
 <?php
 
-/*
- -------------------------------------------------------------------------
- manufacturersimports plugin for GLPI
- Copyright (C) 2015-2026 by the manufacturersimports Development Team.
-
- https://github.com/InfotelGLPI/manufacturersimports
- -------------------------------------------------------------------------
-
- LICENSE
-
- This file is part of manufacturersimports.
-
- manufacturersimports is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 3 of the License, or
- (at your option) any later version.
-
- manufacturersimports is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with manufacturersimports. If not, see <http://www.gnu.org/licenses/>.
- --------------------------------------------------------------------------
+/**
+ * -------------------------------------------------------------------------
+ * manufacturersimports plugin for GLPI
+ * Copyright (C) 2015-2026 by the manufacturersimports Development Team.
+ *
+ * https://github.com/InfotelGLPI/manufacturersimports
+ * -------------------------------------------------------------------------
+ *
+ * LICENSE
+ *
+ * This file is part of manufacturersimports.
+ *
+ * manufacturersimports is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * manufacturersimports is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with manufacturersimports. If not, see <http://www.gnu.org/licenses/>.
+ * --------------------------------------------------------------------------
  */
 
 namespace GlpiPlugin\Manufacturersimports;
@@ -78,27 +78,27 @@ class PreImport extends CommonDBTM
      * @param int    $entity_restrict
      * @param string $types
      */
-//    public static function showAllItems($myname, $value_type = 0, $value = 0, $entity_restrict = -1, $types = '')
-//    {
-//        if (!is_array($types)) {
-//            $types = Config::getTypes();
-//        }
-//
-//        $rand    = mt_rand();
-//        $options = [];
-//
-//        foreach ($types as $type) {
-//            $item           = new $type();
-//            $options[$type] = $item::getTypeName();
-//        }
-//        asort($options);
-//        if (count($options)) {
-//            $id = "item_type$rand";
-//            Dropdown::showFromArray($myname, $options, ['value'               => $value,
-//                'id'                  => $id,
-//                'display_emptychoice' => true]);
-//        }
-//    }
+    //    public static function showAllItems($myname, $value_type = 0, $value = 0, $entity_restrict = -1, $types = '')
+    //    {
+    //        if (!is_array($types)) {
+    //            $types = Config::getTypes();
+    //        }
+    //
+    //        $rand    = mt_rand();
+    //        $options = [];
+    //
+    //        foreach ($types as $type) {
+    //            $item           = new $type();
+    //            $options[$type] = $item::getTypeName();
+    //        }
+    //        asort($options);
+    //        if (count($options)) {
+    //            $id = "item_type$rand";
+    //            Dropdown::showFromArray($myname, $options, ['value'               => $value,
+    //                'id'                  => $id,
+    //                'display_emptychoice' => true]);
+    //        }
+    //    }
 
     /**
      * Fonction to use the supplier url
@@ -124,7 +124,7 @@ class PreImport extends CommonDBTM
                 $otherserial,
                 $supplierkey,
                 $supplierSecret,
-                $supplierUrl
+                $supplierUrl,
             );
             if (!$second_url) {
                 $url = $infos['url'];
@@ -159,7 +159,7 @@ class PreImport extends CommonDBTM
                 $otherserial,
                 $supplierkey,
                 $supplierSecret,
-                $supplierUrl
+                $supplierUrl,
             );
             $url_warranty  = $infos['url_warranty'];
         }
@@ -430,7 +430,7 @@ class PreImport extends CommonDBTM
                 $supplier,
                 $canedit,
                 $has_doc_col,
-                (int) $p['imported']
+                (int) $p['imported'],
             );
 
             if ((int) $p['imported'] !== self::IMPORTED) {
@@ -582,11 +582,22 @@ class PreImport extends CommonDBTM
         }
 
         $url = self::selectSupplier(
-            $suppliername, $supplierUrl, $line['serial'], $otherSerial, $supplierkey, $supplierkeysecret
+            $suppliername,
+            $supplierUrl,
+            $line['serial'],
+            $otherSerial,
+            $supplierkey,
+            $supplierkeysecret,
         );
         if ($suppliername === Config::LENOVO) {
             $url = self::selectSupplier(
-                $suppliername, $supplierUrl, $line['serial'], $otherSerial, $supplierkey, $supplierkeysecret, true
+                $suppliername,
+                $supplierUrl,
+                $line['serial'],
+                $otherSerial,
+                $supplierkey,
+                $supplierkeysecret,
+                true,
             );
         }
         $entry['link'] = "<a href='" . htmlescape($url) . "' target='_blank'>"
@@ -631,6 +642,12 @@ class PreImport extends CommonDBTM
     {
         global $CFG_GLPI;
 
+        // Escape the form name before embedding it into the onclick handlers: it is
+        // reflected inside an HTML attribute and could otherwise break out. This
+        // helper is still invoked from pre_import_list.html.twig via a Twig call(),
+        // so the escaping is load-bearing, not merely defensive.
+        $formname = htmlescape($formname);
+
         if ($fixed) {
             echo "<table class='tab_glpi' width='950px'>";
         } else {
@@ -671,7 +688,7 @@ class PreImport extends CommonDBTM
         if (count($actions)) {
             foreach ($actions as $name => $label) {
                 if (!empty($name)) {
-                    echo "<input type='submit' name='$name' ";
+                    echo "<input type='submit' name='" . htmlescape($name) . "' ";
                     echo "value=\"" . htmlescape($label) . "\" class='submit btn btn-primary'>&nbsp;";
                 }
             }
@@ -731,7 +748,7 @@ class PreImport extends CommonDBTM
         if (!$isCron) {
             $where = array_merge(
                 $where,
-                $dbu->getEntitiesRestrictCriteria($itemtable, '', '', $item->maybeRecursive())
+                $dbu->getEntitiesRestrictCriteria($itemtable, '', '', $item->maybeRecursive()),
             );
         }
 
@@ -844,6 +861,12 @@ class PreImport extends CommonDBTM
     {
         global $CFG_GLPI;
 
+        // Escape the URL parts before they are interpolated into href attributes
+        // below. This helper is still invoked from pre_import_list.html.twig via a
+        // Twig call(), so the escaping is load-bearing, not merely defensive.
+        $target     = htmlescape($target);
+        $parameters = htmlescape($parameters);
+
         $list_limit = $_SESSION['glpilist_limit'];
         // Forward is the next step forward
         $forward = $start + $list_limit;
@@ -949,7 +972,7 @@ class PreImport extends CommonDBTM
             "massiveaction",
             "show_massiveaction",
             PLUGIN_MANUFACTURERSIMPORTS_WEBDIR . "/ajax/dropdownMassiveAction.php",
-            $params
+            $params,
         );
 
         echo "<span id='show_massiveaction'>&nbsp;</span>\n";

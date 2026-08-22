@@ -1,30 +1,30 @@
 <?php
 
-/*
- -------------------------------------------------------------------------
- manufacturersimports plugin for GLPI
- Copyright (C) 2015-2026 by the manufacturersimports Development Team.
-
- https://github.com/InfotelGLPI/manufacturersimports
- -------------------------------------------------------------------------
-
- LICENSE
-
- This file is part of manufacturersimports.
-
- manufacturersimports is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 3 of the License, or
- (at your option) any later version.
-
- manufacturersimports is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with manufacturersimports. If not, see <http://www.gnu.org/licenses/>.
- --------------------------------------------------------------------------
+/**
+ * -------------------------------------------------------------------------
+ * manufacturersimports plugin for GLPI
+ * Copyright (C) 2015-2026 by the manufacturersimports Development Team.
+ *
+ * https://github.com/InfotelGLPI/manufacturersimports
+ * -------------------------------------------------------------------------
+ *
+ * LICENSE
+ *
+ * This file is part of manufacturersimports.
+ *
+ * manufacturersimports is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * manufacturersimports is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with manufacturersimports. If not, see <http://www.gnu.org/licenses/>.
+ * --------------------------------------------------------------------------
  */
 
 use GlpiPlugin\Manufacturersimports\Config;
@@ -96,7 +96,7 @@ function plugin_manufacturersimports_install()
                 $DB->update(
                     'glpi_plugin_manufacturersimports_configs',
                     $changes,
-                    ['id' => (int) $row['id']]
+                    ['id' => (int) $row['id']],
                 );
             }
         }
@@ -129,7 +129,7 @@ function plugin_manufacturersimports_install()
 
     $DB->runFile($sql_root . "/update-3.1.2.sql");
 
-    $cron = new CronTask;
+    $cron = new CronTask();
     if ($cron->getFromDBbyName(Dell::class, 'DataRecoveryDELL')) {
         CronTask::Unregister('ManufacturersimportsDell');
     }
@@ -145,7 +145,7 @@ function plugin_manufacturersimports_install()
             $DB->update(
                 'glpi_plugin_manufacturersimports_profiles',
                 ['profiles_id' => (int) $data["id"]],
-                ['id' => (int) $data["id"]]
+                ['id' => (int) $data["id"]],
             );
         }
 
@@ -166,22 +166,22 @@ function plugin_manufacturersimports_uninstall()
 
     $migration = new Migration(PLUGIN_MANUFACTURERSIMPORTS_VERSION);
     $tables    = ["glpi_plugin_manufacturersimports_configs",
-                       "glpi_plugin_manufacturersimports_logs"];
+        "glpi_plugin_manufacturersimports_logs"];
     foreach ($tables as $table) {
         $migration->dropTable($table);
     }
 
     //old versions
     $tables = ["glpi_plugin_suppliertag_config",
-                    "glpi_plugin_suppliertag_profiles",
-                     "glpi_plugin_manufacturersimports_models",
-                    "glpi_plugin_suppliertag_models",
-                    "glpi_plugin_suppliertag_imported"];
+        "glpi_plugin_suppliertag_profiles",
+        "glpi_plugin_manufacturersimports_models",
+        "glpi_plugin_suppliertag_models",
+        "glpi_plugin_suppliertag_imported"];
     foreach ($tables as $table) {
         $migration->dropTable($table);
     }
 
-    $cron = new CronTask;
+    $cron = new CronTask();
     if ($cron->getFromDBbyName(Dell::class, 'DataRecoveryDELL')) {
         CronTask::Unregister('ManufacturersimportsDell');
     }
@@ -215,20 +215,20 @@ function plugin_manufacturersimports_getDatabaseRelations()
 {
     if (Plugin::isPluginActive("manufacturersimports")) {
         return ["glpi_entities"
-                     => ["glpi_plugin_manufacturersimports_configs"
-                              => "entities_id"],
-                     "glpi_manufacturers"
-                     => ["glpi_plugin_manufacturersimports_configs"
-                              => "manufacturers_id"],
-                     "glpi_suppliers"
-                     => ["glpi_plugin_manufacturersimports_configs"
-                              => "suppliers_id"],
-                     "glpi_documentcategories"
-                     => ["glpi_plugin_manufacturersimports_configs"
-                              => "documentcategories_id"],
-                     "glpi_documents"
-                     => ["glpi_plugin_manufacturersimports_logs"
-                              => "documents_id"]
+         => ["glpi_plugin_manufacturersimports_configs"
+                  => "entities_id"],
+            "glpi_manufacturers"
+            => ["glpi_plugin_manufacturersimports_configs"
+                     => "manufacturers_id"],
+            "glpi_suppliers"
+            => ["glpi_plugin_manufacturersimports_configs"
+                     => "suppliers_id"],
+            "glpi_documentcategories"
+            => ["glpi_plugin_manufacturersimports_configs"
+                     => "documentcategories_id"],
+            "glpi_documents"
+            => ["glpi_plugin_manufacturersimports_logs"
+                     => "documents_id"],
         ];
     } else {
         return [];

@@ -1,30 +1,30 @@
 <?php
 
-/*
- -------------------------------------------------------------------------
- manufacturersimports plugin for GLPI
- Copyright (C) 2015-2026 by the manufacturersimports Development Team.
-
- https://github.com/InfotelGLPI/manufacturersimports
- -------------------------------------------------------------------------
-
- LICENSE
-
- This file is part of manufacturersimports.
-
- manufacturersimports is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 3 of the License, or
- (at your option) any later version.
-
- manufacturersimports is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with manufacturersimports. If not, see <http://www.gnu.org/licenses/>.
- --------------------------------------------------------------------------
+/**
+ * -------------------------------------------------------------------------
+ * manufacturersimports plugin for GLPI
+ * Copyright (C) 2015-2026 by the manufacturersimports Development Team.
+ *
+ * https://github.com/InfotelGLPI/manufacturersimports
+ * -------------------------------------------------------------------------
+ *
+ * LICENSE
+ *
+ * This file is part of manufacturersimports.
+ *
+ * manufacturersimports is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * manufacturersimports is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with manufacturersimports. If not, see <http://www.gnu.org/licenses/>.
+ * --------------------------------------------------------------------------
  */
 
 namespace GlpiPlugin\Manufacturersimports\Manufacturers;
@@ -102,7 +102,7 @@ class Manufacturer extends CommonDBTM
                 $output_type,
                 $doc->getDownloadLink(),
                 $item_num,
-                $row_num
+                $row_num,
             );
         }
         return Search::showItem($output_type, "", $item_num, $row_num);
@@ -115,8 +115,8 @@ class Manufacturer extends CommonDBTM
      */
     public function showWarrantyItem($ID)
     {
-        echo "<td>".__('Automatic', 'manufacturersimports');
-        $name = "to_warranty_duration".$ID;
+        echo "<td>" . __('Automatic', 'manufacturersimports');
+        $name = "to_warranty_duration" . $ID;
         echo Html::hidden($name, ['value' => 0]);
         echo "</td>";
     }
@@ -136,18 +136,14 @@ class Manufacturer extends CommonDBTM
         $key = null,
         $apisecret = null,
         $supplierUrl = null
-    )
-    {
-    }
+    ) {}
 
     /**
      * Get buy date of object
      *
      * @param $contents
      */
-    public function getBuyDate($contents)
-    {
-    }
+    public function getBuyDate($contents) {}
 
     /**
      * Get start date of warranty
@@ -165,18 +161,14 @@ class Manufacturer extends CommonDBTM
      *
      * @param $contents
      */
-    public function getExpirationDate($contents)
-    {
-    }
+    public function getExpirationDate($contents) {}
 
     /**
      * Get warranty info
      *
      * @param $contents
      */
-    public function getWarrantyInfo($contents)
-    {
-    }
+    public function getWarrantyInfo($contents) {}
 
     /**
      * Summary of getToken

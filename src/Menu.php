@@ -1,30 +1,30 @@
 <?php
 
-/*
- -------------------------------------------------------------------------
- manufacturersimports plugin for GLPI
- Copyright (C) 2015-2026 by the manufacturersimports Development Team.
-
- https://github.com/InfotelGLPI/manufacturersimports
- -------------------------------------------------------------------------
-
- LICENSE
-
- This file is part of manufacturersimports.
-
- manufacturersimports is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 3 of the License, or
- (at your option) any later version.
-
- manufacturersimports is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with manufacturersimports. If not, see <http://www.gnu.org/licenses/>.
- --------------------------------------------------------------------------
+/**
+ * -------------------------------------------------------------------------
+ * manufacturersimports plugin for GLPI
+ * Copyright (C) 2015-2026 by the manufacturersimports Development Team.
+ *
+ * https://github.com/InfotelGLPI/manufacturersimports
+ * -------------------------------------------------------------------------
+ *
+ * LICENSE
+ *
+ * This file is part of manufacturersimports.
+ *
+ * manufacturersimports is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * manufacturersimports is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with manufacturersimports. If not, see <http://www.gnu.org/licenses/>.
+ * --------------------------------------------------------------------------
  */
 
 namespace GlpiPlugin\Manufacturersimports;
@@ -37,50 +37,49 @@ use Session;
  */
 class Menu extends CommonGLPI
 {
+    public static $rightname = 'plugin_manufacturersimports';
 
-    static $rightname = 'plugin_manufacturersimports';
-
-   /**
-    * Get menu name
-    *
-    * @since version 0.85
-    *
-    * @return string menu shortcut key
-    **/
-    static function getMenuName()
+    /**
+     * Get menu name
+     *
+     * @since version 0.85
+     *
+     * @return string menu shortcut key
+     **/
+    public static function getMenuName()
     {
         return _n(
             'Suppliers import',
             'Suppliers imports',
             2,
-            'manufacturersimports'
+            'manufacturersimports',
         );
     }
 
-   /**
-    * get menu content
-    *
-    * @since version 0.85
-    *
-    * @return array for menu
-    **/
-    static function getMenuContent()
+    /**
+     * get menu content
+     *
+     * @since version 0.85
+     *
+     * @return array for menu
+     **/
+    public static function getMenuContent()
     {
         $plugin_page              = Import::getSearchURL(false);
         $menu                     = [];
-       //Menu entry in tools
+        //Menu entry in tools
         $menu['title']            = self::getMenuName();
         $menu['page']             = $plugin_page;
         $menu['links']['search']  = $plugin_page;
 
         if (Session::haveRight(static::$rightname, UPDATE)
             || Session::haveRight("config", UPDATE)) {
-           //Entry icon in breadcrumb
+            //Entry icon in breadcrumb
             $menu['links']['config']                      = Config::getSearchURL(false);
-           //Link to config page in admin plugins list
+            //Link to config page in admin plugins list
             $menu['config_page']                          = Config::getSearchURL(false);
 
-           //Add a fourth level in breadcrumb for configuration page
+            //Add a fourth level in breadcrumb for configuration page
             $menu['options']['config']['title']           = __('Setup');
             $menu['options']['config']['page']            = Config::getSearchURL(false);
             $menu['options']['config']['links']['search'] = Config::getSearchURL(false);
@@ -92,12 +91,12 @@ class Menu extends CommonGLPI
         return $menu;
     }
 
-    static function getIcon()
+    public static function getIcon()
     {
         return "ti ti-satellite";
     }
 
-    static function removeRightsFromSession()
+    public static function removeRightsFromSession()
     {
         if (isset($_SESSION['glpimenu']['tools']['types'][Menu::class])) {
             unset($_SESSION['glpimenu']['tools']['types'][Menu::class]);

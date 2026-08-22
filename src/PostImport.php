@@ -1,30 +1,30 @@
 <?php
 
-/*
- -------------------------------------------------------------------------
- manufacturersimports plugin for GLPI
- Copyright (C) 2015-2026 by the manufacturersimports Development Team.
-
- https://github.com/InfotelGLPI/manufacturersimports
- -------------------------------------------------------------------------
-
- LICENSE
-
- This file is part of manufacturersimports.
-
- manufacturersimports is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 3 of the License, or
- (at your option) any later version.
-
- manufacturersimports is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with manufacturersimports. If not, see <http://www.gnu.org/licenses/>.
- --------------------------------------------------------------------------
+/**
+ * -------------------------------------------------------------------------
+ * manufacturersimports plugin for GLPI
+ * Copyright (C) 2015-2026 by the manufacturersimports Development Team.
+ *
+ * https://github.com/InfotelGLPI/manufacturersimports
+ * -------------------------------------------------------------------------
+ *
+ * LICENSE
+ *
+ * This file is part of manufacturersimports.
+ *
+ * manufacturersimports is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * manufacturersimports is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with manufacturersimports. If not, see <http://www.gnu.org/licenses/>.
+ * --------------------------------------------------------------------------
  */
 
 namespace GlpiPlugin\Manufacturersimports;
@@ -335,7 +335,7 @@ class PostImport extends CommonDBTM
             $step++;
             $progress->setCurrentStep($step);
             $progress->setProgressBarMessage(
-                sprintf(__('Importing device %1$d of %2$d', 'manufacturersimports'), $step, $total_items)
+                sprintf(__('Importing device %1$d of %2$d', 'manufacturersimports'), $step, $total_items),
             );
 
             $item = getItemForItemtype($itemtype);
@@ -344,7 +344,7 @@ class PostImport extends CommonDBTM
             if (!$item || !$item->can((int) $key, UPDATE)) {
                 $progress->addMessage(
                     MessageType::Error,
-                    sprintf(__('Device %d skipped (access denied)', 'manufacturersimports'), (int) $key)
+                    sprintf(__('Device %d skipped (access denied)', 'manufacturersimports'), (int) $key),
                 );
                 continue;
             }
@@ -356,19 +356,19 @@ class PostImport extends CommonDBTM
                     $key,
                     $values["to_suppliers_id$key"] ?? 0,
                     $values["to_warranty_duration$key"] ?? 0,
-                    $values['manufacturers_id']
+                    $values['manufacturers_id'],
                 );
 
                 if ($result['success']) {
                     $total_imported++;
                     $progress->addMessage(
                         MessageType::Success,
-                        $result['name'] . ' — ' . __('Import OK', 'manufacturersimports')
+                        $result['name'] . ' — ' . __('Import OK', 'manufacturersimports'),
                     );
                 } else {
                     $progress->addMessage(
                         MessageType::Error,
-                        $result['name'] . ' — ' . __('Import failed', 'manufacturersimports')
+                        $result['name'] . ' — ' . __('Import failed', 'manufacturersimports'),
                     );
                 }
             }
@@ -377,7 +377,7 @@ class PostImport extends CommonDBTM
         $progress->setCurrentStep($total_items);
         $progress->addMessage(
             MessageType::Notice,
-            sprintf(__('Total number of devices imported %s', 'manufacturersimports'), $total_imported)
+            sprintf(__('Total number of devices imported %s', 'manufacturersimports'), $total_imported),
         );
     }
 
@@ -695,14 +695,14 @@ class PostImport extends CommonDBTM
                 $compSerial,
                 $otherSerial,
                 $supplierkey,
-                $supplierSecret
+                $supplierSecret,
             );
             $post         = PreImport::getSupplierPost(
                 $suppliername,
                 $compSerial,
                 $otherSerial,
                 $supplierkey,
-                $supplierSecret
+                $supplierSecret,
             );
             $warranty_url = $supplierclass::getWarrantyUrl($config, $compSerial);
 
@@ -904,7 +904,7 @@ class PostImport extends CommonDBTM
                     'itemtype'      => $values['type'],
                     'import_status' => 2,
                     'LIMIT'         => 1,
-                ]
+                ],
             );
             if (isset($_SESSION["glpi_plugin_manufacturersimports_total"])) {
                 $_SESSION["glpi_plugin_manufacturersimports_total"] += 1;
@@ -1040,9 +1040,15 @@ class PostImport extends CommonDBTM
                 break;
         }
 
+        // Neutralize the supplier name as a path component: it originates from the
+        // free "name" field of the configuration and is concatenated into a file
+        // path under GLPI_DOC_DIR/_uploads/. Strip anything but word chars so a
+        // value carrying a path separator can never escape the uploads directory,
+        // independently of the whitelist guards enforced by the callers.
+        $safe_suppliername = preg_replace('/[^A-Za-z0-9_]/', '', (string) $options["suppliername"]);
         $filename
-           = "infocoms_" . $options["suppliername"]
-           . "_" . $name . "_" . $options["ID"] . ".html";
+           = "infocoms_" . $safe_suppliername
+           . "_" . $name . "_" . (int) $options["ID"] . ".html";
 
         //on enregistre
         $path     = GLPI_DOC_DIR . "/_uploads/";

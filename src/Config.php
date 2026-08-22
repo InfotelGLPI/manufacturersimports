@@ -1,30 +1,30 @@
 <?php
 
-/*
- -------------------------------------------------------------------------
- manufacturersimports plugin for GLPI
- Copyright (C) 2015-2026 by the manufacturersimports Development Team.
-
- https://github.com/InfotelGLPI/manufacturersimports
- -------------------------------------------------------------------------
-
- LICENSE
-
- This file is part of manufacturersimports.
-
- manufacturersimports is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 3 of the License, or
- (at your option) any later version.
-
- manufacturersimports is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with manufacturersimports. If not, see <http://www.gnu.org/licenses/>.
- --------------------------------------------------------------------------
+/**
+ * -------------------------------------------------------------------------
+ * manufacturersimports plugin for GLPI
+ * Copyright (C) 2015-2026 by the manufacturersimports Development Team.
+ *
+ * https://github.com/InfotelGLPI/manufacturersimports
+ * -------------------------------------------------------------------------
+ *
+ * LICENSE
+ *
+ * This file is part of manufacturersimports.
+ *
+ * manufacturersimports is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * manufacturersimports is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with manufacturersimports. If not, see <http://www.gnu.org/licenses/>.
+ * --------------------------------------------------------------------------
  */
 
 namespace GlpiPlugin\Manufacturersimports;
@@ -172,7 +172,7 @@ class Config extends CommonDBTM
             if (filter_var(
                 $ip,
                 FILTER_VALIDATE_IP,
-                FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE
+                FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE,
             ) === false) {
                 return false;
             }
@@ -336,8 +336,8 @@ class Config extends CommonDBTM
                 $dbu->getEntitiesRestrictCriteria(
                     $this->getTable(),
                     '',
-                    $dbu->getSonsOf("glpi_entities", $this->fields["entities_id"])
-                )
+                    $dbu->getSonsOf("glpi_entities", $this->fields["entities_id"]),
+                ),
             );
             $DB->delete($this->getTable(), $criteria);
         }
@@ -357,8 +357,8 @@ class Config extends CommonDBTM
                 $dbu->getEntitiesRestrictCriteria(
                     $this->getTable(),
                     '',
-                    $dbu->getSonsOf("glpi_entities", $this->fields["entities_id"])
-                )
+                    $dbu->getSonsOf("glpi_entities", $this->fields["entities_id"]),
+                ),
             );
             $DB->delete($this->getTable(), $criteria);
         }
@@ -537,6 +537,14 @@ class Config extends CommonDBTM
             $test_mode    = $is_api_test ? 'oauth' : 'head';
         }
 
+        // Only expose the decrypted API secrets to a caller allowed to edit this
+        // config. showForm() is reachable with READ alone (front/config.form.php
+        // display branch calls checkGlobal(READ)), so a read-only profile must not
+        // receive the cleartext client_id/secret in the rendered form. Editors keep
+        // the pre-filled value so prepareInputForUpdate()'s "empty = unchanged"
+        // round-trip is preserved and the stored secret is never wiped on save.
+        $can_edit = ($ID > 0) ? $this->can($ID, UPDATE) : static::canUpdate();
+
         TemplateRenderer::getInstance()->display('@manufacturersimports/config_form.html.twig', [
             'item'          => $this,
             'params'        => $options,
@@ -551,8 +559,8 @@ class Config extends CommonDBTM
             'base_url'      => $base_url,
             'test_mode'     => $test_mode,
             'action_url'    => self::getFormURL(true),
-            'supplier_key_value'    => self::decryptSecret($this->fields['supplier_key'] ?? ''),
-            'supplier_secret_value' => self::decryptSecret($this->fields['supplier_secret'] ?? ''),
+            'supplier_key_value'    => $can_edit ? self::decryptSecret($this->fields['supplier_key'] ?? '') : '',
+            'supplier_secret_value' => $can_edit ? self::decryptSecret($this->fields['supplier_secret'] ?? '') : '',
         ]);
 
         return true;
@@ -742,6 +750,14 @@ class Config extends CommonDBTM
                 if ($input['itemtype'] == Config::class) {
                     foreach ($input["item"] as $key => $val) {
                         if ($val == 1) {
+                            // Re-check the entity perimeter per item: CommonDBTM::update()
+                            // does not replay the right/entity control, so a forged
+                            // massive-action POST must not move a config record from an
+                            // entity the caller cannot access.
+                            if (!$this->can((int) $key, UPDATE)) {
+                                $res['noright']++;
+                                continue;
+                            }
                             $values["id"]          = $key;
                             $values["entities_id"] = $input['entities_id'];
                             if ($this->update($values)) {
@@ -843,13 +859,13 @@ class Config extends CommonDBTM
                     $supplierUrl,
                     $item->fields['serial'],
                     $item->fields['otherserial'],
-                    $supplierkey
+                    $supplierkey,
                 );
 
                 $post = PreImport::getSupplierPost(
                     $suppliername,
                     $item->fields['serial'],
-                    $item->fields['otherserial']
+                    $item->fields['otherserial'],
                 );
 
                 $data    = [];
@@ -929,7 +945,7 @@ class Config extends CommonDBTM
                         _sx('button', 'Retrieve warranty from manufacturer', 'manufacturersimports'),
                         ['itemtype' => $item->getType(),
                             'items_id' => $item->getID()],
-                        'ti-cloud-download'
+                        'ti-cloud-download',
                     );
                     echo "</div>";
                 }

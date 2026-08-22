@@ -1,30 +1,30 @@
 <?php
 
-/*
- -------------------------------------------------------------------------
- manufacturersimports plugin for GLPI
- Copyright (C) 2015-2026 by the manufacturersimports Development Team.
-
- https://github.com/InfotelGLPI/manufacturersimports
- -------------------------------------------------------------------------
-
- LICENSE
-
- This file is part of manufacturersimports.
-
- manufacturersimports is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 3 of the License, or
- (at your option) any later version.
-
- manufacturersimports is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with manufacturersimports. If not, see <http://www.gnu.org/licenses/>.
- --------------------------------------------------------------------------
+/**
+ * -------------------------------------------------------------------------
+ * manufacturersimports plugin for GLPI
+ * Copyright (C) 2015-2026 by the manufacturersimports Development Team.
+ *
+ * https://github.com/InfotelGLPI/manufacturersimports
+ * -------------------------------------------------------------------------
+ *
+ * LICENSE
+ *
+ * This file is part of manufacturersimports.
+ *
+ * manufacturersimports is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * manufacturersimports is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with manufacturersimports. If not, see <http://www.gnu.org/licenses/>.
+ * --------------------------------------------------------------------------
  */
 
 namespace GlpiPlugin\Manufacturersimports;
@@ -66,20 +66,20 @@ class Profile extends \Profile
     }
 
 
-//    public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
-//    {
-//        global $CFG_GLPI;
-//
-//        if ($item->getType() == 'Profile') {
-//            $prof = new self();
-//            self::addDefaultProfileInfos(
-//                $item->getField('id'),
-//                ['plugin_manufacturersimports' => 0]
-//            );
-//            $prof->showForm($item->getField('id'));
-//        }
-//        return true;
-//    }
+    //    public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
+    //    {
+    //        global $CFG_GLPI;
+    //
+    //        if ($item->getType() == 'Profile') {
+    //            $prof = new self();
+    //            self::addDefaultProfileInfos(
+    //                $item->getField('id'),
+    //                ['plugin_manufacturersimports' => 0]
+    //            );
+    //            $prof->showForm($item->getField('id'));
+    //        }
+    //        return true;
+    //    }
 
     /**
      * @param CommonGLPI $item
@@ -119,20 +119,20 @@ class Profile extends \Profile
         self::addDefaultProfileInfos(
             $ID,
             ['plugin_manufacturersimports' => READ + CREATE + UPDATE + PURGE],
-            true
+            true,
         );
     }
 
     public static function getAllRights()
     {
         return [['itemtype' => Config::class,
-                 'label'    => _n(
-                     'Suppliers import',
-                     'Suppliers imports',
-                     1,
-                     'manufacturersimports'
-                 ),
-                 'field'    => 'plugin_manufacturersimports']];
+            'label'    => _n(
+                'Suppliers import',
+                'Suppliers imports',
+                1,
+                'manufacturersimports',
+            ),
+            'field'    => 'plugin_manufacturersimports']];
     }
 
     /**
@@ -175,7 +175,7 @@ class Profile extends \Profile
 
         $it = $DB->request([
             'FROM' => 'glpi_plugin_manufacturersimports_profiles',
-            'WHERE' => ['profiles_id' => $profiles_id]
+            'WHERE' => ['profiles_id' => $profiles_id],
         ]);
         foreach ($it as $profile_data) {
             $matching       = ['manufacturersimports' => 'plugin_manufacturersimports'];
@@ -184,7 +184,7 @@ class Profile extends \Profile
                 $DB->update(
                     'glpi_profilerights',
                     ['rights' => self::translateARight($profile_data['plugin_manufacturersimports'])],
-                    ['name' => 'plugin_manufacturersimports', 'profiles_id' => $profiles_id]
+                    ['name' => 'plugin_manufacturersimports', 'profiles_id' => $profiles_id],
                 );
             }
         }
@@ -202,7 +202,7 @@ class Profile extends \Profile
         foreach ($profile->getAllRights(true) as $data) {
             if ($dbu->countElementsInTable(
                 "glpi_profilerights",
-                ["name" => $data['field']]
+                ["name" => $data['field']],
             ) == 0) {
                 ProfileRight::addProfileRights([$data['field']]);
             }
@@ -211,7 +211,7 @@ class Profile extends \Profile
         //Migration old rights in new ones
         $it = $DB->request([
             'SELECT' => ['id'],
-            'FROM' => 'glpi_profiles'
+            'FROM' => 'glpi_profiles',
         ]);
         foreach ($it as $prof) {
             self::migrateOneProfile($prof['id']);
@@ -220,8 +220,8 @@ class Profile extends \Profile
             'FROM' => 'glpi_profilerights',
             'WHERE' => [
                 'profiles_id' => $_SESSION['glpiactiveprofile']['id'],
-                'name' => ['LIKE', '%plugin_manufacturersimports%']
-            ]
+                'name' => ['LIKE', '%plugin_manufacturersimports%'],
+            ],
         ]);
         foreach ($it as $prof) {
             if (isset($_SESSION['glpiactiveprofile'])) {
@@ -249,13 +249,13 @@ class Profile extends \Profile
         foreach ($rights as $right => $value) {
             if ($dbu->countElementsInTable(
                 'glpi_profilerights',
-                ["profiles_id" => $profiles_id, "name" => $right]
+                ["profiles_id" => $profiles_id, "name" => $right],
             ) && $drop_existing) {
                 $profileRight->deleteByCriteria(['profiles_id' => $profiles_id, 'name' => $right]);
             }
             if (!$dbu->countElementsInTable(
                 'glpi_profilerights',
-                ["profiles_id" => $profiles_id, "name" => $right]
+                ["profiles_id" => $profiles_id, "name" => $right],
             )) {
                 $myright['profiles_id'] = $profiles_id;
                 $myright['name']        = $right;

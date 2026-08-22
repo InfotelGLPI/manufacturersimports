@@ -1,30 +1,30 @@
 <?php
 
-/*
- -------------------------------------------------------------------------
- manufacturersimports plugin for GLPI
- Copyright (C) 2015-2026 by the manufacturersimports Development Team.
-
- https://github.com/InfotelGLPI/manufacturersimports
- -------------------------------------------------------------------------
-
- LICENSE
-
- This file is part of manufacturersimports.
-
- manufacturersimports is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 3 of the License, or
- (at your option) any later version.
-
- manufacturersimports is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with manufacturersimports. If not, see <http://www.gnu.org/licenses/>.
- --------------------------------------------------------------------------
+/**
+ * -------------------------------------------------------------------------
+ * manufacturersimports plugin for GLPI
+ * Copyright (C) 2015-2026 by the manufacturersimports Development Team.
+ *
+ * https://github.com/InfotelGLPI/manufacturersimports
+ * -------------------------------------------------------------------------
+ *
+ * LICENSE
+ *
+ * This file is part of manufacturersimports.
+ *
+ * manufacturersimports is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * manufacturersimports is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with manufacturersimports. If not, see <http://www.gnu.org/licenses/>.
+ * --------------------------------------------------------------------------
  */
 
 namespace GlpiPlugin\Manufacturersimports;
@@ -113,63 +113,63 @@ class Import extends CommonDBTM
         foreach ($iterator as $data) {
             $log->reinitializeImport($type, $data['id']);
 
-                $compSerial = $data['serial'];
-                $ID         = $data['id'];
-                $dbu = new DbUtils();
-                $modelfield = $dbu->getForeignKeyFieldForTable($dbu->getTableForItemType($type . "Model"));
+            $compSerial = $data['serial'];
+            $ID         = $data['id'];
+            $dbu = new DbUtils();
+            $modelfield = $dbu->getForeignKeyFieldForTable($dbu->getTableForItemType($type . "Model"));
 
-                $models_id = $data[$modelfield];
-                $otherSerial = "";
-                if (class_exists($type . "Model") && $models_id != 0) {
-                    $modelitemtype = $type . "Model";
-                    $modelclass = new $modelitemtype();
-                    $modelclass->getfromDB($models_id);
-                    $otherSerial = $modelclass->fields["product_number"];
+            $models_id = $data[$modelfield];
+            $otherSerial = "";
+            if (class_exists($type . "Model") && $models_id != 0) {
+                $modelitemtype = $type . "Model";
+                $modelclass = new $modelitemtype();
+                $modelclass->getfromDB($models_id);
+                $otherSerial = $modelclass->fields["product_number"];
+            }
+
+            $url  = PreImport::selectSupplier(
+                $suppliername,
+                $supplierUrl,
+                $compSerial,
+                $otherSerial,
+                $supplierkey,
+            );
+            $post = PreImport::getSupplierPost(
+                $suppliername,
+                $compSerial,
+                $otherSerial,
+            );
+
+            $options = ["url"     => $url,
+                "post"    => $post,
+                "type"    => $type,
+                "ID"      => $ID,
+                "config"  => $config,
+                "line"    => $data,
+                "display" => false];
+
+            if (!empty($compSerial)) {
+                $options['sn'] = $compSerial;
+            }
+            if (!empty($otherserial)) {
+                $options['pn'] = $otherserial;
+            }
+
+            if ($suppliername == Config::DELL
+                || $suppliername == Config::HP) {
+                $supplierclass    = "GlpiPlugin\Manufacturersimports\Manufacturers\\" . $suppliername;
+                $token            = $supplierclass::getToken($config);
+                $warranty_url     = $supplierclass::getWarrantyUrl($config, $compSerial);
+                $options['token'] = $token;
+                if (isset($warranty_url)) {
+                    $options['url'] = $warranty_url['url'];
                 }
-
-                $url  = PreImport::selectSupplier(
-                    $suppliername,
-                    $supplierUrl,
-                    $compSerial,
-                    $otherSerial,
-                    $supplierkey
-                );
-                $post = PreImport::getSupplierPost(
-                    $suppliername,
-                    $compSerial,
-                    $otherSerial
-                );
-
-                $options = ["url"     => $url,
-                    "post"    => $post,
-                    "type"    => $type,
-                    "ID"      => $ID,
-                    "config"  => $config,
-                    "line"    => $data,
-                    "display" => false];
-
-                if (!empty($compSerial)) {
-                    $options['sn'] = $compSerial;
+                if (PostImport::saveImport($options)) {
+                    $task->addVolume(1);
+                } else {
+                    $nb_import_error += 1;
                 }
-                if (!empty($otherserial)) {
-                    $options['pn'] = $otherserial;
-                }
-
-                if ($suppliername == Config::DELL
-                    || $suppliername == Config::HP) {
-                    $supplierclass    = "GlpiPlugin\Manufacturersimports\Manufacturers\\".$suppliername;
-                    $token            = $supplierclass::getToken($config);
-                    $warranty_url     = $supplierclass::getWarrantyUrl($config, $compSerial);
-                    $options['token'] = $token;
-                    if (isset($warranty_url)) {
-                        $options['url'] = $warranty_url['url'];
-                    }
-                    if (PostImport::saveImport($options)) {
-                        $task->addVolume(1);
-                    } else {
-                        $nb_import_error += 1;
-                    }
-                }
+            }
         }
 
         //      }

@@ -223,18 +223,6 @@ parameters:
 			path: src/Manufacturers/Manufacturer.php
 
 		-
-			message: '#^Parameter \$ID of method GlpiPlugin\\Manufacturersimports\\Manufacturers\\Manufacturer\:\:showWarrantyItem\(\) has invalid type GlpiPlugin\\Manufacturersimports\\Manufacturers\\type\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/Manufacturers/Manufacturer.php
-
-		-
-			message: '#^Parameter \$supplierWarranty of method GlpiPlugin\\Manufacturersimports\\Manufacturers\\Manufacturer\:\:showWarrantyItem\(\) has invalid type GlpiPlugin\\Manufacturersimports\\Manufacturers\\type\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/Manufacturers/Manufacturer.php
-
-		-
 			message: '#^You should not use the `die` function\. It prevents the execution of post\-request/post\-command routines\.$#'
 			identifier: glpi.forbidExit
 			count: 1

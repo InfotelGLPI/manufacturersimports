@@ -1,30 +1,30 @@
 <?php
 
-/*
- -------------------------------------------------------------------------
- manufacturersimports plugin for GLPI
- Copyright (C) 2015-2026 by the manufacturersimports Development Team.
-
- https://github.com/InfotelGLPI/manufacturersimports
- -------------------------------------------------------------------------
-
- LICENSE
-
- This file is part of manufacturersimports.
-
- manufacturersimports is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 3 of the License, or
- (at your option) any later version.
-
- manufacturersimports is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with manufacturersimports. If not, see <http://www.gnu.org/licenses/>.
- --------------------------------------------------------------------------
+/**
+ * -------------------------------------------------------------------------
+ * manufacturersimports plugin for GLPI
+ * Copyright (C) 2015-2026 by the manufacturersimports Development Team.
+ *
+ * https://github.com/InfotelGLPI/manufacturersimports
+ * -------------------------------------------------------------------------
+ *
+ * LICENSE
+ *
+ * This file is part of manufacturersimports.
+ *
+ * manufacturersimports is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * manufacturersimports is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with manufacturersimports. If not, see <http://www.gnu.org/licenses/>.
+ * --------------------------------------------------------------------------
  */
 
 namespace GlpiPlugin\Manufacturersimports\Manufacturers;
@@ -41,12 +41,13 @@ if (!defined('GLPI_ROOT')) {
 /**
  * Class Lenovo
  */
-class Lenovo extends Manufacturer {
-
+class Lenovo extends Manufacturer
+{
     /**
      * @see Manufacturer::showCheckbox()
      */
-    function showCheckbox($ID, $sel, $otherSerial = false) {
+    public function showCheckbox($ID, $sel, $otherSerial = false)
+    {
         $name = "item[" . $ID . "]";
         return Html::getCheckbox(["name" => $name, "value" => 1, "selected" => $sel]);
 
@@ -55,33 +56,42 @@ class Lenovo extends Manufacturer {
     /**
      * @see Manufacturer::showItemTitle()
      */
-    function showItemTitle($output_type, $header_num) {
+    public function showItemTitle($output_type, $header_num)
+    {
         return Search::showHeaderItem($output_type, __('Model number', 'manufacturersimports'), $header_num);
     }
 
     /**
      * @see Manufacturer::showDocTitle()
      */
-    function showDocTitle($output_type, $header_num) {
+    public function showDocTitle($output_type, $header_num)
+    {
         return Search::showHeaderItem($output_type, __('File'), $header_num);
     }
 
     /**
      * @see Manufacturer::showItem()
      */
-    function showItem($output_type, $item_num, $row_num, $otherSerial = false) {
+    public function showItem($output_type, $item_num, $row_num, $otherSerial = false)
+    {
         return false;
     }
 
-    function getSearchField() {
+    public function getSearchField()
+    {
         return false;
     }
 
     /**
      * @see Manufacturer::getSupplierInfo()
      */
-    function getSupplierInfo($compSerial = null, $otherSerial = null, $key = null, $apisecret = null,
-                             $supplierUrl = null) {
+    public function getSupplierInfo(
+        $compSerial = null,
+        $otherSerial = null,
+        $key = null,
+        $apisecret = null,
+        $supplierUrl = null
+    ) {
 
         $info["name"]         = Config::LENOVO;
         $serial_path          = rawurlencode((string) $compSerial);
@@ -95,12 +105,13 @@ class Lenovo extends Manufacturer {
     /**
      * @see Manufacturer::getBuyDate()
      */
-    function getBuyDate($contents) {
+    public function getBuyDate($contents)
+    {
 
-        $json=stristr($contents,'window.ds_warranties');
-        $json = substr($json,strlen('window.ds_warranties || '));
+        $json = stristr($contents, 'window.ds_warranties');
+        $json = substr($json, strlen('window.ds_warranties || '));
         $json = strtok($json, ";");
-        $data = json_decode($json,true);
+        $data = json_decode($json, true);
         $myDate = '';
         if (isset($data['BaseWarranties']) && !empty($data['BaseWarranties'])) {
             foreach ($data['BaseWarranties'] as $warranty) {
@@ -119,12 +130,13 @@ class Lenovo extends Manufacturer {
     /**
      * @see Manufacturer::getStartDate()
      */
-    function getStartDate($contents) {
+    public function getStartDate($contents)
+    {
 
-        $json=stristr($contents,'window.ds_warranties');
-        $json = substr($json,strlen('window.ds_warranties || '));
+        $json = stristr($contents, 'window.ds_warranties');
+        $json = substr($json, strlen('window.ds_warranties || '));
         $json = strtok($json, ";");
-        $data = json_decode($json,true);
+        $data = json_decode($json, true);
         $myDate = "";
         $maxEnd = 0;
         $start  = '';
@@ -163,12 +175,13 @@ class Lenovo extends Manufacturer {
     /**
      * @see Manufacturer::getExpirationDate()
      */
-    function getExpirationDate($contents) {
+    public function getExpirationDate($contents)
+    {
 
-        $json=stristr($contents,'window.ds_warranties');
-        $json = substr($json,strlen('window.ds_warranties || '));
+        $json = stristr($contents, 'window.ds_warranties');
+        $json = substr($json, strlen('window.ds_warranties || '));
         $json = strtok($json, ";");
-        $data = json_decode($json,true);
+        $data = json_decode($json, true);
         $myDate = "";
         $maxEnd = 0;
         $start  = '';
@@ -207,12 +220,13 @@ class Lenovo extends Manufacturer {
     /**
      * @see Manufacturer::getWarrantyInfo()
      */
-    function getWarrantyInfo($contents) {
+    public function getWarrantyInfo($contents)
+    {
 
-        $json=stristr($contents,'window.ds_warranties');
-        $json = substr($json,strlen('window.ds_warranties || '));
+        $json = stristr($contents, 'window.ds_warranties');
+        $json = substr($json, strlen('window.ds_warranties || '));
         $json = strtok($json, ";");
-        $data = json_decode($json,true);
+        $data = json_decode($json, true);
         $myDate = "";
         $warranty_desc = "";
         if (isset($data['BaseWarranties']) && !empty($data['BaseWarranties'])) {
