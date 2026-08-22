@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-20 09:23+0000\n"
+"POT-Creation-Date: 2026-08-22 16:49+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,7 +30,7 @@ msgstr ""
 msgid "Add a comment line"
 msgstr ""
 
-#: src/PreImport.php:608
+#: src/PreImport.php:619
 msgid "Already imported"
 msgstr ""
 
@@ -63,7 +63,7 @@ msgstr ""
 msgid "Client secret"
 msgstr ""
 
-#: src/PostImport.php:1117
+#: src/PostImport.php:1123
 msgid "Connection failed/data download from manufacturer web site"
 msgstr ""
 
@@ -93,7 +93,7 @@ msgid "Devices with import error"
 msgstr ""
 
 #. TRANS: %1$d, %2$d, %3$d are page numbers
-#: src/PreImport.php:896
+#: src/PreImport.php:919
 #, php-format
 msgid "From %1$d to %2$d on %3$d"
 msgstr ""
@@ -102,7 +102,7 @@ msgstr ""
 msgid "Import OK"
 msgstr ""
 
-#: src/Import.php:180 src/PostImport.php:371 src/PostImport.php:1094
+#: src/Import.php:180 src/PostImport.php:371 src/PostImport.php:1100
 msgid "Import failed"
 msgstr ""
 
@@ -138,7 +138,7 @@ msgstr[1] ""
 msgid "Manufacturer"
 msgstr ""
 
-#: src/PreImport.php:593 templates/warranty_infocom.html.twig:37
+#: src/PreImport.php:604 templates/warranty_infocom.html.twig:37
 msgid "Manufacturer information"
 msgstr ""
 
@@ -150,7 +150,7 @@ msgstr ""
 msgid "Model Number"
 msgstr ""
 
-#: src/Manufacturers/Lenovo.php:59
+#: src/Manufacturers/Lenovo.php:61
 msgid "Model number"
 msgstr ""
 
@@ -182,15 +182,15 @@ msgstr ""
 msgid "No response from server"
 msgstr ""
 
-#: front/massiveaction.php:104
+#: front/massiveaction.php:102
 msgid "No selected element or badly defined operation"
 msgstr ""
 
-#: src/PreImport.php:597
+#: src/PreImport.php:608
 msgid "Not yet imported"
 msgstr ""
 
-#: front/massiveaction.php:94
+#: front/massiveaction.php:92
 msgid "Operation successful"
 msgstr ""
 
@@ -207,15 +207,15 @@ msgstr ""
 msgid "Preconfiguration"
 msgstr ""
 
-#: src/PreImport.php:600
+#: src/PreImport.php:611
 msgid "Problem during the importation"
 msgstr ""
 
-#: src/PreImport.php:936
+#: src/PreImport.php:959
 msgid "Reset the import"
 msgstr ""
 
-#: src/Config.php:807 src/Config.php:929
+#: src/Config.php:823 src/Config.php:945
 msgctxt "button"
 msgid "Retrieve warranty from manufacturer"
 msgstr ""
@@ -242,8 +242,7 @@ msgstr ""
 msgid "Supplier attached"
 msgstr ""
 
-#: front/massiveaction.php:45 src/Profile.php:130 src/PreImport.php:70
-#: src/Menu.php:53 setup.php:90
+#: front/massiveaction.php:43 src/PreImport.php:70
 msgid "Suppliers import"
 msgid_plural "Suppliers imports"
 msgstr[0] ""
@@ -291,7 +290,7 @@ msgstr ""
 msgid "With the manufacturersimports plugin"
 msgstr ""
 
-#: src/Config.php:923
+#: src/Config.php:939
 msgid ""
 "You did not import the warranty for this item. Do you want to get it back?"
 msgstr ""
