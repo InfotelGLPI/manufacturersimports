@@ -27,9 +27,13 @@
  * --------------------------------------------------------------------------
  */
 
-if (!defined('GLPI_ROOT')) {
-    define('GLPI_ROOT', dirname(__DIR__, 3));
-}
+// Resolve GLPI's root from this file's location WITHOUT defining GLPI_ROOT:
+// GLPI's own autoloader (src/autoload/constants.php) defines GLPI_ROOT through the
+// strict Safe\define(), which throws when the constant is already set. On CI the
+// plugin's own vendor/bin/phpunit loads this bootstrap before GLPI core's
+// autoloader has run, so pre-defining GLPI_ROOT here collides with that later
+// Safe\define(). Let GLPI own the constant; we only need the path locally.
+$glpi_root = dirname(__DIR__, 3);
 
 // Load GLPI's autoloader first. On a host without the native ext-sodium (the CI
 // runner), this registers paragonie/sodium_compat, which polyfills the SODIUM_*
@@ -37,7 +41,7 @@ if (!defined('GLPI_ROOT')) {
 // undefined and abort the bootstrap. GLPI_CONFIG_DIR is not defined by the
 // autoloader itself (only by GLPI's full boot), so the throwaway dir set below
 // still wins.
-$loader = require GLPI_ROOT . '/vendor/autoload.php';
+$loader = require $glpi_root . '/vendor/autoload.php';
 
 // Config encrypts its secrets through GLPIKey, whose constructor resolves the
 // crypt key from GLPI_CONFIG_DIR. The unit suite runs without a GLPI install
