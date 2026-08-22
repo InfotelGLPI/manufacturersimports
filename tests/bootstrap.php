@@ -31,6 +31,14 @@ if (!defined('GLPI_ROOT')) {
     define('GLPI_ROOT', dirname(__DIR__, 3));
 }
 
+// Load GLPI's autoloader first. On a host without the native ext-sodium (the CI
+// runner), this registers paragonie/sodium_compat, which polyfills the SODIUM_*
+// constant used just below; requiring it afterwards would leave the constant
+// undefined and abort the bootstrap. GLPI_CONFIG_DIR is not defined by the
+// autoloader itself (only by GLPI's full boot), so the throwaway dir set below
+// still wins.
+$loader = require GLPI_ROOT . '/vendor/autoload.php';
+
 // Config encrypts its secrets through GLPIKey, whose constructor resolves the
 // crypt key from GLPI_CONFIG_DIR. The unit suite runs without a GLPI install
 // (no database, no generated key), so provide a throwaway config directory
@@ -49,8 +57,6 @@ if (!defined('GLPI_CONFIG_DIR')) {
     }
     define('GLPI_CONFIG_DIR', $config_dir);
 }
-
-$loader = require GLPI_ROOT . '/vendor/autoload.php';
 
 $loader->addPsr4('GlpiPlugin\\Manufacturersimports\\', dirname(__DIR__) . '/src/');
 $loader->addPsr4('GlpiPlugin\\Manufacturersimports\\Manufacturers\\', dirname(__DIR__) . '/src/Manufacturers/');
