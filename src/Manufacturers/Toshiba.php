@@ -82,7 +82,7 @@ class Toshiba extends Manufacturer
      */
     public static function getWarrantyUrl($config, $compSerial)
     {
-        return ["url" => "https://support.dynabook.com/support/warrantyResults?sno=" . "$compSerial"];
+        return ["url" => "https://support.dynabook.com/support/warrantyResults?sno=" . rawurlencode((string) $compSerial)];
     }
 
     /**

@@ -169,6 +169,19 @@
                     {% endif %}
                     btn.disabled = true;
                     result.innerHTML = '<i class="ti ti-loader-2 ti-spin"></i>';
+                    // Render the outcome with the message as a text node: the server
+                    // "message" (and any raw/error body) must never be parsed as HTML,
+                    // otherwise it is an XSS sink through result.innerHTML.
+                    var showResult = function (ok, msg) {
+                        result.replaceChildren();
+                        var span = document.createElement('span');
+                        span.className = ok ? 'text-success' : 'text-danger';
+                        var icon = document.createElement('i');
+                        icon.className = (ok ? 'ti ti-circle-check' : 'ti ti-circle-x') + ' me-1';
+                        span.appendChild(icon);
+                        span.appendChild(document.createTextNode(msg != null ? String(msg) : ''));
+                        result.appendChild(span);
+                    };
                     fetch('{{ action_url|e('js') }}', {
                         method: 'POST',
                         headers: {
@@ -182,16 +195,13 @@
                     .then(function (text) {
                         var d;
                         try { d = JSON.parse(text); } catch (e) {
-                            result.innerHTML = '<span class="text-danger"><i class="ti ti-circle-x me-1"></i>'
-                                               + text.substring(0, 200) + '</span>';
+                            showResult(false, text.substring(0, 200));
                             return;
                         }
-                        result.innerHTML = d.success
-                            ? '<span class="text-success"><i class="ti ti-circle-check me-1"></i>' + d.message + '</span>'
-                            : '<span class="text-danger"><i class="ti ti-circle-x me-1"></i>' + d.message + '</span>';
+                        showResult(!!d.success, d.message);
                     })
                     .catch(function (e) {
-                        result.innerHTML = '<span class="text-danger"><i class="ti ti-circle-x me-1"></i>' + e.message + '</span>';
+                        showResult(false, e.message);
                     })
                     .finally(function () { btn.disabled = false; });
                 });

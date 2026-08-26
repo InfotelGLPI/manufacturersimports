@@ -81,7 +81,7 @@ class Fujitsu extends Manufacturer
      */
     public static function getWarrantyUrl($config, $compSerial)
     {
-        return ["url" => 'https://support.ts.fujitsu.com/ProductCheck/Default.aspx?Lng=en&GotoDiv=Warranty/WarrantyStatus&DivID=indexwarranty&GotoUrl=IndexWarranty&RegionID=1&Token=${$i$M$f$u&Ident=' . "$compSerial"];
+        return ["url" => 'https://support.ts.fujitsu.com/ProductCheck/Default.aspx?Lng=en&GotoDiv=Warranty/WarrantyStatus&DivID=indexwarranty&GotoUrl=IndexWarranty&RegionID=1&Token=${$i$M$f$u&Ident=' . rawurlencode((string) $compSerial)];
     }
 
     /**

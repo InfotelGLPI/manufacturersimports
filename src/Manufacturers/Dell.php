@@ -259,6 +259,6 @@ class Dell extends Manufacturer
      */
     public static function getWarrantyUrl($config, $compSerial)
     {
-        return ["url" => $config->fields['warranty_url'] . "$compSerial"];
+        return ["url" => $config->fields['warranty_url'] . rawurlencode((string) $compSerial)];
     }
 }
