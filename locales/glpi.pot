@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-26 14:34+0000\n"
+"POT-Creation-Date: 2026-08-29 10:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -242,7 +242,8 @@ msgstr ""
 msgid "Supplier attached"
 msgstr ""
 
-#: front/massiveaction.php:43 src/PreImport.php:70
+#: front/massiveaction.php:43 src/Profile.php:130 src/PreImport.php:70
+#: src/Menu.php:52 setup.php:90
 msgid "Suppliers import"
 msgid_plural "Suppliers imports"
 msgstr[0] ""
