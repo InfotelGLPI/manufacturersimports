@@ -2,195 +2,317 @@
 # Copyright (C) YEAR $copyright
 # This file is distributed under the same license as the $soft package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 # Translators:
 # Soporte Infraestructura Standby, 2023
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: $soft\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-11 11:33+0000\n"
+"POT-Creation-Date: 2026-08-31 14:52+0000\n"
 "PO-Revision-Date: 2020-11-02 16:09+0000\n"
 "Last-Translator: Soporte Infraestructura Standby, 2023\n"
-"Language-Team: Spanish (Ecuador) (https://app.transifex.com/infotelGLPI/teams/12364/es_EC/)\n"
+"Language-Team: Spanish (Ecuador) (https://app.transifex.com/infotelGLPI/"
+"teams/12364/es_EC/)\n"
+"Language: es_EC\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: es_EC\n"
-"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? "
+"1 : 2;\n"
 
-#: setup.php:92 front/massiveaction.php:44 src/Menu.php:53
-#: src/Preimport.php:66 src/Profile.php:96
+#: src/Config.php:534
+msgid "API connection test"
+msgstr ""
+
+#: templates/config_form.html.twig:82
+msgid "Access token API address"
+msgstr "Token de acceso Dirección API"
+
+#: src/Config.php:472 templates/config_form.html.twig:215
+msgid "Add a comment line"
+msgstr "Agregar una línea de comentario"
+
+#: src/PreImport.php:619
+msgid "Already imported"
+msgstr "Ya importado"
+
+#: front/config.form.php:136
+msgid "Authentication successful (token received)"
+msgstr ""
+
+#: src/Config.php:455 templates/config_form.html.twig:134
+msgid "Auto add of document"
+msgstr "Adición automática de documentos"
+
+#: src/Manufacturers/Manufacturer.php:118
+msgid "Automatic"
+msgstr ""
+
+#: templates/massive_import_progress.html.twig:70
+#: templates/config_form.html.twig:227
+msgid "Back"
+msgstr ""
+
+#: templates/search_form.html.twig:33
+msgid "Choose inventory type and manufacturer"
+msgstr "Elija el tipo de inventario y el fabricante"
+
+#: templates/config_form.html.twig:116 templates/config_form.html.twig:128
+msgid "Client id"
+msgstr "ID de cliente"
+
+#: templates/config_form.html.twig:121
+msgid "Client secret"
+msgstr "Secreto de cliente"
+
+#: src/PostImport.php:1123
+msgid "Connection failed/data download from manufacturer web site"
+msgstr "Fallo de conexión/descarga de datos del sitio web del fabricante"
+
+#: front/config.form.php:85 src/PostImport.php:92 ajax/testConnection.php:64
+msgid "Curl PHP package not installed"
+msgstr "Paquete Curl PHP no instalado"
+
+#: src/Config.php:438 templates/config_form.html.twig:96
+msgid "Default supplier attached"
+msgstr "Proveedor por defecto adjunto"
+
+#: src/PostImport.php:347
+#, php-format
+msgid "Device %d skipped (access denied)"
+msgstr ""
+
+#: src/PreImport.php:297
+msgid "Devices already imported"
+msgstr "Dispositivos ya importados"
+
+#: src/PreImport.php:296
+msgid "Devices not imported"
+msgstr "Dispositivos no importados"
+
+#: src/PreImport.php:298
+msgid "Devices with import error"
+msgstr ""
+
+#. TRANS: %1$d, %2$d, %3$d are page numbers
+#: src/PreImport.php:919
+#, php-format
+msgid "From %1$d to %2$d on %3$d"
+msgstr ""
+
+#: src/Import.php:177 src/PostImport.php:366 src/PostImport.php:987
+msgid "Import OK"
+msgstr "Importar OK"
+
+#: src/Import.php:180 src/PostImport.php:371 src/PostImport.php:1100
+msgid "Import failed"
+msgstr "Error de importación"
+
+#: templates/massive_import_progress.html.twig:34
+msgid "Import in progress"
+msgstr ""
+
+#: src/PostImport.php:969 src/PostImport.php:976
+msgid "Imported from"
+msgstr ""
+
+#: src/PostImport.php:338
+#, php-format
+msgid "Importing device %1$d of %2$d"
+msgstr ""
+
+#: templates/massive_import_progress.html.twig:32
+#, php-format
+msgid "Importing from %s"
+msgstr ""
+
+#: front/config.form.php:81 src/PostImport.php:114 ajax/testConnection.php:56
+msgid "Invalid or forbidden URL"
+msgstr ""
+
+#: templates/warranty_infocom.html.twig:35
+msgid "Link"
+msgid_plural "Links"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: templates/config_form.html.twig:67
+msgid "Manufacturer"
+msgstr ""
+
+#: src/PreImport.php:604 templates/warranty_infocom.html.twig:37
+msgid "Manufacturer information"
+msgstr "Información del fabricante"
+
+#: src/Config.php:429 templates/config_form.html.twig:74
+msgid "Manufacturer web address"
+msgstr "Dirección web del fabricante"
+
+#: src/PreImport.php:397
+msgid "Model Number"
+msgstr "Número de modelo"
+
+#: src/Manufacturers/Lenovo.php:61
+msgid "Model number"
+msgstr "Número de modelo"
+
+#: templates/config_form.html.twig:59
+msgid "Name"
+msgstr ""
+
+#: templates/config_form.html.twig:104
+msgid "New warranty affected by default (Replace if 0)"
+msgstr "Nueva garantía afectada por defecto (Sustituir si 0)"
+
+#: src/PreImport.php:400 src/Config.php:446
+msgid "New warranty attached"
+msgstr "Nueva garantía adjuntada"
+
+#: front/config.form.php:138
+msgid "No access token in response"
+msgstr ""
+
+#: templates/pre_import_list.html.twig:30
+msgid "No device finded"
+msgstr "No se ha encontrado ningún dispositivo"
+
+#: templates/search_form.html.twig:60 templates/search_form.html.twig:64
+msgid "No manufacturer available. Please configure at least one manufacturer"
+msgstr ""
+"No hay ningún fabricante disponible. Por favor, configure al menos un "
+"fabricante"
+
+#: front/config.form.php:171
+msgid "No response from server"
+msgstr ""
+
+#: front/massiveaction.php:102
+msgid "No selected element or badly defined operation"
+msgstr ""
+
+#: src/PreImport.php:608
+msgid "Not yet imported"
+msgstr "Aún no importado"
+
+#: front/massiveaction.php:92
+msgid "Operation successful"
+msgstr ""
+
+#: front/config.php:42
+msgid "Please activate the plugin"
+msgstr "Por favor, active el plugin"
+
+#: templates/search_form.html.twig:54
+msgctxt "button"
+msgid "Post"
+msgstr ""
+
+#: templates/config_form.html.twig:35
+msgid "Preconfiguration"
+msgstr ""
+
+#: src/PreImport.php:611
+msgid "Problem during the importation"
+msgstr "Problema durante la importación"
+
+#: src/PreImport.php:959
+msgid "Reset the import"
+msgstr "Restablecer la importación"
+
+#: src/Config.php:823 src/Config.php:945
+msgctxt "button"
+msgid "Retrieve warranty from manufacturer"
+msgstr "Recuperar la garantía del fabricante"
+
+#: templates/profile.html.twig:34
+msgctxt "button"
+msgid "Save"
+msgstr ""
+
+#: templates/config_form.html.twig:140
+msgid "Section for document records"
+msgstr "Sección de registros de documentos"
+
+#: templates/pre_import_list.html.twig:67
+msgid "Selection too large, massive action disabled."
+msgstr ""
+
+#: front/config.form.php:174 ajax/testConnection.php:108
+#, php-format
+msgid "Server reachable (HTTP %d)"
+msgstr ""
+
+#: src/PreImport.php:399
+msgid "Supplier attached"
+msgstr "Proveedor adjunto"
+
+#: front/massiveaction.php:43 src/Profile.php:130 src/PreImport.php:70
+#: src/Menu.php:52 setup.php:90
 msgid "Suppliers import"
 msgid_plural "Suppliers imports"
 msgstr[0] "Proveedores importaciones"
 msgstr[1] "Proveedores importaciones"
 msgstr[2] "Proveedores importaciones"
 
-#: front/config.php:41
-msgid "Please activate the plugin"
-msgstr "Por favor, active el plugin"
+#: src/Config.php:530
+msgid "Test connection"
+msgstr ""
 
-#: src/Config.php:229 src/Config.php:360
-msgid "Manufacturer web address"
-msgstr "Dirección web del fabricante"
+#: src/Config.php:531
+msgid "Test warranty page"
+msgstr ""
 
-#: src/Config.php:238 src/Config.php:382
-msgid "Default supplier attached"
-msgstr "Proveedor por defecto adjunto"
+#: src/PreImport.php:552
+msgid "The choosen supplier is not recursive"
+msgstr "El proveedor elegido no es recursivo"
 
-#: src/Config.php:246 src/Preimport.php:704
-msgid "New warranty attached"
-msgstr "Nueva garantía adjuntada"
+#: front/config.form.php:76 ajax/testConnection.php:47
+msgid "Token URL is empty"
+msgstr ""
 
-#: src/Config.php:255 src/Config.php:427
-msgid "Auto add of document"
-msgstr "Adición automática de documentos"
-
-#: src/Config.php:272 src/Config.php:442
-msgid "Add a comment line"
-msgstr "Agregar una línea de comentario"
-
-#: src/Config.php:368
-msgid "Access token API address"
-msgstr "Token de acceso Dirección API"
-
-#: src/Config.php:374
-msgid "Warranty API address"
-msgstr "Dirección API de garantía"
-
-#: src/Config.php:393
-msgid "New warranty affected by default (Replace if 0)"
-msgstr "Nueva garantía afectada por defecto (Sustituir si 0)"
-
-#: src/Config.php:407 src/Config.php:420
-msgid "Client id"
-msgstr "ID de cliente"
-
-#: src/Config.php:413
-msgid "Client secret"
-msgstr "Secreto de cliente"
-
-#: src/Config.php:434
-msgid "Section for document records"
-msgstr "Sección de registros de documentos"
-
-#: src/Config.php:647 src/Preimport.php:409 src/Preimport.php:422
-msgid "Manufacturer information"
-msgstr "Información del fabricante"
-
-#: src/Config.php:654 src/Config.php:763
-msgctxt "button"
-msgid "Retrieve warranty from manufacturer"
-msgstr "Recuperar la garantía del fabricante"
-
-#: src/Config.php:757
-msgid ""
-"You did not import the warranty for this item. Do you want to get it back?"
-msgstr "No ha importado la garantía de este artículo. Quieres recuperarlo?"
-
-#: src/Import.php:54
-msgid "Warranty import (Dell, HP)"
-msgstr "Importe de la garantía (Dell, HP)"
-
-#: src/Import.php:184 src/Postimport.php:775
-msgid "Import OK"
-msgstr "Importar OK"
-
-#: src/Import.php:187 src/Postimport.php:881
-msgid "Import failed"
-msgstr "Error de importación"
-
-#: src/Lenovo.php:59
-msgid "Model number"
-msgstr "Número de modelo"
-
-#: src/Postimport.php:86
-msgid "Curl PHP package not installed"
-msgstr "Paquete Curl PHP no instalado"
-
-#: src/Postimport.php:247
-msgid "Post import"
-msgstr "Importación de puestos"
-
-#: src/Postimport.php:255
-msgid "Result"
-msgstr "Resultado"
-
-#: src/Postimport.php:256
-msgid "Details"
-msgstr "Detalles"
-
-#: src/Postimport.php:288
+#: src/PostImport.php:380
 #, php-format
 msgid "Total number of devices imported %s"
 msgstr "Número total de dispositivos importados 1%s"
 
-#: src/Postimport.php:757 src/Postimport.php:764
-msgid "Imported from web site"
-msgstr "Importado desde el sitio web"
-
-#: src/Postimport.php:758 src/Postimport.php:765
-msgid "With the manufacturersimports plugin"
-msgstr "Con el plugin simports del fabricante"
-
-#: src/Postimport.php:904
-msgid "Connection failed/data download from manufacturer web site"
-msgstr "Fallo de conexión/descarga de datos del sitio web del fabricante"
-
-#: src/Preimport.php:380
-msgid "The choosen supplier is not recursive"
-msgstr "El proveedor elegido no es recursivo"
-
-#: src/Preimport.php:429
-msgid "Not yet imported"
-msgstr "Aún no importado"
-
-#: src/Preimport.php:432
-msgid "Problem during the importation"
-msgstr "Problema durante la importación"
-
-#: src/Preimport.php:440
-msgid "Already imported"
-msgstr "Ya importado"
-
-#: src/Preimport.php:478
-msgid "Choose inventory type and manufacturer"
-msgstr "Elija el tipo de inventario y el fabricante"
-
-#: src/Preimport.php:522
-msgid "Devices not imported"
-msgstr "Dispositivos no importados"
-
-#: src/Preimport.php:523
-msgid "Devices already imported"
-msgstr "Dispositivos ya importados"
-
-#: src/Preimport.php:529 src/Preimport.php:533
-msgid "No manufacturer available. Please configure at least one manufacturer"
-msgstr ""
-"No hay ningún fabricante disponible. Por favor, configure al menos un "
-"fabricante"
-
-#: src/Preimport.php:691
-msgid "Model Number"
-msgstr "Número de modelo"
-
-#: src/Preimport.php:699
-msgid "Supplier attached"
-msgstr "Proveedor adjunto"
-
-#: src/Preimport.php:761
+#: templates/pre_import_list.html.twig:55
 #, php-format
 msgid "Total number of devices to import %s"
 msgstr "Número total de dispositivos a importar 1%s"
 
-#: src/Preimport.php:817
-msgid "No device finded"
-msgstr "No se ha encontrado ningún dispositivo"
+#: templates/config_form.html.twig:87
+msgid "Warranty API address"
+msgstr "Dirección API de garantía"
 
-#: src/Preimport.php:1111
-msgid "Reset the import"
-msgstr "Restablecer la importación"
+#: src/Import.php:53
+msgid "Warranty import (Dell, HP)"
+msgstr "Importe de la garantía (Dell, HP)"
+
+#: src/Config.php:535
+msgid "Warranty page test"
+msgstr ""
+
+#: src/PostImport.php:970 src/PostImport.php:977
+msgid "With the manufacturersimports plugin"
+msgstr "Con el plugin simports del fabricante"
+
+#: src/Config.php:939
+msgid ""
+"You did not import the warranty for this item. Do you want to get it back?"
+msgstr "No ha importado la garantía de este artículo. Quieres recuperarlo?"
+
+#~ msgid "Post import"
+#~ msgstr "Importación de puestos"
+
+#~ msgid "Result"
+#~ msgstr "Resultado"
+
+#~ msgid "Details"
+#~ msgstr "Detalles"
+
+#~ msgid "Imported from web site"
+#~ msgstr "Importado desde el sitio web"

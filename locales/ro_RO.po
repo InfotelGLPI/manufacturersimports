@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR $copyright
 # This file is distributed under the same license as the $soft package.
-# 
+#
 # Translators:
 # Doru  DEACONU <dumitrudeaconu@yahoo.com>, 2015
 # Doru  DEACONU <dumitrudeaconu@yahoo.com>, 2012
@@ -9,198 +9,315 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - manufacturersimports plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-20 11:48+0200\n"
+"POT-Creation-Date: 2026-08-31 14:52+0000\n"
 "PO-Revision-Date: 2020-01-17 15:32+0000\n"
 "Last-Translator: Kevin HAINRY <kevin.hainry@infotel.com>\n"
-"Language-Team: Romanian (Romania) (http://www.transifex.com/infotelGLPI/GLPI_manufacturersimports/language/ro_RO/)\n"
+"Language-Team: Romanian (Romania) (http://www.transifex.com/infotelGLPI/"
+"GLPI_manufacturersimports/language/ro_RO/)\n"
+"Language: ro_RO\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ro_RO\n"
-"Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));\n"
+"Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?"
+"2:1));\n"
 
-#: hook.php:229 setup.php:70 ajax/massiveaction.php:40 inc/menu.class.php:45
-#: inc/model.class.php:48 inc/preimport.class.php:50 inc/profile.class.php:71
+#: src/Config.php:534
+msgid "API connection test"
+msgstr ""
+
+#: templates/config_form.html.twig:82
+msgid "Access token API address"
+msgstr ""
+
+#: src/Config.php:472 templates/config_form.html.twig:215
+msgid "Add a comment line"
+msgstr "Adaugă o linie de comentariu"
+
+#: src/PreImport.php:619
+msgid "Already imported"
+msgstr "Deja importate"
+
+#: front/config.form.php:136
+msgid "Authentication successful (token received)"
+msgstr ""
+
+#: src/Config.php:455 templates/config_form.html.twig:134
+msgid "Auto add of document"
+msgstr "Adăugare automată de documente"
+
+#: src/Manufacturers/Manufacturer.php:118
+msgid "Automatic"
+msgstr ""
+
+#: templates/massive_import_progress.html.twig:70
+#: templates/config_form.html.twig:227
+msgid "Back"
+msgstr ""
+
+#: templates/search_form.html.twig:33
+msgid "Choose inventory type and manufacturer"
+msgstr "Alege tipul inventarului şi producătorul"
+
+#: templates/config_form.html.twig:116 templates/config_form.html.twig:128
+msgid "Client id"
+msgstr ""
+
+#: templates/config_form.html.twig:121
+msgid "Client secret"
+msgstr ""
+
+#: src/PostImport.php:1123
+msgid "Connection failed/data download from manufacturer web site"
+msgstr "Eşec la conexiunea / download - ul datelor de pe situl producătorului"
+
+#: front/config.form.php:85 src/PostImport.php:92 ajax/testConnection.php:64
+msgid "Curl PHP package not installed"
+msgstr "Modulul Curl pentru PHP nu este instalat"
+
+#: src/Config.php:438 templates/config_form.html.twig:96
+msgid "Default supplier attached"
+msgstr "Furnizor ataşat predefinit"
+
+#: src/PostImport.php:347
+#, php-format
+msgid "Device %d skipped (access denied)"
+msgstr ""
+
+#: src/PreImport.php:297
+msgid "Devices already imported"
+msgstr "Device - uri deja importate"
+
+#: src/PreImport.php:296
+msgid "Devices not imported"
+msgstr "Device - uri neimportate"
+
+#: src/PreImport.php:298
+msgid "Devices with import error"
+msgstr ""
+
+#. TRANS: %1$d, %2$d, %3$d are page numbers
+#: src/PreImport.php:919
+#, php-format
+msgid "From %1$d to %2$d on %3$d"
+msgstr ""
+
+#: src/Import.php:177 src/PostImport.php:366 src/PostImport.php:987
+msgid "Import OK"
+msgstr "Import OK"
+
+#: src/Import.php:180 src/PostImport.php:371 src/PostImport.php:1100
+msgid "Import failed"
+msgstr "Import KO"
+
+#: templates/massive_import_progress.html.twig:34
+msgid "Import in progress"
+msgstr ""
+
+#: src/PostImport.php:969 src/PostImport.php:976
+msgid "Imported from"
+msgstr ""
+
+#: src/PostImport.php:338
+#, php-format
+msgid "Importing device %1$d of %2$d"
+msgstr ""
+
+#: templates/massive_import_progress.html.twig:32
+#, php-format
+msgid "Importing from %s"
+msgstr ""
+
+#: front/config.form.php:81 src/PostImport.php:114 ajax/testConnection.php:56
+msgid "Invalid or forbidden URL"
+msgstr ""
+
+#: templates/warranty_infocom.html.twig:35
+msgid "Link"
+msgid_plural "Links"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: templates/config_form.html.twig:67
+msgid "Manufacturer"
+msgstr ""
+
+#: src/PreImport.php:604 templates/warranty_infocom.html.twig:37
+msgid "Manufacturer information"
+msgstr "Informaţii producător"
+
+#: src/Config.php:429 templates/config_form.html.twig:74
+msgid "Manufacturer web address"
+msgstr "Adresa web producător"
+
+#: src/PreImport.php:397
+msgid "Model Number"
+msgstr "Număr model"
+
+#: src/Manufacturers/Lenovo.php:61
+msgid "Model number"
+msgstr "Număr model"
+
+#: templates/config_form.html.twig:59
+msgid "Name"
+msgstr ""
+
+#: templates/config_form.html.twig:104
+msgid "New warranty affected by default (Replace if 0)"
+msgstr "Nouă garantie afectată  predefinit  (înlocuiţi dacă 0)"
+
+#: src/PreImport.php:400 src/Config.php:446
+msgid "New warranty attached"
+msgstr "Garanţie nouă ataşată"
+
+#: front/config.form.php:138
+msgid "No access token in response"
+msgstr ""
+
+#: templates/pre_import_list.html.twig:30
+msgid "No device finded"
+msgstr "Niciun device găsit"
+
+#: templates/search_form.html.twig:60 templates/search_form.html.twig:64
+msgid "No manufacturer available. Please configure at least one manufacturer"
+msgstr "Niciun producător disponibil. Configuraţi cel puţin un producător"
+
+#: front/config.form.php:171
+msgid "No response from server"
+msgstr ""
+
+#: front/massiveaction.php:102
+msgid "No selected element or badly defined operation"
+msgstr ""
+
+#: src/PreImport.php:608
+msgid "Not yet imported"
+msgstr "Încă neinportate "
+
+#: front/massiveaction.php:92
+msgid "Operation successful"
+msgstr ""
+
+#: front/config.php:42
+msgid "Please activate the plugin"
+msgstr "Activaţi vă rog modulul"
+
+#: templates/search_form.html.twig:54
+msgctxt "button"
+msgid "Post"
+msgstr ""
+
+#: templates/config_form.html.twig:35
+msgid "Preconfiguration"
+msgstr ""
+
+#: src/PreImport.php:611
+msgid "Problem during the importation"
+msgstr "Probleme la importare"
+
+#: src/PreImport.php:959
+msgid "Reset the import"
+msgstr "Resetează importul"
+
+#: src/Config.php:823 src/Config.php:945
+msgctxt "button"
+msgid "Retrieve warranty from manufacturer"
+msgstr ""
+
+#: templates/profile.html.twig:34
+msgctxt "button"
+msgid "Save"
+msgstr ""
+
+#: templates/config_form.html.twig:140
+msgid "Section for document records"
+msgstr "Rubrică pentru înregistrarea documentelor"
+
+#: templates/pre_import_list.html.twig:67
+msgid "Selection too large, massive action disabled."
+msgstr ""
+
+#: front/config.form.php:174 ajax/testConnection.php:108
+#, php-format
+msgid "Server reachable (HTTP %d)"
+msgstr ""
+
+#: src/PreImport.php:399
+msgid "Supplier attached"
+msgstr "Furnizpr ataşat"
+
+#: front/massiveaction.php:43 src/Profile.php:130 src/PreImport.php:70
+#: src/Menu.php:52 setup.php:90
 msgid "Suppliers import"
 msgid_plural "Suppliers imports"
 msgstr[0] "Import producători"
 msgstr[1] "Importuri producători"
 msgstr[2] "Importuri producători"
 
-#: hook.php:233 inc/lenovo.class.php:53
-msgid "Model number"
-msgstr "Număr model"
-
-#: hook.php:261
-msgid "Add new material brand number"
-msgstr "Adaugă un număr de model de device"
-
-#: setup.php:97 setup.php:102 setup.php:107
-msgid "Incompatible PHP Installation. Requires module"
-msgstr "Instalare PHP incompatibilă. Necesită modulul"
-
-#: front/config.php:42
-msgid "Please activate the plugin"
-msgstr "Activaţi vă rog modulul"
-
-#: inc/config.class.php:208 inc/config.class.php:335
-msgid "Manufacturer web address"
-msgstr "Adresa web producător"
-
-#: inc/config.class.php:217 inc/config.class.php:357
-msgid "Default supplier attached"
-msgstr "Furnizor ataşat predefinit"
-
-#: inc/config.class.php:225 inc/preimport.class.php:638
-msgid "New warranty attached"
-msgstr "Garanţie nouă ataşată"
-
-#: inc/config.class.php:234 inc/config.class.php:409
-msgid "Auto add of document"
-msgstr "Adăugare automată de documente"
-
-#: inc/config.class.php:251 inc/config.class.php:424
-msgid "Add a comment line"
-msgstr "Adaugă o linie de comentariu"
-
-#: inc/config.class.php:343
-msgid "Access token API address"
+#: src/Config.php:530
+msgid "Test connection"
 msgstr ""
 
-#: inc/config.class.php:349
-msgid "Warranty API address"
+#: src/Config.php:531
+msgid "Test warranty page"
 msgstr ""
 
-#: inc/config.class.php:367
-msgid "New warranty affected by default (Replace if 0)"
-msgstr "Nouă garantie afectată  predefinit  (înlocuiţi dacă 0)"
+#: src/PreImport.php:552
+msgid "The choosen supplier is not recursive"
+msgstr "Furnizorul ales nu este recursiv"
 
-#: inc/config.class.php:381
-msgid "Manufacturer API key"
-msgstr "API key Producator"
-
-#: inc/config.class.php:388
-msgid "Manufacturer API Secret"
+#: front/config.form.php:76 ajax/testConnection.php:47
+msgid "Token URL is empty"
 msgstr ""
 
-#: inc/config.class.php:396
-msgid "Client id"
-msgstr ""
-
-#: inc/config.class.php:402
-msgid "Client secret"
-msgstr ""
-
-#: inc/config.class.php:416
-msgid "Section for document records"
-msgstr "Rubrică pentru înregistrarea documentelor"
-
-#: inc/config.class.php:556 inc/preimport.class.php:334
-msgid "Manufacturer information"
-msgstr "Informaţii producător"
-
-#: inc/dell.class.php:167
-msgid "Data recovery DELL for computer"
-msgstr ""
-
-#: inc/import.class.php:119 inc/postimport.class.php:679
-msgid "Import OK"
-msgstr "Import OK"
-
-#: inc/import.class.php:122 inc/postimport.class.php:783
-msgid "Import failed"
-msgstr "Import KO"
-
-#: inc/model.class.php:137 inc/preimport.class.php:630
-msgid "Model Number"
-msgstr "Număr model"
-
-#: inc/postimport.class.php:73
-msgid "Curl PHP package not installed"
-msgstr "Modulul Curl pentru PHP nu este instalat"
-
-#: inc/postimport.class.php:189
-msgid "Launching of imports"
-msgstr ""
-
-#: inc/postimport.class.php:192
-msgid "Post import"
-msgstr "Post import"
-
-#: inc/postimport.class.php:200
-msgid "Result"
-msgstr "Rezultat"
-
-#: inc/postimport.class.php:201
-msgid "Details"
-msgstr "Detalii"
-
-#: inc/postimport.class.php:219
-msgid "Import in progress"
-msgstr ""
-
-#: inc/postimport.class.php:227
+#: src/PostImport.php:380
 #, php-format
 msgid "Total number of devices imported %s"
 msgstr "Număr total al device - urilor importate %s"
 
-#: inc/postimport.class.php:658 inc/postimport.class.php:667
-msgid "Imported from web site"
-msgstr "Import din site web"
-
-#: inc/postimport.class.php:659 inc/postimport.class.php:668
-msgid "With the manufacturersimports plugin"
-msgstr "Cu pluginul manufacturesimports"
-
-#: inc/postimport.class.php:807
-msgid "Connection failed/data download from manufacturer web site"
-msgstr "Eşec la conexiunea / download - ul datelor de pe situl producătorului"
-
-#: inc/preimport.class.php:306
-msgid "The choosen supplier is not recursive"
-msgstr "Furnizorul ales nu este recursiv"
-
-#: inc/preimport.class.php:346
-msgid "Not yet imported"
-msgstr "Încă neinportate "
-
-#: inc/preimport.class.php:349
-msgid "Problem during the importation"
-msgstr "Probleme la importare"
-
-#: inc/preimport.class.php:357
-msgid "Already imported"
-msgstr "Deja importate"
-
-#: inc/preimport.class.php:395
-msgid "Choose inventory type and manufacturer"
-msgstr "Alege tipul inventarului şi producătorul"
-
-#: inc/preimport.class.php:435
-msgid "Devices not imported"
-msgstr "Device - uri neimportate"
-
-#: inc/preimport.class.php:437
-msgid "Devices already imported"
-msgstr "Device - uri deja importate"
-
-#: inc/preimport.class.php:444 inc/preimport.class.php:447
-msgid "No manufacturer available. Please configure at least one manufacturer"
-msgstr "Niciun producător disponibil. Configuraţi cel puţin un producător"
-
-#: inc/preimport.class.php:635
-msgid "Supplier attached"
-msgstr "Furnizpr ataşat"
-
-#: inc/preimport.class.php:685
+#: templates/pre_import_list.html.twig:55
 #, php-format
 msgid "Total number of devices to import %s"
 msgstr "NUmărul toatal de device uri de importat %s"
 
-#: inc/preimport.class.php:732
-msgid "No device finded"
-msgstr "Niciun device găsit"
+#: templates/config_form.html.twig:87
+msgid "Warranty API address"
+msgstr ""
 
-#: inc/preimport.class.php:1030
-msgid "Reset the import"
-msgstr "Resetează importul"
+#: src/Import.php:53
+msgid "Warranty import (Dell, HP)"
+msgstr ""
+
+#: src/Config.php:535
+msgid "Warranty page test"
+msgstr ""
+
+#: src/PostImport.php:970 src/PostImport.php:977
+msgid "With the manufacturersimports plugin"
+msgstr "Cu pluginul manufacturesimports"
+
+#: src/Config.php:939
+msgid ""
+"You did not import the warranty for this item. Do you want to get it back?"
+msgstr ""
+
+#~ msgid "Add new material brand number"
+#~ msgstr "Adaugă un număr de model de device"
+
+#~ msgid "Incompatible PHP Installation. Requires module"
+#~ msgstr "Instalare PHP incompatibilă. Necesită modulul"
+
+#~ msgid "Manufacturer API key"
+#~ msgstr "API key Producator"
+
+#~ msgid "Post import"
+#~ msgstr "Post import"
+
+#~ msgid "Result"
+#~ msgstr "Rezultat"
+
+#~ msgid "Details"
+#~ msgstr "Detalii"
+
+#~ msgid "Imported from web site"
+#~ msgstr "Import din site web"

@@ -2,24 +2,25 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 # Translators:
 # Xavier CAILLAUD <thetsmr@gmail.com>, 2020
 # Kaya Zeren <kayazeren@gmail.com>, 2026
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-01 15:15+0000\n"
+"POT-Creation-Date: 2026-08-31 14:52+0000\n"
 "PO-Revision-Date: 2020-11-02 16:09+0000\n"
 "Last-Translator: Kaya Zeren <kayazeren@gmail.com>, 2026\n"
-"Language-Team: Turkish (Turkey) (https://app.transifex.com/infotelGLPI/teams/12364/tr_TR/)\n"
+"Language-Team: Turkish (Turkey) (https://app.transifex.com/infotelGLPI/"
+"teams/12364/tr_TR/)\n"
+"Language: tr_TR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: tr_TR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: src/Config.php:534
@@ -30,11 +31,11 @@ msgstr "API bağlantı sınaması"
 msgid "Access token API address"
 msgstr "Erişim kodu API adresi"
 
-#: src/Config.php:472 templates/config_form.html.twig:205
+#: src/Config.php:472 templates/config_form.html.twig:215
 msgid "Add a comment line"
 msgstr "Açıklama satırı ekle"
 
-#: src/PreImport.php:608
+#: src/PreImport.php:619
 msgid "Already imported"
 msgstr "Zaten içe aktarılmış"
 
@@ -51,7 +52,7 @@ msgid "Automatic"
 msgstr "Otomatik"
 
 #: templates/massive_import_progress.html.twig:70
-#: templates/config_form.html.twig:217
+#: templates/config_form.html.twig:227
 msgid "Back"
 msgstr "Geri"
 
@@ -67,7 +68,7 @@ msgstr "Müşteri kimliği"
 msgid "Client secret"
 msgstr "Müşteri parolası"
 
-#: src/PostImport.php:1082
+#: src/PostImport.php:1123
 msgid "Connection failed/data download from manufacturer web site"
 msgstr "Bağlantı kesildi / üreticinin sitesinden veri indirilemedi"
 
@@ -79,7 +80,7 @@ msgstr "Curl PHP paketi kurulmamış"
 msgid "Default supplier attached"
 msgstr "Atanmış varsayılan sağlayıcı "
 
-#: src/PostImport.php:312
+#: src/PostImport.php:347
 #, php-format
 msgid "Device %d skipped (access denied)"
 msgstr "%d aygıtı atlandı (erişim engellendi)"
@@ -97,16 +98,16 @@ msgid "Devices with import error"
 msgstr "İçe aktarma sorunları olan aygıtlar"
 
 #. TRANS: %1$d, %2$d, %3$d are page numbers
-#: src/PreImport.php:896
+#: src/PreImport.php:919
 #, php-format
 msgid "From %1$d to %2$d on %3$d"
 msgstr "%1$d - %2$d / %3$d"
 
-#: src/Import.php:177 src/PostImport.php:331 src/PostImport.php:952
+#: src/Import.php:177 src/PostImport.php:366 src/PostImport.php:987
 msgid "Import OK"
 msgstr "İçe aktarıldı"
 
-#: src/Import.php:180 src/PostImport.php:336 src/PostImport.php:1059
+#: src/Import.php:180 src/PostImport.php:371 src/PostImport.php:1100
 msgid "Import failed"
 msgstr "İçe aktarılamadı"
 
@@ -114,11 +115,11 @@ msgstr "İçe aktarılamadı"
 msgid "Import in progress"
 msgstr "İçe aktarılıyor"
 
-#: src/PostImport.php:934 src/PostImport.php:941
+#: src/PostImport.php:969 src/PostImport.php:976
 msgid "Imported from"
 msgstr "Şuradan içe aktarıldı"
 
-#: src/PostImport.php:303
+#: src/PostImport.php:338
 #, php-format
 msgid "Importing device %1$d of %2$d"
 msgstr "%1$d / %2$d aygıt içe aktarılıyor"
@@ -142,7 +143,7 @@ msgstr[1] "Bağlantılar"
 msgid "Manufacturer"
 msgstr "Üretici"
 
-#: src/PreImport.php:593 templates/warranty_infocom.html.twig:37
+#: src/PreImport.php:604 templates/warranty_infocom.html.twig:37
 msgid "Manufacturer information"
 msgstr "Üretici bilgileri"
 
@@ -154,7 +155,7 @@ msgstr "Üretici sitesi adresi"
 msgid "Model Number"
 msgstr "Model numarası"
 
-#: src/Manufacturers/Lenovo.php:59
+#: src/Manufacturers/Lenovo.php:61
 msgid "Model number"
 msgstr "Model numarası"
 
@@ -166,7 +167,7 @@ msgstr "Ad"
 msgid "New warranty affected by default (Replace if 0)"
 msgstr "Varsayılan olarak yeni garanti kullanılsın (0 ise değiştirin)"
 
-#: src/Config.php:446 src/PreImport.php:400
+#: src/PreImport.php:400 src/Config.php:446
 msgid "New warranty attached"
 msgstr "Yeni garanti eklendi"
 
@@ -187,15 +188,15 @@ msgstr ""
 msgid "No response from server"
 msgstr "Sunucudan bir yanıt alınamadı"
 
-#: front/massiveaction.php:104
+#: front/massiveaction.php:102
 msgid "No selected element or badly defined operation"
 msgstr "Seçilmiş bir bileşen veya kötü tanımlanmış bir işlem yok"
 
-#: src/PreImport.php:597
+#: src/PreImport.php:608
 msgid "Not yet imported"
 msgstr "Henüz içe aktarılmamış"
 
-#: front/massiveaction.php:94
+#: front/massiveaction.php:92
 msgid "Operation successful"
 msgstr "İşlem tamamlandı"
 
@@ -212,15 +213,15 @@ msgstr "Gönder"
 msgid "Preconfiguration"
 msgstr "Ön yapılandırma"
 
-#: src/PreImport.php:600
+#: src/PreImport.php:611
 msgid "Problem during the importation"
 msgstr "İçe aktarma sırasında sorun çıktı"
 
-#: src/PreImport.php:936
+#: src/PreImport.php:959
 msgid "Reset the import"
 msgstr "İçe aktarmayı sıfırla"
 
-#: src/Config.php:807 src/Config.php:929
+#: src/Config.php:823 src/Config.php:945
 msgctxt "button"
 msgid "Retrieve warranty from manufacturer"
 msgstr "Üreticiden garanti bilgilerini al"
@@ -247,8 +248,8 @@ msgstr "Sunucuya erişilebiliyor (HTTP %d)"
 msgid "Supplier attached"
 msgstr "Atanmış sağlayıcı"
 
-#: front/massiveaction.php:45 src/PreImport.php:70 src/Profile.php:130
-#: src/Menu.php:53 setup.php:90
+#: front/massiveaction.php:43 src/Profile.php:130 src/PreImport.php:70
+#: src/Menu.php:52 setup.php:90
 msgid "Suppliers import"
 msgid_plural "Suppliers imports"
 msgstr[0] "Sağlayıcı içe aktarma"
@@ -270,7 +271,7 @@ msgstr "Seçilmiş sağlayıcı yinelenen türde değil"
 msgid "Token URL is empty"
 msgstr "Kod adresi boş"
 
-#: src/PostImport.php:345
+#: src/PostImport.php:380
 #, php-format
 msgid "Total number of devices imported %s"
 msgstr "Toplam %s aygıt içe aktarıldı"
@@ -292,11 +293,11 @@ msgstr "Garanti içe aktarma (Dell, HP)"
 msgid "Warranty page test"
 msgstr "Garanti sayfası sınaması"
 
-#: src/PostImport.php:935 src/PostImport.php:942
+#: src/PostImport.php:970 src/PostImport.php:977
 msgid "With the manufacturersimports plugin"
 msgstr "manufacturersimports eklentisi ile"
 
-#: src/Config.php:923
+#: src/Config.php:939
 msgid ""
 "You did not import the warranty for this item. Do you want to get it back?"
 msgstr "Bu ögenin garantisini içe aktarmadınız. Geri almak ister misiniz?"
