@@ -34,9 +34,11 @@ use CommonDBTM;
 use DbUtils;
 use Dropdown;
 use Glpi\Application\View\TemplateRenderer;
+use Glpi\Asset\AssetDefinitionManager;
 use Glpi\Exception\Http\AccessDeniedHttpException;
 use GLPIKey;
 use Html;
+use Infocom;
 use Session;
 use Toolbox;
 
@@ -255,6 +257,27 @@ class Config extends CommonDBTM
         }
         $class = "GlpiPlugin\\Manufacturersimports\\Manufacturers\\" . $suppliername;
         return class_exists($class) ? $class : null;
+    }
+
+    /**
+     * Load a plugin configuration after checking the caller may read it from its
+     * own entity perimeter. The config id always comes from the request, and the
+     * rows are entity-scoped: holding the plugin right in one entity says nothing
+     * about another entity's row, whose (decrypted) API credentials would
+     * otherwise be used for the outbound manufacturer call.
+     *
+     * @param mixed $configID
+     * @return self|null the loaded config, or null when it is unreadable here
+     */
+    public static function getCheckedConfig($configID): ?self
+    {
+        $config = new self();
+        // can() loads the row itself and returns false when it does not exist
+        // or falls outside the caller's entities.
+        if (!$config->can((int) $configID, READ)) {
+            return null;
+        }
+        return $config;
     }
 
     public static function getTypeName($nb = 0)
@@ -521,8 +544,9 @@ class Config extends CommonDBTM
         $base_url    = '';
         $test_mode   = '';
 
-        $supplier_class = "GlpiPlugin\\Manufacturersimports\\Manufacturers\\" . $supplier_name;
-        if ($supplier_name !== '' && class_exists($supplier_class)) {
+        // Whitelist + class_exists() in one place, like every other call site.
+        $supplier_class = self::resolveSupplierClass($supplier_name);
+        if ($supplier_class !== null) {
             $supplier_obj = new $supplier_class();
             $test_field   = $supplier_obj->getTestUrlField();
             $is_api_test  = ($test_field === 'token_url');
@@ -635,6 +659,74 @@ class Config extends CommonDBTM
 
 
     /**
+     * Build the URL of an item form, whatever its itemtype.
+     *
+     * Custom assets override getFormURL() to append the ?class= discriminator
+     * that identifies their definition, something the static
+     * Toolbox::getItemTypeFormURL() helper knows nothing about. The id must
+     * then be appended with the right separator.
+     *
+     * @param string $itemtype
+     * @param int    $items_id
+     * @return string
+     */
+    public static function getItemFormLink(string $itemtype, int $items_id): string
+    {
+        if (!is_a($itemtype, CommonDBTM::class, true)) {
+            return '';
+        }
+
+        $url = $itemtype::getFormURL();
+
+        return $url . (str_contains($url, '?') ? '&' : '?') . 'id=' . $items_id;
+    }
+
+    /**
+     * GLPI 11 custom asset classes the plugin can work with.
+     *
+     * A definition qualifies only when it provides everything an import needs:
+     *  - the financial information capacity, since warranties are written into
+     *    the item infocom. That capacity is precisely what registers the
+     *    concrete class into $CFG_GLPI['infocom_types'], which
+     *    Infocom::canApplyOn() reads back;
+     *  - the serial number field, which is what identifies the item for the
+     *    manufacturer;
+     *  - the manufacturer field, which is what binds the item to a plugin
+     *    configuration.
+     * Unlike the classic itemtypes, those fields are opt-in per definition, and
+     * an asset missing any of them could never be imported. Inactive
+     * definitions are skipped: their classes are not bootstrapped.
+     *
+     * @return array<class-string> concrete asset class names
+     */
+    public static function getCustomAssetTypes(): array
+    {
+        if (!class_exists(AssetDefinitionManager::class)) {
+            return [];
+        }
+
+        $types = [];
+        foreach (AssetDefinitionManager::getInstance()->getDefinitions(true) as $definition) {
+            $classname = $definition->getAssetClassName();
+            if (!class_exists($classname) || !Infocom::canApplyOn($classname)) {
+                continue;
+            }
+
+            $displayed_fields = $definition->getFieldOrder();
+            if (
+                !in_array('serial', $displayed_fields, true)
+                || !in_array('manufacturers_id', $displayed_fields, true)
+            ) {
+                continue;
+            }
+
+            $types[] = $classname;
+        }
+
+        return $types;
+    }
+
+    /**
      * Type than could be linked to a Rack
      *
      * @param $all boolean, all type, or only allowed ones
@@ -643,15 +735,21 @@ class Config extends CommonDBTM
      **/
     public static function getTypes($all = false)
     {
+        // Custom assets are appended on the fly: definitions can be created,
+        // activated or lose their infocom capacity at any time, so the list
+        // cannot be frozen in the static property.
+        $types = array_merge(self::$types, self::getCustomAssetTypes());
+
         if ($all) {
-            return self::$types;
+            return $types;
         }
 
         // Only allowed types
-        $types = self::$types;
-
         foreach ($types as $key => $itemtype) {
+            // A type registered by another plugin may no longer exist: drop it,
+            // callers instantiate whatever this list returns.
             if (!class_exists($itemtype)) {
+                unset($types[$key]);
                 continue;
             }
 
@@ -830,7 +928,7 @@ class Config extends CommonDBTM
     {
         // Restrict to the itemtypes this plugin actually handles before touching
         // anything derived from the user-supplied itemtype.
-        if (!in_array($itemtype, self::$types, true)) {
+        if (!in_array($itemtype, self::getTypes(true), true)) {
             throw new AccessDeniedHttpException();
         }
         $item = getItemForItemtype($itemtype);
@@ -913,7 +1011,18 @@ class Config extends CommonDBTM
                     isset($_SESSION['glpi_use_mode'])
                     && ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE)
                 ) {
-                    Toolbox::loginfo($options);
+                    // Never dump $options as-is: it carries the freshly obtained
+                    // OAuth bearer token (replayable against the manufacturer API
+                    // until it expires) and the whole config object. Log only the
+                    // fields that are useful to diagnose an import.
+                    Toolbox::loginfo([
+                        'url'       => $options['url'] ?? '',
+                        'type'      => $options['type'] ?? '',
+                        'ID'        => $options['ID'] ?? '',
+                        'sn'        => $options['sn'] ?? '',
+                        'pn'        => $options['pn'] ?? '',
+                        'has_token' => !empty($options['token']),
+                    ]);
                 }
                 PostImport::saveImport($options);
             }

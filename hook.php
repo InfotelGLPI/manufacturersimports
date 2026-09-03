@@ -113,7 +113,9 @@ function plugin_manufacturersimports_install()
     ], ['name' => Config::LENOVO]);
 
     $DB->update('glpi_plugin_manufacturersimports_configs', [
-        'Supplier_url' => 'http://support.ts.fujitsu.com/Warranty/WarrantyStatus.asp?lng=com&IDNR',
+        // https only: Config::isSafeApiUrl() rejects any other scheme, so an http
+        // seed URL made every Fujitsu import fail with "Invalid or forbidden URL".
+        'Supplier_url' => 'https://support.ts.fujitsu.com/Warranty/WarrantyStatus.asp?lng=com&IDNR',
     ], ['name' => Config::FUJITSU]);
 
     $DB->update('glpi_plugin_manufacturersimports_configs', [

@@ -27,24 +27,30 @@
  * --------------------------------------------------------------------------
  */
 
+use GlpiPlugin\Manufacturersimports\Config;
+
 Session::checkRight("plugin_manufacturersimports", UPDATE);
 
 header("Content-Type: text/html; charset=UTF-8");
 Html::header_nocache();
 
-if (isset($_POST["action"]) || isset($_POST["id"])) {
-    echo Html::hidden('action', ['value' => $_POST["action"]]);
-    echo Html::hidden('id', ['value' => $_POST["id"]]);
-    switch ($_POST["action"]) {
+// Every key below is read unconditionally, so all of them must be present: the
+// former `||` let a request carrying only `id` fall through and read undefined
+// keys. Only the two actions this dropdown drives, on an itemtype the plugin
+// handles, produce any output.
+$action   = $_POST["action"] ?? '';
+$itemtype = $_POST["itemtype"] ?? '';
 
-        case "reinit_once":
-        case "import":
-            echo Html::hidden('itemtype', ['value' => $_POST["itemtype"]]);
-            echo Html::hidden('start', ['value' => $_POST["start"]]);
-            echo Html::hidden('manufacturers_id', ['value' => $_POST["manufacturers_id"]]);
-            echo Html::hidden('imported', ['value' => $_POST["imported"]]);
-            echo Html::submit(_sx('button', 'Post'), ['name' => 'massiveaction', 'class' => 'btn btn-primary']);
-            break;
-
-    }
+if (
+    isset($_POST["id"])
+    && in_array($action, ['import', 'reinit_once'], true)
+    && in_array($itemtype, Config::getTypes(true), true)
+) {
+    echo Html::hidden('action', ['value' => $action]);
+    echo Html::hidden('id', ['value' => (int) $_POST["id"]]);
+    echo Html::hidden('itemtype', ['value' => $itemtype]);
+    echo Html::hidden('start', ['value' => (int) ($_POST["start"] ?? 0)]);
+    echo Html::hidden('manufacturers_id', ['value' => (int) ($_POST["manufacturers_id"] ?? 0)]);
+    echo Html::hidden('imported', ['value' => (int) ($_POST["imported"] ?? 0)]);
+    echo Html::submit(_sx('button', 'Post'), ['name' => 'massiveaction', 'class' => 'btn btn-primary']);
 }

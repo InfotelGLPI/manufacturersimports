@@ -291,8 +291,12 @@ class PostImport extends CommonDBTM
      */
     public static function massiveimport($values)
     {
-        $config = new Config();
-        $config->getFromDB($values['manufacturers_id']);
+        // The config id comes from the request: check the entity perimeter before
+        // the progress page is built on another entity's configuration.
+        $config = Config::getCheckedConfig($values['manufacturers_id']);
+        if ($config === null) {
+            throw new AccessDeniedHttpException();
+        }
 
         $back_url  = PLUGIN_MANUFACTURERSIMPORTS_WEBDIR . '/front/import.php?back=back'
                      . '&itemtype=' . urlencode($values['itemtype'])
@@ -318,7 +322,7 @@ class PostImport extends CommonDBTM
         $itemtype = $values['itemtype'] ?? '';
         // Only the itemtypes handled by this plugin are acceptable before we
         // derive any table/class from this user-supplied value.
-        if (!in_array($itemtype, Config::$types, true)) {
+        if (!in_array($itemtype, Config::getTypes(true), true)) {
             throw new AccessDeniedHttpException();
         }
 
@@ -395,8 +399,19 @@ class PostImport extends CommonDBTM
     ): array {
         global $DB;
 
-        $config = new Config();
-        $config->getFromDB($configID);
+        // The itemtype reaches this method from the request: keep it inside the
+        // supported list before it is used as a table name and as a class in
+        // static calls below.
+        if (!in_array($type, Config::getTypes(true), true)) {
+            return ['name' => "#{$ID}", 'serial' => '', 'success' => false];
+        }
+
+        // The config id comes from the request: check the entity perimeter before
+        // its credentials are decrypted and used for the outbound call.
+        $config = Config::getCheckedConfig($configID);
+        if ($config === null) {
+            return ['name' => "#{$ID}", 'serial' => '', 'success' => false];
+        }
         $manufacturerId = $config->fields['manufacturers_id'];
         $suppliername   = $config->fields['name'];
         $supplierUrl    = $config->fields['supplier_url'];
@@ -432,20 +447,20 @@ class PostImport extends CommonDBTM
                 // Defence in depth: never select an item outside the caller's
                 // entity perimeter, even if the can() gate upstream is bypassed.
                 $dbu->getEntitiesRestrictCriteria($itemtable),
+                // Every custom asset definition shares glpi_assets_assets, so the
+                // id alone does not identify the type: pin the query to the
+                // definition $type belongs to. No-op for the classic itemtypes.
+                $type::getSystemSQLCriteria($itemtable),
             ],
             'ORDER'      => new QueryExpression("`$itemtable`.`name`"),
         ]);
 
-        $allowed_suppliers = [
-            Config::DELL, Config::HP, Config::FUJITSU,
-            Config::LENOVO, Config::TOSHIBA, Config::WORTMANN_AG,
-        ];
-        if (!in_array($suppliername, $allowed_suppliers, true)) {
+        // Resolve against the whitelist: the name is config data, never trust it in `new`.
+        $supplierclass = Config::resolveSupplierClass($suppliername);
+        if ($supplierclass === null) {
             return ['name' => "#{$ID}", 'serial' => '', 'success' => false];
         }
-
-        $supplierclass = 'GlpiPlugin\\Manufacturersimports\\Manufacturers\\' . $suppliername;
-        $token         = $supplierclass::getToken($config);
+        $token = $supplierclass::getToken($config);
 
         $result = ['name' => "#{$ID}", 'serial' => '', 'success' => false];
 
@@ -504,10 +519,11 @@ class PostImport extends CommonDBTM
     public static function selectSupplierField($suppliername)
     {
         $field = '';
-        if (!empty($suppliername)) {
-            $supplierclass = "GlpiPlugin\Manufacturersimports\Manufacturers\\" . $suppliername;
-            $supplier      = new $supplierclass();
-            $field         = $supplier->getSearchField();
+        // Resolve against the whitelist: the name is config data, never trust it in `new`.
+        $supplierclass = Config::resolveSupplierClass($suppliername);
+        if ($supplierclass !== null) {
+            $supplier = new $supplierclass();
+            $field    = $supplier->getSearchField();
         }
 
         return $field;
@@ -521,9 +537,13 @@ class PostImport extends CommonDBTM
      */
     public static function importDate($suppliername, $contents)
     {
-        $supplierclass = "GlpiPlugin\Manufacturersimports\Manufacturers\\" . $suppliername;
-        $supplier      = new $supplierclass();
-        $importDate    = $supplier->getBuyDate($contents);
+        // Resolve against the whitelist: the name is config data, never trust it in `new`.
+        $supplierclass = Config::resolveSupplierClass($suppliername);
+        if ($supplierclass === null) {
+            return false;
+        }
+        $supplier   = new $supplierclass();
+        $importDate = $supplier->getBuyDate($contents);
 
         return $importDate;
     }
@@ -536,7 +556,11 @@ class PostImport extends CommonDBTM
      */
     public static function importStartDate($suppliername, $contents)
     {
-        $supplierclass   = "GlpiPlugin\Manufacturersimports\Manufacturers\\" . $suppliername;
+        // Resolve against the whitelist: the name is config data, never trust it in `new`.
+        $supplierclass = Config::resolveSupplierClass($suppliername);
+        if ($supplierclass === null) {
+            return false;
+        }
         $supplier        = new $supplierclass();
         $importStartDate = $supplier->getStartDate($contents);
 
@@ -551,7 +575,11 @@ class PostImport extends CommonDBTM
      */
     public static function importWarrantyInfo($suppliername, $contents)
     {
-        $supplierclass      = "GlpiPlugin\Manufacturersimports\Manufacturers\\" . $suppliername;
+        // Resolve against the whitelist: the name is config data, never trust it in `new`.
+        $supplierclass = Config::resolveSupplierClass($suppliername);
+        if ($supplierclass === null) {
+            return false;
+        }
         $supplier           = new $supplierclass();
         $importWarrantyInfo = $supplier->getWarrantyInfo($contents);
 
@@ -591,9 +619,13 @@ class PostImport extends CommonDBTM
      */
     public static function importDateFin($suppliername, $contents)
     {
-        $supplierclass = "GlpiPlugin\Manufacturersimports\Manufacturers\\" . $suppliername;
-        $supplier      = new $supplierclass();
-        $maDateFin     = $supplier->getExpirationDate($contents);
+        // Resolve against the whitelist: the name is config data, never trust it in `new`.
+        $supplierclass = Config::resolveSupplierClass($suppliername);
+        if ($supplierclass === null) {
+            return false;
+        }
+        $supplier  = new $supplierclass();
+        $maDateFin = $supplier->getExpirationDate($contents);
 
         return $maDateFin;
     }
@@ -607,15 +639,26 @@ class PostImport extends CommonDBTM
      * @param $fromwarranty selection on pre import
      * @param $configID ID of supplier plugin config
      *
-     * @return results of data import
+     * @return void
      *
      */
     public static function seePostImport($type, $ID, $fromsupplier, $fromwarranty, $configID)
     {
         global $DB;
 
-        $config = new Config();
-        $config->getFromDB($configID);
+        // The itemtype reaches this method from the request: keep it inside the
+        // supported list before it is used as a table name and as a class in
+        // static calls below.
+        if (!in_array($type, Config::getTypes(true), true)) {
+            return;
+        }
+
+        // The config id comes from the request: check the entity perimeter before
+        // its credentials are decrypted and used for the outbound call.
+        $config = Config::getCheckedConfig($configID);
+        if ($config === null) {
+            return;
+        }
         $manufacturerId = $config->fields["manufacturers_id"];
 
         if ($fromsupplier) {
@@ -656,22 +699,26 @@ class PostImport extends CommonDBTM
                 // Defence in depth: never select an item outside the caller's
                 // entity perimeter, even if the can() gate upstream is bypassed.
                 $dbu->getEntitiesRestrictCriteria($itemtable),
+                // Every custom asset definition shares glpi_assets_assets, so the
+                // id alone does not identify the type: pin the query to the
+                // definition $type belongs to. No-op for the classic itemtypes.
+                $type::getSystemSQLCriteria($itemtable),
             ],
             'ORDER'      => new QueryExpression("`$itemtable`.`name`"),
         ]);
 
-        $allowed_suppliers = [Config::DELL, Config::HP, Config::FUJITSU, Config::LENOVO, Config::TOSHIBA, Config::WORTMANN_AG];
-        if (!in_array($suppliername, $allowed_suppliers, true)) {
+        // Resolve against the whitelist: the name is config data, never trust it in `new`.
+        $supplierclass = Config::resolveSupplierClass($suppliername);
+        if ($supplierclass === null) {
             return;
         }
-        $supplierclass = "GlpiPlugin\Manufacturersimports\Manufacturers\\" . $suppliername;
-        $token         = $supplierclass::getToken($config);
+        $token = $supplierclass::getToken($config);
 
         foreach ($iterator as $line) {
             $compSerial = $line['serial'];
             $ID         = $line['id'];
             echo "<tr class='tab_bg_1' ><td>";
-            $link        = Toolbox::getItemTypeFormURL($type);
+            $link        = Config::getItemFormLink($type, (int) $ID);
             $dID         = "";
 
             $models_id = $line[$modelfield];
@@ -687,7 +734,7 @@ class PostImport extends CommonDBTM
             if ($_SESSION["glpiis_ids_visible"] || empty($line["name"])) {
                 $dID .= " (" . $line["id"] . ")";
             }
-            echo "<a href='" . htmlescape($link) . "?id=" . (int) $ID . "'>" . htmlescape($line["name"]) . htmlescape($dID) . "</a><br>" . htmlescape($otherSerial) . "</td>";
+            echo "<a href='" . htmlescape($link) . "'>" . htmlescape($line["name"]) . htmlescape($dID) . "</a><br>" . htmlescape($otherSerial) . "</td>";
 
             $url          = PreImport::selectSupplier(
                 $suppliername,

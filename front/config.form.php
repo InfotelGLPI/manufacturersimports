@@ -40,25 +40,30 @@ if (!isset($_GET["preconfig"])) {
 $config = new Config();
 
 if (isset($_POST["add"])) {
-    Session::checkRight("plugin_manufacturersimports", CREATE);
+    // check() validates the global right AND the entity the record is submitted
+    // into: the plugin right alone says nothing about the targeted perimeter.
+    $config->check(-1, CREATE, $_POST);
     $config->add($_POST);
     Html::back();
 
 } elseif (isset($_POST["update"])) {
 
-    Session::checkRight("plugin_manufacturersimports", UPDATE);
+    // Re-check the targeted record: CommonDBTM::update() reloads the row by id
+    // without any rights or entity test, so a bare checkRight() would let a
+    // delegated administrator rewrite another entity's configuration.
+    $config->check((int) ($_POST["id"] ?? -1), UPDATE, $_POST);
     $config->update($_POST);
     Html::back();
 
 } elseif (isset($_POST["delete"])) {
 
-    Session::checkRight("plugin_manufacturersimports", PURGE);
+    $config->check((int) ($_POST["id"] ?? -1), PURGE);
     $config->delete($_POST, true);
     Html::redirect("./config.php");
 
 } elseif (isset($_POST["purge"])) {
 
-    Session::checkRight("plugin_manufacturersimports", PURGE);
+    $config->check((int) ($_POST["id"] ?? -1), PURGE);
     $config->delete($_POST, true);
     Html::redirect("./config.php");
 

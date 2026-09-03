@@ -42,7 +42,16 @@ Pour chaque matériel dont le fabricant est configuré et dont le numéro de sé
 - Le **fournisseur** à associer
 - Optionnellement : un **document HTML** de la page fabricant et une **ligne de commentaire** dans les infocoms
 
-Les types de matériels supportés sont : **Ordinateurs, Moniteurs, Équipements réseau, Périphériques, Imprimantes**.
+Les types de matériels supportés sont : **Ordinateurs, Moniteurs, Équipements réseau, Périphériques, Imprimantes**, ainsi que les **actifs personnalisés** introduits par GLPI 11.
+
+Un type d’actif personnalisé apparaît dans le plugin dès lors que sa définition :
+
+- est **active** ;
+- active la capacité **Informations financières et administratives**, les garanties étant écrites dans l’infocom du matériel ;
+- affiche le champ **Numéro de série**, qui sert à interroger le fabricant ;
+- affiche le champ **Fabricant**, qui rattache le matériel à une configuration du plugin.
+
+Une définition à laquelle il manque l’un de ces éléments reste masquée : aucun import ne pourrait y aboutir.
 
 ---
 

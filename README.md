@@ -17,7 +17,8 @@ This plugin imports warranty and financial information from manufacturer website
 * Optionally adds a **comment line** to infocoms indicating the import source and date.
 * Supports **bulk import** with a real-time progress bar, and **individual import** from the asset form.
 * Includes a GLPI **cron task** (`DataWarrantyImport`) for automatic nightly imports of Dell and HP warranties.
-* Applicable to: Computers, Monitors, Network Equipment, Peripherals, Printers.
+* Applicable to: Computers, Monitors, Network Equipment, Peripherals, Printers, and **GLPI 11 custom assets**.
+* A custom asset type is supported as soon as its definition enables the **Financial and administrative information** capacity and displays the **Serial number** and **Manufacturer** fields.
 
 **[Full English documentation →](docs/en/index.md)**
 
@@ -34,6 +35,7 @@ Ce plugin importe les informations de garantie et financières depuis les sites 
 * Ajoute optionnellement une **ligne de commentaire** dans les infocoms indiquant la source et la date de l’import.
 * Supporte l’**import en masse** avec barre de progression en temps réel, et l’**import unitaire** depuis la fiche matériel.
 * Inclut une **tâche automatique GLPI** (`DataWarrantyImport`) pour l’import nocturne automatique des garanties Dell et HP.
-* Applicable à : Ordinateurs, Moniteurs, Équipements réseau, Périphériques, Imprimantes.
+* Applicable à : Ordinateurs, Moniteurs, Équipements réseau, Périphériques, Imprimantes et **actifs personnalisés GLPI 11**.
+* Un type d’actif personnalisé est pris en charge dès lors que sa définition active la capacité **Informations financières et administratives** et affiche les champs **Numéro de série** et **Fabricant**.
 
 **[Documentation complète en français →](docs/fr/index.md)**

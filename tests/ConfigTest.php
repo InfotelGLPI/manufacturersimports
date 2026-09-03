@@ -199,4 +199,24 @@ class ConfigTest extends TestCase
         $this->assertNotEmpty($types);
         $this->assertContains('Computer', $types);
     }
+
+    public function testGetCustomAssetTypesDegradesWithoutDefinitions(): void
+    {
+        // No asset definition is bootstrapped in a unit test context: the
+        // accessor must return an empty list rather than fail.
+        $this->assertSame([], Config::getCustomAssetTypes());
+    }
+
+    public function testGetTypesAllIncludesCustomAssetTypes(): void
+    {
+        $types = Config::getTypes(true);
+
+        foreach (Config::getCustomAssetTypes() as $classname) {
+            $this->assertContains($classname, $types);
+        }
+        // The classic itemtypes are never dropped by the merge.
+        foreach (Config::$types as $classname) {
+            $this->assertContains($classname, $types);
+        }
+    }
 }

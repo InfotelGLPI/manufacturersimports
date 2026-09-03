@@ -42,7 +42,16 @@ For each asset whose manufacturer is configured and whose serial number is set, 
 - The **supplier** to associate
 - Optionally: an **HTML document** from the manufacturer's support page and a **comment line** in the infocoms
 
-Supported asset types: **Computers, Monitors, Network Equipment, Peripherals, Printers**.
+Supported asset types: **Computers, Monitors, Network Equipment, Peripherals, Printers**, plus the **custom assets** introduced in GLPI 11.
+
+A custom asset type appears in the plugin as soon as its definition:
+
+- is **active**;
+- enables the **Financial and administrative information** capacity, since warranties are written into the item infocom;
+- displays the **Serial number** field, used to query the manufacturer;
+- displays the **Manufacturer** field, used to bind the item to a plugin configuration.
+
+A definition missing one of these is hidden from the plugin: no import could succeed on it.
 
 ---
 

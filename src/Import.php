@@ -155,9 +155,12 @@ class Import extends CommonDBTM
                 $options['pn'] = $otherserial;
             }
 
-            if ($suppliername == Config::DELL
-                || $suppliername == Config::HP) {
-                $supplierclass    = "GlpiPlugin\Manufacturersimports\Manufacturers\\" . $suppliername;
+            // Resolve against the whitelist: the name is config data, never trust it in `new`.
+            $supplierclass = Config::resolveSupplierClass($suppliername);
+            if (
+                $supplierclass !== null
+                && ($suppliername == Config::DELL || $suppliername == Config::HP)
+            ) {
                 $token            = $supplierclass::getToken($config);
                 $warranty_url     = $supplierclass::getWarrantyUrl($config, $compSerial);
                 $options['token'] = $token;

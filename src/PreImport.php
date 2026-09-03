@@ -347,16 +347,21 @@ class PreImport extends CommonDBTM
             return;
         }
 
-        $config = new Config();
-        $config->getFromDB($p['manufacturers_id']);
-        $suppliername  = $config->fields['name'] ?? '';
-        $supplierclass = 'GlpiPlugin\\Manufacturersimports\\Manufacturers\\' . $suppliername;
-        // Guard against an unexpected config name that maps to no manufacturer
-        // class, which would otherwise fatal on instantiation (as Config::display does).
-        if ($suppliername === '' || !class_exists($supplierclass)) {
+        // The config id comes from the request: check the entity perimeter before
+        // listing items against another entity's configuration.
+        $config = Config::getCheckedConfig($p['manufacturers_id']);
+        if ($config === null) {
             return;
         }
-        $supplier      = new $supplierclass();
+        $suppliername = $config->fields['name'] ?? '';
+        // Guard against an unexpected config name that maps to no manufacturer
+        // class, which would otherwise fatal on instantiation: resolveSupplierClass()
+        // combines the whitelist and the existence check in a single place.
+        $supplierclass = Config::resolveSupplierClass($suppliername);
+        if ($supplierclass === null) {
+            return;
+        }
+        $supplier = new $supplierclass();
 
         $infocom = new Infocom();
         $canedit = Session::haveRight(static::$rightname, UPDATE) && $infocom->canUpdate();
@@ -500,11 +505,11 @@ class PreImport extends CommonDBTM
             $entry['_check'] = $supplier->showCheckbox($line['id'], $sel, $otherSerial);
         }
 
-        $link      = Toolbox::getItemTypeFormURL($line['itemtype']);
+        $link      = Config::getItemFormLink($line['itemtype'], (int) $line['id']);
         $id_suffix = ($_SESSION['glpiis_ids_visible'] || empty($line['name']))
             ? ' (' . $line['id'] . ')'
             : '';
-        $entry['name'] = "<a href='" . $link . "?id=" . $line['id'] . "'>"
+        $entry['name'] = "<a href='" . htmlescape($link) . "'>"
                          . htmlescape($line['name'] ?? '') . $id_suffix . '</a><br>'
                          . htmlescape($line['model_name'] ?? '');
 
@@ -642,11 +647,12 @@ class PreImport extends CommonDBTM
     {
         global $CFG_GLPI;
 
-        // Escape the form name before embedding it into the onclick handlers: it is
-        // reflected inside an HTML attribute and could otherwise break out. This
-        // helper is still invoked from pre_import_list.html.twig via a Twig call(),
-        // so the escaping is load-bearing, not merely defensive.
-        $formname = htmlescape($formname);
+        // The form name is interpolated inside `onclick` handlers below, which the
+        // browser HTML-decodes *before* parsing the result as JavaScript: HTML
+        // escaping alone would be undone at that point. Escape for the JS string
+        // context first, then for the attribute context. This helper is invoked
+        // from pre_import_list.html.twig via a Twig call(), so it is load-bearing.
+        $formname = htmlescape(jsescape($formname));
 
         if ($fixed) {
             echo "<table class='tab_glpi' width='950px'>";
@@ -717,7 +723,7 @@ class PreImport extends CommonDBTM
         $item       = getItemForItemtype($p['itemtype']);
         $itemtable  = $dbu->getTableForItemType($p['itemtype']);
 
-        if (!in_array($p['itemtype'], Config::$types, true)) {
+        if (!in_array($p['itemtype'], Config::getTypes(true), true)) {
             return $DB->request(['FROM' => $itemtable, 'LIMIT' => 0]);
         }
         $p['manufacturers_id'] = (int) $p['manufacturers_id'];
@@ -751,6 +757,11 @@ class PreImport extends CommonDBTM
                 $dbu->getEntitiesRestrictCriteria($itemtable, '', '', $item->maybeRecursive()),
             );
         }
+
+        // Every custom asset definition shares glpi_assets_assets: without its
+        // own criteria the listing would mix all the custom asset types
+        // together. Classic itemtypes return none, so this is a no-op there.
+        $where += $p['itemtype']::getSystemSQLCriteria($itemtable);
 
         $order = new QueryExpression("`entities_id`,`$itemtable`.`name`");
         foreach ($toview as $key => $val) {

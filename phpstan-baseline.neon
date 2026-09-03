@@ -283,24 +283,6 @@ parameters:
 			path: src/PostImport.php
 
 		-
-			message: '#^Method GlpiPlugin\\Manufacturersimports\\PostImport\:\:seePostImport\(\) has invalid return type GlpiPlugin\\Manufacturersimports\\results\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/PostImport.php
-
-		-
-			message: '#^Method GlpiPlugin\\Manufacturersimports\\PostImport\:\:seePostImport\(\) should return GlpiPlugin\\Manufacturersimports\\results but empty return statement found\.$#'
-			identifier: return.empty
-			count: 1
-			path: src/PostImport.php
-
-		-
-			message: '#^Method GlpiPlugin\\Manufacturersimports\\PostImport\:\:seePostImport\(\) should return GlpiPlugin\\Manufacturersimports\\results but return statement is missing\.$#'
-			identifier: return.missing
-			count: 1
-			path: src/PostImport.php
-
-		-
 			message: '#^PHPDoc tag @return has invalid value \(\$field for date and warranty searching\)\: Unexpected token "\$field", expected type at offset 152 on line 6$#'
 			identifier: phpDoc.parseError
 			count: 1

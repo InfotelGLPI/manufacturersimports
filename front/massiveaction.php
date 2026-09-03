@@ -51,12 +51,15 @@ $config->checkGlobal(UPDATE);
 if (isset($_POST["action"])
     && isset($_POST["id"])
     && isset($_POST["item"])
+    // is_array() first: count() on a scalar is a TypeError (500) on PHP 8,
+    // as massiveimport_run.php already guards against.
+    && is_array($_POST["item"])
     && count($_POST["item"])) {
     switch ($_POST["action"]) {
         case "import":
             $itemtype = $_POST["itemtype"];
             // Only the itemtypes this plugin handles are acceptable here.
-            if (!in_array($itemtype, Config::$types, true)) {
+            if (!in_array($itemtype, Config::getTypes(true), true)) {
                 throw new AccessDeniedHttpException();
             }
             foreach ($_POST["item"] as $key => $val) {
@@ -75,7 +78,7 @@ if (isset($_POST["action"])
         case "reinit_once":
             $itemtype = $_POST["itemtype"];
             // Only the itemtypes this plugin handles are acceptable here.
-            if (!in_array($itemtype, Config::$types, true)) {
+            if (!in_array($itemtype, Config::getTypes(true), true)) {
                 throw new AccessDeniedHttpException();
             }
             foreach ($_POST["item"] as $key => $val) {
