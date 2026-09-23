@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - manufacturersimports plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-23 14:29+0000\n"
+"POT-Creation-Date: 2026-09-23 14:30+0000\n"
 "PO-Revision-Date: 2020-01-17 15:32+0000\n"
 "Last-Translator: Kevin HAINRY <kevin.hainry@infotel.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/infotelGLPI/"
@@ -64,12 +64,12 @@ msgstr ""
 msgid "Client secret"
 msgstr ""
 
-#: front/config.form.php:137 front/config.form.php:182
-#: ajax/testConnection.php:102 src/PostImport.php:1219
+#: front/config.form.php:137 front/config.form.php:182 src/PostImport.php:1219
+#: ajax/testConnection.php:102
 msgid "Connection failed/data download from manufacturer web site"
 msgstr "從製造商網站取得資料失敗"
 
-#: front/config.form.php:90 ajax/testConnection.php:61 src/PostImport.php:89
+#: front/config.form.php:90 src/PostImport.php:89 ajax/testConnection.php:61
 msgid "Curl PHP package not installed"
 msgstr "Curl PHP套件未安裝"
 
@@ -100,11 +100,11 @@ msgstr ""
 msgid "From %1$d to %2$d on %3$d"
 msgstr ""
 
-#: src/PostImport.php:371 src/PostImport.php:1083 src/Import.php:176
+#: src/Import.php:176 src/PostImport.php:371 src/PostImport.php:1083
 msgid "Import OK"
 msgstr "匯入完成"
 
-#: src/PostImport.php:376 src/PostImport.php:1196 src/Import.php:179
+#: src/Import.php:179 src/PostImport.php:376 src/PostImport.php:1196
 msgid "Import failed"
 msgstr "匯入失敗"
 
@@ -126,7 +126,7 @@ msgstr ""
 msgid "Importing from %s"
 msgstr ""
 
-#: front/config.form.php:86 ajax/testConnection.php:53 src/PostImport.php:111
+#: front/config.form.php:86 src/PostImport.php:111 ajax/testConnection.php:53
 msgid "Invalid or forbidden URL"
 msgstr ""
 
@@ -239,8 +239,8 @@ msgstr ""
 msgid "Supplier attached"
 msgstr "供應商已設定"
 
-#: setup.php:90 front/massiveaction.php:43 src/Menu.php:52 src/PreImport.php:66
-#: src/Profile.php:126
+#: front/massiveaction.php:43 setup.php:90 src/PreImport.php:66
+#: src/Profile.php:126 src/Menu.php:52
 msgid "Suppliers import"
 msgid_plural "Suppliers imports"
 msgstr[0] "匯入供應商"

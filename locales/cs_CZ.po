@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $soft $version\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-23 14:29+0000\n"
+"POT-Creation-Date: 2026-09-23 14:30+0000\n"
 "PO-Revision-Date: 2020-11-02 16:09+0000\n"
 "Last-Translator: Xavier CAILLAUD <thetsmr@gmail.com>, 2020\n"
 "Language-Team: Czech (Czech Republic) (https://www.transifex.com/infotelGLPI/"
@@ -68,13 +68,13 @@ msgstr "Identifikátor klienta"
 msgid "Client secret"
 msgstr "Heslo klienta"
 
-#: front/config.form.php:137 front/config.form.php:182
-#: ajax/testConnection.php:102 src/PostImport.php:1219
+#: front/config.form.php:137 front/config.form.php:182 src/PostImport.php:1219
+#: ajax/testConnection.php:102
 msgid "Connection failed/data download from manufacturer web site"
 msgstr ""
 "Spojení se nezdařilo / data se nepodařilo stáhnout z webových stránek výrobce"
 
-#: front/config.form.php:90 ajax/testConnection.php:61 src/PostImport.php:89
+#: front/config.form.php:90 src/PostImport.php:89 ajax/testConnection.php:61
 msgid "Curl PHP package not installed"
 msgstr "Není nainstalován balíček PHP Curl"
 
@@ -105,11 +105,11 @@ msgstr ""
 msgid "From %1$d to %2$d on %3$d"
 msgstr ""
 
-#: src/PostImport.php:371 src/PostImport.php:1083 src/Import.php:176
+#: src/Import.php:176 src/PostImport.php:371 src/PostImport.php:1083
 msgid "Import OK"
 msgstr "Import proběhl úspěšně"
 
-#: src/PostImport.php:376 src/PostImport.php:1196 src/Import.php:179
+#: src/Import.php:179 src/PostImport.php:376 src/PostImport.php:1196
 msgid "Import failed"
 msgstr "Import se nezdařil"
 
@@ -131,7 +131,7 @@ msgstr ""
 msgid "Importing from %s"
 msgstr ""
 
-#: front/config.form.php:86 ajax/testConnection.php:53 src/PostImport.php:111
+#: front/config.form.php:86 src/PostImport.php:111 ajax/testConnection.php:53
 msgid "Invalid or forbidden URL"
 msgstr ""
 
@@ -247,8 +247,8 @@ msgstr ""
 msgid "Supplier attached"
 msgstr "Dodavatel připojen"
 
-#: setup.php:90 front/massiveaction.php:43 src/Menu.php:52 src/PreImport.php:66
-#: src/Profile.php:126
+#: front/massiveaction.php:43 setup.php:90 src/PreImport.php:66
+#: src/Profile.php:126 src/Menu.php:52
 msgid "Suppliers import"
 msgid_plural "Suppliers imports"
 msgstr[0] "Import od dodavatelů"

@@ -2,24 +2,26 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 # Translators:
 # Xavier CAILLAUD <thetsmr@gmail.com>, 2026
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-23 14:29+0000\n"
+"POT-Creation-Date: 2026-09-23 14:30+0000\n"
 "PO-Revision-Date: 2020-11-02 16:09+0000\n"
 "Last-Translator: Xavier CAILLAUD <thetsmr@gmail.com>, 2026\n"
-"Language-Team: French (France) (https://app.transifex.com/infotelGLPI/teams/12364/fr_FR/)\n"
+"Language-Team: French (France) (https://app.transifex.com/infotelGLPI/"
+"teams/12364/fr_FR/)\n"
+"Language: fr_FR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fr_FR\n"
-"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % "
+"1000000 == 0 ? 1 : 2;\n"
 
 #: src/Config.php:580
 msgid "API connection test"
@@ -66,12 +68,12 @@ msgstr "ID du client"
 msgid "Client secret"
 msgstr "Clé API secrète"
 
-#: front/config.form.php:137 front/config.form.php:182
-#: ajax/testConnection.php:102 src/PostImport.php:1219
+#: front/config.form.php:137 front/config.form.php:182 src/PostImport.php:1219
+#: ajax/testConnection.php:102
 msgid "Connection failed/data download from manufacturer web site"
 msgstr "Echec de connexion/récupération de données au site du fabricant"
 
-#: front/config.form.php:90 ajax/testConnection.php:61 src/PostImport.php:89
+#: front/config.form.php:90 src/PostImport.php:89 ajax/testConnection.php:61
 msgid "Curl PHP package not installed"
 msgstr "Le module Curl pour PHP n'est pas installé"
 
@@ -102,11 +104,11 @@ msgstr "Matériels ayant eu un problème d'import"
 msgid "From %1$d to %2$d on %3$d"
 msgstr "Depuis%1$d vers%2$d sur%3$d"
 
-#: src/PostImport.php:371 src/PostImport.php:1083 src/Import.php:176
+#: src/Import.php:176 src/PostImport.php:371 src/PostImport.php:1083
 msgid "Import OK"
 msgstr "Import OK"
 
-#: src/PostImport.php:376 src/PostImport.php:1196 src/Import.php:179
+#: src/Import.php:179 src/PostImport.php:376 src/PostImport.php:1196
 msgid "Import failed"
 msgstr "Import KO"
 
@@ -128,7 +130,7 @@ msgstr "Importation des objets %1$d à %2$d"
 msgid "Importing from %s"
 msgstr "Importation depuis %s"
 
-#: front/config.form.php:86 ajax/testConnection.php:53 src/PostImport.php:111
+#: front/config.form.php:86 src/PostImport.php:111 ajax/testConnection.php:53
 msgid "Invalid or forbidden URL"
 msgstr "URL invalide ou interdite"
 
@@ -243,8 +245,8 @@ msgstr "Serveur accessible (HTTP %d)"
 msgid "Supplier attached"
 msgstr "Fournisseur affecté"
 
-#: setup.php:90 front/massiveaction.php:43 src/Menu.php:52
-#: src/PreImport.php:66 src/Profile.php:126
+#: front/massiveaction.php:43 setup.php:90 src/PreImport.php:66
+#: src/Profile.php:126 src/Menu.php:52
 msgid "Suppliers import"
 msgid_plural "Suppliers imports"
 msgstr[0] "Import fabricants"
@@ -297,5 +299,5 @@ msgstr "Avec le plugin manufacturersimports"
 msgid ""
 "You did not import the warranty for this item. Do you want to get it back?"
 msgstr ""
-"Vous n'avez pas importé la garantie pour cet objet. Voulez-vous la récupérer"
-" ?"
+"Vous n'avez pas importé la garantie pour cet objet. Voulez-vous la "
+"récupérer ?"

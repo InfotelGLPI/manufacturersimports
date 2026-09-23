@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $soft\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-23 14:29+0000\n"
+"POT-Creation-Date: 2026-09-23 14:30+0000\n"
 "PO-Revision-Date: 2020-11-02 16:09+0000\n"
 "Last-Translator: Carlos Moreno Rodríguez <carlosm.rodriguez@prodigy.net.mx>, "
 "2022\n"
@@ -69,12 +69,12 @@ msgstr "Id. del Cliente"
 msgid "Client secret"
 msgstr "Clave Cliente"
 
-#: front/config.form.php:137 front/config.form.php:182
-#: ajax/testConnection.php:102 src/PostImport.php:1219
+#: front/config.form.php:137 front/config.form.php:182 src/PostImport.php:1219
+#: ajax/testConnection.php:102
 msgid "Connection failed/data download from manufacturer web site"
 msgstr "Conexión fallida en la descarga de datos del sitio web del fabricante"
 
-#: front/config.form.php:90 ajax/testConnection.php:61 src/PostImport.php:89
+#: front/config.form.php:90 src/PostImport.php:89 ajax/testConnection.php:61
 msgid "Curl PHP package not installed"
 msgstr "No está instalado el paquete Curl PHP"
 
@@ -105,11 +105,11 @@ msgstr ""
 msgid "From %1$d to %2$d on %3$d"
 msgstr ""
 
-#: src/PostImport.php:371 src/PostImport.php:1083 src/Import.php:176
+#: src/Import.php:176 src/PostImport.php:371 src/PostImport.php:1083
 msgid "Import OK"
 msgstr "Importación correcta"
 
-#: src/PostImport.php:376 src/PostImport.php:1196 src/Import.php:179
+#: src/Import.php:179 src/PostImport.php:376 src/PostImport.php:1196
 msgid "Import failed"
 msgstr "Importación fallida"
 
@@ -131,7 +131,7 @@ msgstr ""
 msgid "Importing from %s"
 msgstr ""
 
-#: front/config.form.php:86 ajax/testConnection.php:53 src/PostImport.php:111
+#: front/config.form.php:86 src/PostImport.php:111 ajax/testConnection.php:53
 msgid "Invalid or forbidden URL"
 msgstr ""
 
@@ -246,8 +246,8 @@ msgstr ""
 msgid "Supplier attached"
 msgstr "Proveedor adjunto"
 
-#: setup.php:90 front/massiveaction.php:43 src/Menu.php:52 src/PreImport.php:66
-#: src/Profile.php:126
+#: front/massiveaction.php:43 setup.php:90 src/PreImport.php:66
+#: src/Profile.php:126 src/Menu.php:52
 msgid "Suppliers import"
 msgid_plural "Suppliers imports"
 msgstr[0] "Garantía de activos"

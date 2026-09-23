@@ -2,24 +2,25 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 # Translators:
 # Xavier CAILLAUD <thetsmr@gmail.com>, 2020
 # Kaya Zeren <kayazeren@gmail.com>, 2026
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-23 14:29+0000\n"
+"POT-Creation-Date: 2026-09-23 14:30+0000\n"
 "PO-Revision-Date: 2020-11-02 16:09+0000\n"
 "Last-Translator: Kaya Zeren <kayazeren@gmail.com>, 2026\n"
-"Language-Team: Turkish (Turkey) (https://app.transifex.com/infotelGLPI/teams/12364/tr_TR/)\n"
+"Language-Team: Turkish (Turkey) (https://app.transifex.com/infotelGLPI/"
+"teams/12364/tr_TR/)\n"
+"Language: tr_TR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: tr_TR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: src/Config.php:580
@@ -67,12 +68,12 @@ msgstr "Müşteri kimliği"
 msgid "Client secret"
 msgstr "Müşteri parolası"
 
-#: front/config.form.php:137 front/config.form.php:182
-#: ajax/testConnection.php:102 src/PostImport.php:1219
+#: front/config.form.php:137 front/config.form.php:182 src/PostImport.php:1219
+#: ajax/testConnection.php:102
 msgid "Connection failed/data download from manufacturer web site"
 msgstr "Bağlantı kesildi / üreticinin sitesinden veri indirilemedi"
 
-#: front/config.form.php:90 ajax/testConnection.php:61 src/PostImport.php:89
+#: front/config.form.php:90 src/PostImport.php:89 ajax/testConnection.php:61
 msgid "Curl PHP package not installed"
 msgstr "Curl PHP paketi kurulmamış"
 
@@ -103,11 +104,11 @@ msgstr "İçe aktarma sorunları olan aygıtlar"
 msgid "From %1$d to %2$d on %3$d"
 msgstr "%1$d - %2$d / %3$d"
 
-#: src/PostImport.php:371 src/PostImport.php:1083 src/Import.php:176
+#: src/Import.php:176 src/PostImport.php:371 src/PostImport.php:1083
 msgid "Import OK"
 msgstr "İçe aktarıldı"
 
-#: src/PostImport.php:376 src/PostImport.php:1196 src/Import.php:179
+#: src/Import.php:179 src/PostImport.php:376 src/PostImport.php:1196
 msgid "Import failed"
 msgstr "İçe aktarılamadı"
 
@@ -129,7 +130,7 @@ msgstr "%1$d / %2$d aygıt içe aktarılıyor"
 msgid "Importing from %s"
 msgstr "%s üzerinden içe aktarılıyor"
 
-#: front/config.form.php:86 ajax/testConnection.php:53 src/PostImport.php:111
+#: front/config.form.php:86 src/PostImport.php:111 ajax/testConnection.php:53
 msgid "Invalid or forbidden URL"
 msgstr "Geçersiz ya da engellenmiş adres"
 
@@ -244,8 +245,8 @@ msgstr "Sunucuya erişilebiliyor (HTTP %d)"
 msgid "Supplier attached"
 msgstr "Atanmış sağlayıcı"
 
-#: setup.php:90 front/massiveaction.php:43 src/Menu.php:52
-#: src/PreImport.php:66 src/Profile.php:126
+#: front/massiveaction.php:43 setup.php:90 src/PreImport.php:66
+#: src/Profile.php:126 src/Menu.php:52
 msgid "Suppliers import"
 msgid_plural "Suppliers imports"
 msgstr[0] "Sağlayıcı içe aktarma"
