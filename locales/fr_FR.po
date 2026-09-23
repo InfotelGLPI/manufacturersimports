@@ -2,10 +2,10 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 # Translators:
 # Xavier CAILLAUD <thetsmr@gmail.com>, 2026
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
@@ -14,14 +14,12 @@ msgstr ""
 "POT-Creation-Date: 2026-09-23 14:29+0000\n"
 "PO-Revision-Date: 2020-11-02 16:09+0000\n"
 "Last-Translator: Xavier CAILLAUD <thetsmr@gmail.com>, 2026\n"
-"Language-Team: French (France) (https://app.transifex.com/infotelGLPI/"
-"teams/12364/fr_FR/)\n"
-"Language: fr_FR\n"
+"Language-Team: French (France) (https://app.transifex.com/infotelGLPI/teams/12364/fr_FR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % "
-"1000000 == 0 ? 1 : 2;\n"
+"Language: fr_FR\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #: src/Config.php:580
 msgid "API connection test"
@@ -245,8 +243,8 @@ msgstr "Serveur accessible (HTTP %d)"
 msgid "Supplier attached"
 msgstr "Fournisseur affecté"
 
-#: setup.php:90 front/massiveaction.php:43 src/Menu.php:52 src/PreImport.php:66
-#: src/Profile.php:126
+#: setup.php:90 front/massiveaction.php:43 src/Menu.php:52
+#: src/PreImport.php:66 src/Profile.php:126
 msgid "Suppliers import"
 msgid_plural "Suppliers imports"
 msgstr[0] "Import fabricants"
@@ -299,8 +297,5 @@ msgstr "Avec le plugin manufacturersimports"
 msgid ""
 "You did not import the warranty for this item. Do you want to get it back?"
 msgstr ""
-"Vous n'avez pas importé la garantie pour cet objet. Voulez-vous la "
-"récupérer ?"
-
-#~ msgid "No response from server"
-#~ msgstr "Pas de réponse du serveur"
+"Vous n'avez pas importé la garantie pour cet objet. Voulez-vous la récupérer"
+" ?"
