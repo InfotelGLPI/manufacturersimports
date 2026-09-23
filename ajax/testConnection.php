@@ -31,9 +31,6 @@ if (strpos($_SERVER['PHP_SELF'], "testConnection.php")) {
     header("Content-Type: application/json; charset=UTF-8");
     Html::header_nocache();
 }
-if (!defined('GLPI_ROOT')) {
-    die("Can not access directly to this file");
-}
 
 // Reaching out to an arbitrary URL server-side requires the plugin update right,
 // not merely being logged in (defends against SSRF by unprivileged users).
@@ -95,10 +92,14 @@ $http_code  = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 $curl_error = curl_error($ch);
 curl_close($ch);
 
-if ($curl_error !== '') {
+if ($curl_error !== '' || (int) $http_code === 0) {
+    // The cURL detail (refused / timeout / TLS) is a reachability oracle: log it only.
+    if ($curl_error !== '') {
+        Toolbox::logInfo('manufacturersimports connection test: ' . $curl_error);
+    }
     echo json_encode([
         'success' => false,
-        'message' => $curl_error,
+        'message' => __('Connection failed/data download from manufacturer web site', 'manufacturersimports'),
     ]);
     exit;
 }

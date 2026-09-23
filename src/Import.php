@@ -32,10 +32,6 @@ namespace GlpiPlugin\Manufacturersimports;
 use CommonDBTM;
 use DbUtils;
 
-if (!defined('GLPI_ROOT')) {
-    die("Sorry. You can't access directly to this file");
-}
-
 /**
  * Class Import
  */

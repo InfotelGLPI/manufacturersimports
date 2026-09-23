@@ -31,10 +31,7 @@ namespace GlpiPlugin\Manufacturersimports;
 
 use CommonDBTM;
 use Document;
-
-if (!defined('GLPI_ROOT')) {
-    die("Sorry. You can't access directly to this file");
-}
+use Document_Item;
 
 /**
  * Class Log
@@ -88,19 +85,26 @@ class Log extends CommonDBTM
      */
     public function reinitializeImport($itemtype, $items_id)
     {
-        global $DB;
-
         if ($this->getFromDBbyDevice($items_id, $itemtype)) {
-            $doc = new Document();
-            if ($doc->GetfromDB($this->fields["documents_id"])) {
-                $DB->delete('glpi_documents_items', ['documents_id' => $this->fields["documents_id"]]);
+            $documents_id = (int) $this->fields["documents_id"];
+            $doc          = new Document();
+            if ($doc->getFromDB($documents_id)) {
+                // Only unlink the document from this item: it may have been attached
+                // to other objects since the import (history kept).
+                $doc_item = new Document_Item();
+                $doc_item->deleteByCriteria([
+                    'documents_id' => $documents_id,
+                    'itemtype'     => $itemtype,
+                    'items_id'     => $items_id,
+                ], true);
 
-                if (is_file(GLPI_DOC_DIR . "/" . $doc->fields["filename"])
-                  && !is_dir(GLPI_DOC_DIR . "/" . $doc->fields["filename"])) {
-                    unlink(GLPI_DOC_DIR . "/" . $doc->fields["filename"]);
+                // Purge the document once orphaned, and only with the Document right.
+                // The purge removes the file itself, only when no other document
+                // shares it (same sha1): never unlink it by hand.
+                if (countElementsInTable(Document_Item::getTable(), ['documents_id' => $documents_id]) === 0
+                    && $doc->can($documents_id, PURGE)) {
+                    $doc->delete(['id' => $documents_id], true);
                 }
-
-                $doc->delete(['id' => $this->fields["documents_id"]], true);
             }
         }
         if (isset($this->fields["id"])) {

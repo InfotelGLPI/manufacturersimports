@@ -110,10 +110,11 @@
 
             {# Credentials — structure varies by supplier #}
             {% if item.fields['name'] in ['Dell', 'HP'] %}
-                {{ fields.textField(
+                {{ fields.passwordField(
                     'supplier_key',
                     supplier_key_value,
-                    __('Client id', 'manufacturersimports')
+                    __('Client id', 'manufacturersimports'),
+                    {'is_disclosable': true, 'clearable': false}
                 ) }}
                 {{ fields.passwordField(
                     'supplier_secret',
@@ -122,10 +123,11 @@
                     {'is_disclosable': true, 'clearable': false}
                 ) }}
             {% elseif item.fields['name'] == 'Lenovo' %}
-                {{ fields.textField(
+                {{ fields.passwordField(
                     'supplier_key',
                     supplier_key_value,
-                    __('Client id', 'manufacturersimports')
+                    __('Client id', 'manufacturersimports'),
+                    {'is_disclosable': true, 'clearable': false}
                 ) }}
             {% else %}
                 {{ fields.sliderField(

@@ -132,7 +132,9 @@ if (isset($_POST["add"])) {
         curl_close($ch);
 
         if ($curl_error !== '') {
-            echo json_encode(['success' => false, 'message' => $curl_error]);
+            // The cURL detail (refused / timeout / TLS) is a reachability oracle: log it only.
+            Toolbox::logInfo('manufacturersimports connection test: ' . $curl_error);
+            echo json_encode(['success' => false, 'message' => __('Connection failed/data download from manufacturer web site', 'manufacturersimports')]);
             exit;
         }
 
@@ -173,8 +175,11 @@ if (isset($_POST["add"])) {
     curl_close($ch);
 
     if ($curl_error !== '' || $http_code === 0) {
-        $msg = $curl_error !== '' ? $curl_error : __('No response from server', 'manufacturersimports');
-        echo json_encode(['success' => false, 'message' => $msg]);
+        if ($curl_error !== '') {
+            // The cURL detail (refused / timeout / TLS) is a reachability oracle: log it only.
+            Toolbox::logInfo('manufacturersimports connection test: ' . $curl_error);
+        }
+        echo json_encode(['success' => false, 'message' => __('Connection failed/data download from manufacturer web site', 'manufacturersimports')]);
     } else {
         echo json_encode(['success' => true, 'message' => sprintf(__('Server reachable (HTTP %d)', 'manufacturersimports'), $http_code)]);
     }

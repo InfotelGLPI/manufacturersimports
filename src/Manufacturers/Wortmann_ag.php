@@ -32,10 +32,6 @@ namespace GlpiPlugin\Manufacturersimports\Manufacturers;
 use GlpiPlugin\Manufacturersimports\Config;
 use GlpiPlugin\Manufacturersimports\PostImport;
 
-if (!defined('GLPI_ROOT')) {
-    die("Sorry. You can't access directly to this file");
-}
-
 /**
  * Class Wortmann_ag
  */

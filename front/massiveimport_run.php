@@ -32,10 +32,6 @@ use GlpiPlugin\Manufacturersimports\PostImport;
 use Glpi\Progress\ProgressStorage;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
-if (!defined('GLPI_ROOT')) {
-    die("Can not access directly to this file");
-}
-
 (new Config())->checkGlobal(UPDATE);
 
 if (

@@ -183,13 +183,9 @@ function plugin_manufacturersimports_uninstall()
         $migration->dropTable($table);
     }
 
-    $cron = new CronTask();
-    if ($cron->getFromDBbyName(Dell::class, 'DataRecoveryDELL')) {
-        CronTask::Unregister('ManufacturersimportsDell');
-    }
-    if ($cron->getFromDBbyName(Import::class, 'DataWarrantyImport')) {
-        CronTask::Unregister('ManufacturersimportsImport');
-    }
+    // The plugin key covers both the legacy "PluginManufacturersimports*" and the
+    // namespaced "GlpiPlugin\Manufacturersimports\*" itemtypes of the cron tasks.
+    CronTask::unregister('Manufacturersimports');
 
     $profileRight = new ProfileRight();
 

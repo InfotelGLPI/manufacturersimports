@@ -43,11 +43,8 @@ use Document;
 use Document_Item;
 use Dropdown;
 use Session;
+use Supplier;
 use Toolbox;
-
-if (!defined('GLPI_ROOT')) {
-    die("Sorry. You can't access directly to this file");
-}
 
 /**
  * Class PostImport
@@ -162,11 +159,10 @@ class PostImport extends CommonDBTM
                     || $options['suppliername'] == Config::DELL))) {
 
             //curl_setopt($ch, CURLOPT_POST,true);
-            $post = '';
-            foreach ($options['post'] as $key => $value) {
-                $post .= $key . '=' . $value . '&';
-            }
-            $post = rtrim($post, '&');
+            // Encoded: a secret may contain "&" or "="
+            $post = is_array($options['post'])
+                ? http_build_query($options['post'])
+                : (string) $options['post'];
             curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type:application/x-www-form-urlencoded"]);
             curl_setopt($ch, CURLOPT_POST, true);
             curl_setopt($ch, CURLOPT_POSTREDIR, 2);
@@ -325,6 +321,11 @@ class PostImport extends CommonDBTM
         if (!in_array($itemtype, Config::getTypes(true), true)) {
             throw new AccessDeniedHttpException();
         }
+        // Server-side replay of the pre-import screen guard: the import writes the
+        // infocoms of the items (warranty, supplier, purchase date).
+        if (!Infocom::canUpdate()) {
+            throw new AccessDeniedHttpException();
+        }
 
         $log   = new Log();
         $items = array_filter($values['item'] ?? [], fn($v) => $v == 1);
@@ -386,6 +387,46 @@ class PostImport extends CommonDBTM
     }
 
     /**
+     * Server-side replay of the supplier rule of the pre-import screen.
+     *
+     * The supplier id comes from the posted dropdown (to_suppliers_id<N>): it must
+     * exist, not be in the trash, be reachable by the user, and belong to the
+     * item's entity or be recursive from a parent entity of it.
+     *
+     * @return int the supplier id, or 0 when it cannot be assigned to this item
+     */
+    private static function checkSupplierForItem(int $suppliers_id, string $itemtype, int $items_id): int
+    {
+        if ($suppliers_id <= 0) {
+            return 0;
+        }
+
+        $supplier = new Supplier();
+        $item     = getItemForItemtype($itemtype);
+        if (!$item
+            || !$item->getFromDB($items_id)
+            || !$supplier->getFromDB($suppliers_id)
+            || $supplier->fields['is_deleted']
+            // No active entities in the cron session: only the entity rule below applies there
+            || (!Session::isCron() && !Session::haveAccessToEntity(
+                $supplier->fields['entities_id'],
+                (bool) $supplier->fields['is_recursive'],
+            ))) {
+            return 0;
+        }
+
+        $item_entity = (int) $item->fields['entities_id'];
+        if ($supplier->fields['is_recursive']) {
+            $dbu = new DbUtils();
+            return in_array($item_entity, $dbu->getSonsOf('glpi_entities', $supplier->fields['entities_id']))
+                ? $suppliers_id
+                : 0;
+        }
+
+        return (int) $supplier->fields['entities_id'] === $item_entity ? $suppliers_id : 0;
+    }
+
+    /**
      * Run the import for a single device and return result data (no HTML output).
      *
      * @return array{name: string, serial: string, success: bool}
@@ -418,7 +459,11 @@ class PostImport extends CommonDBTM
         $supplierkey    = Config::decryptSecret($config->fields['supplier_key']);
         $supplierSecret = Config::decryptSecret($config->fields['supplier_secret']);
 
-        $supplierId = $fromsupplier ?: $config->fields['suppliers_id'];
+        $supplierId = self::checkSupplierForItem(
+            (int) ($fromsupplier ?: $config->fields['suppliers_id']),
+            $type,
+            $ID,
+        );
 
         $dbu        = new DbUtils();
         $itemtable  = $dbu->getTableForItemType($type);
@@ -661,11 +706,11 @@ class PostImport extends CommonDBTM
         }
         $manufacturerId = $config->fields["manufacturers_id"];
 
-        if ($fromsupplier) {
-            $supplierId = $fromsupplier;
-        } else {
-            $supplierId = $config->fields["suppliers_id"];
-        }
+        $supplierId = self::checkSupplierForItem(
+            (int) ($fromsupplier ?: $config->fields['suppliers_id']),
+            $type,
+            (int) $ID,
+        );
         $suppliername   = $config->fields["name"];
         $supplierUrl    = $config->fields["supplier_url"];
         $supplierkey    = Config::decryptSecret($config->fields["supplier_key"]);
@@ -817,11 +862,13 @@ class PostImport extends CommonDBTM
 
         $config = $values['config'];
 
-        if ($values['fromsupplier']) {
-            $supplierId = $values['fromsupplier'];
-        } else {
-            $supplierId = $config->fields["suppliers_id"];
-        }
+        // Sink of every import path (UI, massive import, cron): the supplier written
+        // on the infocom must be assignable to the item.
+        $supplierId = self::checkSupplierForItem(
+            (int) ($values['fromsupplier'] ?: $config->fields['suppliers_id']),
+            (string) $values['type'],
+            (int) $values['ID'],
+        );
         $suppliername = $config->fields["name"];
         $adddoc       = $config->fields["document_adding"];
         $rubrique     = $config->fields["documentcategories_id"];
@@ -924,6 +971,8 @@ class PostImport extends CommonDBTM
 
             // Create a document in GLPI that will be linked to the asset.
             if ($adddoc != 0
+                // The cron has no user profile: only an interactive user needs the Document right
+                && (Session::isCron() || Document::canCreate())
                 && $suppliername != Config::DELL
                 && $suppliername != Config::HP) {
                 $options                = ["itemtype"     => $values['type'],

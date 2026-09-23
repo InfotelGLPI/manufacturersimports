@@ -34,10 +34,6 @@ use Document;
 use Html;
 use Search;
 
-if (!defined('GLPI_ROOT')) {
-    die("Sorry. You can't access directly to this file");
-}
-
 /**
  * Class Manufacturer
  */

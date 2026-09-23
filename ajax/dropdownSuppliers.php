@@ -33,9 +33,6 @@ if (strpos($_SERVER['PHP_SELF'], "dropdownSuppliers.php")) {
     header("Content-Type: text/html; charset=UTF-8");
     Html::header_nocache();
 }
-if (!defined('GLPI_ROOT')) {
-    die("Can not access directly to this file");
-}
 
 Session::checkRight("plugin_manufacturersimports", READ);
 

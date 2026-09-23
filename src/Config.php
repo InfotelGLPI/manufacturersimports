@@ -42,10 +42,6 @@ use Infocom;
 use Session;
 use Toolbox;
 
-if (!defined('GLPI_ROOT')) {
-    die("Sorry. You can't access directly to this file");
-}
-
 /**
  * Class Config
  */
@@ -142,7 +138,10 @@ class Config extends CommonDBTM
         $parts = parse_url($url);
         if ($parts === false
             || ($parts['scheme'] ?? '') !== 'https'
-            || empty($parts['host'])) {
+            || empty($parts['host'])
+            // Manufacturer APIs are served on the standard HTTPS port: any other
+            // port would turn the connection test into a port scanner.
+            || (isset($parts['port']) && (int) $parts['port'] !== 443)) {
             return false;
         }
 
@@ -347,11 +346,32 @@ class Config extends CommonDBTM
 
     public function post_addItem()
     {
+        $this->purgeShadowedConfigs();
+    }
+
+    public function post_updateItem($history = 1)
+    {
+        $this->purgeShadowedConfigs();
+    }
+
+    /**
+     * A recursive config replaces the configs of the same manufacturer in the
+     * sub-entities: purge them one by one, only those the user may purge, through
+     * the CommonDBTM API (history kept) instead of a raw delete on the table.
+     */
+    private function purgeShadowedConfigs(): void
+    {
         global $DB;
 
-        if ($this->fields["is_recursive"]) {
-            $dbu      = new DbUtils();
-            $criteria = array_merge(
+        if (!$this->fields["is_recursive"]) {
+            return;
+        }
+
+        $dbu      = new DbUtils();
+        $iterator = $DB->request([
+            'SELECT' => ['id'],
+            'FROM'   => $this->getTable(),
+            'WHERE'  => array_merge(
                 [
                     'name' => $this->fields["name"],
                     ['id' => ['<>', (int) $this->fields['id']]],
@@ -361,30 +381,32 @@ class Config extends CommonDBTM
                     '',
                     $dbu->getSonsOf("glpi_entities", $this->fields["entities_id"]),
                 ),
-            );
-            $DB->delete($this->getTable(), $criteria);
+            ),
+        ]);
+        foreach ($iterator as $data) {
+            $config = new self();
+            if ($config->can($data['id'], PURGE)) {
+                $config->delete(['id' => $data['id']], true);
+            }
         }
     }
 
-    public function post_updateItem($history = 1)
+    /**
+     * Recursion extends the config (and the purge above) to the sub-entities:
+     * only grant it to a user having a recursive access to the entity.
+     *
+     * @param array $input
+     * @param int   $entities_id
+     *
+     * @return array
+     */
+    private static function checkRecursiveInput(array $input, int $entities_id): array
     {
-        global $DB;
-
-        if ($this->fields["is_recursive"]) {
-            $dbu      = new DbUtils();
-            $criteria = array_merge(
-                [
-                    'name' => $this->fields["name"],
-                    ['id' => ['<>', (int) $this->fields["id"]]],
-                ],
-                $dbu->getEntitiesRestrictCriteria(
-                    $this->getTable(),
-                    '',
-                    $dbu->getSonsOf("glpi_entities", $this->fields["entities_id"]),
-                ),
-            );
-            $DB->delete($this->getTable(), $criteria);
+        if (!empty($input['is_recursive'])
+            && !Session::haveRecursiveAccessToEntity($entities_id)) {
+            $input['is_recursive'] = 0;
         }
+        return $input;
     }
 
     public static function dropdownSupplier($name, $options = [])
@@ -607,6 +629,11 @@ class Config extends CommonDBTM
             'warranty_url'    => '',
         ];
 
+        $input = self::checkRecursiveInput(
+            $input,
+            (int) ($input['entities_id'] ?? Session::getActiveEntity()),
+        );
+
         // Encrypt secrets before they reach the database.
         $input['supplier_key']    = self::encryptSecret((string) $input['supplier_key']);
         $input['supplier_secret'] = self::encryptSecret((string) $input['supplier_secret']);
@@ -623,6 +650,24 @@ class Config extends CommonDBTM
             'warranty_duration', 'entities_id', 'is_recursive',
         ];
         $input = array_intersect_key($input, array_flip($allowed));
+
+        // check($id, UPDATE) only covers the current entity of the row, not the
+        // posted one: a config moved to a foreign entity would take precedence
+        // there (findConfigForItem()) and receive its devices' serial numbers.
+        if (isset($input['entities_id'])
+            && (int) $input['entities_id'] !== (int) $this->fields['entities_id']
+            && !Session::haveAccessToEntity((int) $input['entities_id'])) {
+            unset($input['entities_id']);
+        }
+
+        // Only a change to recursive is checked: an already recursive config
+        // saved by another user must not silently lose its recursion.
+        if (empty($this->fields['is_recursive'])) {
+            $input = self::checkRecursiveInput(
+                $input,
+                (int) ($input['entities_id'] ?? $this->fields['entities_id']),
+            );
+        }
 
         // Secrets arrive as plaintext from the form. Skip the field when it is
         // unchanged (compared against the decrypted stored value), otherwise
@@ -760,48 +805,51 @@ class Config extends CommonDBTM
         return $types;
     }
 
+    /**
+     * Find the manufacturer config applying to an item.
+     *
+     * Only the configs visible from the item's entity are considered (own entity,
+     * or a recursive config of a parent entity): a config of another entity carries
+     * other API credentials, supplier and document category.
+     *
+     * @param string $itemtype
+     * @param int    $items_id
+     *
+     * @return array|null the config row, or null when none applies
+     */
+    private static function findConfigForItem($itemtype, $items_id): ?array
+    {
+        global $DB;
+
+        $item = getItemForItemtype($itemtype);
+        if (!$item || !$item->getFromDB($items_id)) {
+            return null;
+        }
+
+        $table    = self::getTable();
+        $iterator = $DB->request([
+            'FROM'  => $table,
+            'WHERE' => [
+                'manufacturers_id' => (int) $item->fields['manufacturers_id'],
+            ] + getEntitiesRestrictCriteria($table, '', (int) $item->fields['entities_id'], true),
+            // Prefer the config of the deepest entity (the closest to the item)
+            'ORDER' => ['entities_id DESC', 'id ASC'],
+            'LIMIT' => 1,
+        ]);
+
+        return count($iterator) ? $iterator->current() : null;
+    }
+
     public static function checkManufacturerName($itemtype, $items_id)
     {
-        $item = getItemForItemtype($itemtype);
-        if (!$item) {
-            return false;
-        }
-        $name = false;
-
-        if ($item->getFromDB($items_id)) {
-            $dbu     = new DbUtils();
-            $configs = $dbu->getAllDataFromTable("glpi_plugin_manufacturersimports_configs");
-            if (!empty($configs)) {
-                foreach ($configs as $config) {
-                    if ($item->fields["manufacturers_id"] == $config['manufacturers_id']) {
-                        $name = $config["name"];
-                    }
-                }
-            }
-        }
-        return $name;
+        $config = self::findConfigForItem($itemtype, $items_id);
+        return $config === null ? false : $config['name'];
     }
 
     public static function checkManufacturerID($itemtype, $items_id)
     {
-        $item = getItemForItemtype($itemtype);
-        if (!$item) {
-            return false;
-        }
-        $id   = false;
-
-        if ($item->getFromDB($items_id)) {
-            $dbu     = new DbUtils();
-            $configs = $dbu->getAllDataFromTable("glpi_plugin_manufacturersimports_configs");
-            if (!empty($configs)) {
-                foreach ($configs as $config) {
-                    if ($item->fields["manufacturers_id"] == $config['manufacturers_id']) {
-                        $id = $config["id"];
-                    }
-                }
-            }
-        }
-        return $id;
+        $config = self::findConfigForItem($itemtype, $items_id);
+        return $config === null ? false : $config['id'];
     }
 
     //    }
@@ -846,6 +894,13 @@ class Config extends CommonDBTM
             case "Transfert":
 
                 if ($input['itemtype'] == Config::class) {
+                    // Same right as the one offering the action, and the target entity
+                    // must be reachable: never move a config to a foreign entity.
+                    if (!Session::haveRight('transfer', READ)
+                        || !Session::haveAccessToEntity((int) ($input['entities_id'] ?? -1))) {
+                        $res['noright'] += count(array_filter($input['item'] ?? []));
+                        break;
+                    }
                     foreach ($input["item"] as $key => $val) {
                         if ($val == 1) {
                             // Re-check the entity perimeter per item: CommonDBTM::update()
@@ -898,9 +953,9 @@ class Config extends CommonDBTM
                 }
             }
 
-            $configID = Config::checkManufacturerID($item->getType(), $item->getID());
-            $config   = new Config();
-            $config->getFromDB($configID);
+            // Same entity-checked lookup as retrieveOneWarranty()
+            $config = self::getCheckedConfig(Config::checkManufacturerID($item->getType(), $item->getID()))
+                ?? new Config();
             $supplierkey = (isset($config->fields["supplier_key"])) ? self::decryptSecret($config->fields["supplier_key"]) : false;
             $supplierurl = (isset($config->fields["supplier_url"])) ? $config->fields["supplier_url"] : false;
 
@@ -938,16 +993,19 @@ class Config extends CommonDBTM
         // The plugin UPDATE right alone does not prove the caller may act on THIS
         // item: can() combines the global right with the entity perimeter, so a
         // user restricted to entity A cannot target an item of entity B by id.
-        if (!$item->can($items_id, UPDATE)) {
+        // The warranty is written in the item's infocom: same guard as the pre-import screen.
+        if (!$item->can($items_id, UPDATE) || !Infocom::canUpdate()) {
             throw new AccessDeniedHttpException();
         }
         if ($item->getFromDB($items_id)) {
             $log = new Log();
             $log->reinitializeImport($itemtype, $items_id);
 
-            $config       = new Config();
-            $suppliername = Config::checkManufacturerName($itemtype, $items_id);
-            if ($config->getFromDBByCrit(['name' => $suppliername])) {
+            // Load the config of the item's entity by id (a lookup by name could pick
+            // the config, hence the API credentials, of another entity), then replay
+            // the READ check on it.
+            $config = self::getCheckedConfig(Config::checkManufacturerID($itemtype, $items_id));
+            if ($config !== null) {
                 $suppliername = $config->fields["name"];
                 $supplierUrl  = $config->fields["supplier_url"];
                 $supplierkey  = self::decryptSecret($config->fields["supplier_key"]);
