@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $soft\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-23 14:30+0000\n"
+"POT-Creation-Date: 2026-09-25 14:20+0000\n"
 "PO-Revision-Date: 2020-11-02 16:09+0000\n"
 "Last-Translator: Soporte Infraestructura Standby, 2023\n"
 "Language-Team: Spanish (Ecuador) (https://app.transifex.com/infotelGLPI/"
@@ -68,7 +68,7 @@ msgstr "ID de cliente"
 msgid "Client secret"
 msgstr "Secreto de cliente"
 
-#: front/config.form.php:137 front/config.form.php:182 src/PostImport.php:1219
+#: front/config.form.php:137 front/config.form.php:182 src/PostImport.php:1231
 #: ajax/testConnection.php:102
 msgid "Connection failed/data download from manufacturer web site"
 msgstr "Fallo de conexión/descarga de datos del sitio web del fabricante"
@@ -104,11 +104,11 @@ msgstr ""
 msgid "From %1$d to %2$d on %3$d"
 msgstr ""
 
-#: src/Import.php:176 src/PostImport.php:371 src/PostImport.php:1083
+#: src/Import.php:176 src/PostImport.php:371 src/PostImport.php:1095
 msgid "Import OK"
 msgstr "Importar OK"
 
-#: src/Import.php:179 src/PostImport.php:376 src/PostImport.php:1196
+#: src/Import.php:179 src/PostImport.php:376 src/PostImport.php:1208
 msgid "Import failed"
 msgstr "Error de importación"
 
@@ -116,7 +116,7 @@ msgstr "Error de importación"
 msgid "Import in progress"
 msgstr ""
 
-#: src/PostImport.php:1065 src/PostImport.php:1072
+#: src/PostImport.php:1077 src/PostImport.php:1084
 msgid "Imported from"
 msgstr ""
 
@@ -293,7 +293,7 @@ msgstr "Importe de la garantía (Dell, HP)"
 msgid "Warranty page test"
 msgstr ""
 
-#: src/PostImport.php:1066 src/PostImport.php:1073
+#: src/PostImport.php:1078 src/PostImport.php:1085
 msgid "With the manufacturersimports plugin"
 msgstr "Con el plugin simports del fabricante"
 

@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $soft\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-23 14:30+0000\n"
+"POT-Creation-Date: 2026-09-25 14:20+0000\n"
 "PO-Revision-Date: 2020-11-02 16:09+0000\n"
 "Last-Translator: Luis Angel Uriarte <luisuriarte@gmail.com>, 2020\n"
 "Language-Team: Spanish (Argentina) (https://www.transifex.com/infotelGLPI/"
@@ -68,7 +68,7 @@ msgstr "Id. del Cliente"
 msgid "Client secret"
 msgstr "Clave Cliente"
 
-#: front/config.form.php:137 front/config.form.php:182 src/PostImport.php:1219
+#: front/config.form.php:137 front/config.form.php:182 src/PostImport.php:1231
 #: ajax/testConnection.php:102
 msgid "Connection failed/data download from manufacturer web site"
 msgstr "Conexión fallida/dato bajado desde el sitio web del fabricante"
@@ -104,11 +104,11 @@ msgstr ""
 msgid "From %1$d to %2$d on %3$d"
 msgstr ""
 
-#: src/Import.php:176 src/PostImport.php:371 src/PostImport.php:1083
+#: src/Import.php:176 src/PostImport.php:371 src/PostImport.php:1095
 msgid "Import OK"
 msgstr "Importación Lista"
 
-#: src/Import.php:179 src/PostImport.php:376 src/PostImport.php:1196
+#: src/Import.php:179 src/PostImport.php:376 src/PostImport.php:1208
 msgid "Import failed"
 msgstr "Importación fallida"
 
@@ -116,7 +116,7 @@ msgstr "Importación fallida"
 msgid "Import in progress"
 msgstr "Importación en progreso"
 
-#: src/PostImport.php:1065 src/PostImport.php:1072
+#: src/PostImport.php:1077 src/PostImport.php:1084
 msgid "Imported from"
 msgstr ""
 
@@ -289,7 +289,7 @@ msgstr ""
 msgid "Warranty page test"
 msgstr ""
 
-#: src/PostImport.php:1066 src/PostImport.php:1073
+#: src/PostImport.php:1078 src/PostImport.php:1085
 msgid "With the manufacturersimports plugin"
 msgstr "Con el plugin manufacturersimports"
 
