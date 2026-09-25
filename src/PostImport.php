@@ -469,6 +469,25 @@ class PostImport extends CommonDBTM
         $itemtable  = $dbu->getTableForItemType($type);
         $modelfield = $dbu->getForeignKeyFieldForTable($dbu->getTableForItemType($type . 'Model'));
 
+        $where = [
+            "$itemtable.is_deleted"  => 0,
+            "$itemtable.is_template" => 0,
+            'glpi_manufacturers.id'  => (int) $manufacturerId,
+            ["$itemtable.serial"     => ['!=', '']],
+            "$itemtable.id"          => (int) $ID,
+            // Defence in depth: never select an item outside the caller's
+            // entity perimeter, even if the can() gate upstream is bypassed.
+            $dbu->getEntitiesRestrictCriteria($itemtable),
+        ];
+        // Every custom asset definition shares glpi_assets_assets, so the id
+        // alone does not identify the type: pin the query to the definition
+        // $type belongs to. Classic itemtypes return an empty array, which must
+        // not be nested as a criterion (it would render as an invalid "AND ()").
+        $system_criteria = $type::getSystemSQLCriteria($itemtable);
+        if ($system_criteria !== []) {
+            $where[] = $system_criteria;
+        }
+
         $iterator = $DB->request([
             'SELECT'     => [
                 "$itemtable.id",
@@ -483,20 +502,7 @@ class PostImport extends CommonDBTM
                     'ON' => ['glpi_manufacturers' => 'id', $itemtable => 'manufacturers_id'],
                 ],
             ],
-            'WHERE'      => [
-                "$itemtable.is_deleted"  => 0,
-                "$itemtable.is_template" => 0,
-                'glpi_manufacturers.id'  => (int) $manufacturerId,
-                ["$itemtable.serial"     => ['!=', '']],
-                "$itemtable.id"          => (int) $ID,
-                // Defence in depth: never select an item outside the caller's
-                // entity perimeter, even if the can() gate upstream is bypassed.
-                $dbu->getEntitiesRestrictCriteria($itemtable),
-                // Every custom asset definition shares glpi_assets_assets, so the
-                // id alone does not identify the type: pin the query to the
-                // definition $type belongs to. No-op for the classic itemtypes.
-                $type::getSystemSQLCriteria($itemtable),
-            ],
+            'WHERE'      => $where,
             'ORDER'      => new QueryExpression("`$itemtable`.`name`"),
         ]);
 
@@ -721,6 +727,25 @@ class PostImport extends CommonDBTM
 
         $modelfield = $dbu->getForeignKeyFieldForTable($dbu->getTableForItemType($type . "Model"));
 
+        $where = [
+            "$itemtable.is_deleted"  => 0,
+            "$itemtable.is_template" => 0,
+            'glpi_manufacturers.id'  => (int) $manufacturerId,
+            ["$itemtable.serial"     => ['!=', '']],
+            "$itemtable.id"          => (int) $ID,
+            // Defence in depth: never select an item outside the caller's
+            // entity perimeter, even if the can() gate upstream is bypassed.
+            $dbu->getEntitiesRestrictCriteria($itemtable),
+        ];
+        // Every custom asset definition shares glpi_assets_assets, so the id
+        // alone does not identify the type: pin the query to the definition
+        // $type belongs to. Classic itemtypes return an empty array, which must
+        // not be nested as a criterion (it would render as an invalid "AND ()").
+        $system_criteria = $type::getSystemSQLCriteria($itemtable);
+        if ($system_criteria !== []) {
+            $where[] = $system_criteria;
+        }
+
         $iterator = $DB->request([
             'SELECT'     => [
                 "$itemtable.id",
@@ -735,20 +760,7 @@ class PostImport extends CommonDBTM
                     'ON' => ['glpi_manufacturers' => 'id', $itemtable => 'manufacturers_id'],
                 ],
             ],
-            'WHERE'      => [
-                "$itemtable.is_deleted"  => 0,
-                "$itemtable.is_template" => 0,
-                'glpi_manufacturers.id'  => (int) $manufacturerId,
-                ["$itemtable.serial"     => ['!=', '']],
-                "$itemtable.id"          => (int) $ID,
-                // Defence in depth: never select an item outside the caller's
-                // entity perimeter, even if the can() gate upstream is bypassed.
-                $dbu->getEntitiesRestrictCriteria($itemtable),
-                // Every custom asset definition shares glpi_assets_assets, so the
-                // id alone does not identify the type: pin the query to the
-                // definition $type belongs to. No-op for the classic itemtypes.
-                $type::getSystemSQLCriteria($itemtable),
-            ],
+            'WHERE'      => $where,
             'ORDER'      => new QueryExpression("`$itemtable`.`name`"),
         ]);
 
