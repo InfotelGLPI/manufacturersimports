@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-25 14:21+0000\n"
+"POT-Creation-Date: 2026-09-28 10:40+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,19 +18,23 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: src/Config.php:580
+#: src/Config.php:563
 msgid "API connection test"
 msgstr ""
 
-#: templates/config_form.html.twig:82
+#: templates/config_form.html.twig:79
 msgid "Access token API address"
 msgstr ""
 
-#: src/Config.php:517 templates/config_form.html.twig:217
+#: templates/pre_import_list.html.twig:75
+msgid "Actions"
+msgstr ""
+
+#: src/Config.php:495 templates/config_form.html.twig:165
 msgid "Add a comment line"
 msgstr ""
 
-#: src/PreImport.php:620
+#: src/PreImport.php:609
 msgid "Already imported"
 msgstr ""
 
@@ -38,40 +42,43 @@ msgstr ""
 msgid "Authentication successful (token received)"
 msgstr ""
 
-#: src/Config.php:500 templates/config_form.html.twig:136
+#: src/Config.php:478 templates/config_form.html.twig:133
 msgid "Auto add of document"
 msgstr ""
 
-#: src/Manufacturers/Manufacturer.php:114
+#: src/Manufacturers/Manufacturer.php:116
 msgid "Automatic"
 msgstr ""
 
-#: templates/config_form.html.twig:229 templates/massive_import_progress.html.twig:70
+#: templates/config_form.html.twig:177 templates/massive_import_progress.html.twig:42
 msgid "Back"
+msgstr ""
+
+#: templates/pre_import_list.html.twig:68
+msgid "Check all"
 msgstr ""
 
 #: templates/search_form.html.twig:33
 msgid "Choose inventory type and manufacturer"
 msgstr ""
 
-#: templates/config_form.html.twig:116 templates/config_form.html.twig:129
+#: templates/config_form.html.twig:113 templates/config_form.html.twig:126
 msgid "Client id"
 msgstr ""
 
-#: templates/config_form.html.twig:122
+#: templates/config_form.html.twig:119
 msgid "Client secret"
 msgstr ""
 
-#: front/config.form.php:137 front/config.form.php:182 src/PostImport.php:1231
-#: ajax/testConnection.php:102
+#: front/config.form.php:137 front/config.form.php:182
 msgid "Connection failed/data download from manufacturer web site"
 msgstr ""
 
-#: front/config.form.php:90 src/PostImport.php:89 ajax/testConnection.php:61
+#: front/config.form.php:90 src/PostImport.php:88
 msgid "Curl PHP package not installed"
 msgstr ""
 
-#: src/Config.php:483 templates/config_form.html.twig:96
+#: src/Config.php:461 templates/config_form.html.twig:93
 msgid "Default supplier attached"
 msgstr ""
 
@@ -80,29 +87,27 @@ msgstr ""
 msgid "Device %d skipped (access denied)"
 msgstr ""
 
-#: src/PreImport.php:293
+#: src/PreImport.php:292
 msgid "Devices already imported"
 msgstr ""
 
-#: src/PreImport.php:292
+#: src/PreImport.php:291
 msgid "Devices not imported"
 msgstr ""
 
-#: src/PreImport.php:294
+#: src/PreImport.php:293
 msgid "Devices with import error"
 msgstr ""
 
-#. TRANS: %1$d, %2$d, %3$d are page numbers
-#: src/PreImport.php:926
-#, php-format
-msgid "From %1$d to %2$d on %3$d"
+#: templates/pre_import_list.html.twig:78
+msgid "Import"
 msgstr ""
 
-#: src/Import.php:176 src/PostImport.php:371 src/PostImport.php:1095
+#: src/Import.php:175 src/PostImport.php:371
 msgid "Import OK"
 msgstr ""
 
-#: src/Import.php:179 src/PostImport.php:376 src/PostImport.php:1208
+#: src/Import.php:178 src/PostImport.php:376
 msgid "Import failed"
 msgstr ""
 
@@ -110,7 +115,7 @@ msgstr ""
 msgid "Import in progress"
 msgstr ""
 
-#: src/PostImport.php:1077 src/PostImport.php:1084
+#: src/PostImport.php:896 src/PostImport.php:903
 msgid "Imported from"
 msgstr ""
 
@@ -124,7 +129,7 @@ msgstr ""
 msgid "Importing from %s"
 msgstr ""
 
-#: front/config.form.php:86 src/PostImport.php:111 ajax/testConnection.php:53
+#: front/config.form.php:86 src/PostImport.php:110
 msgid "Invalid or forbidden URL"
 msgstr ""
 
@@ -134,19 +139,19 @@ msgid_plural "Links"
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/config_form.html.twig:67
+#: templates/config_form.html.twig:64
 msgid "Manufacturer"
 msgstr ""
 
-#: src/PreImport.php:605 templates/warranty_infocom.html.twig:37
+#: src/PreImport.php:594 templates/warranty_infocom.html.twig:37
 msgid "Manufacturer information"
 msgstr ""
 
-#: src/Config.php:474 templates/config_form.html.twig:74
+#: src/Config.php:452 templates/config_form.html.twig:71
 msgid "Manufacturer web address"
 msgstr ""
 
-#: src/PreImport.php:398
+#: src/PreImport.php:396
 msgid "Model Number"
 msgstr ""
 
@@ -154,15 +159,15 @@ msgstr ""
 msgid "Model number"
 msgstr ""
 
-#: templates/config_form.html.twig:59
+#: templates/config_form.html.twig:56
 msgid "Name"
 msgstr ""
 
-#: templates/config_form.html.twig:104
+#: templates/config_form.html.twig:101
 msgid "New warranty affected by default (Replace if 0)"
 msgstr ""
 
-#: src/PreImport.php:401 src/Config.php:491
+#: src/PreImport.php:399 src/Config.php:469
 msgid "New warranty attached"
 msgstr ""
 
@@ -178,15 +183,15 @@ msgstr ""
 msgid "No manufacturer available. Please configure at least one manufacturer"
 msgstr ""
 
-#: front/massiveaction.php:105
+#: front/massiveaction.php:106
 msgid "No selected element or badly defined operation"
 msgstr ""
 
-#: src/PreImport.php:609
+#: src/PreImport.php:598
 msgid "Not yet imported"
 msgstr ""
 
-#: front/massiveaction.php:95
+#: front/massiveaction.php:96
 msgid "Operation successful"
 msgstr ""
 
@@ -195,23 +200,26 @@ msgid "Please activate the plugin"
 msgstr ""
 
 #: templates/search_form.html.twig:54
+#: templates/massive_action_transfer.html.twig:31
+#: templates/pre_import_list.html.twig:88
 msgctxt "button"
 msgid "Post"
 msgstr ""
 
-#: templates/config_form.html.twig:35
+#: templates/config_form.html.twig:37
 msgid "Preconfiguration"
 msgstr ""
 
-#: src/PreImport.php:612
+#: src/PreImport.php:601
 msgid "Problem during the importation"
 msgstr ""
 
-#: src/PreImport.php:966
+#: templates/pre_import_list.html.twig:80
 msgid "Reset the import"
 msgstr ""
 
-#: src/Config.php:976 src/Config.php:1112
+#: src/Config.php:959 templates/retrieve_warranty_alert.html.twig:36
+#: templates/retrieve_warranty_alert.html.twig:38
 msgctxt "button"
 msgid "Retrieve warranty from manufacturer"
 msgstr ""
@@ -221,43 +229,43 @@ msgctxt "button"
 msgid "Save"
 msgstr ""
 
-#: templates/config_form.html.twig:142
+#: templates/config_form.html.twig:139
 msgid "Section for document records"
 msgstr ""
 
-#: templates/pre_import_list.html.twig:67
+#: templates/pre_import_list.html.twig:94
 msgid "Selection too large, massive action disabled."
 msgstr ""
 
-#: front/config.form.php:184 ajax/testConnection.php:109
+#: front/config.form.php:184
 #, php-format
 msgid "Server reachable (HTTP %d)"
 msgstr ""
 
-#: src/PreImport.php:400
+#: src/PreImport.php:398
 msgid "Supplier attached"
 msgstr ""
 
-#: front/massiveaction.php:43 setup.php:90 src/PreImport.php:66
+#: front/massiveaction.php:44 setup.php:90 src/PreImport.php:65
 #: src/Profile.php:126 src/Menu.php:52
 msgid "Suppliers import"
 msgid_plural "Suppliers imports"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Config.php:576
+#: src/Config.php:559
 msgid "Test connection"
 msgstr ""
 
-#: src/Config.php:577
+#: src/Config.php:560
 msgid "Test warranty page"
 msgstr ""
 
-#: src/PreImport.php:553
+#: src/PreImport.php:557
 msgid "The choosen supplier is not recursive"
 msgstr ""
 
-#: front/config.form.php:81 ajax/testConnection.php:44
+#: front/config.form.php:81
 msgid "Token URL is empty"
 msgstr ""
 
@@ -266,12 +274,21 @@ msgstr ""
 msgid "Total number of devices imported %s"
 msgstr ""
 
-#: templates/pre_import_list.html.twig:55
+#: templates/pre_import_list.html.twig:60
 #, php-format
 msgid "Total number of devices to import %s"
 msgstr ""
 
-#: templates/config_form.html.twig:87
+#: templates/pre_import_list.html.twig:71
+msgid "Uncheck all"
+msgstr ""
+
+#: templates/config_form.html.twig:43
+msgctxt "button"
+msgid "Update"
+msgstr ""
+
+#: templates/config_form.html.twig:84
 msgid "Warranty API address"
 msgstr ""
 
@@ -279,15 +296,15 @@ msgstr ""
 msgid "Warranty import (Dell, HP)"
 msgstr ""
 
-#: src/Config.php:581
+#: src/Config.php:564
 msgid "Warranty page test"
 msgstr ""
 
-#: src/PostImport.php:1078 src/PostImport.php:1085
+#: src/PostImport.php:897 src/PostImport.php:904
 msgid "With the manufacturersimports plugin"
 msgstr ""
 
-#: src/Config.php:1106
+#: templates/retrieve_warranty_alert.html.twig:30
 msgid ""
 "You did not import the warranty for this item. Do you want to get it back?"
 msgstr ""
