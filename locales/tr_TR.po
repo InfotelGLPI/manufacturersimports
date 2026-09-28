@@ -2,11 +2,11 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 # Translators:
 # Xavier CAILLAUD <thetsmr@gmail.com>, 2020
 # Kaya Zeren <kayazeren@gmail.com>, 2026
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
@@ -15,12 +15,11 @@ msgstr ""
 "POT-Creation-Date: 2026-09-28 16:32+0000\n"
 "PO-Revision-Date: 2020-11-02 16:09+0000\n"
 "Last-Translator: Kaya Zeren <kayazeren@gmail.com>, 2026\n"
-"Language-Team: Turkish (Turkey) (https://app.transifex.com/infotelGLPI/"
-"teams/12364/tr_TR/)\n"
-"Language: tr_TR\n"
+"Language-Team: Turkish (Turkey) (https://app.transifex.com/infotelGLPI/teams/12364/tr_TR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: tr_TR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: src/Config.php:563
@@ -33,7 +32,7 @@ msgstr "Erişim kodu API adresi"
 
 #: templates/pre_import_list.html.twig:75
 msgid "Actions"
-msgstr ""
+msgstr "İşlemler"
 
 #: src/Config.php:495 templates/config_form.html.twig:165
 msgid "Add a comment line"
@@ -62,7 +61,7 @@ msgstr "Geri"
 
 #: templates/pre_import_list.html.twig:68
 msgid "Check all"
-msgstr ""
+msgstr "Tümünü seç"
 
 #: templates/search_form.html.twig:33
 msgid "Choose inventory type and manufacturer"
@@ -107,7 +106,7 @@ msgstr "İçe aktarma sorunları olan aygıtlar"
 
 #: templates/pre_import_list.html.twig:78
 msgid "Import"
-msgstr ""
+msgstr "İçe aktar"
 
 #: src/Import.php:175 src/PostImport.php:371
 msgid "Import OK"
@@ -288,12 +287,12 @@ msgstr "İçe aktarılacak toplam aygıt sayısı %s"
 
 #: templates/pre_import_list.html.twig:71
 msgid "Uncheck all"
-msgstr ""
+msgstr "Tümünü bırak"
 
 #: templates/config_form.html.twig:43
 msgctxt "button"
 msgid "Update"
-msgstr ""
+msgstr "Güncelle"
 
 #: templates/config_form.html.twig:84
 msgid "Warranty API address"
@@ -315,7 +314,3 @@ msgstr "manufacturersimports eklentisi ile"
 msgid ""
 "You did not import the warranty for this item. Do you want to get it back?"
 msgstr "Bu ögenin garantisini içe aktarmadınız. Geri almak ister misiniz?"
-
-#, php-format
-#~ msgid "From %1$d to %2$d on %3$d"
-#~ msgstr "%1$d - %2$d / %3$d"
