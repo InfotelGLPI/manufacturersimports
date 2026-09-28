@@ -187,6 +187,14 @@ function plugin_manufacturersimports_uninstall()
     // namespaced "GlpiPlugin\Manufacturersimports\*" itemtypes of the cron tasks.
     CronTask::unregister('Manufacturersimports');
 
+    // Search list columns of the config list; the legacy itemtype name is also purged.
+    // The documents created by imports are kept on purpose: they are attached to the
+    // infocoms of the items and belong to them.
+    $displayPreference = new DisplayPreference();
+    $displayPreference->deleteByCriteria([
+        'itemtype' => [Config::class, 'PluginManufacturersimportsConfig'],
+    ]);
+
     $profileRight = new ProfileRight();
 
     foreach (Profile::getAllRights() as $right) {

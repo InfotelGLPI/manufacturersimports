@@ -37,12 +37,9 @@
             <a href="{{ url }}" target="_blank">{{ __('Manufacturer information', 'manufacturersimports') }}</a>
         </td>
         <td colspan="2" class="center">
-            {% do call('Html::showSimpleForm', [
-                target,
-                'retrieve_warranty',
-                button_label,
-                {'itemtype': itemtype, 'items_id': items_id}
-            ]) %}
+            {# raw: Html::getSimpleForm() escapes every value; a JS-built form is required here,
+               this hook is rendered inside the core infocom <form> where a nested form is dropped #}
+            {{ simple_form|raw }}
         </td>
     </tr>
 </table>

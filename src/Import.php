@@ -141,8 +141,7 @@ class Import extends CommonDBTM
                 "type"    => $type,
                 "ID"      => $ID,
                 "config"  => $config,
-                "line"    => $data,
-                "display" => false];
+                "line"    => $data];
 
             if (!empty($compSerial)) {
                 $options['sn'] = $compSerial;

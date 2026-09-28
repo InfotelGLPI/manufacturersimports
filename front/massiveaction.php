@@ -27,6 +27,7 @@
  * --------------------------------------------------------------------------
  */
 
+use Glpi\Application\View\TemplateRenderer;
 use Glpi\Exception\Http\AccessDeniedHttpException;
 use GlpiPlugin\Manufacturersimports\Log;
 use GlpiPlugin\Manufacturersimports\Config;
@@ -41,7 +42,7 @@ $config = new Config();
 
 Html::header(
     _n('Suppliers import', 'Suppliers imports', 2, 'manufacturersimports'),
-    $_SERVER['PHP_SELF'],
+    '',
     "tools",
     Menu::class,
 );
@@ -101,8 +102,9 @@ if (isset($_POST["action"])
             break;
     }
 } else {
-    echo "<div class='alert alert-important alert-warning d-flex'>";
-    echo "<b>" . __('No selected element or badly defined operation', 'manufacturersimports') . "</b></div>";
+    TemplateRenderer::getInstance()->display('@manufacturersimports/plugin_inactive.html.twig', [
+        'message' => __('No selected element or badly defined operation', 'manufacturersimports'),
+    ]);
 }
 
 Html::footer();

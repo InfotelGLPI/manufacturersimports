@@ -29,7 +29,6 @@
 
 namespace GlpiPlugin\Manufacturersimports;
 
-use Ajax;
 use CommonDBTM;
 use DBmysqlIterator;
 use DbUtils;
@@ -370,9 +369,8 @@ class PreImport extends CommonDBTM
         $LIST_LIMIT  = $_SESSION['glpilist_limit'];
         $end_display = $p['start'] + $LIST_LIMIT;
         $target      = PLUGIN_MANUFACTURERSIMPORTS_WEBDIR . '/front/import.php';
-        // Sanitise every segment at the source: these values flow unescaped into
-        // href attributes in printPager(). itemtype is url-encoded, the numeric
-        // filters are cast to int, so no quote can break out of the attribute.
+        // Build a well-formed query string for the pager links (components/pager.html.twig):
+        // itemtype is url-encoded and the numeric filters are cast to int.
         $parameters  = 'itemtype=' . rawurlencode($p['itemtype'])
                        . '&manufacturers_id=' . (int) $p['manufacturers_id']
                        . '&imported=' . (int) $p['imported'];
@@ -457,6 +455,8 @@ class PreImport extends CommonDBTM
             'itemtype'         => $p['itemtype'],
             'manufacturers_id' => (int) $p['manufacturers_id'],
             'imported'         => (int) $p['imported'],
+            'can_import'       => (int) $p['imported'] === self::NOT_IMPORTED,
+            'empty_value'      => Dropdown::EMPTY_VALUE,
             'list_limit'       => $LIST_LIMIT,
             'max_input_vars'   => Toolbox::get_max_input_vars(),
             'plugin_webdir'    => PLUGIN_MANUFACTURERSIMPORTS_WEBDIR,
@@ -537,40 +537,29 @@ class PreImport extends CommonDBTM
         $entry['infocom'] = $output_ic;
 
         if ($imported !== self::IMPORTED) {
-            ob_start();
+            $supplier_usable = true;
             if (Session::isMultiEntitiesMode() && $supplierId) {
                 $item = new Supplier();
                 $item->getFromDB($supplierId);
-                if ($item->fields['is_recursive'] || $item->fields['entities_id'] == $line['entities_id']) {
-                    Dropdown::show('Supplier', [
-                        'name'     => 'to_suppliers_id' . $line['id'],
-                        'value'    => $supplierId,
-                        'comments' => 0,
-                        'entity'   => $line['entities_id'],
-                    ]);
-                } else {
-                    echo "<span class='plugin_manufacturersimports_import_KO'>";
-                    echo __('The choosen supplier is not recursive', 'manufacturersimports');
-                    echo '</span>';
-                    echo Html::hidden('to_suppliers_id' . $line['id'], ['value' => -1]);
-                }
-            } else {
-                Dropdown::show('Supplier', [
+                $supplier_usable = $item->fields['is_recursive']
+                                   || $item->fields['entities_id'] == $line['entities_id'];
+            }
+            if ($supplier_usable) {
+                $entry['supplier'] = Dropdown::show(Supplier::class, [
                     'name'     => 'to_suppliers_id' . $line['id'],
                     'value'    => $supplierId,
                     'comments' => 0,
                     'entity'   => $line['entities_id'],
+                    'display'  => false,
                 ]);
+            } else {
+                $entry['supplier'] = "<span class='plugin_manufacturersimports_import_KO'>"
+                                     . htmlescape(__('The choosen supplier is not recursive', 'manufacturersimports'))
+                                     . '</span>'
+                                     . Html::hidden('to_suppliers_id' . $line['id'], ['value' => -1]);
             }
-            $entry['supplier'] = ob_get_clean();
 
-            ob_start();
-            $supplier->showWarrantyItem($line['id']);
-            $warranty_html = ob_get_clean();
-            if (preg_match('/<td[^>]*>(.*)<\/td>/s', $warranty_html, $m)) {
-                $warranty_html = $m[1];
-            }
-            $entry['warranty'] = $warranty_html;
+            $entry['warranty'] = $supplier->getWarrantyItem($line['id']);
         } else {
             $entry['supplier'] = $ic_loaded
                 ? htmlescape(Dropdown::getDropdownName('glpi_suppliers', $ic->fields['suppliers_id']))
@@ -636,70 +625,6 @@ class PreImport extends CommonDBTM
     }
 
     /**
-     * show arrow for massives actions : opening
-     *
-     **/
-    public static function openArrowMassives($formname, $fixed = false, $ontop = false, $onright = false)
-    {
-        global $CFG_GLPI;
-
-        // The form name is interpolated inside `onclick` handlers below, which the
-        // browser HTML-decodes *before* parsing the result as JavaScript: HTML
-        // escaping alone would be undone at that point. Escape for the JS string
-        // context first, then for the attribute context. This helper is invoked
-        // from pre_import_list.html.twig via a Twig call(), so it is load-bearing.
-        $formname = htmlescape(jsescape($formname));
-
-        if ($fixed) {
-            echo "<table class='tab_glpi' width='950px'>";
-        } else {
-            echo "<table class='tab_glpi' width='100%'>";
-        }
-
-        echo "<tr>";
-        if (!$onright) {
-            echo "<td><i class='ti ti-corner-left-up mx-2'></i></td>";
-        } else {
-            echo "<td class='left' width='80%'></td>";
-        }
-        echo "<td class='center' style='white-space:nowrap;'>";
-        echo "<a onclick= \"if ( markCheckboxes('$formname') ) return false;\"
-             href='#'>" . __('Check all') . "</a></td>";
-        echo "<td>/</td>";
-        echo "<td class='center' style='white-space:nowrap;'>";
-        echo "<a onclick= \"if ( unMarkCheckboxes('$formname') ) return false;\"
-             href='#'>" . __('Uncheck all') . "</a></td>";
-
-        if ($onright) {
-            echo "<td><i class='ti ti-corner-left-up mx-2'></i>";
-        } else {
-            echo "<td class='left' width='80%'>";
-        }
-    }
-
-
-    /**
-     * show arrow for massives actions : closing
-     *
-     * @param $actions array of action : $name -> $label
-     * @param $confirm array of confirmation string (optional)
-     *
-     **/
-    public static function closeArrowMassives($actions, $confirm = [])
-    {
-        if (count($actions)) {
-            foreach ($actions as $name => $label) {
-                if (!empty($name)) {
-                    echo "<input type='submit' name='" . htmlescape($name) . "' ";
-                    echo "value=\"" . htmlescape($label) . "\" class='submit btn btn-primary'>&nbsp;";
-                }
-            }
-        }
-        echo "</td></tr>";
-        echo "</table>";
-    }
-
-    /**
      * Request
      *
      * @param $p
@@ -714,14 +639,14 @@ class PreImport extends CommonDBTM
 
         $dbu = new DbUtils();
 
+        if (!in_array($p['itemtype'], Config::getTypes(true), true)) {
+            return $DB->request(['FROM' => Config::getTable(), 'LIMIT' => 0]);
+        }
+
         $modeltable = $dbu->getTableForItemType($p['itemtype'] . 'Model');
         $modelfield = $dbu->getForeignKeyFieldForTable($dbu->getTableForItemType($p['itemtype'] . 'Model'));
         $item       = getItemForItemtype($p['itemtype']);
         $itemtable  = $dbu->getTableForItemType($p['itemtype']);
-
-        if (!in_array($p['itemtype'], Config::getTypes(true), true)) {
-            return $DB->request(['FROM' => $itemtable, 'LIMIT' => 0]);
-        }
         $p['manufacturers_id'] = (int) $p['manufacturers_id'];
 
         $where = [
@@ -854,135 +779,6 @@ class PreImport extends CommonDBTM
         }
 
         return " ORDER BY $table.$field $order ";
-    }
-
-    /**
-     * @param     $start
-     * @param     $numrows
-     * @param     $target
-     * @param     $parameters
-     * @param int $item_type_output
-     * @param int $item_type_output_param
-     */
-    public static function printPager($start, $numrows, $target, $parameters, $item_type_output = 0, $item_type_output_param = 0)
-    {
-        global $CFG_GLPI;
-
-        // Escape the URL parts before they are interpolated into href attributes
-        // below. This helper is still invoked from pre_import_list.html.twig via a
-        // Twig call(), so the escaping is load-bearing, not merely defensive.
-        $target     = htmlescape($target);
-        $parameters = htmlescape($parameters);
-
-        $list_limit = $_SESSION['glpilist_limit'];
-        // Forward is the next step forward
-        $forward = $start + $list_limit;
-
-        // This is the end, my friend
-        $end = $numrows - $list_limit;
-
-        // Human readable count starts here
-        $current_start = $start + 1;
-
-        // And the human is viewing from start to end
-        $current_end = $current_start + $list_limit - 1;
-        if ($current_end > $numrows) {
-            $current_end = $numrows;
-        }
-
-        // Backward browsing
-        if ($current_start - $list_limit <= 0) {
-            $back = 0;
-        } else {
-            $back = $start - $list_limit;
-        }
-
-        // Print it
-
-        echo "<table class='tab_cadre_pager'>\n";
-        echo "<tr>\n";
-
-        // Back and fast backward button
-        if (!$start == 0) {
-            echo "<th class='left'>";
-            echo "<a href='$target?$parameters&start=0'>";
-            echo "<i style='font-size: 2em;' class='ti ti-chevrons-left' title=\""
-                 . __s('Start') . "\"></i>";
-            echo "</a></th>";
-            echo "<th class='left'>";
-            echo "<a href='$target?$parameters&start=$back'>";
-            echo "<i style='font-size: 2em;' class='ti ti-chevron-left' title=\""
-                 . __s('Previous') . "\"></i>";
-            echo "</a></th>";
-        }
-
-        // Print the "where am I?"
-        echo "<td width='50%'  class='tab_bg_2'>";
-        Html::printPagerForm("$target?$parameters&start=$start");
-        echo "</td>\n";
-
-        echo "<td width='50%' class='tab_bg_2 b'>";
-        //TRANS: %1$d, %2$d, %3$d are page numbers
-        printf(__('From %1$d to %2$d on %3$d', 'manufacturersimports'), $current_start, $current_end, $numrows);
-        echo "</td>\n";
-
-        // Forward and fast forward button
-        if ($forward < $numrows) {
-            echo "<th class='right'>";
-            echo "<a href='$target?$parameters&start=$forward'>";
-            echo "<i style='font-size: 2em;' class='ti ti-chevron-right' title=\""
-                 . __s('Next') . "\"></i>";
-            echo "</a></th>\n";
-
-            echo "<th class='right'>";
-            echo "<a href='$target?$parameters&start=$end'>";
-            echo "<i style='font-size: 2em;' class='ti ti-chevrons-right' title=\""
-                 . __s('End') . "\"></i>";
-            echo "</a></th>\n";
-        }
-
-        // End pager
-        echo "</tr>\n";
-        echo "</table><br>\n";
-    }
-
-    /**
-     * @param $ID
-     * @param $type
-     * @param $manufacturer
-     * @param $start
-     * @param $imported
-     */
-    public static function dropdownMassiveAction($ID, $type, $manufacturer, $start, $imported)
-    {
-        global $CFG_GLPI;
-
-        echo "<select class='form-select' name=\"massiveaction\" id='massiveaction' style='width: 20%;display: unset;'>";
-        echo "<option value=\"-1\" selected>" . Dropdown::EMPTY_VALUE . "</option>";
-        //not imported
-        if ($imported == self::NOT_IMPORTED) {
-            echo "<option value=\"import\">" . __('Import') . "</option>";
-        }
-        echo "<option value=\"reinit_once\">" . __('Reset the import', 'manufacturersimports') . "</option>";
-
-        echo "</select>&nbsp;";
-
-        $params = ['action'           => '__VALUE__',
-            'manufacturers_id' => $manufacturer,
-            'itemtype'         => $type,
-            'start'            => $start,
-            'imported'         => $imported,
-            'id'               => $ID,
-        ];
-
-        Ajax::updateItemOnSelectEvent(
-            "massiveaction",
-            "show_massiveaction",
-            PLUGIN_MANUFACTURERSIMPORTS_WEBDIR . "/ajax/dropdownMassiveAction.php",
-            $params,
-        );
-
-        echo "<span id='show_massiveaction'>&nbsp;</span>\n";
     }
 
     /**

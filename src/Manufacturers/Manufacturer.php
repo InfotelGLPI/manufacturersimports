@@ -105,16 +105,16 @@ class Manufacturer extends CommonDBTM
     }
 
     /**
+     * Content of the "New warranty attached" cell of the pre-import list
      *
-     * @param  $ID
-     * @param  $supplierWarranty
+     * @param int $ID
+     *
+     * @return string
      */
-    public function showWarrantyItem($ID)
+    public function getWarrantyItem($ID): string
     {
-        echo "<td>" . __('Automatic', 'manufacturersimports');
-        $name = "to_warranty_duration" . $ID;
-        echo Html::hidden($name, ['value' => 0]);
-        echo "</td>";
+        return htmlescape(__('Automatic', 'manufacturersimports'))
+            . Html::hidden('to_warranty_duration' . $ID, ['value' => 0]);
     }
 
     /**

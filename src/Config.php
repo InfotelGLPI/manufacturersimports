@@ -29,7 +29,6 @@
 
 namespace GlpiPlugin\Manufacturersimports;
 
-use Ajax;
 use CommonDBTM;
 use DbUtils;
 use Dropdown;
@@ -409,27 +408,6 @@ class Config extends CommonDBTM
         return $input;
     }
 
-    public static function dropdownSupplier($name, $options = [])
-    {
-        $params['value']     = 0;
-        $params['toadd']     = [];
-        $params['on_change'] = '';
-
-        if (is_array($options) && count($options)) {
-            foreach ($options as $key => $val) {
-                $params[$key] = $val;
-            }
-        }
-
-        $items = [];
-        if (count($params['toadd']) > 0) {
-            $items = $params['toadd'];
-        }
-
-        $items += self::getSuppliers();
-        return Dropdown::showFromArray($name, $items, $params);
-    }
-
     public static function getSuppliers()
     {
         $options[-1]                = Dropdown::EMPTY_VALUE;
@@ -554,7 +532,12 @@ class Config extends CommonDBTM
             }
         }
 
-        $preconfig      = (int) ($_GET['preconfig'] ?? -1);
+        // Supplier names are strings: only a known one is kept, anything else means "none".
+        $suppliers      = self::getSuppliers();
+        $preconfig      = $_GET['preconfig'] ?? '-1';
+        if (!is_string($preconfig) || !array_key_exists($preconfig, $suppliers)) {
+            $preconfig = '-1';
+        }
         $preconfig_rand = mt_rand();
         $supplier_name  = $this->fields['name'] ?? '';
 
@@ -596,15 +579,16 @@ class Config extends CommonDBTM
             'params'        => $options,
             'preconfig'     => $preconfig,
             'preconfig_rand' => $preconfig_rand,
+            'suppliers'     => $suppliers,
             'is_new'        => ($ID <= 0),
             'test_field'    => $test_field,
-            'is_api_test'   => $is_api_test,
             'test_label'    => $test_label,
             'test_icon'     => $test_icon,
             'row_label'     => $row_label,
             'base_url'      => $base_url,
             'test_mode'     => $test_mode,
             'action_url'    => self::getFormURL(true),
+            'script_url'    => PLUGIN_MANUFACTURERSIMPORTS_WEBDIR . '/scripts/connection-test.js',
             'supplier_key_value'    => $can_edit ? self::decryptSecret($this->fields['supplier_key'] ?? '') : '',
             'supplier_secret_value' => $can_edit ? self::decryptSecret($this->fields['supplier_secret'] ?? '') : '',
         ]);
@@ -874,8 +858,7 @@ class Config extends CommonDBTM
     {
         switch ($input['action']) {
             case "Transfert":
-                Dropdown::show('Entity');
-                echo Html::submit(_sx('button', 'Post'), ['name' => 'massiveaction', 'class' => 'btn btn-primary']);
+                TemplateRenderer::getInstance()->display('@manufacturersimports/massive_action_transfer.html.twig');
                 return true;
                 break;
 
@@ -968,12 +951,14 @@ class Config extends CommonDBTM
             // user-controlled serial number) is auto-escaped in the href,
             // preventing a stored XSS breakout of the attribute.
             TemplateRenderer::getInstance()->display('@manufacturersimports/warranty_infocom.html.twig', [
-                'title'        => PreImport::getTypeName(2),
-                'url'          => $url,
-                'target'       => Config::getFormUrl(true),
-                'itemtype'     => $item->getType(),
-                'items_id'     => $item->getID(),
-                'button_label' => _sx('button', 'Retrieve warranty from manufacturer', 'manufacturersimports'),
+                'title'       => PreImport::getTypeName(2),
+                'url'         => $url,
+                'simple_form' => Html::getSimpleForm(
+                    Config::getFormUrl(true),
+                    'retrieve_warranty',
+                    _x('button', 'Retrieve warranty from manufacturer', 'manufacturersimports'),
+                    ['itemtype' => $item->getType(), 'items_id' => $item->getID()],
+                ),
             ]);
         }
         return $item;
@@ -1030,8 +1015,7 @@ class Config extends CommonDBTM
                     "type"    => $itemtype,
                     "ID"      => $items_id,
                     "config"  => $config,
-                    "line"    => $data,
-                    "display" => false];
+                    "line"    => $data];
 
 
                 // Static calls below still require a whitelisted, existing class.
@@ -1102,19 +1086,11 @@ class Config extends CommonDBTM
             if (!empty($suppliername) && !empty($item->fields['serial'])) {
                 $NotAlreadyImported = $log->checkIfAlreadyImported($item->getType(), $item->getID());
                 if (!$NotAlreadyImported) {
-                    echo "<div class='alert alert-warning d-flex'>";
-                    echo __("You did not import the warranty for this item. Do you want to get it back?", "manufacturersimports");
-                    $target = Config::getFormUrl(true);
-                    echo "&nbsp;";
-                    Html::showSimpleForm(
-                        $target,
-                        'retrieve_warranty',
-                        _sx('button', 'Retrieve warranty from manufacturer', 'manufacturersimports'),
-                        ['itemtype' => $item->getType(),
-                            'items_id' => $item->getID()],
-                        'ti-cloud-download',
-                    );
-                    echo "</div>";
+                    TemplateRenderer::getInstance()->display('@manufacturersimports/retrieve_warranty_alert.html.twig', [
+                        'target'   => Config::getFormUrl(true),
+                        'itemtype' => $item->getType(),
+                        'items_id' => $item->getID(),
+                    ]);
                 }
             }
         }

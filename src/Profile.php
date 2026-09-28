@@ -46,7 +46,7 @@ class Profile extends \Profile
 
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
-        if ($item->getType() == 'Profile'
+        if ($item instanceof \Profile
             && $item->getField('interface') != 'helpdesk') {
             return self::createTabEntry(PreImport::getTypeName(2));
         }

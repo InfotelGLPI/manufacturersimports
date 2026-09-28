@@ -29,22 +29,19 @@
 
 {% set params = params|default({})|merge({'target': action_url}) %}
 
-{# Preconfiguration card — outside the main form #}
+{# Preconfiguration card — outside the main form. A plain GET reload of the form page
+   with ?preconfig=<supplier>: it changes nothing server-side, hence no CSRF token #}
 <div class="card mb-3">
-    <div class="card-body d-flex align-items-center gap-3 flex-wrap">
-        <span class="fw-bold">{{ __('Preconfiguration') }}</span>
-        {% do call('GlpiPlugin\\Manufacturersimports\\Config::dropdownSupplier', [
-            'supplier',
-            {'value': preconfig, 'rand': preconfig_rand}
-        ]) %}
-        <span id="show_preconfig"></span>
-        {% do call('Ajax::updateItemOnSelectEvent', [
-            'dropdown_supplier' ~ preconfig_rand,
-            'show_preconfig',
-            '../ajax/dropdownSuppliers.php',
-            {'supplier': '__VALUE__'}
-        ]) %}
-    </div>
+    <form method="get" action="{{ action_url }}"
+          class="card-body d-flex align-items-center gap-3 flex-wrap">
+        <label class="fw-bold" for="preconfig_{{ preconfig_rand }}">{{ __('Preconfiguration') }}</label>
+        <select class="form-select w-auto" name="preconfig" id="preconfig_{{ preconfig_rand }}">
+            {% for key, label in suppliers %}
+                <option value="{{ key }}" {{ key == preconfig ? 'selected' : '' }}>{{ label }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" class="btn btn-primary">{{ _x('button', 'Update') }}</button>
+    </form>
 </div>
 
 {# Main form wrapper — hidden for new items until a preconfig is selected #}
@@ -147,67 +144,18 @@
             {% if test_field is not empty %}
                 {% set rand_test = random() %}
                 {% set test_btn %}
-                    <button type="button" class="btn btn-info" id="test_btn_{{ rand_test }}">
+                    <button type="button" class="btn btn-info"
+                            data-manufacturersimports-test="{{ action_url }}"
+                            data-result-id="test_result_{{ rand_test }}"
+                            data-test-field="{{ test_field }}"
+                            data-base-url="{{ base_url }}"
+                            data-test-mode="{{ test_mode }}">
                         <i class="ti {{ test_icon }} me-1"></i>{{ test_label }}
                     </button>
                     <span id="test_result_{{ rand_test }}" class="ms-3"></span>
                 {% endset %}
                 {{ fields.htmlField('_test_connection', test_btn, row_label) }}
-                <script>
-                document.getElementById('test_btn_{{ rand_test }}').addEventListener('click', function () {
-                    var btn    = this;
-                    var result = document.getElementById('test_result_{{ rand_test }}');
-                    var csrf   = document.querySelector('[name=_glpi_csrf_token]')?.value ?? '';
-                    var url    = document.querySelector('input[name="{{ test_field|e('js') }}"]')?.value
-                                 || '{{ base_url|e('js') }}';
-                    var params = {
-                        test_connection: 1,
-                        token_url:       url,
-                        test_mode:       '{{ test_mode|e('js') }}'
-                    };
-                    {% if is_api_test %}
-                    params.supplier_key    = document.querySelector('input[name="supplier_key"]')?.value ?? '';
-                    params.supplier_secret = document.querySelector('input[name="supplier_secret"]')?.value ?? '';
-                    {% endif %}
-                    btn.disabled = true;
-                    result.innerHTML = '<i class="ti ti-loader-2 ti-spin"></i>';
-                    // Render the outcome with the message as a text node: the server
-                    // "message" (and any raw/error body) must never be parsed as HTML,
-                    // otherwise it is an XSS sink through result.innerHTML.
-                    var showResult = function (ok, msg) {
-                        result.replaceChildren();
-                        var span = document.createElement('span');
-                        span.className = ok ? 'text-success' : 'text-danger';
-                        var icon = document.createElement('i');
-                        icon.className = (ok ? 'ti ti-circle-check' : 'ti ti-circle-x') + ' me-1';
-                        span.appendChild(icon);
-                        span.appendChild(document.createTextNode(msg != null ? String(msg) : ''));
-                        result.appendChild(span);
-                    };
-                    fetch('{{ action_url|e('js') }}', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type':     'application/x-www-form-urlencoded',
-                            'X-Requested-With': 'XMLHttpRequest',
-                            'X-Glpi-Csrf-Token': csrf
-                        },
-                        body: new URLSearchParams(params)
-                    })
-                    .then(function (r) { return r.text(); })
-                    .then(function (text) {
-                        var d;
-                        try { d = JSON.parse(text); } catch (e) {
-                            showResult(false, text.substring(0, 200));
-                            return;
-                        }
-                        showResult(!!d.success, d.message);
-                    })
-                    .catch(function (e) {
-                        showResult(false, e.message);
-                    })
-                    .finally(function () { btn.disabled = false; });
-                });
-                </script>
+                <script type="module" src="{{ script_url }}"></script>
             {% endif %}
 
             {# Whether to append a comment line on import #}

@@ -1,5 +1,3 @@
-<?php
-
 /**
  * -------------------------------------------------------------------------
  * manufacturersimports plugin for GLPI
@@ -27,26 +25,21 @@
  * --------------------------------------------------------------------------
  */
 
-use GlpiPlugin\Manufacturersimports\Config;
+/*
+ * Pre-import list (PreImport::seePreImport()): the "Check all" / "Uncheck all"
+ * buttons toggle every enabled device checkbox of their form.
+ */
 
-if (strpos($_SERVER['PHP_SELF'], "dropdownSuppliers.php")) {
-    header("Content-Type: text/html; charset=UTF-8");
-    Html::header_nocache();
-}
+document.addEventListener('click', (event) => {
+    const button = event.target.closest('[data-manufacturersimports-check]');
+    if (button === null || button.form === null) {
+        return;
+    }
 
-Session::checkRight("plugin_manufacturersimports", READ);
-
-$config = new Config();
-
-$supplier          = $_POST['supplier'] ?? -1;
-$allowed_suppliers = [
-    Config::DELL, Config::HP, Config::FUJITSU,
-    Config::LENOVO, Config::TOSHIBA, Config::WORTMANN_AG,
-];
-
-// Only emit the link for a known supplier: this whitelist prevents any
-// reflected value from ending up in the generated markup.
-if (in_array($supplier, $allowed_suppliers, true)) {
-    $url = $config->getFormURL() . "?preconfig=" . rawurlencode($supplier);
-    echo "&nbsp;<a class='submit btn btn-primary' href='" . htmlescape($url) . "'>" . _sx('button', 'Update') . "</a>";
-}
+    const checked = button.dataset.manufacturersimportsCheck === '1';
+    button.form.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
+        if (!checkbox.disabled) {
+            checkbox.checked = checked;
+        }
+    });
+});

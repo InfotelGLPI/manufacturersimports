@@ -41,7 +41,6 @@ use Html;
 use Infocom;
 use Document;
 use Document_Item;
-use Dropdown;
 use Session;
 use Supplier;
 use Toolbox;
@@ -307,6 +306,7 @@ class PostImport extends CommonDBTM
             'run_url'      => PLUGIN_MANUFACTURERSIMPORTS_WEBDIR . '/front/massiveimport_run.php',
             'back_url'     => $back_url,
             'run_params'   => $run_params,
+            'script_url'   => PLUGIN_MANUFACTURERSIMPORTS_WEBDIR . '/scripts/massive-import-progress.js',
         ]);
     }
 
@@ -545,7 +545,6 @@ class PostImport extends CommonDBTM
                 'line'         => $line,
                 'fromsupplier' => $supplierId,
                 'fromwarranty' => $fromwarranty,
-                'display'      => false,
                 'token'        => $token,
             ];
 
@@ -682,166 +681,6 @@ class PostImport extends CommonDBTM
     }
 
     /**
-     * Prints display post import
-     *
-     * @param $type the type of device
-     * @param $ID the ID of device
-     * @param $fromsupplier selection on pre import
-     * @param $fromwarranty selection on pre import
-     * @param $configID ID of supplier plugin config
-     *
-     * @return void
-     *
-     */
-    public static function seePostImport($type, $ID, $fromsupplier, $fromwarranty, $configID)
-    {
-        global $DB;
-
-        // The itemtype reaches this method from the request: keep it inside the
-        // supported list before it is used as a table name and as a class in
-        // static calls below.
-        if (!in_array($type, Config::getTypes(true), true)) {
-            return;
-        }
-
-        // The config id comes from the request: check the entity perimeter before
-        // its credentials are decrypted and used for the outbound call.
-        $config = Config::getCheckedConfig($configID);
-        if ($config === null) {
-            return;
-        }
-        $manufacturerId = $config->fields["manufacturers_id"];
-
-        $supplierId = self::checkSupplierForItem(
-            (int) ($fromsupplier ?: $config->fields['suppliers_id']),
-            $type,
-            (int) $ID,
-        );
-        $suppliername   = $config->fields["name"];
-        $supplierUrl    = $config->fields["supplier_url"];
-        $supplierkey    = Config::decryptSecret($config->fields["supplier_key"]);
-        $supplierSecret = Config::decryptSecret($config->fields["supplier_secret"]);
-
-        $dbu       = new DbUtils();
-        $itemtable = $dbu->getTableForItemType($type);
-
-        $modelfield = $dbu->getForeignKeyFieldForTable($dbu->getTableForItemType($type . "Model"));
-
-        $where = [
-            "$itemtable.is_deleted"  => 0,
-            "$itemtable.is_template" => 0,
-            'glpi_manufacturers.id'  => (int) $manufacturerId,
-            ["$itemtable.serial"     => ['!=', '']],
-            "$itemtable.id"          => (int) $ID,
-            // Defence in depth: never select an item outside the caller's
-            // entity perimeter, even if the can() gate upstream is bypassed.
-            $dbu->getEntitiesRestrictCriteria($itemtable),
-        ];
-        // Every custom asset definition shares glpi_assets_assets, so the id
-        // alone does not identify the type: pin the query to the definition
-        // $type belongs to. Classic itemtypes return an empty array, which must
-        // not be nested as a criterion (it would render as an invalid "AND ()").
-        $system_criteria = $type::getSystemSQLCriteria($itemtable);
-        if ($system_criteria !== []) {
-            $where[] = $system_criteria;
-        }
-
-        $iterator = $DB->request([
-            'SELECT'     => [
-                "$itemtable.id",
-                "$itemtable.name",
-                "$itemtable.entities_id",
-                "$itemtable.serial",
-                "$itemtable.$modelfield",
-            ],
-            'FROM'       => $itemtable,
-            'INNER JOIN' => [
-                'glpi_manufacturers' => [
-                    'ON' => ['glpi_manufacturers' => 'id', $itemtable => 'manufacturers_id'],
-                ],
-            ],
-            'WHERE'      => $where,
-            'ORDER'      => new QueryExpression("`$itemtable`.`name`"),
-        ]);
-
-        // Resolve against the whitelist: the name is config data, never trust it in `new`.
-        $supplierclass = Config::resolveSupplierClass($suppliername);
-        if ($supplierclass === null) {
-            return;
-        }
-        $token = $supplierclass::getToken($config);
-
-        foreach ($iterator as $line) {
-            $compSerial = $line['serial'];
-            $ID         = $line['id'];
-            echo "<tr class='tab_bg_1' ><td>";
-            $link        = Config::getItemFormLink($type, (int) $ID);
-            $dID         = "";
-
-            $models_id = $line[$modelfield];
-
-            $otherSerial = "";
-            if (class_exists($type . "Model") && $models_id != 0) {
-                $modelitemtype = $type . "Model";
-                $modelclass = new $modelitemtype();
-                $modelclass->getfromDB($models_id);
-                $otherSerial = $modelclass->fields["product_number"];
-            }
-
-            if ($_SESSION["glpiis_ids_visible"] || empty($line["name"])) {
-                $dID .= " (" . $line["id"] . ")";
-            }
-            echo "<a href='" . htmlescape($link) . "'>" . htmlescape($line["name"]) . htmlescape($dID) . "</a><br>" . htmlescape($otherSerial) . "</td>";
-
-            $url          = PreImport::selectSupplier(
-                $suppliername,
-                $supplierUrl,
-                $compSerial,
-                $otherSerial,
-                $supplierkey,
-                $supplierSecret,
-            );
-            $post         = PreImport::getSupplierPost(
-                $suppliername,
-                $compSerial,
-                $otherSerial,
-                $supplierkey,
-                $supplierSecret,
-            );
-            $warranty_url = $supplierclass::getWarrantyUrl($config, $compSerial);
-
-            // Complete the supplier support URL with the serial number.
-            echo "<td>" . htmlescape($compSerial) . "</td>";
-            echo "<td>";
-            echo "<a href='" . htmlescape($url) . "' target='_blank'>" . _n('Manufacturer', 'Manufacturers', 1) . "</a>";
-            echo "</td>";
-
-            $options = [
-                "url" => $warranty_url['url'] ?? $url,
-                "sn" => $line['serial'],
-                "pn" => $otherSerial,
-                "post" => $post,
-                "type" => $type,
-                "ID" => $ID,
-                "config" => $config,
-                "line" => $line,
-                "fromsupplier" => $fromsupplier,
-                "fromwarranty" => $fromwarranty,
-                "display" => true,
-                "token" => $token,
-            ];
-
-            if ($suppliername == Config::LENOVO) {
-                $options['ClientID'] = $supplierkey;
-            }
-
-            self::saveImport($options);
-
-            echo "</tr>\n";
-        }
-    }
-
-    /**
      * @param array $params
      *
      * @return bool
@@ -854,7 +693,6 @@ class PostImport extends CommonDBTM
         $default_values['pn']           = "";
         $default_values['url_warranty'] = "";
         $default_values['post']         = "";
-        $default_values['display']      = false;
         $default_values['type']         = "";
         $default_values['ID']           = 0;
         $default_values['fromsupplier'] = 0;
@@ -979,7 +817,7 @@ class PostImport extends CommonDBTM
                 "maDate"        => $maDate,
                 "buyDate"       => $maBuyDate,
                 "warranty_info" => $warrantyinfo];
-            self::saveInfocoms($options, $values['display']);
+            self::saveInfocoms($options);
 
             // Create a document in GLPI that will be linked to the asset.
             if ($adddoc != 0
@@ -1020,12 +858,7 @@ class PostImport extends CommonDBTM
 
             return true;
         } else { // Failed check contents
-            if ($values['display']) {
-                self::isInError($suppliername, $values['type'], $values['ID'], $contents);
-            } else {
-                self::isInError($suppliername, $values['type'], $values['ID'], null, $values['display']);
-                return false;
-            }
+            self::isInError($values['type'], $values['ID']);
         }
         return false;
     }
@@ -1034,18 +867,9 @@ class PostImport extends CommonDBTM
      * Adding infocoms date of purchase and warranty
      *
      * @param      $options
-     * @param bool $display
      */
-    public static function saveInfocoms($options, $display = false)
+    public static function saveInfocoms($options)
     {
-        //Original values
-        $warranty_date     = "";
-        $buy_date          = "";
-        $warranty_duration = "";
-        $warranty_info     = "";
-        $suppliers_id      = "";
-        $ic_comments       = "";
-
         //New values
         $input_infocom = [];
         if ($options["supplierId"] != 0) {
@@ -1062,11 +886,6 @@ class PostImport extends CommonDBTM
         $ic = new Infocom();
         if ($ic->getfromDBforDevice($options["itemtype"], $options["ID"])) {
             //Original values
-            $warranty_date     = Html::convdate($ic->fields["warranty_date"]);
-            $warranty_duration = $ic->fields["warranty_duration"];
-            $warranty_info     = $ic->fields["warranty_info"];
-            $buy_date          = $ic->fields["buy_date"];
-            $suppliers_id      = Dropdown::getDropdownName("glpi_suppliers", $ic->fields["suppliers_id"]);
             $ic_comment        = $ic->fields["comment"];
 
             //New values
@@ -1089,31 +908,6 @@ class PostImport extends CommonDBTM
             $infocom->add($input_infocom);
         }
 
-        if ($display) {
-            //post message
-            echo "<td><span class='plugin_manufacturersimports_import_OK'>";
-            echo __('Import OK', 'manufacturersimports') . " (" . Html::convdate($options["date"]) . ")";
-            echo "</span></td>";
-            echo "<td>";
-            echo _n('Supplier', 'Suppliers', 1) . ": ";
-            if ($options["supplierId"] != 0) {
-                // getDropdownName() returns the unescaped DB value: escape before echo.
-                echo htmlescape($suppliers_id) . "->"
-                     . htmlescape(Dropdown::getDropdownName("glpi_suppliers", $options["supplierId"])) . "<br>";
-            }
-            echo __('Date of purchase') . ": ";
-            echo Html::convdate($buy_date) . "->" . Html::convdate($options["buyDate"]) . "<br>";
-            echo __('Start date of warranty') . ": ";
-            echo htmlescape($warranty_date) . "->" . Html::convdate($options["maDate"]) . "<br>";
-            if ($warranty_duration == -1) {
-                $warranty_duration = __('Lifelong');
-                $warranty          = __('Lifelong');
-            } else {
-                $warranty = $options["warranty"];
-            }
-            echo __('Warranty duration') . ": " . $warranty_duration . "->" . $warranty . "<br>";
-            echo "</td>";
-        }
     }
 
     /**
@@ -1194,20 +988,14 @@ class PostImport extends CommonDBTM
 
 
     /**
-     * @param      $type
-     * @param      $ID
-     * @param null $contents
+     * Log a failed import of an item
+     *
+     * @param $type the itemtype of the device
+     * @param $ID   the ID of the device
      */
-    public static function isInError($suppliername, $type, $ID, $contents = null, $display = true)
+    public static function isInError($type, $ID)
     {
-        $msgerr = "";
-        $date   = date("Y-m-d");
-        if ($display) {
-            echo "<td>";
-            echo "<span class='plugin_manufacturersimports_import_KO'>";
-            echo __('Import failed', 'manufacturersimports') . " (";
-            echo Html::convdate($date) . ")</span></td>";
-        }
+        $date = date("Y-m-d");
 
         $temp = new Log();
         $temp->deleteByCriteria(['itemtype' => $type,
@@ -1220,18 +1008,5 @@ class PostImport extends CommonDBTM
         $values["date_import"]   = $date;
         $log                     = new Log();
         $log->add($values);
-
-        if ($display) {
-            if (!empty($contents)) {
-                switch ($suppliername) {
-                    case Config::LENOVO :
-                        $msgerr = self::importWarrantyInfo($suppliername, $contents);
-                        break;
-                    default:
-                        $msgerr = __('Connection failed/data download from manufacturer web site', 'manufacturersimports');
-                }
-            }
-            echo "<td>" . htmlescape($msgerr) . "</td>";
-        }
     }
 }

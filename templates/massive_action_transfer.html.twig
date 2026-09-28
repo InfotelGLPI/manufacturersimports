@@ -25,23 +25,7 @@
  # --------------------------------------------------------------------------
  #}
 
-<div class="card mb-3">
-    <div class="card-header">
-        <strong>
-            {% if suppliername %}
-                {{ __('Importing from %s', 'manufacturersimports')|format(suppliername) }}
-            {% else %}
-                {{ __('Import in progress', 'manufacturersimports') }}
-            {% endif %}
-        </strong>
-    </div>
-    <div class="card-body">
-        <div id="massive-import-progress"
-             data-run-url="{{ run_url }}"
-             data-back-url="{{ back_url }}"
-             data-back-label="{{ __('Back') }}"
-             data-params="{{ run_params|json_encode }}"></div>
-    </div>
-</div>
-
-<script type="module" src="{{ script_url }}"></script>
+{# "Transfert" massive action sub-form (Config::showSpecificMassiveActionsParameters()),
+   rendered inside the core massive action form #}
+{{ 'Entity'|itemtype_dropdown({'name': 'entities_id'}) }}
+<button type="submit" name="massiveaction" class="btn btn-primary">{{ _x('button', 'Post') }}</button>

@@ -25,23 +25,17 @@
  # --------------------------------------------------------------------------
  #}
 
-<div class="card mb-3">
-    <div class="card-header">
-        <strong>
-            {% if suppliername %}
-                {{ __('Importing from %s', 'manufacturersimports')|format(suppliername) }}
-            {% else %}
-                {{ __('Import in progress', 'manufacturersimports') }}
-            {% endif %}
-        </strong>
-    </div>
-    <div class="card-body">
-        <div id="massive-import-progress"
-             data-run-url="{{ run_url }}"
-             data-back-url="{{ back_url }}"
-             data-back-label="{{ __('Back') }}"
-             data-params="{{ run_params|json_encode }}"></div>
-    </div>
+{# Rendered by the PRE_SHOW_ITEM hook, before (and outside of) the item form #}
+<div class="alert alert-warning d-flex align-items-center gap-2">
+    <span>{{ __('You did not import the warranty for this item. Do you want to get it back?', 'manufacturersimports') }}</span>
+    <form method="post" action="{{ target }}" class="d-inline">
+        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+        <input type="hidden" name="itemtype" value="{{ itemtype }}">
+        <input type="hidden" name="items_id" value="{{ items_id }}">
+        <button type="submit" name="retrieve_warranty" value="1" class="btn btn-sm btn-ghost-secondary"
+                title="{{ _x('button', 'Retrieve warranty from manufacturer', 'manufacturersimports') }}">
+            <i class="ti ti-cloud-download"></i>
+            <span class="visually-hidden">{{ _x('button', 'Retrieve warranty from manufacturer', 'manufacturersimports') }}</span>
+        </button>
+    </form>
 </div>
-
-<script type="module" src="{{ script_url }}"></script>

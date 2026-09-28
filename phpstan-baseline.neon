@@ -3,12 +3,6 @@ parameters:
 		-
 			message: '#^You should not use the `exit` function\. It prevents the execution of post\-request/post\-command routines\.$#'
 			identifier: glpi.forbidExit
-			count: 4
-			path: ajax/testConnection.php
-
-		-
-			message: '#^You should not use the `exit` function\. It prevents the execution of post\-request/post\-command routines\.$#'
-			identifier: glpi.forbidExit
 			count: 6
 			path: front/config.form.php
 
@@ -195,7 +189,7 @@ parameters:
 		-
 			message: '#^Instantiating an object from an unrestricted dynamic string is forbidden \(see https\://github\.com/glpi\-project/phpstan\-glpi\?tab\=readme\-ov\-file\#forbiddynamicinstantiationrule\)\.$#'
 			identifier: glpi.forbidDynamicInstantiation
-			count: 7
+			count: 6
 			path: src/PostImport.php
 
 		-
@@ -251,12 +245,6 @@ parameters:
 			identifier: phpDoc.parseError
 			count: 1
 			path: src/PreImport.php
-
-		-
-			message: '#^Call to an undefined method CommonGLPI\:\:getField\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/Profile.php
 
 		-
 			message: '#^Method GlpiPlugin\\Manufacturersimports\\Profile\:\:getAllRights\(\) invoked with 1 parameter, 0 required\.$#'

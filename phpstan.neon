@@ -5,7 +5,6 @@ includes:
 parameters:
     level: 5
     paths:
-        - ajax
         - front
         - src
         - hook.php

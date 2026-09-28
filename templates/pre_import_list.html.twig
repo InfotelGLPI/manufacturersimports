@@ -31,9 +31,14 @@
     </div>
 {% else %}
 
-    {# Top pager #}
-    {% do call('GlpiPlugin\\Manufacturersimports\\PreImport::printPager',
-        [start, numrows, target, parameters, itemtype]) %}
+    {% set pager_params = {
+        'href':  target ~ '?' ~ parameters,
+        'start': start,
+        'count': numrows,
+        'limit': list_limit
+    } %}
+
+    {{ include('components/pager.html.twig', pager_params) }}
 
     <form method="post" name="massiveaction_form" id="massiveaction_form"
           action="{{ plugin_webdir }}/front/massiveaction.php">
@@ -57,11 +62,33 @@
 
         {% if canedit %}
             {% if list_limit < max_input_vars %}
-                {% do call('GlpiPlugin\\Manufacturersimports\\PreImport::openArrowMassives',
-                    ['massiveaction_form', false]) %}
-                {% do call('GlpiPlugin\\Manufacturersimports\\PreImport::dropdownMassiveAction',
-                    [comp_id, itemtype, manufacturers_id, start, imported]) %}
-                {% do call('GlpiPlugin\\Manufacturersimports\\PreImport::closeArrowMassives', [[]]) %}
+                <div class="d-flex flex-wrap align-items-center gap-2 mt-2 ms-2">
+                    <i class="ti ti-corner-left-up"></i>
+                    <button type="button" class="btn btn-sm btn-ghost-secondary"
+                            data-manufacturersimports-check="1">{{ __('Check all') }}</button>
+                    <span>/</span>
+                    <button type="button" class="btn btn-sm btn-ghost-secondary"
+                            data-manufacturersimports-check="0">{{ __('Uncheck all') }}</button>
+
+                    {# front/massiveaction.php reads "action"; "id" only flags a non-empty list #}
+                    <select class="form-select w-auto" name="action" required
+                            aria-label="{{ __('Actions') }}">
+                        <option value="" selected>{{ empty_value }}</option>
+                        {% if can_import %}
+                            <option value="import">{{ __('Import') }}</option>
+                        {% endif %}
+                        <option value="reinit_once">{{ __('Reset the import', 'manufacturersimports') }}</option>
+                    </select>
+                    <input type="hidden" name="id" value="{{ comp_id }}">
+                    <input type="hidden" name="itemtype" value="{{ itemtype }}">
+                    <input type="hidden" name="start" value="{{ start }}">
+                    <input type="hidden" name="manufacturers_id" value="{{ manufacturers_id }}">
+                    <input type="hidden" name="imported" value="{{ imported }}">
+                    <button type="submit" name="massiveaction" class="btn btn-primary">
+                        {{ _x('button', 'Post') }}
+                    </button>
+                </div>
+                <script type="module" src="{{ plugin_webdir }}/scripts/pre-import.js"></script>
             {% else %}
                 <div class="alert alert-warning">
                     {{ __('Selection too large, massive action disabled.') }}
@@ -71,8 +98,6 @@
 
     </form>
 
-    {# Bottom pager #}
-    {% do call('GlpiPlugin\\Manufacturersimports\\PreImport::printPager',
-        [start, numrows, target, parameters, itemtype]) %}
+    {{ include('components/pager.html.twig', pager_params) }}
 
 {% endif %}
