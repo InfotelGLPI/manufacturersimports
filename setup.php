@@ -27,7 +27,7 @@
  * --------------------------------------------------------------------------
  */
 
-define('PLUGIN_MANUFACTURERSIMPORTS_VERSION', '3.1.11');
+define('PLUGIN_MANUFACTURERSIMPORTS_VERSION', '3.1.12');
 
 global $CFG_GLPI;
 
