@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - manufacturersimports plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-28 10:40+0000\n"
+"POT-Creation-Date: 2026-09-28 16:32+0000\n"
 "PO-Revision-Date: 2020-01-17 15:32+0000\n"
 "Last-Translator: Kevin HAINRY <kevin.hainry@infotel.com>\n"
 "Language-Team: Portuguese (Portugal) (http://www.transifex.com/infotelGLPI/"
@@ -73,7 +73,7 @@ msgstr ""
 msgid "Client secret"
 msgstr ""
 
-#: front/config.form.php:137 front/config.form.php:182
+#: front/config.form.php:137 front/config.form.php:204
 msgid "Connection failed/data download from manufacturer web site"
 msgstr "Falha na ligação/descarga dos dados do web site do fabricante "
 
@@ -174,7 +174,7 @@ msgstr "Nova garantia afectada por omissão (substituir se 0)"
 msgid "New warranty attached"
 msgstr "Nova garantia anexada"
 
-#: front/config.form.php:145
+#: front/config.form.php:166
 msgid "No access token in response"
 msgstr ""
 
@@ -241,7 +241,7 @@ msgstr "Secção de registo de documentos"
 msgid "Selection too large, massive action disabled."
 msgstr ""
 
-#: front/config.form.php:184
+#: front/config.form.php:206
 #, php-format
 msgid "Server reachable (HTTP %d)"
 msgstr ""

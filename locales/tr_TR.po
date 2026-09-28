@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-28 10:40+0000\n"
+"POT-Creation-Date: 2026-09-28 16:32+0000\n"
 "PO-Revision-Date: 2020-11-02 16:09+0000\n"
 "Last-Translator: Kaya Zeren <kayazeren@gmail.com>, 2026\n"
 "Language-Team: Turkish (Turkey) (https://app.transifex.com/infotelGLPI/"
@@ -76,7 +76,7 @@ msgstr "Müşteri kimliği"
 msgid "Client secret"
 msgstr "Müşteri parolası"
 
-#: front/config.form.php:137 front/config.form.php:182
+#: front/config.form.php:137 front/config.form.php:204
 msgid "Connection failed/data download from manufacturer web site"
 msgstr "Bağlantı kesildi / üreticinin sitesinden veri indirilemedi"
 
@@ -177,7 +177,7 @@ msgstr "Varsayılan olarak yeni garanti kullanılsın (0 ise değiştirin)"
 msgid "New warranty attached"
 msgstr "Yeni garanti eklendi"
 
-#: front/config.form.php:145
+#: front/config.form.php:166
 msgid "No access token in response"
 msgstr "Yanıtta bir erişim kodu yok"
 
@@ -244,7 +244,7 @@ msgstr "Belge kayıtları bölümü"
 msgid "Selection too large, massive action disabled."
 msgstr "Seçim çok büyük, toplu işlem kullanılmıyor."
 
-#: front/config.form.php:184
+#: front/config.form.php:206
 #, php-format
 msgid "Server reachable (HTTP %d)"
 msgstr "Sunucuya erişilebiliyor (HTTP %d)"
