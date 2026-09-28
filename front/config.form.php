@@ -142,8 +142,30 @@ if (isset($_POST["add"])) {
         if (isset($data['access_token'])) {
             echo json_encode(['success' => true, 'message' => __('Authentication successful (token received)', 'manufacturersimports')]);
         } else {
-            $api_error = $data['error_description'] ?? $data['error'] ?? __('No access token in response', 'manufacturersimports');
-            echo json_encode(['success' => false, 'message' => sprintf('HTTP %d — %s', $http_code, $api_error)]);
+            // Vendors return the error either as a string (OAuth2: error/error_description)
+            // or as a nested object (e.g. {"error": {"code": ..., "message": ...}},
+            // {"fault": {"faultstring": ...}}): flatten it to text instead of "Array".
+            $api_error = '';
+            if (is_array($data)) {
+                foreach (['error_description', 'error', 'errors', 'fault', 'message', 'detail'] as $key) {
+                    if (!isset($data[$key])) {
+                        continue;
+                    }
+                    $value = $data[$key];
+                    if (is_array($value)) {
+                        $value = $value['message'] ?? $value['faultstring'] ?? $value['description']
+                            ?? $value[0]['message'] ?? json_encode($value, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+                    }
+                    if (is_scalar($value) && (string) $value !== '') {
+                        $api_error = (string) $value;
+                        break;
+                    }
+                }
+            }
+            if ($api_error === '') {
+                $api_error = __('No access token in response', 'manufacturersimports');
+            }
+            echo json_encode(['success' => false, 'message' => sprintf('HTTP %d — %s', $http_code, mb_substr($api_error, 0, 300))]);
         }
         exit;
     }
