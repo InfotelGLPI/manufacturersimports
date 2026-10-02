@@ -165,6 +165,7 @@ function plugin_manufacturersimports_install()
 
 function plugin_manufacturersimports_uninstall()
 {
+    global $DB;
 
     $migration = new Migration(PLUGIN_MANUFACTURERSIMPORTS_VERSION);
     $tables    = ["glpi_plugin_manufacturersimports_configs",
@@ -185,7 +186,9 @@ function plugin_manufacturersimports_uninstall()
 
     // The plugin key covers both the legacy "PluginManufacturersimports*" and the
     // namespaced "GlpiPlugin\Manufacturersimports\*" itemtypes of the cron tasks.
-    CronTask::unregister('Manufacturersimports');
+    // Deleted by its exact itemtype: CronTask::unregister()'s LIKE pattern does not match the
+    // backslashes of a namespaced itemtype, so the task stayed listed in the automatic actions.
+    $DB->delete('glpi_crontasks', ['itemtype' => Import::class]);
 
     // Search list columns of the config list; the legacy itemtype name is also purged.
     // The documents created by imports are kept on purpose: they are attached to the
