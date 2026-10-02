@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-28 10:45+0000\n"
+"POT-Creation-Date: 2026-10-01 15:47+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -70,7 +70,7 @@ msgstr ""
 msgid "Client secret"
 msgstr ""
 
-#: front/config.form.php:137 front/config.form.php:182
+#: front/config.form.php:137 front/config.form.php:204
 msgid "Connection failed/data download from manufacturer web site"
 msgstr ""
 
@@ -171,7 +171,7 @@ msgstr ""
 msgid "New warranty attached"
 msgstr ""
 
-#: front/config.form.php:145
+#: front/config.form.php:166
 msgid "No access token in response"
 msgstr ""
 
@@ -237,7 +237,7 @@ msgstr ""
 msgid "Selection too large, massive action disabled."
 msgstr ""
 
-#: front/config.form.php:184
+#: front/config.form.php:206
 #, php-format
 msgid "Server reachable (HTTP %d)"
 msgstr ""

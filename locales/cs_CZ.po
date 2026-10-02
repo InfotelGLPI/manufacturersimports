@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $soft $version\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-28 10:40+0000\n"
+"POT-Creation-Date: 2026-09-28 16:32+0000\n"
 "PO-Revision-Date: 2020-11-02 16:09+0000\n"
 "Last-Translator: Xavier CAILLAUD <thetsmr@gmail.com>, 2020\n"
 "Language-Team: Czech (Czech Republic) (https://www.transifex.com/infotelGLPI/"
@@ -76,7 +76,7 @@ msgstr "Identifikátor klienta"
 msgid "Client secret"
 msgstr "Heslo klienta"
 
-#: front/config.form.php:137 front/config.form.php:182
+#: front/config.form.php:137 front/config.form.php:204
 msgid "Connection failed/data download from manufacturer web site"
 msgstr ""
 "Spojení se nezdařilo / data se nepodařilo stáhnout z webových stránek výrobce"
@@ -180,7 +180,7 @@ msgstr "Nová záruka přiřazena ve výchozím nastavení (nahradit pokud 0)"
 msgid "New warranty attached"
 msgstr "Nová záruka připojena"
 
-#: front/config.form.php:145
+#: front/config.form.php:166
 msgid "No access token in response"
 msgstr ""
 
@@ -246,7 +246,7 @@ msgstr "Sekce pro ukládání dokumentů"
 msgid "Selection too large, massive action disabled."
 msgstr ""
 
-#: front/config.form.php:184
+#: front/config.form.php:206
 #, php-format
 msgid "Server reachable (HTTP %d)"
 msgstr ""

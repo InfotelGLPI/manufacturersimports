@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $soft\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-28 10:40+0000\n"
+"POT-Creation-Date: 2026-09-28 16:32+0000\n"
 "PO-Revision-Date: 2020-11-02 16:09+0000\n"
 "Last-Translator: Soporte Infraestructura Standby, 2023\n"
 "Language-Team: Spanish (Ecuador) (https://app.transifex.com/infotelGLPI/"
@@ -76,7 +76,7 @@ msgstr "ID de cliente"
 msgid "Client secret"
 msgstr "Secreto de cliente"
 
-#: front/config.form.php:137 front/config.form.php:182
+#: front/config.form.php:137 front/config.form.php:204
 msgid "Connection failed/data download from manufacturer web site"
 msgstr "Fallo de conexión/descarga de datos del sitio web del fabricante"
 
@@ -178,7 +178,7 @@ msgstr "Nueva garantía afectada por defecto (Sustituir si 0)"
 msgid "New warranty attached"
 msgstr "Nueva garantía adjuntada"
 
-#: front/config.form.php:145
+#: front/config.form.php:166
 msgid "No access token in response"
 msgstr ""
 
@@ -246,7 +246,7 @@ msgstr "Sección de registros de documentos"
 msgid "Selection too large, massive action disabled."
 msgstr ""
 
-#: front/config.form.php:184
+#: front/config.form.php:206
 #, php-format
 msgid "Server reachable (HTTP %d)"
 msgstr ""
