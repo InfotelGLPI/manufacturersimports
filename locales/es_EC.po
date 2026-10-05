@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $soft\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-28 16:32+0000\n"
+"POT-Creation-Date: 2026-10-05 08:34+0000\n"
 "PO-Revision-Date: 2020-11-02 16:09+0000\n"
 "Last-Translator: Soporte Infraestructura Standby, 2023\n"
 "Language-Team: Spanish (Ecuador) (https://app.transifex.com/infotelGLPI/"
@@ -88,7 +88,7 @@ msgstr "Paquete Curl PHP no instalado"
 msgid "Default supplier attached"
 msgstr "Proveedor por defecto adjunto"
 
-#: src/PostImport.php:352
+#: src/PostImport.php:347
 #, php-format
 msgid "Device %d skipped (access denied)"
 msgstr ""
@@ -109,11 +109,11 @@ msgstr ""
 msgid "Import"
 msgstr ""
 
-#: src/Import.php:175 src/PostImport.php:371
+#: src/Import.php:175 src/PostImport.php:366
 msgid "Import OK"
 msgstr "Importar OK"
 
-#: src/Import.php:178 src/PostImport.php:376
+#: src/Import.php:178 src/PostImport.php:371
 msgid "Import failed"
 msgstr "Error de importación"
 
@@ -121,11 +121,11 @@ msgstr "Error de importación"
 msgid "Import in progress"
 msgstr ""
 
-#: src/PostImport.php:896 src/PostImport.php:903
+#: src/PostImport.php:891 src/PostImport.php:898
 msgid "Imported from"
 msgstr ""
 
-#: src/PostImport.php:343
+#: src/PostImport.php:338
 #, php-format
 msgid "Importing device %1$d of %2$d"
 msgstr ""
@@ -279,7 +279,7 @@ msgstr "El proveedor elegido no es recursivo"
 msgid "Token URL is empty"
 msgstr ""
 
-#: src/PostImport.php:385
+#: src/PostImport.php:380
 #, php-format
 msgid "Total number of devices imported %s"
 msgstr "Número total de dispositivos importados 1%s"
@@ -310,7 +310,7 @@ msgstr "Importe de la garantía (Dell, HP)"
 msgid "Warranty page test"
 msgstr ""
 
-#: src/PostImport.php:897 src/PostImport.php:904
+#: src/PostImport.php:892 src/PostImport.php:899
 msgid "With the manufacturersimports plugin"
 msgstr "Con el plugin simports del fabricante"
 

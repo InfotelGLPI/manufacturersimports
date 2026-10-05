@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - manufacturersimports plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-28 16:32+0000\n"
+"POT-Creation-Date: 2026-10-05 08:34+0000\n"
 "PO-Revision-Date: 2020-01-17 15:32+0000\n"
 "Last-Translator: Kevin HAINRY <kevin.hainry@infotel.com>\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/"
@@ -83,7 +83,7 @@ msgstr "Curl PHP package not installed"
 msgid "Default supplier attached"
 msgstr "Default supplier attached"
 
-#: src/PostImport.php:352
+#: src/PostImport.php:347
 #, php-format
 msgid "Device %d skipped (access denied)"
 msgstr ""
@@ -104,11 +104,11 @@ msgstr ""
 msgid "Import"
 msgstr ""
 
-#: src/Import.php:175 src/PostImport.php:371
+#: src/Import.php:175 src/PostImport.php:366
 msgid "Import OK"
 msgstr "Import OK"
 
-#: src/Import.php:178 src/PostImport.php:376
+#: src/Import.php:178 src/PostImport.php:371
 msgid "Import failed"
 msgstr "Import failed"
 
@@ -116,11 +116,11 @@ msgstr "Import failed"
 msgid "Import in progress"
 msgstr "Import in progress"
 
-#: src/PostImport.php:896 src/PostImport.php:903
+#: src/PostImport.php:891 src/PostImport.php:898
 msgid "Imported from"
 msgstr ""
 
-#: src/PostImport.php:343
+#: src/PostImport.php:338
 #, php-format
 msgid "Importing device %1$d of %2$d"
 msgstr ""
@@ -270,7 +270,7 @@ msgstr "The choosen supplier is not recursive"
 msgid "Token URL is empty"
 msgstr ""
 
-#: src/PostImport.php:385
+#: src/PostImport.php:380
 #, php-format
 msgid "Total number of devices imported %s"
 msgstr "Total number of devices imported %s"
@@ -301,7 +301,7 @@ msgstr ""
 msgid "Warranty page test"
 msgstr ""
 
-#: src/PostImport.php:897 src/PostImport.php:904
+#: src/PostImport.php:892 src/PostImport.php:899
 msgid "With the manufacturersimports plugin"
 msgstr "With the manufacturersimports plugin"
 
