@@ -46,17 +46,17 @@ use Toolbox;
  */
 class Config extends CommonDBTM
 {
-    public static $rightname = "plugin_manufacturersimports";
+    public static string $rightname = "plugin_manufacturersimports";
     public static $types     = ['Computer', 'Monitor',
         'NetworkEquipment',
         'Peripheral', 'Printer'];
-    public $dohistory = true;
+    public bool $dohistory = true;
 
     /**
      * Secret fields stored encrypted at rest. Kept out of the history log so the
      * ciphertext never lands in glpi_logs.
      */
-    public $history_blacklist = ['supplier_key', 'supplier_secret'];
+    public array $history_blacklist = ['supplier_key', 'supplier_secret'];
 
     /**
      * Marker prefixing every GLPIKey-encrypted secret. Lets us tell an encrypted
@@ -845,7 +845,7 @@ class Config extends CommonDBTM
         $actions = parent::getSpecificMassiveActions($checkitem);
 
         if ($isadmin) {
-            if (Session::haveRight('transfer', READ)
+            if (Session::haveRight(\Transfer::$rightname, READ)
                 && Session::isMultiEntitiesMode()) {
                 $actions['Transfert'] = __('Transfer');
             }
@@ -879,7 +879,7 @@ class Config extends CommonDBTM
                 if ($input['itemtype'] == Config::class) {
                     // Same right as the one offering the action, and the target entity
                     // must be reachable: never move a config to a foreign entity.
-                    if (!Session::haveRight('transfer', READ)
+                    if (!Session::haveRight(\Transfer::$rightname, READ)
                         || !Session::haveAccessToEntity((int) ($input['entities_id'] ?? -1))) {
                         $res['noright'] += count(array_filter($input['item'] ?? []));
                         break;

@@ -46,7 +46,6 @@ if (container !== null) {
             form_data.append(key, val ?? '');
         }
     }
-    form_data.append('_glpi_csrf_token', getAjaxCsrfToken());
 
     const { ProgressIndicator } = await import(`${CFG_GLPI.root_doc}/js/modules/ProgressIndicator.js`);
 

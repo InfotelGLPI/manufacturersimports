@@ -48,7 +48,7 @@ use Toolbox;
  */
 class PreImport extends CommonDBTM
 {
-    public static $rightname = "plugin_manufacturersimports";
+    public static string $rightname = "plugin_manufacturersimports";
 
     public const IMPORTED     = 2;
     public const NOT_IMPORTED = 1;
@@ -297,7 +297,7 @@ class PreImport extends CommonDBTM
             'target'           => PLUGIN_MANUFACTURERSIMPORTS_WEBDIR . '/front/import.php',
             'config_url'       => PLUGIN_MANUFACTURERSIMPORTS_WEBDIR . '/front/config.form.php',
             'has_configs'      => count($manufacturer_opts) > 0,
-            'can_config'       => Session::haveRight('config', UPDATE),
+            'can_config'       => Session::haveRight(\Config::$rightname, UPDATE),
             'itemtype'         => $p['itemtype'],
             'manufacturers_id' => $p['manufacturers_id'],
             'imported'         => $p['imported'],

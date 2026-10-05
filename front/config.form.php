@@ -70,8 +70,8 @@ if (isset($_POST["add"])) {
 } elseif (isset($_POST["test_connection"])) {
     // Reaching out to an arbitrary URL server-side requires the plugin update
     // right, not merely being logged in (defends against SSRF).
-    Session::checkRight("plugin_manufacturersimports", UPDATE);
-    // CSRF is already validated (and preserved) by CheckCsrfListener for XHR requests.
+    Session::checkRight(Config::$rightname, UPDATE);
+    // CSRF is validated by CheckCsrfListener (request origin headers) for this POST request.
     header("Content-Type: application/json; charset=UTF-8");
 
     $token_url = trim($_POST['token_url'] ?? '');
@@ -208,7 +208,7 @@ if (isset($_POST["add"])) {
     exit;
 
 } elseif (isset($_POST["retrieve_warranty"])) {
-    Session::checkRight("plugin_manufacturersimports", UPDATE);
+    Session::checkRight(Config::$rightname, UPDATE);
 
     Config::retrieveOneWarranty($_POST["itemtype"], $_POST["items_id"]);
 

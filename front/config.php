@@ -31,7 +31,7 @@ use Glpi\Application\View\TemplateRenderer;
 use GlpiPlugin\Manufacturersimports\Config;
 use GlpiPlugin\Manufacturersimports\Menu;
 
-Session::checkRight("config", UPDATE);
+Session::checkRight(\Config::$rightname, UPDATE);
 
 if (Plugin::isPluginActive("manufacturersimports")) {
     Html::header(__('Setup'), '', "tools", Menu::class, "config");

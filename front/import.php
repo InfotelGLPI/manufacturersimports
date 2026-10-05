@@ -32,7 +32,7 @@ use GlpiPlugin\Manufacturersimports\Menu;
 use GlpiPlugin\Manufacturersimports\PreImport;
 
 $preimport = new PreImport();
-if (!$preimport->canView() && !Session::haveRight("config", UPDATE)) {
+if (!$preimport->canView() && !Session::haveRight(\Config::$rightname, UPDATE)) {
     throw new AccessDeniedHttpException();
 }
 
@@ -43,7 +43,7 @@ Html::header(
     Menu::class,
 );
 
-if ($preimport->canView() || Session::haveRight("config", UPDATE)) {
+if ($preimport->canView() || Session::haveRight(\Config::$rightname, UPDATE)) {
     $values = $_GET;
     if (isset($_POST["typechoice"])) {
         $values = $_POST;

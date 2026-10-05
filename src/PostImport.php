@@ -296,7 +296,7 @@ class PostImport extends CommonDBTM
                      . '&start=' . (int) ($values['start'] ?? 0)
                      . '&imported=' . (int) ($values['imported'] ?? 0);
 
-        $run_params = array_diff_key($values, ['_glpi_csrf_token' => '']);
+        $run_params = $values;
 
         TemplateRenderer::getInstance()->display('@manufacturersimports/massive_import_progress.html.twig', [
             'suppliername' => $config->fields['name'] ?? '',

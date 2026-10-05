@@ -37,7 +37,7 @@ use Session;
  */
 class Menu extends CommonGLPI
 {
-    public static $rightname = 'plugin_manufacturersimports';
+    public static string $rightname = 'plugin_manufacturersimports';
 
     /**
      * Get menu name
@@ -73,7 +73,7 @@ class Menu extends CommonGLPI
         $menu['links']['search']  = $plugin_page;
 
         if (Session::haveRight(static::$rightname, UPDATE)
-            || Session::haveRight("config", UPDATE)) {
+            || Session::haveRight(\Config::$rightname, UPDATE)) {
             //Entry icon in breadcrumb
             $menu['links']['config']                      = Config::getSearchURL(false);
             //Link to config page in admin plugins list

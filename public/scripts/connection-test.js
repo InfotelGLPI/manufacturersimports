@@ -30,11 +30,6 @@
  * The button carries its settings as data-* attributes: no template value reaches a script.
  */
 
-const getCsrfToken = () => {
-    const meta = document.querySelector('meta[property="glpi:csrf_token"]');
-    return meta !== null ? meta.getAttribute('content') : '';
-};
-
 /**
  * Render the outcome with the message as a text node: the server "message" (and any
  * raw/error body) must never be parsed as HTML.
@@ -79,7 +74,6 @@ document.addEventListener('click', (event) => {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-            'X-Glpi-Csrf-Token': getCsrfToken(),
             'X-Requested-With': 'XMLHttpRequest',
         },
         body: params,

@@ -56,12 +56,12 @@ function plugin_init_manufacturersimports()
         );
 
         //Display menu entry only if user has right to see it !
-        if (Session::haveRight('plugin_manufacturersimports', READ)) {
+        if (Session::haveRight(Config::$rightname, READ)) {
             $PLUGIN_HOOKS[Hooks::MENU_TOADD]['manufacturersimports']
                = ['tools' => Menu::class];
         }
 
-        if (Session::haveRight('config', UPDATE)) {
+        if (Session::haveRight(\Config::$rightname, UPDATE)) {
             $PLUGIN_HOOKS[Hooks::CONFIG_PAGE]['manufacturersimports'] = 'front/config.php';
             $PLUGIN_HOOKS[Hooks::USE_MASSIVE_ACTION]['manufacturersimports'] = 1;
         }
@@ -99,8 +99,8 @@ function plugin_version_manufacturersimports()
         'homepage'     => 'https://github.com/InfotelGLPI/manufacturersimports/',
         'requirements' => [
             'glpi' => [
-                'min' => '11.0',
-                'max' => '12.0',
+                'min' => '11.0.99',
+                'max' => '12.0.99',
                 'dev' => false,
             ],
             'php'  => [

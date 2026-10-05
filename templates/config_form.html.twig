@@ -30,7 +30,7 @@
 {% set params = params|default({})|merge({'target': action_url}) %}
 
 {# Preconfiguration card — outside the main form. A plain GET reload of the form page
-   with ?preconfig=<supplier>: it changes nothing server-side, hence no CSRF token #}
+   with ?preconfig=<supplier>: it changes nothing server-side #}
 <div class="card mb-3">
     <form method="get" action="{{ action_url }}"
           class="card-body d-flex align-items-center gap-3 flex-wrap">

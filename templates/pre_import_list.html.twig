@@ -42,7 +42,6 @@
 
     <form method="post" name="massiveaction_form" id="massiveaction_form"
           action="{{ plugin_webdir }}/front/massiveaction.php">
-        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
 
         {{ include('components/datatable.html.twig', {
             'columns':            columns,

@@ -29,7 +29,6 @@
 <div class="alert alert-warning d-flex align-items-center gap-2">
     <span>{{ __('You did not import the warranty for this item. Do you want to get it back?', 'manufacturersimports') }}</span>
     <form method="post" action="{{ target }}" class="d-inline">
-        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
         <input type="hidden" name="itemtype" value="{{ itemtype }}">
         <input type="hidden" name="items_id" value="{{ items_id }}">
         <button type="submit" name="retrieve_warranty" value="1" class="btn btn-sm btn-ghost-secondary"
