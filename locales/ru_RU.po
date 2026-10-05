@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - manufacturersimports plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-05 08:49+0000\n"
+"POT-Creation-Date: 2026-10-05 14:17+0000\n"
 "PO-Revision-Date: 2020-01-17 15:32+0000\n"
 "Last-Translator: Kevin HAINRY <kevin.hainry@infotel.com>\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/infotelGLPI/"
@@ -29,7 +29,7 @@ msgstr ""
 msgid "Access token API address"
 msgstr ""
 
-#: templates/pre_import_list.html.twig:75
+#: templates/pre_import_list.html.twig:74
 msgid "Actions"
 msgstr ""
 
@@ -58,11 +58,11 @@ msgstr ""
 msgid "Back"
 msgstr ""
 
-#: templates/pre_import_list.html.twig:68
+#: templates/pre_import_list.html.twig:67
 msgid "Check all"
 msgstr ""
 
-#: templates/search_form.html.twig:33
+#: templates/search_form.html.twig:32
 msgid "Choose inventory type and manufacturer"
 msgstr "Выберите тип оборудования и производителя"
 
@@ -104,7 +104,7 @@ msgstr "Устройства не импортированы"
 msgid "Devices with import error"
 msgstr ""
 
-#: templates/pre_import_list.html.twig:78
+#: templates/pre_import_list.html.twig:77
 msgid "Import"
 msgstr ""
 
@@ -186,7 +186,7 @@ msgstr ""
 msgid "No device finded"
 msgstr "Устройства не надены"
 
-#: templates/search_form.html.twig:60 templates/search_form.html.twig:64
+#: templates/search_form.html.twig:59 templates/search_form.html.twig:63
 msgid "No manufacturer available. Please configure at least one manufacturer"
 msgstr ""
 "Нет доступных производителей. Пожалуйста, настройте по крайней мере, одного "
@@ -208,9 +208,9 @@ msgstr ""
 msgid "Please activate the plugin"
 msgstr "Активируйте плагин"
 
-#: templates/search_form.html.twig:54
+#: templates/search_form.html.twig:53
 #: templates/massive_action_transfer.html.twig:31
-#: templates/pre_import_list.html.twig:88
+#: templates/pre_import_list.html.twig:87
 msgctxt "button"
 msgid "Post"
 msgstr ""
@@ -223,12 +223,12 @@ msgstr ""
 msgid "Problem during the importation"
 msgstr "Проблема при импорте"
 
-#: templates/pre_import_list.html.twig:80
+#: templates/pre_import_list.html.twig:79
 msgid "Reset the import"
 msgstr "Сброс импорта"
 
-#: src/Config.php:959 templates/retrieve_warranty_alert.html.twig:36
-#: templates/retrieve_warranty_alert.html.twig:38
+#: src/Config.php:959 templates/retrieve_warranty_alert.html.twig:35
+#: templates/retrieve_warranty_alert.html.twig:37
 msgctxt "button"
 msgid "Retrieve warranty from manufacturer"
 msgstr ""
@@ -242,7 +242,7 @@ msgstr ""
 msgid "Section for document records"
 msgstr "Раздел для записи документа"
 
-#: templates/pre_import_list.html.twig:94
+#: templates/pre_import_list.html.twig:93
 msgid "Selection too large, massive action disabled."
 msgstr ""
 
@@ -285,12 +285,12 @@ msgstr ""
 msgid "Total number of devices imported %s"
 msgstr "Общее количество импортированных устройств %s"
 
-#: templates/pre_import_list.html.twig:60
+#: templates/pre_import_list.html.twig:59
 #, php-format
 msgid "Total number of devices to import %s"
 msgstr "Общее количество устройств для импорта %s"
 
-#: templates/pre_import_list.html.twig:71
+#: templates/pre_import_list.html.twig:70
 msgid "Uncheck all"
 msgstr ""
 

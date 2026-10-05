@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-05 08:49+0000\n"
+"POT-Creation-Date: 2026-10-05 14:17+0000\n"
 "PO-Revision-Date: 2020-11-02 16:09+0000\n"
 "Last-Translator: Kaya Zeren <kayazeren@gmail.com>, 2026\n"
 "Language-Team: Turkish (Turkey) (https://app.transifex.com/infotelGLPI/"
@@ -31,7 +31,7 @@ msgstr "API bağlantı sınaması"
 msgid "Access token API address"
 msgstr "Erişim kodu API adresi"
 
-#: templates/pre_import_list.html.twig:75
+#: templates/pre_import_list.html.twig:74
 msgid "Actions"
 msgstr "İşlemler"
 
@@ -60,11 +60,11 @@ msgstr "Otomatik"
 msgid "Back"
 msgstr "Geri"
 
-#: templates/pre_import_list.html.twig:68
+#: templates/pre_import_list.html.twig:67
 msgid "Check all"
 msgstr "Tümünü seç"
 
-#: templates/search_form.html.twig:33
+#: templates/search_form.html.twig:32
 msgid "Choose inventory type and manufacturer"
 msgstr "Envanter türü ve üreticiyi seçin"
 
@@ -105,7 +105,7 @@ msgstr "Aygıtlar içe aktarılmadı"
 msgid "Devices with import error"
 msgstr "İçe aktarma sorunları olan aygıtlar"
 
-#: templates/pre_import_list.html.twig:78
+#: templates/pre_import_list.html.twig:77
 msgid "Import"
 msgstr "İçe aktar"
 
@@ -185,7 +185,7 @@ msgstr "Yanıtta bir erişim kodu yok"
 msgid "No device finded"
 msgstr "Herhangi bir aygıt bulunamadı"
 
-#: templates/search_form.html.twig:60 templates/search_form.html.twig:64
+#: templates/search_form.html.twig:59 templates/search_form.html.twig:63
 msgid "No manufacturer available. Please configure at least one manufacturer"
 msgstr ""
 "Kullanılabilecek bir üretici bulunamadı. Lütfen en az bir üretici ekleyin"
@@ -206,9 +206,9 @@ msgstr "İşlem tamamlandı"
 msgid "Please activate the plugin"
 msgstr "Lütfen eklentiyi etkinleştirin"
 
-#: templates/search_form.html.twig:54
+#: templates/search_form.html.twig:53
 #: templates/massive_action_transfer.html.twig:31
-#: templates/pre_import_list.html.twig:88
+#: templates/pre_import_list.html.twig:87
 msgctxt "button"
 msgid "Post"
 msgstr "Gönder"
@@ -221,12 +221,12 @@ msgstr "Ön yapılandırma"
 msgid "Problem during the importation"
 msgstr "İçe aktarma sırasında sorun çıktı"
 
-#: templates/pre_import_list.html.twig:80
+#: templates/pre_import_list.html.twig:79
 msgid "Reset the import"
 msgstr "İçe aktarmayı sıfırla"
 
-#: src/Config.php:959 templates/retrieve_warranty_alert.html.twig:36
-#: templates/retrieve_warranty_alert.html.twig:38
+#: src/Config.php:959 templates/retrieve_warranty_alert.html.twig:35
+#: templates/retrieve_warranty_alert.html.twig:37
 msgctxt "button"
 msgid "Retrieve warranty from manufacturer"
 msgstr "Üreticiden garanti bilgilerini al"
@@ -240,7 +240,7 @@ msgstr "Kaydet"
 msgid "Section for document records"
 msgstr "Belge kayıtları bölümü"
 
-#: templates/pre_import_list.html.twig:94
+#: templates/pre_import_list.html.twig:93
 msgid "Selection too large, massive action disabled."
 msgstr "Seçim çok büyük, toplu işlem kullanılmıyor."
 
@@ -281,12 +281,12 @@ msgstr "Kod adresi boş"
 msgid "Total number of devices imported %s"
 msgstr "Toplam %s aygıt içe aktarıldı"
 
-#: templates/pre_import_list.html.twig:60
+#: templates/pre_import_list.html.twig:59
 #, php-format
 msgid "Total number of devices to import %s"
 msgstr "İçe aktarılacak toplam aygıt sayısı %s"
 
-#: templates/pre_import_list.html.twig:71
+#: templates/pre_import_list.html.twig:70
 msgid "Uncheck all"
 msgstr "Tümünü bırak"
 
