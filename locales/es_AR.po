@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $soft\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-05 08:49+0000\n"
+"POT-Creation-Date: 2026-10-05 14:17+0000\n"
 "PO-Revision-Date: 2020-11-02 16:09+0000\n"
 "Last-Translator: Luis Angel Uriarte <luisuriarte@gmail.com>, 2020\n"
 "Language-Team: Spanish (Argentina) (https://www.transifex.com/infotelGLPI/"
@@ -31,7 +31,7 @@ msgstr ""
 msgid "Access token API address"
 msgstr "Dirección de API de token de acceso"
 
-#: templates/pre_import_list.html.twig:75
+#: templates/pre_import_list.html.twig:74
 msgid "Actions"
 msgstr ""
 
@@ -60,11 +60,11 @@ msgstr ""
 msgid "Back"
 msgstr ""
 
-#: templates/pre_import_list.html.twig:68
+#: templates/pre_import_list.html.twig:67
 msgid "Check all"
 msgstr ""
 
-#: templates/search_form.html.twig:33
+#: templates/search_form.html.twig:32
 msgid "Choose inventory type and manufacturer"
 msgstr "Elegir tipo de elemento y fabricante"
 
@@ -105,7 +105,7 @@ msgstr "Dispositivo no importado"
 msgid "Devices with import error"
 msgstr ""
 
-#: templates/pre_import_list.html.twig:78
+#: templates/pre_import_list.html.twig:77
 msgid "Import"
 msgstr ""
 
@@ -185,7 +185,7 @@ msgstr ""
 msgid "No device finded"
 msgstr "Dispositivo no buscado "
 
-#: templates/search_form.html.twig:60 templates/search_form.html.twig:64
+#: templates/search_form.html.twig:59 templates/search_form.html.twig:63
 msgid "No manufacturer available. Please configure at least one manufacturer"
 msgstr "Fabricante no encontrado. Por favor configure al menos un fabricante"
 
@@ -205,9 +205,9 @@ msgstr ""
 msgid "Please activate the plugin"
 msgstr "Por favor activar el plugin"
 
-#: templates/search_form.html.twig:54
+#: templates/search_form.html.twig:53
 #: templates/massive_action_transfer.html.twig:31
-#: templates/pre_import_list.html.twig:88
+#: templates/pre_import_list.html.twig:87
 msgctxt "button"
 msgid "Post"
 msgstr ""
@@ -220,12 +220,12 @@ msgstr ""
 msgid "Problem during the importation"
 msgstr "Problema durante la importación"
 
-#: templates/pre_import_list.html.twig:80
+#: templates/pre_import_list.html.twig:79
 msgid "Reset the import"
 msgstr "Borrar importación"
 
-#: src/Config.php:959 templates/retrieve_warranty_alert.html.twig:36
-#: templates/retrieve_warranty_alert.html.twig:38
+#: src/Config.php:959 templates/retrieve_warranty_alert.html.twig:35
+#: templates/retrieve_warranty_alert.html.twig:37
 msgctxt "button"
 msgid "Retrieve warranty from manufacturer"
 msgstr ""
@@ -239,7 +239,7 @@ msgstr ""
 msgid "Section for document records"
 msgstr "Sección para guardados de documentos"
 
-#: templates/pre_import_list.html.twig:94
+#: templates/pre_import_list.html.twig:93
 msgid "Selection too large, massive action disabled."
 msgstr ""
 
@@ -280,12 +280,12 @@ msgstr ""
 msgid "Total number of devices imported %s"
 msgstr "Número total de dispositivos importados %s"
 
-#: templates/pre_import_list.html.twig:60
+#: templates/pre_import_list.html.twig:59
 #, php-format
 msgid "Total number of devices to import %s"
 msgstr "Total de números de dispositivos importados %s"
 
-#: templates/pre_import_list.html.twig:71
+#: templates/pre_import_list.html.twig:70
 msgid "Uncheck all"
 msgstr ""
 
