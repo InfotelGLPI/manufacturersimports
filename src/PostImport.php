@@ -37,6 +37,7 @@ use Glpi\Exception\Http\AccessDeniedHttpException;
 use Glpi\Message\MessageType;
 use Glpi\Progress\StoredProgressIndicator;
 use GLPIKey;
+use GlpiPlugin\Manufacturersimports\Manufacturers\HP;
 use Html;
 use Infocom;
 use Document;
@@ -180,7 +181,8 @@ class PostImport extends CommonDBTM
         }
 
         if ($options['suppliername'] == Config::HP) {
-            if (!empty($options['token'])) {
+            // Polling an asynchronous HP job is a plain GET with the bearer token set above
+            if (!empty($options['token']) && empty($options['http_get'])) {
 
                 $authorization = "Authorization: Bearer " . $options['token']; // Prepare the authorisation token
                 curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json', $authorization ]);
@@ -756,6 +758,10 @@ class PostImport extends CommonDBTM
         //        }
         else {
             $contents = self::cURLData($options);
+            // The synchronous HP query fails for some serials: the asynchronous job API still answers
+            if ($suppliername == Config::HP && HP::isQueryRejected($contents)) {
+                $contents = HP::getWarrantyFromJob($options) ?? $contents;
+            }
         }
         if (
             isset($_SESSION['glpi_use_mode'])

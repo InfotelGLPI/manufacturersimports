@@ -38,6 +38,12 @@ use Search;
  */
 class HP extends Manufacturer
 {
+    /** Maximum wait, in seconds, for an asynchronous warranty job */
+    private const JOB_TIMEOUT = 60;
+
+    /** Delay, in seconds, between two status checks of an asynchronous warranty job */
+    private const JOB_POLL_INTERVAL = 5;
+
     /**
      * @see Manufacturer::showDocTitle()
      */
@@ -101,6 +107,66 @@ class HP extends Manufacturer
             $token = $response['access_token'];
         }
         return $token;
+    }
+
+    /**
+     * Whether the synchronous warranty query was turned down by HP: it then answers HTTP 200
+     * with a {"message": "..."} object instead of the list of products.
+     *
+     * @param mixed $contents
+     */
+    public static function isQueryRejected($contents): bool
+    {
+        if (!is_string($contents) || $contents === '') {
+            return false;
+        }
+        $info = json_decode($contents, true);
+
+        return is_array($info) && !array_is_list($info) && isset($info['message']);
+    }
+
+    /**
+     * Fallback on the asynchronous job API when the synchronous query is turned down: submit the
+     * serial, poll the job until HP completes it, then read its results (same payload as the
+     * synchronous query). Gives up after JOB_TIMEOUT seconds.
+     *
+     * @param array $options cURLData() options of the synchronous query (url, sn, pn, token)
+     *
+     * @return string|null the warranty payload, null when the job did not complete in time
+     */
+    public static function getWarrantyFromJob(array $options): ?string
+    {
+        if (empty($options['token']) || empty($options['sn'])) {
+            return null;
+        }
+        // https://warranty.api.hp.com/productwarranty/v2/queries -> .../v2/jobs
+        $jobs_url = preg_replace('#/queries/?$#', '/jobs', (string) $options['url']);
+        if ($jobs_url === null || $jobs_url === $options['url']) {
+            return null;
+        }
+
+        $job = json_decode((string) PostImport::cURLData(['url' => $jobs_url] + $options), true);
+        $job_id = is_array($job) ? (string) ($job['jobId'] ?? '') : '';
+        // The id is concatenated into the URL path: only accept a plain UUID
+        if (preg_match('/^[0-9a-f-]{36}$/i', $job_id) !== 1) {
+            return null;
+        }
+
+        // The massive import runs under a time limit sized for synchronous calls: restart it
+        // so that waiting for the job cannot abort the whole run
+        set_time_limit(self::JOB_TIMEOUT + 60);
+
+        $get = ['http_get' => true, 'post' => []] + $options;
+        $deadline = time() + self::JOB_TIMEOUT;
+        while (time() < $deadline) {
+            sleep(self::JOB_POLL_INTERVAL);
+            $status = json_decode((string) PostImport::cURLData(['url' => "$jobs_url/$job_id"] + $get), true);
+            if (($status['status'] ?? '') === 'Completed') {
+                $results = PostImport::cURLData(['url' => "$jobs_url/$job_id/results"] + $get);
+                return is_string($results) && $results !== '' ? $results : null;
+            }
+        }
+        return null;
     }
 
     /**
