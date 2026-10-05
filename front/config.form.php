@@ -129,7 +129,7 @@ if (isset($_POST["add"])) {
         $response   = curl_exec($ch);
         $http_code  = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $curl_error = curl_error($ch);
-        curl_close($ch);
+        unset($ch);
 
         if ($curl_error !== '') {
             // The cURL detail (refused / timeout / TLS) is a reachability oracle: log it only.
@@ -194,7 +194,7 @@ if (isset($_POST["add"])) {
     curl_exec($ch);
     $http_code  = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
     $curl_error = curl_error($ch);
-    curl_close($ch);
+    unset($ch);
 
     if ($curl_error !== '' || $http_code === 0) {
         if ($curl_error !== '') {

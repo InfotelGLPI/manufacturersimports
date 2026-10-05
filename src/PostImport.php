@@ -260,13 +260,8 @@ class PostImport extends CommonDBTM
             Toolbox::logInfo($errors);
             Toolbox::logInfo($response);
         }
-        if (!$options["download"] && !$data) {
-            $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            curl_close($ch); // make sure we closeany current curl sessions
-            //die($http_code.' Unable to connect to server. Please come back later.');
-        } else {
-            curl_close($ch);
-        }
+        // The handle is released when it goes out of scope (curl_close() is a no-op since PHP 8.0)
+        unset($ch);
 
         // Drop the per-request cookie jar so no supplier session cookie lingers.
         if ($cookiefile !== false && file_exists($cookiefile)) {
