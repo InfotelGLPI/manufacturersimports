@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - manufacturersimports plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-05 08:34+0000\n"
+"POT-Creation-Date: 2026-10-05 08:49+0000\n"
 "PO-Revision-Date: 2020-01-17 15:32+0000\n"
 "Last-Translator: Kevin HAINRY <kevin.hainry@infotel.com>\n"
 "Language-Team: Portuguese (Portugal) (http://www.transifex.com/infotelGLPI/"
@@ -77,7 +77,7 @@ msgstr ""
 msgid "Connection failed/data download from manufacturer web site"
 msgstr "Falha na ligação/descarga dos dados do web site do fabricante "
 
-#: front/config.form.php:90 src/PostImport.php:88
+#: front/config.form.php:90 src/PostImport.php:89
 msgid "Curl PHP package not installed"
 msgstr "Pacote Curl do PHP não instalado"
 
@@ -85,7 +85,7 @@ msgstr "Pacote Curl do PHP não instalado"
 msgid "Default supplier attached"
 msgstr "Fornecedor por omissão anexado"
 
-#: src/PostImport.php:347
+#: src/PostImport.php:349
 #, php-format
 msgid "Device %d skipped (access denied)"
 msgstr ""
@@ -106,11 +106,11 @@ msgstr ""
 msgid "Import"
 msgstr ""
 
-#: src/Import.php:175 src/PostImport.php:366
+#: src/Import.php:175 src/PostImport.php:368
 msgid "Import OK"
 msgstr "Importação OK"
 
-#: src/Import.php:178 src/PostImport.php:371
+#: src/Import.php:178 src/PostImport.php:373
 msgid "Import failed"
 msgstr "Falha na importação"
 
@@ -118,11 +118,11 @@ msgstr "Falha na importação"
 msgid "Import in progress"
 msgstr "Importação em progresso"
 
-#: src/PostImport.php:891 src/PostImport.php:898
+#: src/PostImport.php:897 src/PostImport.php:904
 msgid "Imported from"
 msgstr ""
 
-#: src/PostImport.php:338
+#: src/PostImport.php:340
 #, php-format
 msgid "Importing device %1$d of %2$d"
 msgstr ""
@@ -132,7 +132,7 @@ msgstr ""
 msgid "Importing from %s"
 msgstr ""
 
-#: front/config.form.php:86 src/PostImport.php:110
+#: front/config.form.php:86 src/PostImport.php:111
 msgid "Invalid or forbidden URL"
 msgstr ""
 
@@ -273,7 +273,7 @@ msgstr "O fornecedor escolhido não é recursivo"
 msgid "Token URL is empty"
 msgstr ""
 
-#: src/PostImport.php:380
+#: src/PostImport.php:382
 #, php-format
 msgid "Total number of devices imported %s"
 msgstr "Número total de dispositivos importados %s"
@@ -304,7 +304,7 @@ msgstr ""
 msgid "Warranty page test"
 msgstr ""
 
-#: src/PostImport.php:892 src/PostImport.php:899
+#: src/PostImport.php:898 src/PostImport.php:905
 msgid "With the manufacturersimports plugin"
 msgstr "Com o plugin manufacturersimports"
 
