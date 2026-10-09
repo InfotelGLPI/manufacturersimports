@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $soft $version\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-05 14:17+0000\n"
+"POT-Creation-Date: 2026-10-09 07:21+0000\n"
 "PO-Revision-Date: 2020-11-02 16:09+0000\n"
 "Last-Translator: Xavier CAILLAUD <thetsmr@gmail.com>, 2020\n"
 "Language-Team: Czech (Czech Republic) (https://www.transifex.com/infotelGLPI/"
@@ -23,7 +23,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n "
 "<= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
 
-#: src/Config.php:563
+#: src/Config.php:610
 msgid "API connection test"
 msgstr ""
 
@@ -35,7 +35,7 @@ msgstr "Adresa tokenu pro přístup k aplikačnímu programovému rozhraní (API
 msgid "Actions"
 msgstr ""
 
-#: src/Config.php:495 templates/config_form.html.twig:165
+#: src/Config.php:542 templates/config_form.html.twig:165
 msgid "Add a comment line"
 msgstr "Přidat řádek s komentářem"
 
@@ -43,11 +43,11 @@ msgstr "Přidat řádek s komentářem"
 msgid "Already imported"
 msgstr "Už naimportováno"
 
-#: front/config.form.php:143
+#: front/config.form.php:146
 msgid "Authentication successful (token received)"
 msgstr ""
 
-#: src/Config.php:478 templates/config_form.html.twig:133
+#: src/Config.php:525 templates/config_form.html.twig:133
 msgid "Auto add of document"
 msgstr "Automaticky přidat dokument"
 
@@ -76,7 +76,7 @@ msgstr "Identifikátor klienta"
 msgid "Client secret"
 msgstr "Heslo klienta"
 
-#: front/config.form.php:137 front/config.form.php:204
+#: front/config.form.php:140 front/config.form.php:210
 msgid "Connection failed/data download from manufacturer web site"
 msgstr ""
 "Spojení se nezdařilo / data se nepodařilo stáhnout z webových stránek výrobce"
@@ -85,11 +85,11 @@ msgstr ""
 msgid "Curl PHP package not installed"
 msgstr "Není nainstalován balíček PHP Curl"
 
-#: src/Config.php:461 templates/config_form.html.twig:93
+#: src/Config.php:508 templates/config_form.html.twig:93
 msgid "Default supplier attached"
 msgstr "Výchozí dodavatel připojen"
 
-#: src/PostImport.php:349
+#: src/PostImport.php:342
 #, php-format
 msgid "Device %d skipped (access denied)"
 msgstr ""
@@ -110,11 +110,11 @@ msgstr ""
 msgid "Import"
 msgstr ""
 
-#: src/Import.php:175 src/PostImport.php:368
+#: src/Import.php:175 src/PostImport.php:361
 msgid "Import OK"
 msgstr "Import proběhl úspěšně"
 
-#: src/Import.php:178 src/PostImport.php:373
+#: src/Import.php:178 src/PostImport.php:366
 msgid "Import failed"
 msgstr "Import se nezdařil"
 
@@ -122,11 +122,11 @@ msgstr "Import se nezdařil"
 msgid "Import in progress"
 msgstr "Probíhá import"
 
-#: src/PostImport.php:897 src/PostImport.php:904
+#: src/PostImport.php:890 src/PostImport.php:897
 msgid "Imported from"
 msgstr ""
 
-#: src/PostImport.php:340
+#: src/PostImport.php:333
 #, php-format
 msgid "Importing device %1$d of %2$d"
 msgstr ""
@@ -156,7 +156,7 @@ msgstr ""
 msgid "Manufacturer information"
 msgstr "Informace výrobce"
 
-#: src/Config.php:452 templates/config_form.html.twig:71
+#: src/Config.php:499 templates/config_form.html.twig:71
 msgid "Manufacturer web address"
 msgstr "Webová adresa výrobce"
 
@@ -176,11 +176,11 @@ msgstr ""
 msgid "New warranty affected by default (Replace if 0)"
 msgstr "Nová záruka přiřazena ve výchozím nastavení (nahradit pokud 0)"
 
-#: src/PreImport.php:399 src/Config.php:469
+#: src/PreImport.php:399 src/Config.php:516
 msgid "New warranty attached"
 msgstr "Nová záruka připojena"
 
-#: front/config.form.php:166
+#: front/config.form.php:169
 msgid "No access token in response"
 msgstr ""
 
@@ -227,7 +227,7 @@ msgstr "Problém při importu"
 msgid "Reset the import"
 msgstr "Spustit import znovu"
 
-#: src/Config.php:959 templates/retrieve_warranty_alert.html.twig:35
+#: src/Config.php:1006 templates/retrieve_warranty_alert.html.twig:35
 #: templates/retrieve_warranty_alert.html.twig:37
 msgctxt "button"
 msgid "Retrieve warranty from manufacturer"
@@ -246,7 +246,7 @@ msgstr "Sekce pro ukládání dokumentů"
 msgid "Selection too large, massive action disabled."
 msgstr ""
 
-#: front/config.form.php:206
+#: front/config.form.php:212
 #, php-format
 msgid "Server reachable (HTTP %d)"
 msgstr ""
@@ -264,11 +264,11 @@ msgstr[1] "Importy od dodavatelů"
 msgstr[2] "Importů od dodavatelů"
 msgstr[3] "Importy od dodavatelů"
 
-#: src/Config.php:559
+#: src/Config.php:606
 msgid "Test connection"
 msgstr ""
 
-#: src/Config.php:560
+#: src/Config.php:607
 msgid "Test warranty page"
 msgstr ""
 
@@ -280,7 +280,7 @@ msgstr "Výběr dodavatele není rekurzivní"
 msgid "Token URL is empty"
 msgstr ""
 
-#: src/PostImport.php:382
+#: src/PostImport.php:375
 #, php-format
 msgid "Total number of devices imported %s"
 msgstr "Celkový počet naimportovaných zařízení %s"
@@ -309,11 +309,11 @@ msgstr ""
 msgid "Warranty import (Dell, HP)"
 msgstr ""
 
-#: src/Config.php:564
+#: src/Config.php:611
 msgid "Warranty page test"
 msgstr ""
 
-#: src/PostImport.php:898 src/PostImport.php:905
+#: src/PostImport.php:891 src/PostImport.php:898
 msgid "With the manufacturersimports plugin"
 msgstr "Se zásuvným modulem import od výrobců"
 
