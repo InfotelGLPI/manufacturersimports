@@ -129,6 +129,9 @@ if (isset($_POST["add"])) {
         $response   = curl_exec($ch);
         $http_code  = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $curl_error = curl_error($ch);
+        if ($curl_error !== '') {
+            Config::logCurlDebug($ch, 'connection test (oauth)', $resolve);
+        }
         unset($ch);
 
         if ($curl_error !== '') {
@@ -194,6 +197,9 @@ if (isset($_POST["add"])) {
     curl_exec($ch);
     $http_code  = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
     $curl_error = curl_error($ch);
+    if ($curl_error !== '' || $http_code === 0) {
+        Config::logCurlDebug($ch, 'connection test (head)', $resolve);
+    }
     unset($ch);
 
     if ($curl_error !== '' || $http_code === 0) {
