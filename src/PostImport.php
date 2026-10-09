@@ -253,15 +253,8 @@ class PostImport extends CommonDBTM
             }
         }
 
-        if (
-            isset($_SESSION['glpi_use_mode'])
-            && ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE)
-        ) {
-            $errors   = curl_error($ch);
-            $response = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            Toolbox::logInfo($errors);
-            Toolbox::logInfo($response);
-        }
+        // Debug mode: pinned addresses, IP reached, proxy and timings of the request
+        Config::logCurlDebug($ch, 'warranty request (' . $options['suppliername'] . ')', $pinned_resolve);
         // The handle is released when it goes out of scope (curl_close() is a no-op since PHP 8.0)
         unset($ch);
 

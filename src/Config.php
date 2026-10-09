@@ -211,6 +211,14 @@ class Config extends CommonDBTM
         $host  = $parts['host'] ?? '';
         $port  = $parts['port'] ?? 443;
 
+        // Prefer the IPv4 addresses when the host has some: a server without IPv6 route
+        // fails with "Couldn't connect to server" when curl picks a pinned IPv6 address,
+        // while an unpinned request would simply have used IPv4.
+        $ipv4 = array_values(array_filter($ips, static fn($ip) => strpos($ip, ':') === false));
+        if ($ipv4 !== []) {
+            $ips = $ipv4;
+        }
+
         $entries = [];
         foreach ($ips as $ip) {
             // Bracket IPv6 literals as required by the HOST:PORT:ADDRESS format.
@@ -219,6 +227,45 @@ class Config extends CommonDBTM
         }
 
         return $entries;
+    }
+
+    /**
+     * Debug mode only: log the details of a failed connection to a manufacturer API (pinned
+     * addresses, IP actually reached, proxy, timings), to tell a DNS, IPv6, proxy, firewall or
+     * TLS issue apart. Outside debug mode only the short cURL message is logged, as before.
+     *
+     * @param \CurlHandle $ch      handle after curl_exec()
+     * @param string      $context where the request was made
+     * @param string[]    $resolve CURLOPT_RESOLVE entries used, if any
+     *
+     * @return void
+     */
+    public static function logCurlDebug($ch, string $context, array $resolve = []): void
+    {
+        global $CFG_GLPI;
+
+        if (($_SESSION['glpi_use_mode'] ?? 0) != Session::DEBUG_MODE) {
+            return;
+        }
+
+        $info = curl_getinfo($ch);
+        Toolbox::logInfo(sprintf(
+            "manufacturersimports %s (debug): url=%s | curl errno=%d error=%s | http=%d | primary_ip=%s port=%s"
+            . " | pinned=%s | proxy=%s | times: namelookup=%.3fs connect=%.3fs tls=%.3fs total=%.3fs",
+            $context,
+            $info['url'] ?? '',
+            curl_errno($ch),
+            curl_error($ch) ?: '-',
+            $info['http_code'] ?? 0,
+            ($info['primary_ip'] ?? '') ?: '-',
+            ($info['primary_port'] ?? '') ?: '-',
+            $resolve === [] ? 'none' : implode(', ', $resolve),
+            !empty($CFG_GLPI['proxy_name']) ? $CFG_GLPI['proxy_name'] . ':' . $CFG_GLPI['proxy_port'] : 'none',
+            $info['namelookup_time'] ?? 0,
+            $info['connect_time'] ?? 0,
+            $info['appconnect_time'] ?? 0,
+            $info['total_time'] ?? 0,
+        ));
     }
 
     //Manufacturers constants

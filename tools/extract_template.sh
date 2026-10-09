@@ -81,7 +81,9 @@ for file in $(cd "$WORKING_DIR" && find . -regextype posix-egrep -not -regex "$E
 do
     # 1. Convert file content to replace "{{ function(.*) }}" by "<?php function(.*); ?>" and extract strings via std input
     # 2. Replace "standard input:line_no" by file location in po file comments
-    cat $file | perl -0pe "s/\{\{(.*?)\}\}/<?php \1; ?>/gism" | xgettext - \
+    # The "{% %}" tags are converted too: a string translated in "{% set label = __('...') %}"
+    # was otherwise not extracted, and ended up obsolete (#~) in the .po files.
+    cat $file | perl -0pe "s/\{\{(.*?)\}\}/<?php \1; ?>/gism; s/\{%-?(.*?)-?%\}/<?php \1; ?>/gism" | xgettext - \
         -o locales/glpi.pot \
         -L PHP \
         --add-comments=TRANS \
