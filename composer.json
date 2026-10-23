@@ -2,15 +2,16 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "config": {
+        "platform-check": false,
         "autoloader-suffix": "PluginManufacturersimports",
         "optimize-autoloader": true,
         "platform": {
-            "php": "8.2.99"
+            "php": "8.3.99"
         },
         "sort-packages": true
     },
     "require": {
-        "php": ">=8.2"
+        "php": ">=8.3"
     },
     "scripts": {
         "lint": "../../vendor/bin/parallel-lint --exclude vendor --exclude node_modules .",

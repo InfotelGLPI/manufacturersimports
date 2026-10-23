@@ -32,6 +32,7 @@ namespace GlpiPlugin\Manufacturersimports\Manufacturers;
 use GlpiPlugin\Manufacturersimports\Config;
 use GlpiPlugin\Manufacturersimports\PostImport;
 use Search;
+use Toolbox;
 
 /**
  * Class HP
@@ -74,7 +75,7 @@ class HP extends Manufacturer
             $info["name"] = Config::HP;
             $info['supplier_url'] = "https://support.hp.com/fr-fr/check-warranty/";
             $info['token_url'] = "https://warranty.api.hp.com/oauth/v1/token";
-            $info['warranty_url'] = "https://warranty.api.hp.com/productwarranty/v2/queries";
+            $info['warranty_url'] = "https://warranty.api.hp.com/productwarranty/v2/jobs";
             $info["supplier_key"]    = "123456789";
             $info["supplier_secret"] = "987654321";
             return $info;
@@ -110,45 +111,65 @@ class HP extends Manufacturer
     }
 
     /**
-     * Whether the synchronous warranty query was turned down by HP: it then answers HTTP 200
-     * with a {"message": "..."} object instead of the list of products.
+     * URL of the asynchronous job API for a configured warranty URL
      *
-     * @param mixed $contents
+     * HP has sunset the synchronous /v2/queries endpoint (HTTP 500, github issue #178):
+     * a configuration still pointing at it is redirected to /v2/jobs.
+     *
+     * @param string $warranty_url
+     *
+     * @return string
      */
-    public static function isQueryRejected($contents): bool
+    public static function getJobsUrl(string $warranty_url): string
     {
-        if (!is_string($contents) || $contents === '') {
-            return false;
-        }
-        $info = json_decode($contents, true);
-
-        return is_array($info) && !array_is_list($info) && isset($info['message']);
+        return (string) preg_replace('#/queries/?$#', '/jobs', rtrim($warranty_url));
     }
 
     /**
-     * Fallback on the asynchronous job API when the synchronous query is turned down: submit the
-     * serial, poll the job until HP completes it, then read its results (same payload as the
-     * synchronous query). Gives up after JOB_TIMEOUT seconds.
+     * Status of an asynchronous warranty job, normalized
      *
-     * @param array $options cURLData() options of the synchronous query (url, sn, pn, token)
+     * HP answers QUEUED, IN_PROGRESS or COMPLETED; the case is not guaranteed.
      *
-     * @return string|null the warranty payload, null when the job did not complete in time
+     * @param mixed $contents body of GET /jobs/{jobId}
+     *
+     * @return string the status in upper case, '' when the body cannot be read
+     */
+    public static function getJobStatus($contents): string
+    {
+        if (!is_string($contents) || $contents === '') {
+            return '';
+        }
+        $info = json_decode($contents, true);
+
+        return is_array($info) && is_string($info['status'] ?? null)
+            ? strtoupper(trim($info['status']))
+            : '';
+    }
+
+    /**
+     * Warranty of a computer through the asynchronous job API: submit the serial,
+     * poll the job until HP completes it, then read its results (same payload as the
+     * former synchronous query). Gives up after JOB_TIMEOUT seconds.
+     *
+     * @param array $options cURLData() options (url, sn, pn, token, suppliername)
+     *
+     * @return string|null the warranty payload, null when HP did not deliver it
      */
     public static function getWarrantyFromJob(array $options): ?string
     {
         if (empty($options['token']) || empty($options['sn'])) {
             return null;
         }
-        // https://warranty.api.hp.com/productwarranty/v2/queries -> .../v2/jobs
-        $jobs_url = preg_replace('#/queries/?$#', '/jobs', (string) $options['url']);
-        if ($jobs_url === null || $jobs_url === $options['url']) {
-            return null;
-        }
+        $jobs_url = self::getJobsUrl((string) $options['url']);
 
         $job = json_decode((string) PostImport::cURLData(['url' => $jobs_url] + $options), true);
         $job_id = is_array($job) ? (string) ($job['jobId'] ?? '') : '';
         // The id is concatenated into the URL path: only accept a plain UUID
         if (preg_match('/^[0-9a-f-]{36}$/i', $job_id) !== 1) {
+            Toolbox::logInFile(
+                'manufacturersimports',
+                sprintf("HP warranty job not created for serial %s\n", $options['sn']),
+            );
             return null;
         }
 
@@ -160,12 +181,19 @@ class HP extends Manufacturer
         $deadline = time() + self::JOB_TIMEOUT;
         while (time() < $deadline) {
             sleep(self::JOB_POLL_INTERVAL);
-            $status = json_decode((string) PostImport::cURLData(['url' => "$jobs_url/$job_id"] + $get), true);
-            if (($status['status'] ?? '') === 'Completed') {
+            $status = self::getJobStatus(PostImport::cURLData(['url' => "$jobs_url/$job_id"] + $get));
+            if ($status === 'COMPLETED') {
                 $results = PostImport::cURLData(['url' => "$jobs_url/$job_id/results"] + $get);
                 return is_string($results) && $results !== '' ? $results : null;
             }
+            if (in_array($status, ['FAILED', 'ERROR', 'CANCELLED', 'EXPIRED'], true)) {
+                break;
+            }
         }
+        Toolbox::logInFile(
+            'manufacturersimports',
+            sprintf("HP warranty job %s not completed for serial %s\n", $job_id, $options['sn']),
+        );
         return null;
     }
 
