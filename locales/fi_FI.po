@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - manufacturersimports plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-09 07:21+0000\n"
+"POT-Creation-Date: 2026-10-23 12:07+0000\n"
 "PO-Revision-Date: 2020-01-17 15:32+0000\n"
 "Last-Translator: Kevin HAINRY <kevin.hainry@infotel.com>\n"
 "Language-Team: Finnish (Finland) (http://www.transifex.com/infotelGLPI/"
@@ -23,15 +23,15 @@ msgstr ""
 msgid "API connection test"
 msgstr ""
 
-#: templates/config_form.html.twig:79
+#: ⁨standard input⁩:79
 msgid "Access token API address"
 msgstr ""
 
-#: templates/pre_import_list.html.twig:74
+#: ⁨standard input⁩:74
 msgid "Actions"
 msgstr ""
 
-#: src/Config.php:542 templates/config_form.html.twig:165
+#: src/Config.php:542 ⁨standard input⁩:165
 msgid "Add a comment line"
 msgstr "Lisää kommenttirivi"
 
@@ -43,7 +43,7 @@ msgstr "Aiemmin tuotu"
 msgid "Authentication successful (token received)"
 msgstr ""
 
-#: src/Config.php:525 templates/config_form.html.twig:133
+#: src/Config.php:525 ⁨standard input⁩:133
 msgid "Auto add of document"
 msgstr "Dokumentin automaattinen lisäys"
 
@@ -51,24 +51,23 @@ msgstr "Dokumentin automaattinen lisäys"
 msgid "Automatic"
 msgstr ""
 
-#: templates/config_form.html.twig:177
-#: templates/massive_import_progress.html.twig:42
+#: ⁨standard input⁩:177 ⁨standard input⁩:42
 msgid "Back"
 msgstr ""
 
-#: templates/pre_import_list.html.twig:67
+#: ⁨standard input⁩:67
 msgid "Check all"
 msgstr ""
 
-#: templates/search_form.html.twig:32
+#: ⁨standard input⁩:32
 msgid "Choose inventory type and manufacturer"
 msgstr "Valitse inventaarion tyyppi ja valmistaja"
 
-#: templates/config_form.html.twig:113 templates/config_form.html.twig:126
+#: ⁨standard input⁩:113 ⁨standard input⁩:126
 msgid "Client id"
 msgstr ""
 
-#: templates/config_form.html.twig:119
+#: ⁨standard input⁩:119
 msgid "Client secret"
 msgstr ""
 
@@ -81,7 +80,7 @@ msgstr ""
 msgid "Curl PHP package not installed"
 msgstr "Curl PHP pakettia ei ole asennettu"
 
-#: src/Config.php:508 templates/config_form.html.twig:93
+#: src/Config.php:508 ⁨standard input⁩:93
 msgid "Default supplier attached"
 msgstr "Oletus laitetoimittaja"
 
@@ -102,7 +101,7 @@ msgstr "Ei tuodut laitteet"
 msgid "Devices with import error"
 msgstr ""
 
-#: templates/pre_import_list.html.twig:77
+#: ⁨standard input⁩:77
 msgid "Import"
 msgstr ""
 
@@ -114,11 +113,11 @@ msgstr "Tuonti onnistui"
 msgid "Import failed"
 msgstr "Tuonti epäonnistui"
 
-#: templates/massive_import_progress.html.twig:34
+#: ⁨standard input⁩:34
 msgid "Import in progress"
 msgstr "Tuonti käynnissä"
 
-#: src/PostImport.php:890 src/PostImport.php:897
+#: src/PostImport.php:889 src/PostImport.php:896
 msgid "Imported from"
 msgstr ""
 
@@ -127,7 +126,7 @@ msgstr ""
 msgid "Importing device %1$d of %2$d"
 msgstr ""
 
-#: templates/massive_import_progress.html.twig:32
+#: ⁨standard input⁩:32
 #, php-format
 msgid "Importing from %s"
 msgstr ""
@@ -136,21 +135,21 @@ msgstr ""
 msgid "Invalid or forbidden URL"
 msgstr ""
 
-#: templates/warranty_infocom.html.twig:35
+#: ⁨standard input⁩:35
 msgid "Link"
 msgid_plural "Links"
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/config_form.html.twig:64
+#: ⁨standard input⁩:64
 msgid "Manufacturer"
 msgstr ""
 
-#: src/PreImport.php:594 templates/warranty_infocom.html.twig:37
+#: src/PreImport.php:594 ⁨standard input⁩:37
 msgid "Manufacturer information"
 msgstr "Valmistajan tiedot"
 
-#: src/Config.php:499 templates/config_form.html.twig:71
+#: src/Config.php:499 ⁨standard input⁩:71
 msgid "Manufacturer web address"
 msgstr "Valmistajan web-osoite"
 
@@ -162,15 +161,15 @@ msgstr "Mallinumero"
 msgid "Model number"
 msgstr "Mallinumero"
 
-#: templates/config_form.html.twig:56
+#: ⁨standard input⁩:56
 msgid "Name"
 msgstr ""
 
-#: templates/config_form.html.twig:101
+#: ⁨standard input⁩:101
 msgid "New warranty affected by default (Replace if 0)"
 msgstr "Oletustakuu (Korvaa jos 0)"
 
-#: src/PreImport.php:399 src/Config.php:516
+#: src/Config.php:516 src/PreImport.php:399
 msgid "New warranty attached"
 msgstr "Uusi takuutieto liitetään"
 
@@ -178,11 +177,11 @@ msgstr "Uusi takuutieto liitetään"
 msgid "No access token in response"
 msgstr ""
 
-#: templates/pre_import_list.html.twig:30
+#: ⁨standard input⁩:30
 msgid "No device finded"
 msgstr "Laitetta ei löytynyt"
 
-#: templates/search_form.html.twig:59 templates/search_form.html.twig:63
+#: ⁨standard input⁩:59 ⁨standard input⁩:63
 msgid "No manufacturer available. Please configure at least one manufacturer"
 msgstr ""
 "Valmistajia ei ole käytettävissä. Ole hyvä ja määritä vähintään yksi "
@@ -204,14 +203,12 @@ msgstr ""
 msgid "Please activate the plugin"
 msgstr "Ole hyvä ja aktivoi liitännäinen"
 
-#: templates/search_form.html.twig:53
-#: templates/massive_action_transfer.html.twig:31
-#: templates/pre_import_list.html.twig:87
+#: ⁨standard input⁩:31 ⁨standard input⁩:53 ⁨standard input⁩:87
 msgctxt "button"
 msgid "Post"
 msgstr ""
 
-#: templates/config_form.html.twig:37
+#: ⁨standard input⁩:37
 msgid "Preconfiguration"
 msgstr ""
 
@@ -219,26 +216,25 @@ msgstr ""
 msgid "Problem during the importation"
 msgstr "Ongelma tuonnin yhteydessä"
 
-#: templates/pre_import_list.html.twig:79
+#: ⁨standard input⁩:79
 msgid "Reset the import"
 msgstr "Palauta tuonnin tila"
 
-#: src/Config.php:1006 templates/retrieve_warranty_alert.html.twig:35
-#: templates/retrieve_warranty_alert.html.twig:37
+#: src/Config.php:1006 ⁨standard input⁩:35 ⁨standard input⁩:37
 msgctxt "button"
 msgid "Retrieve warranty from manufacturer"
 msgstr ""
 
-#: templates/profile.html.twig:34
+#: ⁨standard input⁩:34
 msgctxt "button"
 msgid "Save"
 msgstr ""
 
-#: templates/config_form.html.twig:139
+#: ⁨standard input⁩:139
 msgid "Section for document records"
 msgstr "Dokumentin kategoria"
 
-#: templates/pre_import_list.html.twig:93
+#: ⁨standard input⁩:93
 msgid "Selection too large, massive action disabled."
 msgstr ""
 
@@ -251,8 +247,8 @@ msgstr ""
 msgid "Supplier attached"
 msgstr "Liitetty toimittaja"
 
-#: front/massiveaction.php:44 setup.php:90 src/PreImport.php:65
-#: src/Profile.php:126 src/Menu.php:52
+#: setup.php:90 front/massiveaction.php:44 src/Profile.php:126 src/Menu.php:52
+#: src/PreImport.php:65
 msgid "Suppliers import"
 msgid_plural "Suppliers imports"
 msgstr[0] "Toimitustiedon tuonti"
@@ -279,21 +275,21 @@ msgstr ""
 msgid "Total number of devices imported %s"
 msgstr "Tuotujen laitteiden kokonaismäärä %s "
 
-#: templates/pre_import_list.html.twig:59
+#: ⁨standard input⁩:59
 #, php-format
 msgid "Total number of devices to import %s"
 msgstr "Tuonnissa olevien laitteiden kokonaismäärä %s "
 
-#: templates/pre_import_list.html.twig:70
+#: ⁨standard input⁩:70
 msgid "Uncheck all"
 msgstr ""
 
-#: templates/config_form.html.twig:43
+#: ⁨standard input⁩:43
 msgctxt "button"
 msgid "Update"
 msgstr ""
 
-#: templates/config_form.html.twig:84
+#: ⁨standard input⁩:84
 msgid "Warranty API address"
 msgstr ""
 
@@ -305,11 +301,11 @@ msgstr ""
 msgid "Warranty page test"
 msgstr ""
 
-#: src/PostImport.php:891 src/PostImport.php:898
+#: src/PostImport.php:890 src/PostImport.php:897
 msgid "With the manufacturersimports plugin"
 msgstr "\"manufacturersimports\" -liitännäisellä"
 
-#: templates/retrieve_warranty_alert.html.twig:30
+#: ⁨standard input⁩:30
 msgid ""
 "You did not import the warranty for this item. Do you want to get it back?"
 msgstr ""
