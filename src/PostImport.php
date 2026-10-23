@@ -749,12 +749,11 @@ class PostImport extends CommonDBTM
         //                $contents                = self::cURLData($options); // Getting Warranty Data
         //            }
         //        }
-        else {
+        elseif ($suppliername == Config::HP) {
+            // HP only serves the warranty through its asynchronous job API (github issue #178)
+            $contents = HP::getWarrantyFromJob($options) ?? '';
+        } else {
             $contents = self::cURLData($options);
-            // The synchronous HP query fails for some serials: the asynchronous job API still answers
-            if ($suppliername == Config::HP && HP::isQueryRejected($contents)) {
-                $contents = HP::getWarrantyFromJob($options) ?? $contents;
-            }
         }
         if (
             isset($_SESSION['glpi_use_mode'])

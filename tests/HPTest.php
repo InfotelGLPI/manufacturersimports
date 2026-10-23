@@ -240,11 +240,70 @@ class HPTest extends TestCase
     public function testGetWarrantyUrlReturnsWarrantyApiUrlIgnoringSerial(): void
     {
         $config = new \stdClass();
-        $config->fields = ['warranty_url' => 'https://warranty.api.hp.com/productwarranty/v2/queries'];
+        $config->fields = ['warranty_url' => 'https://warranty.api.hp.com/productwarranty/v2/jobs'];
 
         $result = HP::getWarrantyUrl($config, 'SN999');
 
-        $this->assertSame(['url' => 'https://warranty.api.hp.com/productwarranty/v2/queries'], $result);
+        $this->assertSame(['url' => 'https://warranty.api.hp.com/productwarranty/v2/jobs'], $result);
+    }
+
+    public function testDefaultWarrantyUrlIsTheJobApi(): void
+    {
+        $info = $this->hp->getSupplierInfo();
+
+        $this->assertSame('https://warranty.api.hp.com/productwarranty/v2/jobs', $info['warranty_url']);
+    }
+
+    public static function jobsUrlProvider(): array
+    {
+        return [
+            'sunset queries endpoint' => [
+                'https://warranty.api.hp.com/productwarranty/v2/queries',
+                'https://warranty.api.hp.com/productwarranty/v2/jobs',
+            ],
+            'queries with trailing slash' => [
+                'https://warranty.api.hp.com/productwarranty/v2/queries/',
+                'https://warranty.api.hp.com/productwarranty/v2/jobs',
+            ],
+            'already the job api' => [
+                'https://warranty.api.hp.com/productwarranty/v2/jobs',
+                'https://warranty.api.hp.com/productwarranty/v2/jobs',
+            ],
+        ];
+    }
+
+    #[\PHPUnit\Framework\Attributes\DataProvider('jobsUrlProvider')]
+    public function testGetJobsUrl(string $configured, string $expected): void
+    {
+        $this->assertSame($expected, HP::getJobsUrl($configured));
+    }
+
+    public static function jobStatusProvider(): array
+    {
+        return [
+            'completed as documented by HP' => ['{"jobId":"x","status":"COMPLETED"}', 'COMPLETED'],
+            'completed in mixed case'       => ['{"status":"Completed"}', 'COMPLETED'],
+            'in progress'                   => ['{"status":"IN_PROGRESS"}', 'IN_PROGRESS'],
+            'queued'                        => ['{"status":"QUEUED"}', 'QUEUED'],
+            'no status'                     => ['{"jobId":"x"}', ''],
+            'not json (HTTP error page)'    => ['<html>500</html>', ''],
+            'empty body'                    => ['', ''],
+            'no body (curl failure)'        => [null, ''],
+        ];
+    }
+
+    #[\PHPUnit\Framework\Attributes\DataProvider('jobStatusProvider')]
+    public function testGetJobStatus(?string $contents, string $expected): void
+    {
+        $this->assertSame($expected, HP::getJobStatus($contents));
+    }
+
+    public function testGetWarrantyFromJobNeedsATokenAndASerial(): void
+    {
+        $options = ['url' => 'https://warranty.api.hp.com/productwarranty/v2/jobs', 'suppliername' => Config::HP];
+
+        $this->assertNull(HP::getWarrantyFromJob($options + ['sn' => 'SN1']));
+        $this->assertNull(HP::getWarrantyFromJob($options + ['token' => 'tok']));
     }
 
     public function testGetSearchFieldReturnsFalse(): void

@@ -124,7 +124,7 @@ function plugin_manufacturersimports_install()
 
     $DB->update('glpi_plugin_manufacturersimports_configs', [
         'Supplier_url' => 'https://support.hp.com/fr-fr/check-warranty/',
-        'warranty_url' => 'https://warranty.api.hp.com/productwarranty/v2/queries',
+        'warranty_url' => 'https://warranty.api.hp.com/productwarranty/v2/jobs',
         'token_url'    => 'https://warranty.api.hp.com/oauth/v1/token',
     ], ['name' => Config::HP]);
 
