@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - manufacturersimports plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-23 12:07+0000\n"
+"POT-Creation-Date: 2026-11-01 18:50+0000\n"
 "PO-Revision-Date: 2020-01-17 15:32+0000\n"
 "Last-Translator: Kevin HAINRY <kevin.hainry@infotel.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/infotelGLPI/"
@@ -51,7 +51,7 @@ msgstr "自動新增文件"
 msgid "Automatic"
 msgstr ""
 
-#: ⁨standard input⁩:177 ⁨standard input⁩:42
+#: ⁨standard input⁩:42 ⁨standard input⁩:177
 msgid "Back"
 msgstr ""
 
@@ -75,7 +75,7 @@ msgstr ""
 msgid "Connection failed/data download from manufacturer web site"
 msgstr "從製造商網站取得資料失敗"
 
-#: front/config.form.php:90 src/PostImport.php:89
+#: src/PostImport.php:89 front/config.form.php:90
 msgid "Curl PHP package not installed"
 msgstr "Curl PHP套件未安裝"
 
@@ -130,7 +130,7 @@ msgstr ""
 msgid "Importing from %s"
 msgstr ""
 
-#: front/config.form.php:86 src/PostImport.php:111
+#: src/PostImport.php:111 front/config.form.php:86
 msgid "Invalid or forbidden URL"
 msgstr ""
 
@@ -167,7 +167,7 @@ msgstr ""
 msgid "New warranty affected by default (Replace if 0)"
 msgstr "保固期已套用預設值(如果取得資訊為0)"
 
-#: src/Config.php:516 src/PreImport.php:399
+#: src/PreImport.php:399 src/Config.php:516
 msgid "New warranty attached"
 msgstr "保固期已套用"
 
@@ -199,7 +199,7 @@ msgstr ""
 msgid "Please activate the plugin"
 msgstr "請啟用外掛程式"
 
-#: ⁨standard input⁩:31 ⁨standard input⁩:53 ⁨standard input⁩:87
+#: ⁨standard input⁩:87 ⁨standard input⁩:31 ⁨standard input⁩:53
 msgctxt "button"
 msgid "Post"
 msgstr ""
@@ -243,8 +243,8 @@ msgstr ""
 msgid "Supplier attached"
 msgstr "供應商已設定"
 
-#: setup.php:90 front/massiveaction.php:44 src/Profile.php:126 src/Menu.php:52
-#: src/PreImport.php:65
+#: src/PreImport.php:65 src/Menu.php:52 src/Profile.php:126 setup.php:90
+#: front/massiveaction.php:44
 msgid "Suppliers import"
 msgid_plural "Suppliers imports"
 msgstr[0] "匯入供應商"

@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $soft\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-23 12:07+0000\n"
+"POT-Creation-Date: 2026-11-01 18:50+0000\n"
 "PO-Revision-Date: 2020-11-02 16:09+0000\n"
 "Last-Translator: Soporte Infraestructura Standby, 2023\n"
 "Language-Team: Spanish (Ecuador) (https://app.transifex.com/infotelGLPI/"
@@ -55,7 +55,7 @@ msgstr "Adición automática de documentos"
 msgid "Automatic"
 msgstr ""
 
-#: ⁨standard input⁩:177 ⁨standard input⁩:42
+#: ⁨standard input⁩:42 ⁨standard input⁩:177
 msgid "Back"
 msgstr ""
 
@@ -79,7 +79,7 @@ msgstr "Secreto de cliente"
 msgid "Connection failed/data download from manufacturer web site"
 msgstr "Fallo de conexión/descarga de datos del sitio web del fabricante"
 
-#: front/config.form.php:90 src/PostImport.php:89
+#: src/PostImport.php:89 front/config.form.php:90
 msgid "Curl PHP package not installed"
 msgstr "Paquete Curl PHP no instalado"
 
@@ -134,7 +134,7 @@ msgstr ""
 msgid "Importing from %s"
 msgstr ""
 
-#: front/config.form.php:86 src/PostImport.php:111
+#: src/PostImport.php:111 front/config.form.php:86
 msgid "Invalid or forbidden URL"
 msgstr ""
 
@@ -173,7 +173,7 @@ msgstr ""
 msgid "New warranty affected by default (Replace if 0)"
 msgstr "Nueva garantía afectada por defecto (Sustituir si 0)"
 
-#: src/Config.php:516 src/PreImport.php:399
+#: src/PreImport.php:399 src/Config.php:516
 msgid "New warranty attached"
 msgstr "Nueva garantía adjuntada"
 
@@ -207,7 +207,7 @@ msgstr ""
 msgid "Please activate the plugin"
 msgstr "Por favor, active el plugin"
 
-#: ⁨standard input⁩:31 ⁨standard input⁩:53 ⁨standard input⁩:87
+#: ⁨standard input⁩:87 ⁨standard input⁩:31 ⁨standard input⁩:53
 msgctxt "button"
 msgid "Post"
 msgstr ""
@@ -251,8 +251,8 @@ msgstr ""
 msgid "Supplier attached"
 msgstr "Proveedor adjunto"
 
-#: setup.php:90 front/massiveaction.php:44 src/Profile.php:126 src/Menu.php:52
-#: src/PreImport.php:65
+#: src/PreImport.php:65 src/Menu.php:52 src/Profile.php:126 setup.php:90
+#: front/massiveaction.php:44
 msgid "Suppliers import"
 msgid_plural "Suppliers imports"
 msgstr[0] "Proveedores importaciones"

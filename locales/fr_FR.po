@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-23 12:07+0000\n"
+"POT-Creation-Date: 2026-11-01 18:50+0000\n"
 "PO-Revision-Date: 2020-11-02 16:09+0000\n"
 "Last-Translator: Xavier CAILLAUD <thetsmr@gmail.com>, 2026\n"
 "Language-Team: French (France) (https://app.transifex.com/infotelGLPI/teams/"
@@ -55,7 +55,7 @@ msgstr "Ajout automatique de document"
 msgid "Automatic"
 msgstr "Automatique"
 
-#: ⁨standard input⁩:177 ⁨standard input⁩:42
+#: ⁨standard input⁩:42 ⁨standard input⁩:177
 msgid "Back"
 msgstr "Retour"
 
@@ -79,7 +79,7 @@ msgstr "Clé API secrète"
 msgid "Connection failed/data download from manufacturer web site"
 msgstr "Echec de connexion/récupération de données au site du fabricant"
 
-#: front/config.form.php:90 src/PostImport.php:89
+#: src/PostImport.php:89 front/config.form.php:90
 msgid "Curl PHP package not installed"
 msgstr "Le module Curl pour PHP n'est pas installé"
 
@@ -134,7 +134,7 @@ msgstr "Importation des objets %1$d à %2$d"
 msgid "Importing from %s"
 msgstr "Importation depuis %s"
 
-#: front/config.form.php:86 src/PostImport.php:111
+#: src/PostImport.php:111 front/config.form.php:86
 msgid "Invalid or forbidden URL"
 msgstr "URL invalide ou interdite"
 
@@ -173,7 +173,7 @@ msgstr "Nom"
 msgid "New warranty affected by default (Replace if 0)"
 msgstr "Nouvelle garantie affectée par défaut (remplacée si différent de 0)"
 
-#: src/Config.php:516 src/PreImport.php:399
+#: src/PreImport.php:399 src/Config.php:516
 msgid "New warranty attached"
 msgstr "Nouvelle garantie affectée"
 
@@ -205,7 +205,7 @@ msgstr "Opération réussie"
 msgid "Please activate the plugin"
 msgstr "Merci d'activer le plugin"
 
-#: ⁨standard input⁩:31 ⁨standard input⁩:53 ⁨standard input⁩:87
+#: ⁨standard input⁩:87 ⁨standard input⁩:31 ⁨standard input⁩:53
 msgctxt "button"
 msgid "Post"
 msgstr "Envoyer"
@@ -249,8 +249,8 @@ msgstr "Serveur accessible (HTTP %d)"
 msgid "Supplier attached"
 msgstr "Fournisseur affecté"
 
-#: setup.php:90 front/massiveaction.php:44 src/Profile.php:126 src/Menu.php:52
-#: src/PreImport.php:65
+#: src/PreImport.php:65 src/Menu.php:52 src/Profile.php:126 setup.php:90
+#: front/massiveaction.php:44
 msgid "Suppliers import"
 msgid_plural "Suppliers imports"
 msgstr[0] "Import fabricants"

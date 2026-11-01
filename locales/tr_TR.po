@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-23 12:07+0000\n"
+"POT-Creation-Date: 2026-11-01 18:50+0000\n"
 "PO-Revision-Date: 2020-11-02 16:09+0000\n"
 "Last-Translator: Kaya Zeren <kayazeren@gmail.com>, 2026\n"
 "Language-Team: Turkish (Turkey) (https://app.transifex.com/infotelGLPI/teams/"
@@ -55,7 +55,7 @@ msgstr "Otomatik belge ekleme"
 msgid "Automatic"
 msgstr "Otomatik"
 
-#: ⁨standard input⁩:177 ⁨standard input⁩:42
+#: ⁨standard input⁩:42 ⁨standard input⁩:177
 msgid "Back"
 msgstr "Geri"
 
@@ -79,7 +79,7 @@ msgstr "Müşteri parolası"
 msgid "Connection failed/data download from manufacturer web site"
 msgstr "Bağlantı kesildi / üreticinin sitesinden veri indirilemedi"
 
-#: front/config.form.php:90 src/PostImport.php:89
+#: src/PostImport.php:89 front/config.form.php:90
 msgid "Curl PHP package not installed"
 msgstr "Curl PHP paketi kurulmamış"
 
@@ -134,7 +134,7 @@ msgstr "%1$d / %2$d aygıt içe aktarılıyor"
 msgid "Importing from %s"
 msgstr "%s üzerinden içe aktarılıyor"
 
-#: front/config.form.php:86 src/PostImport.php:111
+#: src/PostImport.php:111 front/config.form.php:86
 msgid "Invalid or forbidden URL"
 msgstr "Geçersiz ya da engellenmiş adres"
 
@@ -172,7 +172,7 @@ msgstr "Ad"
 msgid "New warranty affected by default (Replace if 0)"
 msgstr "Varsayılan olarak yeni garanti kullanılsın (0 ise değiştirin)"
 
-#: src/Config.php:516 src/PreImport.php:399
+#: src/PreImport.php:399 src/Config.php:516
 msgid "New warranty attached"
 msgstr "Yeni garanti eklendi"
 
@@ -205,7 +205,7 @@ msgstr "İşlem tamamlandı"
 msgid "Please activate the plugin"
 msgstr "Lütfen eklentiyi etkinleştirin"
 
-#: ⁨standard input⁩:31 ⁨standard input⁩:53 ⁨standard input⁩:87
+#: ⁨standard input⁩:87 ⁨standard input⁩:31 ⁨standard input⁩:53
 msgctxt "button"
 msgid "Post"
 msgstr "Gönder"
@@ -249,8 +249,8 @@ msgstr "Sunucuya erişilebiliyor (HTTP %d)"
 msgid "Supplier attached"
 msgstr "Atanmış sağlayıcı"
 
-#: setup.php:90 front/massiveaction.php:44 src/Profile.php:126 src/Menu.php:52
-#: src/PreImport.php:65
+#: src/PreImport.php:65 src/Menu.php:52 src/Profile.php:126 setup.php:90
+#: front/massiveaction.php:44
 msgid "Suppliers import"
 msgid_plural "Suppliers imports"
 msgstr[0] "Sağlayıcı içe aktarma"
